@@ -1,0 +1,29 @@
+OWN-SITE SETUP (PHP + MySQL)
+=============================
+
+1) Create a MySQL database + user in cPanel / hosting panel.
+
+2) Edit api/config.php:
+   - db_host (usually localhost)
+   - db_name
+   - db_user
+   - db_pass
+   - site_url = https://pdtg-transport-punjab-gov-pk.com
+
+3) Upload these files to your website root (same folder as index.html):
+   - index.html
+   - permit.html
+   - api/ folder (config.php, bootstrap.php, index.php, install.php)
+   - database.sql (optional)
+
+4) Open once in browser:
+   https://YOUR-DOMAIN.com/api/install.php
+
+5) Login at index.html with:
+   Email:    admin@example.com
+   Password: permit@2026
+
+6) Change password from the admin panel, then DELETE:
+   api/install.php
+
+Done. Permits now save on YOUR hosting database — Supabase is no longer required.

@@ -1,0 +1,4 @@
+_git_*.txt
+*.py
+.DS_Store
+Thumbs.db
