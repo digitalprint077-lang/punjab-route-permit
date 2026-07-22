@@ -378,6 +378,9 @@
     var popupView = params.get('view') === 'popup' || params.get('popup') === '1' ||
       !params.get('view') || (d.qr_link && d.qr_link.indexOf('view=popup') !== -1);
     var qrUrl = d.qr_link || (window.location.origin + window.location.pathname + '?id=' + encodeURIComponent(id) + '&view=popup');
+    if (qrUrl.indexOf('view=popup') === -1) {
+      qrUrl += (qrUrl.indexOf('?') === -1 ? '?' : '&') + 'view=popup';
+    }
     document.getElementById('qrcode-img').innerHTML = '';
     new QRCode(document.getElementById('qrcode-img'), {
       text: qrUrl, width:103, height:103,
