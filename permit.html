@@ -334,6 +334,17 @@
     fitZoom = 1;
   }
 
+  function getPermitQrUrl(id) {
+    if (!id) return '';
+    var path = window.location.pathname || '/';
+    if (path.indexOf('permit.html') === -1) {
+      path = path.replace(/[^/]*$/, '') + 'permit.html';
+    } else {
+      path = path.split('?')[0];
+    }
+    return window.location.origin + path + '?id=' + encodeURIComponent(id) + '&view=popup';
+  }
+
   function set(id, val) {
     var el = document.getElementById(id);
     if (el) el.textContent = val || '';
@@ -377,10 +388,7 @@
 
     var popupView = params.get('view') === 'popup' || params.get('popup') === '1' ||
       !params.get('view') || (d.qr_link && d.qr_link.indexOf('view=popup') !== -1);
-    var qrUrl = d.qr_link || (window.location.origin + window.location.pathname + '?id=' + encodeURIComponent(id) + '&view=popup');
-    if (qrUrl.indexOf('view=popup') === -1) {
-      qrUrl += (qrUrl.indexOf('?') === -1 ? '?' : '&') + 'view=popup';
-    }
+    var qrUrl = getPermitQrUrl(id);
     document.getElementById('qrcode-img').innerHTML = '';
     new QRCode(document.getElementById('qrcode-img'), {
       text: qrUrl, width:103, height:103,
