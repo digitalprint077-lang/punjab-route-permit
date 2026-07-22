@@ -334,15 +334,11 @@
     fitZoom = 1;
   }
 
+  var PERMIT_SITE_URL = 'https://pdtg-transport-punjab-gov-pk.com';
+
   function getPermitQrUrl(id) {
     if (!id) return '';
-    var path = window.location.pathname || '/';
-    if (path.indexOf('permit.html') === -1) {
-      path = path.replace(/[^/]*$/, '') + 'permit.html';
-    } else {
-      path = path.split('?')[0];
-    }
-    return window.location.origin + path + '?id=' + encodeURIComponent(id) + '&view=popup';
+    return PERMIT_SITE_URL + '/permit.html?id=' + encodeURIComponent(id);
   }
 
   function set(id, val) {
@@ -439,11 +435,6 @@
   }
 
   window.addEventListener('load', function() {
-    var params = new URLSearchParams(window.location.search);
-    if (params.get('id') && !params.get('view')) {
-      params.set('view', 'popup');
-      window.history.replaceState(null, '', window.location.pathname + '?' + params.toString());
-    }
     initPinchZoom();
     loadPermit();
   });
