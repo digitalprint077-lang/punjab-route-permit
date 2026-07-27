@@ -334,11 +334,13 @@
     fitZoom = 1;
   }
 
-  var PERMIT_SITE_URL = 'https://pdtg-transport-punjab-gov-pk.com';
+  function getSiteOrigin() {
+    return window.location.origin.replace(/\/$/, '');
+  }
 
   function getPermitQrUrl(id) {
     if (!id) return '';
-    return PERMIT_SITE_URL + '/permit.html?id=' + encodeURIComponent(id);
+    return getSiteOrigin() + '/permit.html?id=' + encodeURIComponent(id);
   }
 
   function set(id, val) {

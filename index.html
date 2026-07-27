@@ -1633,18 +1633,20 @@
     });
   }
 
-  var PERMIT_SITE_URL = 'https://pdtg-transport-punjab-gov-pk.com';
+  function getSiteOrigin() {
+    return window.location.origin.replace(/\/$/, '');
+  }
 
   function getPermitQrUrl(id) {
     if (!id) return '';
-    return PERMIT_SITE_URL + '/permit.html?id=' + encodeURIComponent(id);
+    return getSiteOrigin() + '/permit.html?id=' + encodeURIComponent(id);
   }
 
   function normalizePermitQrUrl(url, id) {
     var permitId = id;
     if (url) {
       try {
-        var u = new URL(url, PERMIT_SITE_URL);
+        var u = new URL(url, window.location.origin);
         permitId = u.searchParams.get('id') || permitId;
       } catch (e) {
         var m = url.match(/[?&]id=([^&]+)/);
@@ -1837,7 +1839,7 @@
 </div>
 <script>
   new QRCode(document.getElementById('qrcode-img'), {
-    text: '` + (data.qrlink || getPermitQrUrl(currentEditId) || (PERMIT_SITE_URL + '/')) + `',
+    text: '` + (data.qrlink || getPermitQrUrl(currentEditId) || (getSiteOrigin() + '/')) + `',
     width: 103, height: 103,
     colorDark: '#000000', colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.H
@@ -2101,6 +2103,11 @@ function downloadAsPDF() {
       var permitUrl = normalizePermitQrUrl(d.qr_link, id);
       document.getElementById('f-qrlink').value = permitUrl;
       generateQR(permitUrl);
+      if (d.qr_link !== permitUrl) {
+        try {
+          await supabaseClient.from('permits').update({ qr_link: permitUrl }).eq('id', id);
+        } catch (ex) {}
+      }
       showMsg('Record loaded!', true);
       var t = document.querySelector('.panel-tab');
       if (t) switchTab('tab-edit', t);
