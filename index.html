@@ -1407,7 +1407,7 @@
           </div>
           <div class="field-grid">
             <div class="fg"><label>Full Name</label><input id="f-name" value="LIAQAT ALI KHAN"></div>
-            <div class="fg"><label>CNIC / NTN No</label><input id="f-cnic" value="1610160335675"></div>
+            <div class="fg"><label>CNIC / NTN No</label><input id="f-cnic" value="16101-6033567-5" maxlength="15" inputmode="numeric"></div>
             <div class="fg span-2"><label>Owner Address</label><input id="f-addr" value="PO PAR HOTI HOUSE 550/T-4 MOH NORMAN KHEL MARDAN"></div>
           </div>
         </section>
@@ -1423,6 +1423,7 @@
                 <option value="TRUCK" selected>TRUCK</option>
                 <option value="TRUCK TRAILER">TRUCK TRAILER</option>
                 <option value="PICKUP">PICKUP</option>
+                <option value="MINI TRUCK">MINI TRUCK</option>
                 <option value="GAS BOWSER">GAS BOWSER</option>
                 <option value="GAS BOWSER TRAILER">GAS BOWSER TRAILER</option>
               </select>
@@ -1446,7 +1447,7 @@
             <div class="fg"><label>Fee</label><input id="f-fee" value="10,550"></div>
             <div class="fg"><label>Counter Sig. Upto</label><input id="f-csig" value="04-02-2029"></div>
             <div class="fg span-2"><label>PSID No</label><input id="f-psid" value="41232602030366981"></div>
-            <div class="fg"><label>Issuance Date</label><input id="f-idate" value="24-MAY-2026"></div>
+            <div class="fg"><label>Issuance Date</label><input type="date" id="f-idate-picker"><input type="hidden" id="f-idate" value="24-MAY-2026"></div>
             <div class="fg"><label>Authority Footer</label><input id="f-authority" value="SECRETARY PUNJAB PROVINCIAL TRANSPORT AUTHORITY,LAHORE"></div>
             <div class="fg span-2">
               <label>Other Districts</label>
@@ -1607,6 +1608,78 @@
     document.getElementById('districts-text').textContent = ' ' + val;
   }
 
+  var ISSUE_MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+  function formatIssueDate(iso) {
+    if (!iso) return '';
+    var p = iso.split('-');
+    if (p.length !== 3) return iso;
+    var day = parseInt(p[2], 10);
+    var mon = ISSUE_MONTHS[parseInt(p[1], 10) - 1];
+    if (!mon) return iso;
+    return day + '-' + mon + '-' + p[0];
+  }
+
+  function parseIssueDateToIso(display) {
+    if (!display) return '';
+    var m = String(display).trim().match(/^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/);
+    if (!m) return '';
+    var monIdx = ISSUE_MONTHS.indexOf(m[2].toUpperCase()) + 1;
+    if (monIdx <= 0) return '';
+    var mm = monIdx < 10 ? '0' + monIdx : '' + monIdx;
+    var dd = parseInt(m[1], 10);
+    var ddStr = dd < 10 ? '0' + dd : '' + dd;
+    return m[3] + '-' + mm + '-' + ddStr;
+  }
+
+  function syncIssueDateFromPicker() {
+    var picker = document.getElementById('f-idate-picker');
+    var hidden = document.getElementById('f-idate');
+    if (!picker || !hidden) return;
+    hidden.value = picker.value ? formatIssueDate(picker.value) : '';
+  }
+
+  function syncIssueDatePickerFromHidden() {
+    var picker = document.getElementById('f-idate-picker');
+    var hidden = document.getElementById('f-idate');
+    if (!picker || !hidden) return;
+    var iso = parseIssueDateToIso(hidden.value);
+    if (iso) picker.value = iso;
+  }
+
+  function formatCnic(value) {
+    var digits = String(value || '').replace(/\D/g, '').slice(0, 13);
+    if (digits.length <= 5) return digits;
+    if (digits.length <= 12) return digits.slice(0, 5) + '-' + digits.slice(5);
+    return digits.slice(0, 5) + '-' + digits.slice(5, 12) + '-' + digits.slice(12);
+  }
+
+  function formatCnicField(el) {
+    if (!el) return;
+    el.value = formatCnic(el.value);
+  }
+
+  function uppercaseField(el) {
+    if (!el || !el.value) return;
+    el.value = el.value.toUpperCase();
+  }
+
+  function initFormEnhancements() {
+    syncIssueDatePickerFromHidden();
+    var picker = document.getElementById('f-idate-picker');
+    if (picker) {
+      picker.addEventListener('change', function() {
+        syncIssueDateFromPicker();
+        updateDoc();
+      });
+    }
+    document.querySelectorAll('#panel input:not([type=hidden]):not([type=date]), #panel textarea').forEach(function(el) {
+      if (el.id === 'f-search') return;
+      if (el.id === 'f-cnic') formatCnicField(el);
+      else uppercaseField(el);
+    });
+  }
+
   var fieldMap = {
     'appno':'d-appno','rpno':'d-rpno','fcno':'d-fcno',
     'name':'d-name','cnic':'d-cnic','addr':'d-addr',
@@ -1676,14 +1749,22 @@
   // Live update on every keystroke
   document.querySelectorAll('#panel input, #panel select').forEach(function(inp) {
     inp.addEventListener('input', function(e) {
+      if (inp.id === 'f-cnic') formatCnicField(inp);
+      else if (inp.type !== 'date' && inp.type !== 'hidden' && inp.id !== 'f-search') uppercaseField(inp);
       updateDoc();
     });
     inp.addEventListener('change', function(e) {
+      if (inp.id === 'f-cnic') formatCnicField(inp);
+      else if (inp.type !== 'date' && inp.type !== 'hidden' && inp.id !== 'f-search') uppercaseField(inp);
       updateDoc();
     });
   });
-  document.getElementById('f-districts').addEventListener('input', updateDistricts);
+  document.getElementById('f-districts').addEventListener('input', function() {
+    uppercaseField(this);
+    updateDistricts();
+  });
 
+  initFormEnhancements();
   refreshQrCode();
 
   function openPrintTab() {
@@ -2099,6 +2180,8 @@ function downloadAsPDF() {
         'f-qrlink':d.qr_link||''
       };
       Object.keys(map).forEach(function(k){ var el=document.getElementById(k); if(el) el.value=map[k]||''; });
+      formatCnicField(document.getElementById('f-cnic'));
+      syncIssueDatePickerFromHidden();
       document.getElementById('f-districts').value = d.districts||'';
       currentEditId = id;
       updateDoc(); updateDistricts();
@@ -2144,6 +2227,8 @@ function downloadAsPDF() {
     s('f-iauth','TDAS'); s('f-vfrom','30-01-2026'); s('f-vupto','30-07-2026');
     s('f-fee','10,550'); s('f-psid','41232602030366981'); s('f-csig','04-02-2029');
     s('f-idistrict','LAHORE'); s('f-idate','24-MAY-2026');
+    syncIssueDatePickerFromHidden();
+    formatCnicField(document.getElementById('f-cnic'));
     s('f-authority','SECRETARY PUNJAB PROVINCIAL TRANSPORT AUTHORITY,LAHORE');
     s('f-qrlink','');
     document.getElementById('f-districts').value='ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJRANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUDDIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,RAWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT ADDU,TAUNSA SHAREEF';
