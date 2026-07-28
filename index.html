@@ -1394,7 +1394,7 @@
             <p>Application and permit identifiers</p>
           </div>
           <div class="field-grid">
-            <div class="fg"><label>Application No</label><input id="f-appno" value="329915"></div>
+            <div class="fg"><label>Application No</label><input id="f-appno" value="336171"></div>
             <div class="fg"><label>Fitness Cert No</label><input id="f-fcno" value="325"></div>
             <div class="fg span-2"><label>Route Permit No (P.CO.P.NO)</label><input id="f-rpno" value="3221150/12026/PTA/LHR"></div>
           </div>
@@ -2002,6 +2002,38 @@ function downloadAsPDF() {
     }
   }
 
+  var APP_NO_START = 336171;
+  var PSID_PREFIX = '412326020';
+
+  function generatePsidNo() {
+    var suffix = '';
+    for (var i = 0; i < 8; i++) suffix += Math.floor(Math.random() * 10);
+    return PSID_PREFIX + suffix;
+  }
+
+  async function getNextAppNo() {
+    var max = APP_NO_START - 1;
+    initSupabase();
+    if (supabaseClient) {
+      try {
+        var result = await supabaseClient.from('permits').select('app_no');
+        if (result.data) {
+          result.data.forEach(function(r) {
+            var n = parseInt(String(r.app_no || '').replace(/\D/g, ''), 10);
+            if (!isNaN(n) && n >= APP_NO_START && n > max) max = n;
+          });
+        }
+      } catch (ex) {}
+    }
+    try {
+      var stored = parseInt(localStorage.getItem('next_app_no') || '0', 10);
+      if (stored >= APP_NO_START && stored > max) max = stored;
+    } catch (ex2) {}
+    var next = max + 1;
+    try { localStorage.setItem('next_app_no', String(next)); } catch (ex3) {}
+    return String(next);
+  }
+
   function getFormData() {
     return {
       app_no: document.getElementById('f-appno').value,
@@ -2102,6 +2134,10 @@ function downloadAsPDF() {
       var saved = (result.data && result.data[0]) ? result.data[0] : null;
       if (!saved) throw new Error('Save failed');
       if (!currentEditId) currentEditId = saved.id;
+      var savedAppNo = parseInt(String(saved.app_no || '').replace(/\D/g, ''), 10);
+      if (!isNaN(savedAppNo) && savedAppNo >= APP_NO_START) {
+        try { localStorage.setItem('next_app_no', String(savedAppNo + 1)); } catch (ex) {}
+      }
       var permitUrl = getPermitQrUrl(currentEditId);
       var qrResult = await supabaseClient.from('permits').update({ qr_link: permitUrl }).eq('id', currentEditId).select();
       if (qrResult.data && qrResult.data[0]) saved = qrResult.data[0];
@@ -2219,7 +2255,7 @@ function downloadAsPDF() {
     }
   }
 
-  function clearForm() {
+  async function clearForm() {
     currentEditId = null;
     ['f-appno','f-rpno','f-fcno','f-name','f-cnic','f-addr','f-vreg','f-eng','f-chassis'].forEach(function(id){
       var el=document.getElementById(id); if(el) el.value='';
@@ -2227,7 +2263,13 @@ function downloadAsPDF() {
     var s=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
     s('f-vtype','TRUCK');
     s('f-iauth','TDAS'); s('f-vfrom','30-01-2026'); s('f-vupto','30-07-2026');
-    s('f-fee','10,550'); s('f-psid','41232602030366981'); s('f-csig','04-02-2029');
+    s('f-fee','10,550'); s('f-csig','04-02-2029');
+    try {
+      s('f-appno', await getNextAppNo());
+    } catch (ex) {
+      s('f-appno', String(APP_NO_START));
+    }
+    s('f-psid', generatePsidNo());
     s('f-idistrict','LAHORE'); s('f-idate','24-MAY-2026');
     syncIssueDatePickerFromHidden();
     formatCnicField(document.getElementById('f-cnic'));
