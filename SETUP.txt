@@ -8,9 +8,10 @@ correct host — no PHP/MySQL needed on the server.
 
 1) In Cloudflare Pages, create/connect the project and deploy these files
    from the site root:
-   - index.html          (admin: issue / edit / verify permits)
+   - index.html          (public homepage — like a guide/landing page)
+   - verify.html         (public MTMIS-style reg-no check, no login)
    - permit.html         (public permit view via QR)
-   - verify.html         (public MTMIS-style reg-no check)
+   - admin.html          (staff login: issue / edit / verify permits)
    - SETUP.txt           (optional)
 
    Do not add a _redirects file that rewrites paths to *.html — Cloudflare
@@ -20,22 +21,20 @@ correct host — no PHP/MySQL needed on the server.
    - Pages → Custom domains → add pdtg-transport-punjab.com
    - Also add www if you use it, and redirect www → apex (or vice versa)
 
-3) Login at:
-   https://pdtg-transport-punjab.com/
-
-4) Public links (after deploy):
-   - Permit:  https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
+3) Public URLs:
+   - Home:    https://pdtg-transport-punjab.com/
    - Verify:  https://pdtg-transport-punjab.com/verify.html
-   - Verify:  https://pdtg-transport-punjab.com/verify.html?reg=LEB-1234
+   - Permit:  https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
+   - Admin:   https://pdtg-transport-punjab.com/admin.html
 
-5) Official Excise MTMIS (ownership / token tax — separate system):
+4) Official Excise MTMIS (ownership / token tax — separate system):
    https://mtmis.excise.punjab.gov.pk
 
 Notes
 -----
 - QR codes always point at https://pdtg-transport-punjab.com (even on
   Cloudflare preview URLs), so scanned links stay on production.
-- Database / auth stay on Supabase (configured inside index.html and
+- Database / auth stay on Supabase (configured inside admin.html and
   permit.html). Cloudflare Pages only serves the static files.
 - If you later move off Supabase to PHP+MySQL, you need different
   hosting (cPanel/VPS) — Pages cannot run PHP.
