@@ -1,29 +1,38 @@
-OWN-SITE SETUP (PHP + MySQL)
-=============================
+CLOUDFLARE PAGES DEPLOY
+=======================
 
-1) Create a MySQL database + user in cPanel / hosting panel.
+Domain: https://pdtg-transport-punjab.com/
 
-2) Edit api/config.php:
-   - db_host (usually localhost)
-   - db_name
-   - db_user
-   - db_pass
-   - site_url = https://pdtg-transport-punjab-gov-pk.com
+This project is a static site (HTML + Supabase). Cloudflare Pages is the
+correct host — no PHP/MySQL needed on the server.
 
-3) Upload these files to your website root (same folder as index.html):
-   - index.html
-   - permit.html
-   - api/ folder (config.php, bootstrap.php, index.php, install.php)
-   - database.sql (optional)
+1) In Cloudflare Pages, create/connect the project and deploy these files
+   from the site root:
+   - index.html          (admin: issue / edit / verify permits)
+   - permit.html         (public permit view via QR)
+   - verify.html         (public MTMIS-style reg-no check)
+   - SETUP.txt           (optional)
 
-4) Open once in browser:
-   https://YOUR-DOMAIN.com/api/install.php
+2) Custom domain
+   - Pages → Custom domains → add pdtg-transport-punjab.com
+   - Also add www if you use it, and redirect www → apex (or vice versa)
 
-5) Login at index.html with:
-   Email:    admin@example.com
-   Password: permit@2026
+3) Login at:
+   https://pdtg-transport-punjab.com/
 
-6) Change password from the admin panel, then DELETE:
-   api/install.php
+4) Public links (after deploy):
+   - Permit:  https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
+   - Verify:  https://pdtg-transport-punjab.com/verify.html
+   - Verify:  https://pdtg-transport-punjab.com/verify.html?reg=LEB-1234
 
-Done. Permits now save on YOUR hosting database — Supabase is no longer required.
+5) Official Excise MTMIS (ownership / token tax — separate system):
+   https://mtmis.excise.punjab.gov.pk
+
+Notes
+-----
+- QR codes always point at https://pdtg-transport-punjab.com (even on
+  Cloudflare preview URLs), so scanned links stay on production.
+- Database / auth stay on Supabase (configured inside index.html and
+  permit.html). Cloudflare Pages only serves the static files.
+- If you later move off Supabase to PHP+MySQL, you need different
+  hosting (cPanel/VPS) — Pages cannot run PHP.

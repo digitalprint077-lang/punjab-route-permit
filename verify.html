@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Route Permit — Punjab PTA</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --ink: #0f2035;
+      --sea: #0f6e6a;
+      --sea-deep: #0a524f;
+      --line: #d5e0dc;
+      --bg: #eef4f1;
+      --card: #ffffff;
+      --muted: #5b6b68;
+      --font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--ink);
+      background:
+        radial-gradient(1000px 420px at 10% -10%, rgba(15,110,106,.18), transparent 55%),
+        radial-gradient(800px 360px at 90% 0%, rgba(15,32,53,.12), transparent 50%),
+        linear-gradient(180deg, #f7fbf9 0%, var(--bg) 100%);
+    }
+    .wrap {
+      width: min(720px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 56px;
+    }
+    .brand {
+      margin-bottom: 22px;
+    }
+    .brand-kicker {
+      margin: 0 0 8px;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--sea);
+      font-weight: 700;
+    }
+    .brand h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.6rem, 4vw, 2.1rem);
+      line-height: 1.15;
+    }
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 52ch;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 16px 40px rgba(15,32,53,.06);
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    input {
+      flex: 1;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      background: #f8fbfa;
+    }
+    input:focus {
+      border-color: var(--sea);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(15,110,106,.14);
+    }
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, var(--ink), #16324f);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    button:hover { background: var(--sea-deep); }
+    button:disabled { opacity: .65; cursor: wait; }
+    .hint {
+      margin: 12px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .links {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .links a {
+      color: var(--sea-deep);
+      font-size: 13px;
+      font-weight: 650;
+      text-decoration: none;
+    }
+    .links a:hover { text-decoration: underline; }
+    #status {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--muted);
+      min-height: 1.2em;
+    }
+    .result {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f7faf8;
+    }
+    .result-head {
+      padding: 12px 14px;
+      background: #e7f2ef;
+      border-bottom: 1px solid var(--line);
+      font-weight: 750;
+      font-size: 14px;
+    }
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .field {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+    }
+    .field:nth-child(2n) { border-right: none; }
+    .field .lbl {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .field .val {
+      font-size: 14px;
+      font-weight: 650;
+      word-break: break-word;
+    }
+    .result-actions {
+      padding: 12px 14px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .result-actions a {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .result-actions a.secondary {
+      background: #e8f0ee;
+      color: var(--ink);
+    }
+    .empty {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(220,38,38,.08);
+      color: #b91c1c;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    @media (max-width: 640px) {
+      .row { flex-direction: column; }
+      .result-grid { grid-template-columns: 1fr; }
+      .field { border-right: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <p class="brand-kicker">Punjab Provincial Transport Authority</p>
+      <h1>Verify Route Permit</h1>
+      <p>Enter a vehicle registration number to check owner, engine, chassis, and permit validity from the PTA permit database.</p>
+    </div>
+
+    <div class="card">
+      <label for="reg-input">Vehicle Registration No</label>
+      <div class="row">
+        <input id="reg-input" type="text" placeholder="e.g. LEB-1234 or TAK 325 PESHAWAR" autocomplete="off">
+        <button id="verify-btn" type="button">Verify</button>
+      </div>
+      <p class="hint">Format tips: try with or without spaces/dashes if the first search returns nothing.</p>
+      <div class="links">
+        <a href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Official MTMIS Excise portal ↗</a>
+        <a href="permit.html">Open permit by QR / ID</a>
+      </div>
+      <div id="status"></div>
+      <div id="results"></div>
+    </div>
+  </div>
+
+  <script>
+    var SUPABASE_URL = 'https://meqkwnujbuovzzeyjywo.supabase.co';
+    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lcWt3bnVqYnVvdnp6ZXlqeXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDIxMTcsImV4cCI6MjA5NjU3ODExN30.1FkeN3NZnT1vmE5QRul0sgF4HMw2wx9Y2wMSdQVgJSc';
+    var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    function normalizeRegKey(value) {
+      return String(value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function field(label, value) {
+      return '<div class="field"><span class="lbl">' + label + '</span><span class="val">' + escapeHtml(value || '-') + '</span></div>';
+    }
+
+    function renderResults(rows) {
+      var box = document.getElementById('results');
+      if (!rows.length) {
+        box.innerHTML = '<div class="empty">No route permit found for this registration number.</div>';
+        return;
+      }
+      box.innerHTML = rows.map(function(r) {
+        var id = r.id;
+        var html = '<div class="result">';
+        html += '<div class="result-head">' + escapeHtml(r.full_name || 'Owner') + ' — ' + escapeHtml(r.vehicle_reg_no || '') + '</div>';
+        html += '<div class="result-grid">';
+        html += field('Owner Name', r.full_name);
+        html += field('CNIC / NTN', r.cnic_no);
+        html += field('Vehicle Type', r.vehicle_type);
+        html += field('Registration No', r.vehicle_reg_no);
+        html += field('Engine No', r.engine_no);
+        html += field('Chassis No', r.chassis_no);
+        html += field('Route Permit No', r.route_permit_no);
+        html += field('Application No', r.app_no);
+        html += field('Valid From', r.valid_from);
+        html += field('Valid Upto', r.valid_upto);
+        html += field('Issuing District', r.issuing_district);
+        html += field('Issuance Date', r.issuance_date);
+        html += '</div>';
+        html += '<div class="result-actions">';
+        html += '<a href="permit.html?id=' + encodeURIComponent(id) + '">View Full Permit</a>';
+        html += '<a class="secondary" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Check Excise MTMIS</a>';
+        html += '</div></div>';
+        return html;
+      }).join('');
+    }
+
+    async function verifyVehicle() {
+      var input = document.getElementById('reg-input');
+      var status = document.getElementById('status');
+      var btn = document.getElementById('verify-btn');
+      var raw = input.value.trim();
+      document.getElementById('results').innerHTML = '';
+      if (!raw) {
+        status.textContent = 'Enter a registration number first.';
+        return;
+      }
+      var key = normalizeRegKey(raw);
+      status.textContent = 'Searching…';
+      btn.disabled = true;
+      try {
+        var result = await sb.from('permits').select('*').order('created_at', { ascending: false });
+        if (result.error) throw result.error;
+        var matches = (result.data || []).filter(function(r) {
+          var reg = normalizeRegKey(r.vehicle_reg_no);
+          if (!reg) return false;
+          return reg === key || reg.indexOf(key) !== -1 || key.indexOf(reg) !== -1;
+        });
+        status.textContent = matches.length
+          ? (matches.length + ' permit record' + (matches.length > 1 ? 's' : '') + ' found')
+          : 'No match in PTA permit database';
+        renderResults(matches);
+      } catch (err) {
+        status.textContent = (err && err.message) || 'Verification failed';
+      }
+      btn.disabled = false;
+    }
+
+    document.getElementById('verify-btn').addEventListener('click', verifyVehicle);
+    document.getElementById('reg-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') verifyVehicle();
+    });
+
+    var params = new URLSearchParams(window.location.search);
+    var preset = params.get('reg') || params.get('q') || '';
+    if (preset) {
+      document.getElementById('reg-input').value = preset;
+      verifyVehicle();
+    }
+  </script>
+</body>
+</html>

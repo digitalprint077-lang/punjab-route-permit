@@ -889,6 +889,90 @@
     font-weight: 600;
   }
 
+  .verify-inline {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .verify-inline input { flex: 1; }
+  .verify-inline .pbtn {
+    flex: 0 0 auto;
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+  .verify-result-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #f7faf8;
+  }
+  .verify-result-card h4 {
+    margin: 0 0 8px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .verify-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 10px;
+    font-family: var(--font-ui);
+    font-size: 11.5px;
+    color: #4b5c59;
+  }
+  .verify-grid span { color: var(--ink); font-weight: 650; }
+  .verify-match {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0 10px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .verify-match.ok { background: rgba(21,128,61,.12); color: #15803d; }
+  .verify-match.warn { background: rgba(217,119,6,.12); color: #b45309; }
+  .verify-match.bad { background: rgba(220,38,38,.12); color: #dc2626; }
+  .verify-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .verify-actions button,
+  .verify-actions a {
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-family: var(--font-ui);
+    font-weight: 650;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+  .verify-actions .btn-apply { background: var(--ink); color: #fff; }
+  .verify-actions .btn-open { background: #e8f0ee; color: var(--ink); }
+  .verify-note {
+    font-family: var(--font-ui);
+    font-size: 11.5px;
+    color: #64748b;
+    line-height: 1.45;
+    margin: 0 0 12px;
+  }
+  .verify-official {
+    display: block;
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px dashed var(--line);
+    background: #fff;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .verify-official:hover { border-color: var(--sea); color: var(--sea-deep); }
+
   .records-toolbar {
     margin-bottom: 10px;
   }
@@ -1383,6 +1467,10 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg>
           <span>Saved</span>
         </button>
+        <button class="panel-tab" onclick="switchTab('tab-verify',this)" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1 14.2-3.7-3.7 1.4-1.4L11 13.4l4.8-4.8 1.4 1.4L11 16.2Z"/></svg>
+          <span>Verify</span>
+        </button>
       </div>
     </div>
 
@@ -1430,9 +1518,15 @@
                 <option value="OIL TANKER TRAILER">OIL TANKER TRAILER</option>
               </select>
             </div>
-            <div class="fg"><label>Registration No</label><input id="f-vreg" value="TAK 325 PESHAWAR"></div>
+            <div class="fg span-2"><label>Registration No</label>
+              <div class="verify-inline">
+                <input id="f-vreg" value="TAK 325 PESHAWAR">
+                <button type="button" class="pbtn pbtn-glass" onclick="verifyFromForm()" title="Verify against saved permits">Verify</button>
+              </div>
+            </div>
             <div class="fg"><label>Engine No</label><input id="f-eng" value="LS9308"></div>
             <div class="fg"><label>Chassis No</label><input id="f-chassis" value="CJQ618417"></div>
+            <div class="fg span-2" id="inline-verify-result"></div>
           </div>
         </section>
 
@@ -1484,6 +1578,23 @@
           <button type="button" class="btn-load-all" onclick="loadRecords()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5Zm-8 8.5V14l8 4 8-4v-2.5l-8 4-8-4Z"/></svg><span>Load All Records</span></button>
         </section>
         <div id="records-list"></div>
+      </div>
+
+      <div id="tab-verify" class="tab-panel">
+        <section class="form-section">
+          <div class="form-section-head">
+            <h3>Vehicle Verification</h3>
+            <p>MTMIS-style check against route permits</p>
+          </div>
+          <p class="verify-note">Enter a registration number to find matching permits in your database. For Excise ownership/tax records, use the official Punjab MTMIS portal (no public API is available).</p>
+          <div class="search-box">
+            <input id="f-verify-reg" placeholder="e.g. LEB-1234 or TAK 325 PESHAWAR">
+            <button type="button" onclick="runVehicleVerify()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1 14.2-3.7-3.7 1.4-1.4L11 13.4l4.8-4.8 1.4 1.4L11 16.2Z"/></svg><span>Verify</span></button>
+          </div>
+          <a class="verify-official" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Open official MTMIS Punjab portal ↗</a>
+          <a class="verify-official" href="verify.html" target="_blank" rel="noopener noreferrer">Open public permit verify page ↗</a>
+        </section>
+        <div id="verify-results"></div>
       </div>
     </div>
   </div>
@@ -1710,8 +1821,17 @@
     });
   }
 
+  // Production domain (Cloudflare Pages). Keeps QR links correct on preview URLs too.
+  var SITE_ORIGIN = 'https://pdtg-transport-punjab.com';
+
   function getSiteOrigin() {
-    return window.location.origin.replace(/\/$/, '');
+    try {
+      var host = (window.location.hostname || '').toLowerCase();
+      if (host === 'pdtg-transport-punjab.com' || host === 'www.pdtg-transport-punjab.com') {
+        return window.location.origin.replace(/\/$/, '');
+      }
+    } catch (ex) {}
+    return SITE_ORIGIN;
   }
 
   function getPermitQrUrl(id) {
@@ -2280,12 +2400,138 @@ function downloadAsPDF() {
     refreshQrCode();
   }
 
+  function normalizeRegKey(value) {
+    return String(value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function fieldMatch(a, b) {
+    var left = String(a || '').trim().toUpperCase();
+    var right = String(b || '').trim().toUpperCase();
+    if (!left || !right) return null;
+    return left === right;
+  }
+
+  function buildMatchBadge(record) {
+    var formName = document.getElementById('f-name').value;
+    var formEng = document.getElementById('f-eng').value;
+    var formChassis = document.getElementById('f-chassis').value;
+    var checks = [
+      { label: 'Owner', ok: fieldMatch(formName, record.full_name) },
+      { label: 'Engine', ok: fieldMatch(formEng, record.engine_no) },
+      { label: 'Chassis', ok: fieldMatch(formChassis, record.chassis_no) }
+    ].filter(function(c){ return c.ok !== null; });
+    if (!checks.length) {
+      return '<div class="verify-match warn">No form fields to compare — load or fill owner/engine/chassis</div>';
+    }
+    var failed = checks.filter(function(c){ return c.ok === false; });
+    if (!failed.length) {
+      return '<div class="verify-match ok">Form matches permit record</div>';
+    }
+    return '<div class="verify-match bad">Mismatch: ' + failed.map(function(c){ return c.label; }).join(', ') + '</div>';
+  }
+
+  function renderVerifyCards(records, targetId) {
+    var el = document.getElementById(targetId);
+    if (!el) return;
+    if (!records || !records.length) {
+      el.innerHTML = '<p class="verify-note">No permit found for this registration number.</p>';
+      return;
+    }
+    el.innerHTML = records.map(function(r) {
+      var id = r.id;
+      var html = '<div class="verify-result-card">';
+      html += '<h4>' + escapeHtml(r.full_name || 'Unknown owner') + '</h4>';
+      html += buildMatchBadge(r);
+      html += '<div class="verify-grid">';
+      html += '<div>Reg: <span>' + escapeHtml(r.vehicle_reg_no || '-') + '</span></div>';
+      html += '<div>Type: <span>' + escapeHtml(r.vehicle_type || '-') + '</span></div>';
+      html += '<div>Engine: <span>' + escapeHtml(r.engine_no || '-') + '</span></div>';
+      html += '<div>Chassis: <span>' + escapeHtml(r.chassis_no || '-') + '</span></div>';
+      html += '<div>CNIC: <span>' + escapeHtml(r.cnic_no || '-') + '</span></div>';
+      html += '<div>App: <span>' + escapeHtml(r.app_no || '-') + '</span></div>';
+      html += '<div>Permit: <span>' + escapeHtml(r.route_permit_no || '-') + '</span></div>';
+      html += '<div>Valid: <span>' + escapeHtml((r.valid_from || '-') + ' → ' + (r.valid_upto || '-')) + '</span></div>';
+      html += '</div>';
+      html += '<div class="verify-actions">';
+      html += '<button type="button" class="btn-apply" onclick="loadRecord(\'' + id + '\')">Apply to Form</button>';
+      html += '<button type="button" class="btn-open" onclick="openPrintTabById(\'' + id + '\')">Open Permit</button>';
+      html += '<a class="btn-open" href="permit.html?id=' + encodeURIComponent(id) + '" target="_blank" rel="noopener noreferrer">Public Link</a>';
+      html += '</div></div>';
+      return html;
+    }).join('');
+  }
+
+  async function findPermitsByReg(regNo) {
+    initSupabase();
+    if (!supabaseClient) throw new Error('Not connected');
+    var raw = String(regNo || '').trim();
+    if (!raw) throw new Error('Enter a registration number');
+    var key = normalizeRegKey(raw);
+    var result = await supabaseClient.from('permits').select('*').order('created_at', { ascending: false });
+    if (result.error) throw result.error;
+    var rows = result.data || [];
+    return rows.filter(function(r) {
+      var reg = normalizeRegKey(r.vehicle_reg_no);
+      if (!reg) return false;
+      return reg === key || reg.indexOf(key) !== -1 || key.indexOf(reg) !== -1;
+    });
+  }
+
+  async function runVehicleVerify() {
+    var input = document.getElementById('f-verify-reg');
+    var out = document.getElementById('verify-results');
+    out.innerHTML = '<p class="verify-note">Searching permits…</p>';
+    try {
+      var matches = await findPermitsByReg(input.value);
+      renderVerifyCards(matches, 'verify-results');
+      if (matches.length) showMsg(matches.length + ' match(es) found', true);
+      else showMsg('No permit match', false);
+    } catch (err) {
+      out.innerHTML = '<p class="verify-note">' + escapeHtml((err && err.message) || 'Verify failed') + '</p>';
+      showMsg((err && err.message) || 'Verify failed', false);
+    }
+  }
+
+  async function verifyFromForm() {
+    var reg = document.getElementById('f-vreg').value;
+    var out = document.getElementById('inline-verify-result');
+    var verifyInput = document.getElementById('f-verify-reg');
+    if (verifyInput) verifyInput.value = reg;
+    out.innerHTML = '<p class="verify-note">Verifying…</p>';
+    try {
+      var matches = await findPermitsByReg(reg);
+      renderVerifyCards(matches, 'inline-verify-result');
+      var tabBtn = document.querySelectorAll('.panel-tab')[2];
+      if (tabBtn && matches.length) {
+        // keep user on Edit; results also show under the field
+      }
+      if (!matches.length) showMsg('No permit found for this reg no', false);
+      else showMsg(matches.length + ' permit match(es)', true);
+    } catch (err) {
+      out.innerHTML = '<p class="verify-note">' + escapeHtml((err && err.message) || 'Verify failed') + '</p>';
+      showMsg((err && err.message) || 'Verify failed', false);
+    }
+  }
+
   function switchTab(tabId, btn) {
     document.querySelectorAll('.tab-panel').forEach(function(t){ t.classList.remove('active'); });
     document.querySelectorAll('.panel-tab').forEach(function(b){ b.classList.remove('active'); });
     document.getElementById(tabId).classList.add('active');
     btn.classList.add('active');
     if (tabId === 'tab-records') loadRecords();
+    if (tabId === 'tab-verify') {
+      var src = document.getElementById('f-vreg');
+      var dest = document.getElementById('f-verify-reg');
+      if (src && dest && !dest.value && src.value) dest.value = src.value;
+    }
   }
 
   var isDarkMode = false;
@@ -2351,6 +2597,10 @@ function downloadAsPDF() {
 
   document.getElementById('f-search').addEventListener('keydown', function(e){
     if (e.key === 'Enter') loadRecords();
+  });
+
+  document.getElementById('f-verify-reg').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') runVehicleVerify();
   });
 
 

@@ -334,8 +334,16 @@
     fitZoom = 1;
   }
 
+  var SITE_ORIGIN = 'https://pdtg-transport-punjab.com';
+
   function getSiteOrigin() {
-    return window.location.origin.replace(/\/$/, '');
+    try {
+      var host = (window.location.hostname || '').toLowerCase();
+      if (host === 'pdtg-transport-punjab.com' || host === 'www.pdtg-transport-punjab.com') {
+        return window.location.origin.replace(/\/$/, '');
+      }
+    } catch (ex) {}
+    return SITE_ORIGIN;
   }
 
   function getPermitQrUrl(id) {
