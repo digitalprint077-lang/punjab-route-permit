@@ -13,6 +13,9 @@ correct host — no PHP/MySQL needed on the server.
    - verify.html         (public MTMIS-style reg-no check)
    - SETUP.txt           (optional)
 
+   Do not add a _redirects file that rewrites paths to *.html — Cloudflare
+   already strips .html and those rules cause deploy error 100324.
+
 2) Custom domain
    - Pages → Custom domains → add pdtg-transport-punjab.com
    - Also add www if you use it, and redirect www → apex (or vice versa)
