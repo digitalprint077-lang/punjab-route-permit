@@ -1,4 +1,3 @@
-# Cloudflare Pages — keep clean URLs for main entry points
-/ /index.html 200
+# Cloudflare Pages clean URL shortcuts (do not rewrite / → index.html)
 /verify /verify.html 200
 /permit /permit.html 200
