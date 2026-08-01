@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PDTG Transport Punjab | Online Route Permit Verification</title>
-  <meta name="description" content="Verify Punjab route permits online in minutes. Check owner name, vehicle registration, engine and chassis numbers from the PTA permit record.">
+  <meta name="description" content="Verify Punjab route permits online in minutes. Check owner name, vehicle registration, engine and chassis numbers, validity dates, and related transport topics.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -56,9 +56,11 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 18px;
-      font-size: 0.92rem;
+      gap: 16px;
+      font-size: 0.9rem;
       font-weight: 500;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
     .nav-links a {
       text-decoration: none;
@@ -120,7 +122,7 @@
       margin: 0 0 22px;
       font-size: clamp(1.05rem, 2.2vw, 1.35rem);
       font-weight: 400;
-      max-width: 38ch;
+      max-width: 40ch;
       color: rgba(245,248,246,.92);
     }
     .hero-cta {
@@ -161,9 +163,8 @@
       margin: 0 auto;
       padding: clamp(56px, 9vw, 96px) 0;
     }
-    .section + .section {
-      border-top: 1px solid var(--line);
-    }
+    .section.wide { width: min(1120px, calc(100% - 36px)); }
+    .section + .section { border-top: 1px solid var(--line); }
     .section h2 {
       margin: 0 0 14px;
       font-family: var(--font-display);
@@ -171,16 +172,86 @@
       line-height: 1.12;
       letter-spacing: -0.02em;
     }
+    .section h3 {
+      margin: 28px 0 10px;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      line-height: 1.2;
+    }
     .section > p.lead {
       margin: 0 0 28px;
       color: var(--muted);
       font-size: 1.05rem;
-      max-width: 58ch;
+      max-width: 60ch;
     }
     .section p {
       margin: 0 0 16px;
       color: var(--ink-soft);
       font-size: 1.02rem;
+    }
+
+    .photo-band {
+      position: relative;
+      min-height: clamp(280px, 42vw, 460px);
+      color: #f7faf8;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .photo-band .bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.03);
+    }
+    .photo-band .bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8,20,34,.15), rgba(8,20,34,.78));
+    }
+    .photo-band .copy {
+      width: min(920px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 40px 0;
+      animation: riseIn .8s ease both;
+    }
+    .photo-band h2 {
+      margin: 0 0 10px;
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+      line-height: 1.12;
+    }
+    .photo-band p {
+      margin: 0;
+      max-width: 48ch;
+      color: rgba(245,248,246,.92);
+      font-size: 1.05rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: clamp(24px, 4vw, 48px);
+      align-items: center;
+    }
+    .split.reverse { direction: rtl; }
+    .split.reverse > * { direction: ltr; }
+    .split-media {
+      min-height: 280px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #d7e3de center / cover no-repeat;
+      box-shadow: 0 18px 40px rgba(16,32,51,.12);
+    }
+    .split-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 280px;
     }
 
     .steps {
@@ -197,14 +268,7 @@
       grid-template-columns: auto 1fr;
       gap: 14px;
       align-items: start;
-      opacity: 0;
-      transform: translateY(12px);
-      animation: riseIn .7s ease forwards;
     }
-    .steps li:nth-child(1) { animation-delay: .05s; }
-    .steps li:nth-child(2) { animation-delay: .15s; }
-    .steps li:nth-child(3) { animation-delay: .25s; }
-    .steps li:nth-child(4) { animation-delay: .35s; }
     .steps .num {
       width: 36px;
       height: 36px;
@@ -227,31 +291,73 @@
       font-size: 0.98rem;
     }
 
-    .detail-list {
+    .detail-list,
+    .topic-list,
+    .fix-list {
       margin: 0;
       padding: 0;
       list-style: none;
       display: grid;
-      gap: 14px;
+      gap: 0;
     }
-    .detail-list li {
-      padding: 0 0 14px;
+    .detail-list li,
+    .topic-list li,
+    .fix-list li {
+      padding: 16px 0;
       border-bottom: 1px solid var(--line);
     }
-    .detail-list li:last-child { border-bottom: 0; padding-bottom: 0; }
-    .detail-list strong {
+    .detail-list li:last-child,
+    .topic-list li:last-child,
+    .fix-list li:last-child {
+      border-bottom: 0;
+    }
+    .detail-list strong,
+    .topic-list strong,
+    .fix-list strong {
       display: block;
       margin-bottom: 4px;
       font-size: 1.02rem;
     }
-    .detail-list span { color: var(--muted); }
+    .detail-list span,
+    .topic-list span,
+    .fix-list span { color: var(--muted); }
+    .topic-list a {
+      color: var(--sea-deep);
+      font-weight: 650;
+      text-decoration: none;
+    }
+    .topic-list a:hover { text-decoration: underline; }
 
-    .why-list {
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--ink-soft);
+      font-weight: 550;
+    }
+    .type-grid li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .why-list,
+    .bullets {
       margin: 0;
       padding-left: 1.15rem;
       color: var(--ink-soft);
     }
-    .why-list li { margin-bottom: 10px; }
+    .why-list li,
+    .bullets li { margin-bottom: 10px; }
+
+    .districts {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
 
     .faq details {
       border-top: 1px solid var(--line);
@@ -285,7 +391,7 @@
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
     }
-    .band .section { padding-block: clamp(48px, 7vw, 72px); }
+    .band .section { padding-block: clamp(48px, 7vw, 72px); border-top: 0; }
     .band .cta-row {
       display: flex;
       flex-wrap: wrap;
@@ -328,9 +434,18 @@
       to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
     }
 
+    @media (max-width: 900px) {
+      .split,
+      .split.reverse {
+        grid-template-columns: 1fr;
+        direction: ltr;
+      }
+      .type-grid { grid-template-columns: 1fr 1fr; }
+    }
     @media (max-width: 720px) {
       .nav-links a:not(.nav-staff) { display: none; }
       .hero-brand { max-width: none; }
+      .type-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -341,7 +456,8 @@
       <a class="nav-brand" href="#top">PDTG Transport Punjab</a>
       <div class="nav-links">
         <a href="#how">How it works</a>
-        <a href="#details">What you get</a>
+        <a href="#vehicles">Vehicles</a>
+        <a href="#topics">Topics</a>
         <a href="#faq">FAQ</a>
         <a class="nav-staff" href="admin.html">Staff login</a>
       </div>
@@ -358,85 +474,223 @@
 
   <main>
     <section class="section" id="about">
-      <h2>What is this portal?</h2>
-      <p class="lead">PDTG Transport Punjab helps citizens and transport operators confirm route permit records issued under the Punjab Provincial Transport Authority.</p>
-      <p>Enter a vehicle registration number and the system looks up matching permit data — owner name, CNIC, vehicle type, engine and chassis numbers, permit number, and validity dates — so you can check paperwork before a deal, a checkpoint, or a transfer.</p>
-      <p>This site verifies <strong>route permits</strong> from the PTA permit database. For Excise ownership and token tax records, use the official MTMIS portal separately.</p>
+      <h2>What is PDTG Transport Punjab?</h2>
+      <p class="lead">An online route-permit verification guide and lookup for citizens, buyers, and transport operators across Punjab.</p>
+      <p>Before this kind of check was online, confirming a commercial vehicle’s route paperwork often meant a visit to the transport office, paper files, and long waiting times. Now you can open the record on your phone: enter the registration number and see whether a matching route permit exists, who is named on it, and whether the dates still look valid.</p>
+      <p>This portal focuses on <strong>route permits</strong> issued under the Punjab Provincial Transport Authority system. It is separate from Excise MTMIS, which covers vehicle ownership registration and token tax. For a full safety check before buying or transferring a commercial vehicle, many people use both.</p>
     </section>
 
-    <section class="section" id="how">
-      <h2>How to verify a route permit</h2>
-      <p class="lead">The whole check takes under a minute. No login is required for the public.</p>
-      <ol class="steps">
-        <li>
-          <div class="num" aria-hidden="true"></div>
-          <div>
-            <strong>Open the verify page</strong>
-            <span>Go to Verify Permit or open verify.html on this site.</span>
-          </div>
-        </li>
-        <li>
-          <div class="num" aria-hidden="true"></div>
-          <div>
-            <strong>Enter the registration number</strong>
-            <span>Use the format on the number plate first, for example LEB-1234 or TAK 325 PESHAWAR.</span>
-          </div>
-        </li>
-        <li>
-          <div class="num" aria-hidden="true"></div>
-          <div>
-            <strong>Press Verify</strong>
-            <span>If nothing appears, try with and without spaces or dashes — plate formats vary.</span>
-          </div>
-        </li>
-        <li>
-          <div class="num" aria-hidden="true"></div>
-          <div>
-            <strong>Match the result to the vehicle</strong>
-            <span>Compare owner name, engine, and chassis with the physical vehicle and documents.</span>
-          </div>
-        </li>
-      </ol>
+    <section class="photo-band" aria-label="Highway freight in Punjab">
+      <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&amp;fit=crop&amp;w=1800&amp;q=80');"></div>
+      <div class="copy">
+        <h2>Built for Punjab’s freight roads</h2>
+        <p>Trucks, tankers, trailers, and pickups move goods across districts every day. A clear permit record helps checkpoints, buyers, and operators trust the paperwork in front of them.</p>
+      </div>
+    </section>
+
+    <section class="section wide" id="how">
+      <div class="split">
+        <div>
+          <h2>How to verify a route permit</h2>
+          <p class="lead">The whole check takes under a minute. No login is required for the public.</p>
+          <ol class="steps">
+            <li>
+              <div class="num" aria-hidden="true"></div>
+              <div>
+                <strong>Open Verify Permit</strong>
+                <span>Use the Verify button on this site. Anyone can search — no staff account needed.</span>
+              </div>
+            </li>
+            <li>
+              <div class="num" aria-hidden="true"></div>
+              <div>
+                <strong>Enter the registration number</strong>
+                <span>Start with the format printed on the plate, for example LEB-1234 or TAK 325 PESHAWAR.</span>
+              </div>
+            </li>
+            <li>
+              <div class="num" aria-hidden="true"></div>
+              <div>
+                <strong>Try format variations if needed</strong>
+                <span>If the first search returns nothing, retry with and without spaces or dashes. Plate storage formats vary.</span>
+              </div>
+            </li>
+            <li>
+              <div class="num" aria-hidden="true"></div>
+              <div>
+                <strong>Match the result to the vehicle</strong>
+                <span>Compare owner name, engine number, chassis number, and validity dates with the physical vehicle and papers.</span>
+              </div>
+            </li>
+            <li>
+              <div class="num" aria-hidden="true"></div>
+              <div>
+                <strong>Open the full permit when needed</strong>
+                <span>From the result you can open the public permit page for the complete document view and QR link.</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="split-media">
+          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Logistics trucks parked at a freight yard" width="1200" height="800" loading="lazy">
+        </div>
+      </div>
     </section>
 
     <section class="section" id="details">
       <h2>What details does verification show?</h2>
-      <p class="lead">A successful search returns the core fields from the route permit record.</p>
+      <p class="lead">A successful search returns the core fields from the route permit record — similar in spirit to an MTMIS-style check, but for PTA route permits.</p>
       <ul class="detail-list">
         <li>
           <strong>Owner details</strong>
-          <span>Full name, CNIC/NTN, and address as stored on the permit.</span>
+          <span>Full name, CNIC/NTN, and owner address as stored on the permit. The seller’s identity documents should match these fields before money changes hands.</span>
         </li>
         <li>
           <strong>Vehicle details</strong>
-          <span>Registration number, vehicle type, engine number, and chassis number.</span>
+          <span>Registration number, vehicle type (truck, tanker, pickup, and more), engine number, and chassis number. Match engine and chassis on the metal, not only on photocopies.</span>
         </li>
         <li>
-          <strong>Permit details</strong>
-          <span>Route permit number, application number, issuing district, and validity dates.</span>
+          <strong>Permit &amp; application details</strong>
+          <span>Route permit number (P.CO.P.NO), application number, fitness certificate number, issuing district, and authority footer text.</span>
         </li>
         <li>
-          <strong>Public permit view</strong>
-          <span>Open the full permit page from the result when you need the complete document layout.</span>
+          <strong>Validity window</strong>
+          <span>Valid from / valid upto dates, counter-signature upto, fee, and PSID references where recorded — so you can see if the permit period still looks current.</span>
+        </li>
+        <li>
+          <strong>District coverage</strong>
+          <span>Other districts listed on the permit for route alignment across Punjab.</span>
         </li>
       </ul>
     </section>
 
+    <section class="section wide" id="vehicles">
+      <div class="split reverse">
+        <div>
+          <h2>Which vehicles can you check?</h2>
+          <p class="lead">Route permits commonly cover commercial and goods vehicles operating across Punjab districts.</p>
+          <ul class="type-grid">
+            <li>Truck</li>
+            <li>Truck Trailer</li>
+            <li>Pickup</li>
+            <li>Mini Truck</li>
+            <li>Gas Bowser</li>
+            <li>Gas Bowser Trailer</li>
+            <li>Oil Tanker</li>
+            <li>Oil Tanker Trailer</li>
+            <li>Other commercial types on record</li>
+          </ul>
+          <p style="margin-top:18px;">If a private car or motorcycle has no route permit in this database, that is normal — use Excise MTMIS for ownership and token tax on those classes.</p>
+        </div>
+        <div class="split-media">
+          <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Semi truck on an open highway" width="1200" height="800" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <section class="photo-band" aria-label="Night highway transport">
+      <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&amp;fit=crop&amp;w=1800&amp;q=80');"></div>
+      <div class="copy">
+        <h2>Why verification matters before you move</h2>
+        <p>A clean-looking file is not enough. Matching live permit data to the vehicle protects buyers, sellers, and operators from fake papers and expired route rights.</p>
+      </div>
+    </section>
+
     <section class="section" id="why">
-      <h2>Why verify before you move</h2>
-      <p class="lead">A one-minute check can stop costly mistakes on commercial vehicles and route paperwork.</p>
+      <h2>Risks a one-minute check can catch</h2>
+      <p class="lead">Use verification before deposits, transfers, or long-route deployments.</p>
       <ul class="why-list">
-        <li>Confirm the registered owner matches the person presenting the papers.</li>
-        <li>Match engine and chassis numbers against the vehicle itself.</li>
-        <li>See whether the route permit is still within its valid dates.</li>
-        <li>Avoid relying only on photocopies or informal transfer letters.</li>
+        <li><strong>Wrong owner on record</strong> — the person presenting papers may not match the permit name.</li>
+        <li><strong>Engine or chassis mismatch</strong> — a red flag for tampering or swapped documents.</li>
+        <li><strong>Expired validity</strong> — the route window may already have ended.</li>
+        <li><strong>Photocopy-only deals</strong> — informal letters without a live record create transfer headaches later.</li>
+        <li><strong>District confusion</strong> — confirm the issuing district and listed route districts before you rely on the permit.</li>
+      </ul>
+      <h3>Also check Excise records when buying</h3>
+      <p>Route permit verification does not replace MTMIS. For ownership name, token tax status, and registration history, open the official Excise portal as well, then compare both sets of details to the vehicle.</p>
+    </section>
+
+    <section class="section" id="coverage">
+      <h2>Which cities and districts are covered?</h2>
+      <p class="lead">One provincial route-permit database — not a separate Lahore-only or Multan-only site.</p>
+      <p>City prefixes on number plates usually show where a vehicle was registered, but permit checks on this portal are not limited to a single city. Records can include alignment across many Punjab districts.</p>
+      <p class="districts">Common districts referenced on permits include Attock, Bahawalnagar, Bahawalpur, Bhakkar, Chakwal, Chiniot, D.G. Khan, Faisalabad, Gujranwala, Gujrat, Hafizabad, Jhang, Jhelum, Kasur, Khanewal, Khushab, Lahore, Layyah, Lodhran, Mandi Bahauddin, Mianwali, Multan, Muzaffargarh, Nankana Sahib, Narowal, Okara, Pakpattan, Rahim Yar Khan, Rajanpur, Rawalpindi, Sahiwal, Sargodha, Sialkot, Toba Tek Singh, Vehari, Sheikhupura, Wazirabad, Murree, Talagang, Kot Addu, and Taunsa Sharif.</p>
+      <p>Vehicles registered outside Punjab may need their own provincial systems for ownership checks. This portal is for Punjab route-permit records.</p>
+    </section>
+
+    <section class="section wide" id="problems">
+      <div class="split">
+        <div class="split-media">
+          <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Warehouse loading dock with freight trucks" width="1200" height="800" loading="lazy">
+        </div>
+        <div>
+          <h2>Common problems and quick fixes</h2>
+          <p class="lead">Most “not found” results are formatting or timing issues — not always a missing vehicle.</p>
+          <ul class="fix-list">
+            <li>
+              <strong>Permit not found</strong>
+              <span>Retry with/without dashes and spaces. Confirm the plate is complete, including city segment if printed.</span>
+            </li>
+            <li>
+              <strong>Owner name looks outdated</strong>
+              <span>The database shows the last completed permit record. Informal sales may not update names until formal processing finishes.</span>
+            </li>
+            <li>
+              <strong>New permit not appearing yet</strong>
+              <span>Freshly issued records can take time to appear. Check again later before assuming an error.</span>
+            </li>
+            <li>
+              <strong>Details look wrong on your own vehicle</strong>
+              <span>Contact the issuing transport authority with original documents for correction. Public search cannot edit records.</span>
+            </li>
+            <li>
+              <strong>Need ownership / tax data</strong>
+              <span>Use the official MTMIS Excise portal for registration ownership and token tax — that is a different system.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="topics">
+      <h2>Related topics</h2>
+      <p class="lead">Useful next steps after you verify a registration number.</p>
+      <ul class="topic-list">
+        <li>
+          <strong><a href="verify.html">Online route permit verification</a></strong>
+          <span>Search by registration number and open matching PTA permit records.</span>
+        </li>
+        <li>
+          <strong><a href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">MTMIS Punjab vehicle verification (Excise)</a></strong>
+          <span>Official ownership, engine/chassis, and token tax style checks from Excise &amp; Taxation.</span>
+        </li>
+        <li>
+          <strong>Engine &amp; chassis matching</strong>
+          <span>Always compare portal numbers with stampings on the vehicle body before paying a deposit.</span>
+        </li>
+        <li>
+          <strong>Permit validity &amp; counter signature</strong>
+          <span>Check valid-from / valid-upto and counter-signature dates so the route window is still usable.</span>
+        </li>
+        <li>
+          <strong>QR permit viewing</strong>
+          <span>Scan the QR on an issued permit to open the public permit page with the full summary layout.</span>
+        </li>
+        <li>
+          <strong>Commercial vehicle paperwork checklist</strong>
+          <span>Route permit + Excise record + physical match + seller CNIC alignment before transfer or long-route work.</span>
+        </li>
+        <li>
+          <strong>Token tax &amp; e-challan (via official channels)</strong>
+          <span>Handled on government Excise / traffic systems, not inside this route-permit lookup. Link out to official portals when needed.</span>
+        </li>
       </ul>
     </section>
 
     <section class="band" id="start">
       <div class="section">
         <h2>Ready to check a vehicle?</h2>
-        <p class="lead">Public verification is free and does not require a staff account.</p>
+        <p class="lead">Public verification is free and does not require a staff account. Bookmark this page and run the check before every serious deal.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="verify.html">Verify Route Permit</a>
           <a class="btn btn-ghost" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Official MTMIS Excise portal</a>
@@ -446,7 +700,7 @@
 
     <section class="section" id="faq">
       <h2>Frequently asked questions</h2>
-      <p class="lead">Short answers for first-time users.</p>
+      <p class="lead">Answers for first-time users and roadside checks.</p>
       <div class="faq">
         <details>
           <summary>Is public verification free?</summary>
@@ -468,6 +722,18 @@
           <summary>Can I verify with a QR code?</summary>
           <p>Yes. If you have a permit QR, scan it to open the public permit page directly. You can also search by registration number on the verify page.</p>
         </details>
+        <details>
+          <summary>Can I check a motorcycle or private car here?</summary>
+          <p>This lookup is built around route-permit records, which are typically for commercial/goods vehicles. Private cars and motorcycles are usually checked on Excise MTMIS for ownership and tax status.</p>
+        </details>
+        <details>
+          <summary>Does one search cover all Punjab districts?</summary>
+          <p>Yes. You do not need a separate Lahore or Multan portal for this permit database. District names on the permit show registration/route alignment, not a different website.</p>
+        </details>
+        <details>
+          <summary>What should I check before buying a used commercial vehicle?</summary>
+          <p>Verify the route permit here, verify ownership/tax on official MTMIS, match engine and chassis physically, confirm the seller’s CNIC against the owner fields, and insist on proper transfer paperwork.</p>
+        </details>
       </div>
     </section>
   </main>
@@ -476,6 +742,7 @@
     <div>© PDTG Transport Punjab — Route permit verification</div>
     <div>
       <a href="verify.html">Verify</a> ·
+      <a href="#topics">Related topics</a> ·
       <a href="admin.html">Staff login</a> ·
       <a href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">MTMIS Excise</a>
     </div>
