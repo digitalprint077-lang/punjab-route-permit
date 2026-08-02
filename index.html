@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>PDTG Transport Punjab | Online Route Permit Verification</title>
   <meta name="description" content="Verify Punjab route permits online in minutes. Check owner name, vehicle registration, engine and chassis numbers, validity dates, and related transport topics.">
+  <meta name="theme-color" content="#102033">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,12 +16,18 @@
       --sea: #0d6b66;
       --sea-deep: #084f4b;
       --sand: #e7efe9;
-      --fog: #f4f8f6;
+      --fog: #f3f7f5;
       --line: rgba(16, 32, 51, 0.12);
       --muted: #5a6b68;
       --paper: #ffffff;
+      --shadow: 0 18px 50px rgba(16, 32, 51, 0.12);
+      --radius: 18px;
       --font-display: "Fraunces", Georgia, serif;
       --font-ui: "Outfit", system-ui, sans-serif;
+      --pad-x: clamp(16px, 4vw, 48px);
+      --content: min(920px, calc(100% - (var(--pad-x) * 2)));
+      --content-wide: min(1120px, calc(100% - (var(--pad-x) * 2)));
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     * { box-sizing: border-box; }
@@ -31,36 +38,50 @@
       color: var(--ink);
       background: var(--fog);
       line-height: 1.55;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: calc(72px + var(--safe-bottom));
     }
     a { color: inherit; }
-    img { max-width: 100%; display: block; }
+    img { max-width: 100%; display: block; height: auto; }
+    button { font: inherit; }
 
     .site-nav {
-      position: absolute;
-      inset: 0 0 auto 0;
-      z-index: 5;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 22px clamp(18px, 4vw, 48px);
+      gap: 12px;
+      padding: 14px var(--pad-x);
+      padding-top: max(14px, env(safe-area-inset-top, 0px));
       color: #f5f8f6;
+      transition: background .25s ease, box-shadow .25s ease, color .25s ease, backdrop-filter .25s ease;
+    }
+    .site-nav.is-solid {
+      background: rgba(244, 248, 246, 0.88);
+      color: var(--ink);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 8px 30px rgba(16, 32, 51, 0.08);
     }
     .nav-brand {
       font-family: var(--font-display);
-      font-size: 1.15rem;
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
       font-weight: 700;
       letter-spacing: 0.01em;
       text-decoration: none;
+      white-space: nowrap;
     }
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 16px;
-      font-size: 0.9rem;
+      gap: clamp(12px, 2vw, 18px);
+      font-size: 0.92rem;
       font-weight: 500;
-      flex-wrap: wrap;
-      justify-content: flex-end;
     }
     .nav-links a {
       text-decoration: none;
@@ -68,11 +89,96 @@
     }
     .nav-links a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
     .nav-staff {
-      border: 1px solid rgba(255,255,255,.35);
+      border: 1px solid currentColor;
       border-radius: 999px;
       padding: 8px 14px;
       opacity: 1 !important;
       text-decoration: none !important;
+    }
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 12px;
+      background: rgba(255,255,255,.08);
+      color: inherit;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .site-nav.is-solid .nav-toggle {
+      border-color: var(--line);
+      background: #fff;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    body.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    body.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    body.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 35;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+    body.nav-open .mobile-drawer {
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .mobile-drawer-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 20, 34, 0.45);
+      border: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .mobile-drawer-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: min(320px, 88vw);
+      height: 100%;
+      background: #f7fbf9;
+      color: var(--ink);
+      padding: calc(84px + env(safe-area-inset-top, 0px)) 22px 28px;
+      box-shadow: -16px 0 40px rgba(16,32,51,.18);
+      transform: translateX(104%);
+      transition: transform .28s ease;
+      display: grid;
+      align-content: start;
+      gap: 6px;
+    }
+    body.nav-open .mobile-drawer-panel { transform: translateX(0); }
+    .mobile-drawer-panel a {
+      display: block;
+      padding: 14px 4px;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid var(--line);
+    }
+    .mobile-drawer-panel a:last-child { border-bottom: 0; }
+    .mobile-drawer-panel .drawer-verify {
+      margin-top: 18px;
+      text-align: center;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 12px;
+      border: 0;
+      padding: 14px;
     }
 
     .hero {
@@ -90,7 +196,7 @@
       inset: 0;
       z-index: -2;
       background:
-        linear-gradient(180deg, rgba(8,20,34,.35) 0%, rgba(8,20,34,.55) 42%, rgba(8,20,34,.88) 100%),
+        linear-gradient(180deg, rgba(8,20,34,.28) 0%, rgba(8,20,34,.52) 45%, rgba(8,20,34,.9) 100%),
         url("https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=80") center / cover no-repeat;
       transform: scale(1.04);
       animation: heroDrift 18s ease-in-out infinite alternate;
@@ -104,15 +210,15 @@
         linear-gradient(90deg, rgba(8,20,34,.35), transparent 55%);
     }
     .hero-inner {
-      width: min(1120px, calc(100% - 36px));
+      width: var(--content-wide);
       margin: 0 auto;
-      padding: 0 0 clamp(48px, 8vh, 88px);
+      padding: 0 0 clamp(88px, 12vh, 120px);
       animation: riseIn .9s ease both;
     }
     .hero-brand {
       margin: 0 0 14px;
       font-family: var(--font-display);
-      font-size: clamp(2.6rem, 7vw, 4.8rem);
+      font-size: clamp(2.4rem, 8vw, 4.8rem);
       line-height: 0.98;
       letter-spacing: -0.02em;
       max-width: 14ch;
@@ -120,7 +226,7 @@
     }
     .hero-line {
       margin: 0 0 22px;
-      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      font-size: clamp(1.02rem, 2.4vw, 1.35rem);
       font-weight: 400;
       max-width: 40ch;
       color: rgba(245,248,246,.92);
@@ -137,17 +243,18 @@
       gap: 8px;
       min-height: 48px;
       padding: 0 20px;
-      border-radius: 12px;
+      border-radius: 14px;
       font-weight: 650;
       font-size: 0.98rem;
       text-decoration: none;
       border: 1px solid transparent;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
     }
     .btn:hover { transform: translateY(-1px); }
     .btn-primary {
       background: #f4f8f6;
       color: var(--ink);
+      box-shadow: 0 10px 28px rgba(0,0,0,.18);
     }
     .btn-primary:hover { background: #fff; }
     .btn-ghost {
@@ -159,29 +266,30 @@
 
     main { background: var(--fog); }
     .section {
-      width: min(920px, calc(100% - 36px));
+      width: var(--content);
       margin: 0 auto;
-      padding: clamp(56px, 9vw, 96px) 0;
+      padding: clamp(48px, 8vw, 96px) 0;
     }
-    .section.wide { width: min(1120px, calc(100% - 36px)); }
+    .section.wide { width: var(--content-wide); }
     .section + .section { border-top: 1px solid var(--line); }
     .section h2 {
       margin: 0 0 14px;
       font-family: var(--font-display);
-      font-size: clamp(1.8rem, 4vw, 2.55rem);
+      font-size: clamp(1.7rem, 4.4vw, 2.55rem);
       line-height: 1.12;
       letter-spacing: -0.02em;
     }
     .section h3 {
       margin: 28px 0 10px;
       font-family: var(--font-display);
-      font-size: 1.35rem;
+      font-size: clamp(1.15rem, 2.5vw, 1.35rem);
       line-height: 1.2;
     }
-    .section > p.lead {
+    .section > p.lead,
+    .split > div > p.lead {
       margin: 0 0 28px;
       color: var(--muted);
-      font-size: 1.05rem;
+      font-size: clamp(1rem, 2.2vw, 1.08rem);
       max-width: 60ch;
     }
     .section p {
@@ -190,9 +298,19 @@
       font-size: 1.02rem;
     }
 
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.is-in {
+      opacity: 1;
+      transform: none;
+    }
+
     .photo-band {
       position: relative;
-      min-height: clamp(280px, 42vw, 460px);
+      min-height: clamp(240px, 48vw, 440px);
       color: #f7faf8;
       display: grid;
       align-items: end;
@@ -211,47 +329,45 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(8,20,34,.15), rgba(8,20,34,.78));
+      background: linear-gradient(180deg, rgba(8,20,34,.12), rgba(8,20,34,.82));
     }
     .photo-band .copy {
-      width: min(920px, calc(100% - 36px));
+      width: var(--content);
       margin: 0 auto;
-      padding: 40px 0;
-      animation: riseIn .8s ease both;
+      padding: clamp(28px, 5vw, 48px) 0;
     }
     .photo-band h2 {
       margin: 0 0 10px;
       font-family: var(--font-display);
-      font-size: clamp(1.7rem, 3.8vw, 2.4rem);
+      font-size: clamp(1.55rem, 4vw, 2.4rem);
       line-height: 1.12;
     }
     .photo-band p {
       margin: 0;
       max-width: 48ch;
       color: rgba(245,248,246,.92);
-      font-size: 1.05rem;
+      font-size: clamp(0.98rem, 2.2vw, 1.08rem);
     }
 
     .split {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
-      gap: clamp(24px, 4vw, 48px);
+      gap: clamp(22px, 4vw, 48px);
       align-items: center;
     }
     .split.reverse { direction: rtl; }
     .split.reverse > * { direction: ltr; }
     .split-media {
-      min-height: 280px;
-      border-radius: 18px;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius);
       overflow: hidden;
-      background: #d7e3de center / cover no-repeat;
-      box-shadow: 0 18px 40px rgba(16,32,51,.12);
+      background: #d7e3de;
+      box-shadow: var(--shadow);
     }
     .split-media img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      min-height: 280px;
     }
 
     .steps {
@@ -260,7 +376,7 @@
       padding: 0;
       counter-reset: step;
       display: grid;
-      gap: 18px;
+      gap: 16px;
     }
     .steps li {
       counter-increment: step;
@@ -268,7 +384,10 @@
       grid-template-columns: auto 1fr;
       gap: 14px;
       align-items: start;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
     }
+    .steps li:last-child { border-bottom: 0; }
     .steps .num {
       width: 36px;
       height: 36px;
@@ -279,6 +398,7 @@
       color: #fff;
       font-weight: 700;
       font-size: 0.92rem;
+      flex-shrink: 0;
     }
     .steps .num::before { content: counter(step); }
     .steps strong {
@@ -297,8 +417,6 @@
       margin: 0;
       padding: 0;
       list-style: none;
-      display: grid;
-      gap: 0;
     }
     .detail-list li,
     .topic-list li,
@@ -308,9 +426,7 @@
     }
     .detail-list li:last-child,
     .topic-list li:last-child,
-    .fix-list li:last-child {
-      border-bottom: 0;
-    }
+    .fix-list li:last-child { border-bottom: 0; }
     .detail-list strong,
     .topic-list strong,
     .fix-list strong {
@@ -329,57 +445,82 @@
     .topic-list a:hover { text-decoration: underline; }
 
     .type-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin: 0;
       padding: 0;
       list-style: none;
-      color: var(--ink-soft);
-      font-weight: 550;
     }
     .type-grid li {
-      padding: 10px 0;
-      border-bottom: 1px solid var(--line);
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      color: var(--ink-soft);
+      font-weight: 600;
+      font-size: 0.92rem;
     }
 
-    .why-list,
-    .bullets {
+    .why-list {
       margin: 0;
-      padding-left: 1.15rem;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    .why-list li {
+      padding: 14px 16px;
+      border-left: 3px solid var(--sea);
+      background: rgba(255,255,255,.55);
+      border-radius: 0 12px 12px 0;
       color: var(--ink-soft);
     }
-    .why-list li,
-    .bullets li { margin-bottom: 10px; }
 
-    .districts {
+    .district-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
       margin: 18px 0 0;
+    }
+    .district-chips span {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
       color: var(--muted);
-      font-size: 0.98rem;
-      line-height: 1.7;
+      font-size: 0.86rem;
+      font-weight: 550;
     }
 
     .faq details {
       border-top: 1px solid var(--line);
-      padding: 16px 0;
+      padding: 4px 0;
     }
     .faq details:last-child { border-bottom: 1px solid var(--line); }
     .faq summary {
       cursor: pointer;
       font-weight: 650;
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       list-style: none;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
     }
     .faq summary::-webkit-details-marker { display: none; }
     .faq summary::after {
       content: "+";
-      float: right;
       color: var(--sea);
       font-weight: 700;
+      font-size: 1.2rem;
+      flex-shrink: 0;
     }
     .faq details[open] summary::after { content: "–"; }
     .faq details p {
-      margin: 10px 0 0;
+      margin: 0 0 14px;
       color: var(--muted);
       max-width: 62ch;
     }
@@ -401,6 +542,7 @@
     .band .btn-primary {
       background: var(--ink);
       color: #fff;
+      box-shadow: none;
     }
     .band .btn-primary:hover { background: var(--sea-deep); }
     .band .btn-ghost {
@@ -410,7 +552,7 @@
     }
 
     .site-footer {
-      padding: 28px clamp(18px, 4vw, 48px) 40px;
+      padding: 28px var(--pad-x) calc(28px + var(--safe-bottom));
       color: var(--muted);
       font-size: 0.92rem;
       display: flex;
@@ -425,6 +567,32 @@
     }
     .site-footer a:hover { text-decoration: underline; }
 
+    .mobile-cta {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      display: none;
+      padding: 10px var(--pad-x) calc(10px + var(--safe-bottom));
+      background: rgba(244,248,246,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      box-shadow: 0 -10px 30px rgba(16,32,51,.08);
+    }
+    .mobile-cta a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      border-radius: 14px;
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
     @keyframes riseIn {
       from { opacity: 0; transform: translateY(18px); }
       to { opacity: 1; transform: translateY(0); }
@@ -434,34 +602,74 @@
       to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: inline-flex; }
       .split,
       .split.reverse {
         grid-template-columns: 1fr;
         direction: ltr;
       }
-      .type-grid { grid-template-columns: 1fr 1fr; }
+      .split-media { order: -1; max-height: 320px; }
+      .mobile-cta { display: block; }
     }
+
     @media (max-width: 720px) {
-      .nav-links a:not(.nav-staff) { display: none; }
+      body { padding-bottom: calc(78px + var(--safe-bottom)); }
       .hero-brand { max-width: none; }
-      .type-grid { grid-template-columns: 1fr; }
+      .hero-cta { width: 100%; }
+      .hero-cta .btn,
+      .band .cta-row .btn { width: 100%; }
+      .hero-inner { padding-bottom: clamp(100px, 18vh, 140px); }
+      .photo-band { min-height: 260px; }
+      .site-footer {
+        flex-direction: column;
+        gap: 14px;
+        padding-bottom: calc(18px + var(--safe-bottom));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-media,
+      .reveal,
+      .hero-inner,
+      .mobile-drawer,
+      .mobile-drawer-panel { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
+  <nav class="site-nav" id="site-nav" aria-label="Primary">
+    <a class="nav-brand" href="#top">PDTG Transport Punjab</a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#vehicles">Vehicles</a>
+      <a href="#topics">Topics</a>
+      <a href="#faq">FAQ</a>
+      <a class="nav-staff" href="admin.html">Staff login</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-drawer" id="mobile-drawer" hidden>
+    <button class="mobile-drawer-backdrop" id="nav-close" type="button" aria-label="Close menu"></button>
+    <div class="mobile-drawer-panel">
+      <a href="#how">How it works</a>
+      <a href="#vehicles">Vehicles</a>
+      <a href="#details">What you get</a>
+      <a href="#topics">Related topics</a>
+      <a href="#faq">FAQ</a>
+      <a href="admin.html">Staff login</a>
+      <a class="drawer-verify" href="verify.html">Verify Permit Now</a>
+    </div>
+  </div>
+
   <header class="hero" id="top">
     <div class="hero-media" aria-hidden="true"></div>
-    <nav class="site-nav" aria-label="Primary">
-      <a class="nav-brand" href="#top">PDTG Transport Punjab</a>
-      <div class="nav-links">
-        <a href="#how">How it works</a>
-        <a href="#vehicles">Vehicles</a>
-        <a href="#topics">Topics</a>
-        <a href="#faq">FAQ</a>
-        <a class="nav-staff" href="admin.html">Staff login</a>
-      </div>
-    </nav>
     <div class="hero-inner">
       <h1 class="hero-brand">PDTG Transport Punjab</h1>
       <p class="hero-line">Check a Punjab route permit online in minutes — owner, registration, engine, and chassis on one screen.</p>
@@ -473,14 +681,14 @@
   </header>
 
   <main>
-    <section class="section" id="about">
+    <section class="section reveal" id="about">
       <h2>What is PDTG Transport Punjab?</h2>
       <p class="lead">An online route-permit verification guide and lookup for citizens, buyers, and transport operators across Punjab.</p>
       <p>Before this kind of check was online, confirming a commercial vehicle’s route paperwork often meant a visit to the transport office, paper files, and long waiting times. Now you can open the record on your phone: enter the registration number and see whether a matching route permit exists, who is named on it, and whether the dates still look valid.</p>
       <p>This portal focuses on <strong>route permits</strong> issued under the Punjab Provincial Transport Authority system. It is separate from Excise MTMIS, which covers vehicle ownership registration and token tax. For a full safety check before buying or transferring a commercial vehicle, many people use both.</p>
     </section>
 
-    <section class="photo-band" aria-label="Highway freight in Punjab">
+    <section class="photo-band reveal" aria-label="Highway freight in Punjab">
       <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&amp;fit=crop&amp;w=1800&amp;q=80');"></div>
       <div class="copy">
         <h2>Built for Punjab’s freight roads</h2>
@@ -488,7 +696,7 @@
       </div>
     </section>
 
-    <section class="section wide" id="how">
+    <section class="section wide reveal" id="how">
       <div class="split">
         <div>
           <h2>How to verify a route permit</h2>
@@ -537,7 +745,7 @@
       </div>
     </section>
 
-    <section class="section" id="details">
+    <section class="section reveal" id="details">
       <h2>What details does verification show?</h2>
       <p class="lead">A successful search returns the core fields from the route permit record — similar in spirit to an MTMIS-style check, but for PTA route permits.</p>
       <ul class="detail-list">
@@ -564,7 +772,7 @@
       </ul>
     </section>
 
-    <section class="section wide" id="vehicles">
+    <section class="section wide reveal" id="vehicles">
       <div class="split reverse">
         <div>
           <h2>Which vehicles can you check?</h2>
@@ -578,7 +786,7 @@
             <li>Gas Bowser Trailer</li>
             <li>Oil Tanker</li>
             <li>Oil Tanker Trailer</li>
-            <li>Other commercial types on record</li>
+            <li>Other commercial types</li>
           </ul>
           <p style="margin-top:18px;">If a private car or motorcycle has no route permit in this database, that is normal — use Excise MTMIS for ownership and token tax on those classes.</p>
         </div>
@@ -588,7 +796,7 @@
       </div>
     </section>
 
-    <section class="photo-band" aria-label="Night highway transport">
+    <section class="photo-band reveal" aria-label="Night highway transport">
       <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&amp;fit=crop&amp;w=1800&amp;q=80');"></div>
       <div class="copy">
         <h2>Why verification matters before you move</h2>
@@ -596,7 +804,7 @@
       </div>
     </section>
 
-    <section class="section" id="why">
+    <section class="section reveal" id="why">
       <h2>Risks a one-minute check can catch</h2>
       <p class="lead">Use verification before deposits, transfers, or long-route deployments.</p>
       <ul class="why-list">
@@ -610,15 +818,17 @@
       <p>Route permit verification does not replace MTMIS. For ownership name, token tax status, and registration history, open the official Excise portal as well, then compare both sets of details to the vehicle.</p>
     </section>
 
-    <section class="section" id="coverage">
+    <section class="section reveal" id="coverage">
       <h2>Which cities and districts are covered?</h2>
       <p class="lead">One provincial route-permit database — not a separate Lahore-only or Multan-only site.</p>
       <p>City prefixes on number plates usually show where a vehicle was registered, but permit checks on this portal are not limited to a single city. Records can include alignment across many Punjab districts.</p>
-      <p class="districts">Common districts referenced on permits include Attock, Bahawalnagar, Bahawalpur, Bhakkar, Chakwal, Chiniot, D.G. Khan, Faisalabad, Gujranwala, Gujrat, Hafizabad, Jhang, Jhelum, Kasur, Khanewal, Khushab, Lahore, Layyah, Lodhran, Mandi Bahauddin, Mianwali, Multan, Muzaffargarh, Nankana Sahib, Narowal, Okara, Pakpattan, Rahim Yar Khan, Rajanpur, Rawalpindi, Sahiwal, Sargodha, Sialkot, Toba Tek Singh, Vehari, Sheikhupura, Wazirabad, Murree, Talagang, Kot Addu, and Taunsa Sharif.</p>
-      <p>Vehicles registered outside Punjab may need their own provincial systems for ownership checks. This portal is for Punjab route-permit records.</p>
+      <div class="district-chips" aria-label="Common districts">
+        <span>Lahore</span><span>Rawalpindi</span><span>Faisalabad</span><span>Multan</span><span>Gujranwala</span><span>Sialkot</span><span>Sargodha</span><span>Bahawalpur</span><span>Sahiwal</span><span>D.G. Khan</span><span>Rahim Yar Khan</span><span>Sheikhupura</span><span>Kasur</span><span>Okara</span><span>+ more Punjab districts</span>
+      </div>
+      <p style="margin-top:18px;">Vehicles registered outside Punjab may need their own provincial systems for ownership checks. This portal is for Punjab route-permit records.</p>
     </section>
 
-    <section class="section wide" id="problems">
+    <section class="section wide reveal" id="problems">
       <div class="split">
         <div class="split-media">
           <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Warehouse loading dock with freight trucks" width="1200" height="800" loading="lazy">
@@ -652,7 +862,7 @@
       </div>
     </section>
 
-    <section class="section" id="topics">
+    <section class="section reveal" id="topics">
       <h2>Related topics</h2>
       <p class="lead">Useful next steps after you verify a registration number.</p>
       <ul class="topic-list">
@@ -687,7 +897,7 @@
       </ul>
     </section>
 
-    <section class="band" id="start">
+    <section class="band reveal" id="start">
       <div class="section">
         <h2>Ready to check a vehicle?</h2>
         <p class="lead">Public verification is free and does not require a staff account. Bookmark this page and run the check before every serious deal.</p>
@@ -698,7 +908,7 @@
       </div>
     </section>
 
-    <section class="section" id="faq">
+    <section class="section reveal" id="faq">
       <h2>Frequently asked questions</h2>
       <p class="lead">Answers for first-time users and roadside checks.</p>
       <div class="faq">
@@ -747,5 +957,70 @@
       <a href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">MTMIS Excise</a>
     </div>
   </footer>
+
+  <div class="mobile-cta">
+    <a href="verify.html">Verify Permit</a>
+  </div>
+
+  <script>
+    (function () {
+      var nav = document.getElementById('site-nav');
+      var toggle = document.getElementById('nav-toggle');
+      var drawer = document.getElementById('mobile-drawer');
+      var closeBtn = document.getElementById('nav-close');
+
+      function setNavSolid() {
+        if (!nav) return;
+        nav.classList.toggle('is-solid', window.scrollY > 40);
+      }
+
+      function openNav() {
+        document.body.classList.add('nav-open');
+        drawer.hidden = false;
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close menu');
+      }
+
+      function closeNav() {
+        document.body.classList.remove('nav-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open menu');
+        window.setTimeout(function () {
+          if (!document.body.classList.contains('nav-open')) drawer.hidden = true;
+        }, 280);
+      }
+
+      setNavSolid();
+      window.addEventListener('scroll', setNavSolid, { passive: true });
+
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          if (document.body.classList.contains('nav-open')) closeNav();
+          else openNav();
+        });
+      }
+      if (closeBtn) closeBtn.addEventListener('click', closeNav);
+      drawer.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeNav);
+      });
+      window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeNav();
+      });
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
+      }
+    })();
+  </script>
 </body>
 </html>

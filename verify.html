@@ -2,19 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Verify Route Permit — Punjab PTA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
-      --ink: #0f2035;
-      --sea: #0f6e6a;
-      --sea-deep: #0a524f;
-      --line: #d5e0dc;
-      --bg: #eef4f1;
+      --ink: #102033;
+      --sea: #0d6b66;
+      --sea-deep: #084f4b;
+      --line: rgba(16,32,51,.12);
+      --bg: #f3f7f5;
       --card: #ffffff;
-      --muted: #5b6b68;
-      --font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      --muted: #5a6b68;
+      --font: "Outfit", system-ui, sans-serif;
+      --display: "Fraunces", Georgia, serif;
     }
     * { box-sizing: border-box; }
     body {
@@ -23,18 +27,28 @@
       font-family: var(--font);
       color: var(--ink);
       background:
-        radial-gradient(1000px 420px at 10% -10%, rgba(15,110,106,.18), transparent 55%),
-        radial-gradient(800px 360px at 90% 0%, rgba(15,32,53,.12), transparent 50%),
+        radial-gradient(1000px 420px at 10% -10%, rgba(13,107,102,.16), transparent 55%),
+        radial-gradient(800px 360px at 90% 0%, rgba(16,32,51,.1), transparent 50%),
         linear-gradient(180deg, #f7fbf9 0%, var(--bg) 100%);
+      -webkit-font-smoothing: antialiased;
+    }
+    .topbar {
+      width: min(720px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 0 0;
+    }
+    .topbar a {
+      color: var(--sea-deep);
+      text-decoration: none;
+      font-weight: 650;
+      font-size: 0.92rem;
     }
     .wrap {
       width: min(720px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 40px 0 56px;
+      padding: 22px 0 calc(48px + env(safe-area-inset-bottom));
     }
-    .brand {
-      margin-bottom: 22px;
-    }
+    .brand { margin-bottom: 22px; }
     .brand-kicker {
       margin: 0 0 8px;
       font-size: 12px;
@@ -45,13 +59,15 @@
     }
     .brand h1 {
       margin: 0 0 8px;
-      font-size: clamp(1.6rem, 4vw, 2.1rem);
-      line-height: 1.15;
+      font-family: var(--display);
+      font-size: clamp(1.7rem, 5vw, 2.3rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
     }
     .brand p {
       margin: 0;
       color: var(--muted);
-      font-size: 15px;
+      font-size: clamp(0.95rem, 2.5vw, 1.05rem);
       line-height: 1.5;
       max-width: 52ch;
     }
@@ -59,7 +75,7 @@
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: 18px;
-      padding: 20px;
+      padding: clamp(16px, 3vw, 22px);
       box-shadow: 0 16px 40px rgba(15,32,53,.06);
     }
     label {
@@ -77,10 +93,11 @@
     }
     input {
       flex: 1;
+      min-width: 0;
       border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 15px;
+      border-radius: 14px;
+      padding: 14px 14px;
+      font-size: 16px;
       font-family: inherit;
       outline: none;
       background: #f8fbfa;
@@ -88,13 +105,14 @@
     input:focus {
       border-color: var(--sea);
       background: #fff;
-      box-shadow: 0 0 0 3px rgba(15,110,106,.14);
+      box-shadow: 0 0 0 3px rgba(13,107,102,.14);
     }
     button {
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
+      min-height: 48px;
       padding: 12px 18px;
-      background: linear-gradient(135deg, var(--ink), #16324f);
+      background: var(--ink);
       color: #fff;
       font-weight: 700;
       font-size: 14px;
@@ -109,19 +127,6 @@
       color: var(--muted);
       line-height: 1.45;
     }
-    .links {
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .links a {
-      color: var(--sea-deep);
-      font-size: 13px;
-      font-weight: 650;
-      text-decoration: none;
-    }
-    .links a:hover { text-decoration: underline; }
     #status {
       margin-top: 16px;
       font-size: 14px;
@@ -176,8 +181,10 @@
     .result-actions a {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
+      min-height: 42px;
       padding: 8px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--ink);
       color: #fff;
       text-decoration: none;
@@ -199,15 +206,18 @@
     }
     @media (max-width: 640px) {
       .row { flex-direction: column; }
+      button { width: 100%; }
       .result-grid { grid-template-columns: 1fr; }
       .field { border-right: none; }
+      .result-actions a { flex: 1 1 100%; }
     }
   </style>
 </head>
 <body>
+  <div class="topbar"><a href="./">← Home</a></div>
   <div class="wrap">
     <div class="brand">
-      <p class="brand-kicker">Punjab Provincial Transport Authority</p>
+      <p class="brand-kicker">PDTG Transport Punjab</p>
       <h1>Verify Route Permit</h1>
       <p>Enter a vehicle registration number to check owner, engine, chassis, and permit validity from the PTA permit database.</p>
     </div>
@@ -215,7 +225,7 @@
     <div class="card">
       <label for="reg-input">Vehicle Registration No</label>
       <div class="row">
-        <input id="reg-input" type="text" placeholder="e.g. LEB-1234 or TAK 325 PESHAWAR" autocomplete="off">
+        <input id="reg-input" type="text" placeholder="e.g. LEB-1234 or TAK 325 PESHAWAR" autocomplete="off" inputmode="text">
         <button id="verify-btn" type="button">Verify</button>
       </div>
       <p class="hint">Format tips: try with or without spaces/dashes if the first search returns nothing.</p>
