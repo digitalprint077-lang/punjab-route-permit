@@ -3,1168 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>PDTG Transport Punjab | Online Route Permit Verification</title>
-  <meta name="description" content="Verify Punjab route permits online in minutes. Check owner name, vehicle registration, engine and chassis numbers, validity dates, and related transport topics.">
+  <title>PDTG Transport Punjab | Vehicle Verification & Route Permit Guides</title>
+  <meta name="description" content="Verify Punjab route permits online and read free guides on vehicle verification, token tax, e-smart cards, e-challan, and commercial transport paperwork.">
   <meta name="theme-color" content="#102033">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink: #102033;
-      --ink-soft: #243648;
-      --sea: #0d6b66;
-      --sea-deep: #084f4b;
-      --sand: #e7efe9;
-      --fog: #f3f7f5;
-      --line: rgba(16, 32, 51, 0.12);
-      --muted: #5a6b68;
-      --paper: #ffffff;
-      --shadow: 0 18px 50px rgba(16, 32, 51, 0.12);
-      --radius: 18px;
-      --font-display: "Fraunces", Georgia, serif;
-      --font-ui: "Outfit", system-ui, sans-serif;
-      --pad-x: clamp(16px, 4vw, 48px);
-      --content: min(920px, calc(100% - (var(--pad-x) * 2)));
-      --content-wide: min(1120px, calc(100% - (var(--pad-x) * 2)));
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: var(--font-ui);
-      color: var(--ink);
-      background: var(--fog);
-      line-height: 1.55;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: calc(72px + var(--safe-bottom));
-    }
-    a { color: inherit; }
-    img { max-width: 100%; display: block; height: auto; }
-    button { font: inherit; }
-
-    .site-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 40;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px var(--pad-x);
-      padding-top: max(14px, env(safe-area-inset-top, 0px));
-      color: #f5f8f6;
-      transition: background .25s ease, box-shadow .25s ease, color .25s ease, backdrop-filter .25s ease;
-    }
-    .site-nav.is-solid {
-      background: rgba(244, 248, 246, 0.88);
-      color: var(--ink);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 8px 30px rgba(16, 32, 51, 0.08);
-    }
-    .nav-brand {
-      font-family: var(--font-display);
-      font-size: clamp(1rem, 2.5vw, 1.15rem);
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: clamp(12px, 2vw, 18px);
-      font-size: 0.92rem;
-      font-weight: 500;
-    }
-    .nav-links a {
-      text-decoration: none;
-      opacity: 0.92;
-    }
-    .nav-links a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
-    .nav-staff {
-      border: 1px solid currentColor;
-      border-radius: 999px;
-      padding: 8px 14px;
-      opacity: 1 !important;
-      text-decoration: none !important;
-    }
-    .nav-toggle {
-      display: none;
-      width: 44px;
-      height: 44px;
-      border: 1px solid rgba(255,255,255,.35);
-      border-radius: 12px;
-      background: rgba(255,255,255,.08);
-      color: inherit;
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 5px;
-    }
-    .site-nav.is-solid .nav-toggle {
-      border-color: var(--line);
-      background: #fff;
-    }
-    .nav-toggle span {
-      display: block;
-      width: 18px;
-      height: 2px;
-      background: currentColor;
-      border-radius: 2px;
-      transition: transform .2s ease, opacity .2s ease;
-    }
-    body.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    body.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
-    body.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .mobile-drawer {
-      position: fixed;
-      inset: 0;
-      z-index: 35;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity .25s ease;
-    }
-    body.nav-open .mobile-drawer {
-      pointer-events: auto;
-      opacity: 1;
-    }
-    .mobile-drawer-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(8, 20, 34, 0.45);
-      border: 0;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-    }
-    .mobile-drawer-panel {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: min(320px, 88vw);
-      height: 100%;
-      background: #f7fbf9;
-      color: var(--ink);
-      padding: calc(84px + env(safe-area-inset-top, 0px)) 22px 28px;
-      box-shadow: -16px 0 40px rgba(16,32,51,.18);
-      transform: translateX(104%);
-      transition: transform .28s ease;
-      display: grid;
-      align-content: start;
-      gap: 6px;
-    }
-    body.nav-open .mobile-drawer-panel { transform: translateX(0); }
-    .mobile-drawer-panel a {
-      display: block;
-      padding: 14px 4px;
-      text-decoration: none;
-      font-weight: 600;
-      border-bottom: 1px solid var(--line);
-    }
-    .mobile-drawer-panel a:last-child { border-bottom: 0; }
-    .mobile-drawer-panel .drawer-verify {
-      margin-top: 18px;
-      text-align: center;
-      background: var(--ink);
-      color: #fff;
-      border-radius: 12px;
-      border: 0;
-      padding: 14px;
-    }
-
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      min-height: 100svh;
-      display: grid;
-      align-items: end;
-      color: #f7faf8;
-      overflow: hidden;
-      isolation: isolate;
-    }
-    .hero-media {
-      position: absolute;
-      inset: 0;
-      z-index: -2;
-      background:
-        linear-gradient(180deg, rgba(8,20,34,.28) 0%, rgba(8,20,34,.52) 45%, rgba(8,20,34,.9) 100%),
-        url("https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=80") center / cover no-repeat;
-      transform: scale(1.04);
-      animation: heroDrift 18s ease-in-out infinite alternate;
-    }
-    .hero-media::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(700px 280px at 18% 20%, rgba(13,107,102,.28), transparent 60%),
-        linear-gradient(90deg, rgba(8,20,34,.35), transparent 55%);
-    }
-    .hero-inner {
-      width: var(--content-wide);
-      margin: 0 auto;
-      padding: 0 0 clamp(88px, 12vh, 120px);
-      animation: riseIn .9s ease both;
-    }
-    .hero-brand {
-      margin: 0 0 14px;
-      font-family: var(--font-display);
-      font-size: clamp(2.4rem, 8vw, 4.8rem);
-      line-height: 0.98;
-      letter-spacing: -0.02em;
-      max-width: 14ch;
-      text-shadow: 0 10px 40px rgba(0,0,0,.35);
-    }
-    .hero-line {
-      margin: 0 0 22px;
-      font-size: clamp(1.02rem, 2.4vw, 1.35rem);
-      font-weight: 400;
-      max-width: 40ch;
-      color: rgba(245,248,246,.92);
-    }
-    .hero-cta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 48px;
-      padding: 0 20px;
-      border-radius: 14px;
-      font-weight: 650;
-      font-size: 0.98rem;
-      text-decoration: none;
-      border: 1px solid transparent;
-      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary {
-      background: #f4f8f6;
-      color: var(--ink);
-      box-shadow: 0 10px 28px rgba(0,0,0,.18);
-    }
-    .btn-primary:hover { background: #fff; }
-    .btn-ghost {
-      background: rgba(255,255,255,.08);
-      border-color: rgba(255,255,255,.35);
-      color: #fff;
-      backdrop-filter: blur(6px);
-    }
-
-    .services {
-      width: var(--content-wide);
-      margin: -42px auto 0;
-      position: relative;
-      z-index: 3;
-      padding: 0 0 clamp(28px, 5vw, 40px);
-    }
-    .service-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: clamp(14px, 2.5vw, 22px);
-    }
-    .service-card {
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-      border-radius: 18px;
-      overflow: hidden;
-      text-decoration: none;
-      box-shadow: 0 14px 36px rgba(16, 32, 51, 0.12);
-      border: 1px solid rgba(16, 32, 51, 0.06);
-      transition: transform .2s ease, box-shadow .2s ease;
-      min-height: 100%;
-    }
-    .service-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 44px rgba(16, 32, 51, 0.16);
-    }
-    .service-card:focus-visible {
-      outline: 3px solid rgba(13, 107, 102, 0.35);
-      outline-offset: 3px;
-    }
-    .service-art {
-      flex: 1;
-      display: grid;
-      place-items: center;
-      padding: clamp(22px, 3vw, 30px);
-      background: #fff;
-      min-height: 180px;
-    }
-    .service-art-box {
-      width: min(100%, 210px);
-      aspect-ratio: 1.15 / 1;
-      border-radius: 16px;
-      background: linear-gradient(180deg, #f4f8f6, #eaf3f0);
-      display: grid;
-      place-items: center;
-      padding: 18px;
-    }
-    .service-art svg {
-      width: min(100%, 150px);
-      height: auto;
-      display: block;
-    }
-    .service-label {
-      background: #0b5c57;
-      color: #fff;
-      text-align: center;
-      padding: 18px 14px 16px;
-      font-weight: 700;
-      font-size: clamp(0.95rem, 2vw, 1.05rem);
-      letter-spacing: 0.01em;
-    }
-    .service-label::after {
-      content: "";
-      display: block;
-      width: 42px;
-      height: 3px;
-      margin: 10px auto 0;
-      border-radius: 99px;
-      background: #e8b23a;
-    }
-
-    main { background: var(--fog); }
-    .section {
-      width: var(--content);
-      margin: 0 auto;
-      padding: clamp(48px, 8vw, 96px) 0;
-    }
-    .section.wide { width: var(--content-wide); }
-    .section + .section { border-top: 1px solid var(--line); }
-    .section h2 {
-      margin: 0 0 14px;
-      font-family: var(--font-display);
-      font-size: clamp(1.7rem, 4.4vw, 2.55rem);
-      line-height: 1.12;
-      letter-spacing: -0.02em;
-    }
-    .section h3 {
-      margin: 28px 0 10px;
-      font-family: var(--font-display);
-      font-size: clamp(1.15rem, 2.5vw, 1.35rem);
-      line-height: 1.2;
-    }
-    .section > p.lead,
-    .split > div > p.lead {
-      margin: 0 0 28px;
-      color: var(--muted);
-      font-size: clamp(1rem, 2.2vw, 1.08rem);
-      max-width: 60ch;
-    }
-    .section p {
-      margin: 0 0 16px;
-      color: var(--ink-soft);
-      font-size: 1.02rem;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .reveal.is-in {
-      opacity: 1;
-      transform: none;
-    }
-
-    .photo-band {
-      position: relative;
-      min-height: clamp(240px, 48vw, 440px);
-      color: #f7faf8;
-      display: grid;
-      align-items: end;
-      overflow: hidden;
-      isolation: isolate;
-    }
-    .photo-band .bg {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background-size: cover;
-      background-position: center;
-      transform: scale(1.03);
-    }
-    .photo-band .bg::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(8,20,34,.12), rgba(8,20,34,.82));
-    }
-    .photo-band .copy {
-      width: var(--content);
-      margin: 0 auto;
-      padding: clamp(28px, 5vw, 48px) 0;
-    }
-    .photo-band h2 {
-      margin: 0 0 10px;
-      font-family: var(--font-display);
-      font-size: clamp(1.55rem, 4vw, 2.4rem);
-      line-height: 1.12;
-    }
-    .photo-band p {
-      margin: 0;
-      max-width: 48ch;
-      color: rgba(245,248,246,.92);
-      font-size: clamp(0.98rem, 2.2vw, 1.08rem);
-    }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: clamp(22px, 4vw, 48px);
-      align-items: center;
-    }
-    .split.reverse { direction: rtl; }
-    .split.reverse > * { direction: ltr; }
-    .split-media {
-      aspect-ratio: 4 / 3;
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: #d7e3de;
-      box-shadow: var(--shadow);
-    }
-    .split-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .steps {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      counter-reset: step;
-      display: grid;
-      gap: 16px;
-    }
-    .steps li {
-      counter-increment: step;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 14px;
-      align-items: start;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .steps li:last-child { border-bottom: 0; }
-    .steps .num {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--sea);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.92rem;
-      flex-shrink: 0;
-    }
-    .steps .num::before { content: counter(step); }
-    .steps strong {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 1.05rem;
-    }
-    .steps span {
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
-
-    .detail-list,
-    .topic-list,
-    .fix-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    .detail-list li,
-    .topic-list li,
-    .fix-list li {
-      padding: 16px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .detail-list li:last-child,
-    .topic-list li:last-child,
-    .fix-list li:last-child { border-bottom: 0; }
-    .detail-list strong,
-    .topic-list strong,
-    .fix-list strong {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 1.02rem;
-    }
-    .detail-list span,
-    .topic-list span,
-    .fix-list span { color: var(--muted); }
-    .topic-list a {
-      color: var(--sea-deep);
-      font-weight: 650;
-      text-decoration: none;
-    }
-    .topic-list a:hover { text-decoration: underline; }
-
-    .type-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    .type-grid li {
-      padding: 10px 14px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255,255,255,.72);
-      color: var(--ink-soft);
-      font-weight: 600;
-      font-size: 0.92rem;
-    }
-
-    .why-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 12px;
-    }
-    .why-list li {
-      padding: 14px 16px;
-      border-left: 3px solid var(--sea);
-      background: rgba(255,255,255,.55);
-      border-radius: 0 12px 12px 0;
-      color: var(--ink-soft);
-    }
-
-    .district-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 18px 0 0;
-    }
-    .district-chips span {
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: #fff;
-      border: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.86rem;
-      font-weight: 550;
-    }
-
-    .faq details {
-      border-top: 1px solid var(--line);
-      padding: 4px 0;
-    }
-    .faq details:last-child { border-bottom: 1px solid var(--line); }
-    .faq summary {
-      cursor: pointer;
-      font-weight: 650;
-      font-size: 1.02rem;
-      list-style: none;
-      min-height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 0;
-    }
-    .faq summary::-webkit-details-marker { display: none; }
-    .faq summary::after {
-      content: "+";
-      color: var(--sea);
-      font-weight: 700;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-    .faq details[open] summary::after { content: "–"; }
-    .faq details p {
-      margin: 0 0 14px;
-      color: var(--muted);
-      max-width: 62ch;
-    }
-
-    .band {
-      background:
-        linear-gradient(135deg, rgba(13,107,102,.12), rgba(16,32,51,.08)),
-        var(--sand);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-    .band .section { padding-block: clamp(48px, 7vw, 72px); border-top: 0; }
-    .band .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 22px;
-    }
-    .band .btn-primary {
-      background: var(--ink);
-      color: #fff;
-      box-shadow: none;
-    }
-    .band .btn-primary:hover { background: var(--sea-deep); }
-    .band .btn-ghost {
-      background: transparent;
-      border-color: var(--line);
-      color: var(--ink);
-    }
-
-    .site-footer {
-      padding: 28px var(--pad-x) calc(28px + var(--safe-bottom));
-      color: var(--muted);
-      font-size: 0.92rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 24px;
-      justify-content: space-between;
-    }
-    .site-footer a {
-      color: var(--sea-deep);
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .site-footer a:hover { text-decoration: underline; }
-
-    .mobile-cta {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 30;
-      display: none;
-      padding: 10px var(--pad-x) calc(10px + var(--safe-bottom));
-      background: rgba(244,248,246,.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-top: 1px solid var(--line);
-      box-shadow: 0 -10px 30px rgba(16,32,51,.08);
-    }
-    .mobile-cta a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      border-radius: 14px;
-      background: var(--ink);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes heroDrift {
-      from { transform: scale(1.04) translate3d(0, 0, 0); }
-      to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
-    }
-
-    @media (max-width: 980px) {
-      .nav-links { display: none; }
-      .nav-toggle { display: inline-flex; }
-      .split,
-      .split.reverse {
-        grid-template-columns: 1fr;
-        direction: ltr;
-      }
-      .split-media { order: -1; max-height: 320px; }
-      .mobile-cta { display: block; }
-      .services { margin-top: -28px; }
-      .service-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
-    }
-
-    @media (max-width: 720px) {
-      body { padding-bottom: calc(78px + var(--safe-bottom)); }
-      .hero-brand { max-width: none; }
-      .hero-cta { width: 100%; }
-      .hero-cta .btn,
-      .band .cta-row .btn { width: 100%; }
-      .hero-inner { padding-bottom: clamp(100px, 18vh, 140px); }
-      .photo-band { min-height: 260px; }
-      .service-art { min-height: 160px; }
-      .site-footer {
-        flex-direction: column;
-        gap: 14px;
-        padding-bottom: calc(18px + var(--safe-bottom));
-      }
-    }
-
-    @media (min-width: 721px) and (max-width: 980px) {
-      .service-grid {
-        grid-template-columns: repeat(3, 1fr);
-        max-width: none;
-      }
-      .service-art { min-height: 150px; padding: 16px; }
-      .service-label { font-size: 0.88rem; padding: 14px 10px 12px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .hero-media,
-      .reveal,
-      .hero-inner,
-      .mobile-drawer,
-      .mobile-drawer-panel { animation: none !important; transition: none !important; }
-      .reveal { opacity: 1; transform: none; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
-  <nav class="site-nav" id="site-nav" aria-label="Primary">
-    <a class="nav-brand" href="#top">PDTG Transport Punjab</a>
-    <div class="nav-links">
-      <a href="#how">How it works</a>
-      <a href="#vehicles">Vehicles</a>
-      <a href="#topics">Topics</a>
-      <a href="#faq">FAQ</a>
-      <a class="nav-staff" href="admin.html">Staff login</a>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="brand-link" href="./">PDTG Transport Punjab</a>
+      <nav class="nav-desktop">
+        <a href="guides/vehicle-verification.html">Verification</a>
+        <a href="guides/token-tax.html">Token Tax</a>
+        <a href="guides/smart-card.html">Smart Card</a>
+        <a href="guides/e-challan.html">E-Challan</a>
+        <a href="verify.html">Verify Permit</a>
+        <a class="btn-nav" href="admin.html">Staff</a>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <div class="mobile-drawer" id="mobile-drawer" hidden>
-    <button class="mobile-drawer-backdrop" id="nav-close" type="button" aria-label="Close menu"></button>
-    <div class="mobile-drawer-panel">
-      <a href="#how">How it works</a>
-      <a href="#vehicles">Vehicles</a>
-      <a href="#details">What you get</a>
-      <a href="#topics">Related topics</a>
-      <a href="#faq">FAQ</a>
-      <a href="admin.html">Staff login</a>
-      <a class="drawer-verify" href="verify.html">Verify Permit Now</a>
-    </div>
-  </div>
-
-  <header class="hero" id="top">
-    <div class="hero-media" aria-hidden="true"></div>
-    <div class="hero-inner">
-      <h1 class="hero-brand">PDTG Transport Punjab</h1>
-      <p class="hero-line">Check a Punjab route permit online in minutes — owner, registration, engine, and chassis on one screen.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="verify.html">Verify Permit Now</a>
-        <a class="btn btn-ghost" href="#how">See how it works</a>
-      </div>
-    </div>
+    <nav class="mobile-nav" id="mobile-nav">
+      <a href="guides/vehicle-verification.html">Vehicle Verification</a>
+      <a href="guides/token-tax.html">Token Tax</a>
+      <a href="guides/smart-card.html">E-Smart Card</a>
+      <a href="guides/e-challan.html">E-Challan</a>
+      <a href="guides/route-permit.html">Route Permits</a>
+      <a href="verify.html">Verify Permit</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
   </header>
 
-  <main>
-    <section class="services reveal" id="services" aria-label="Quick services">
-      <div class="service-grid">
-        <a class="service-card" href="verify.html">
-          <div class="service-art">
-            <div class="service-art-box" aria-hidden="true">
-              <svg viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="78" y="18" width="62" height="78" rx="8" stroke="#0b5c57" stroke-width="3"/>
-                <path d="M88 34h42M88 48h34M88 62h28" stroke="#0b5c57" stroke-width="3" stroke-linecap="round"/>
-                <circle cx="124" cy="78" r="10" fill="#0b5c57"/>
-                <path d="M119 78l3.5 3.5L130 73" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M22 78c0-10 8-18 20-18h24c8 0 14 6 14 14v10H22V78Z" stroke="#0b5c57" stroke-width="3"/>
-                <circle cx="38" cy="98" r="10" stroke="#0b5c57" stroke-width="3"/>
-                <circle cx="70" cy="98" r="10" stroke="#0b5c57" stroke-width="3"/>
-                <path d="M48 98h12M22 84h-8l4-18h28" stroke="#0b5c57" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M28 52c8-16 28-22 40-8" stroke="#0b5c57" stroke-width="3" stroke-linecap="round"/>
-                <circle cx="34" cy="48" r="5" stroke="#0b5c57" stroke-width="3"/>
-                <circle cx="62" cy="42" r="5" stroke="#0b5c57" stroke-width="3"/>
-              </svg>
-            </div>
-          </div>
-          <div class="service-label">Vehicle Verification</div>
-        </a>
+  <section class="home-hero">
+    <div class="home-hero-bg" aria-hidden="true"></div>
+    <div class="home-hero-inner">
+      <h1>PDTG Transport Punjab</h1>
+      <p>Free guides for vehicle checks in Punjab — plus online route-permit verification in minutes.</p>
+      <a class="btn" href="verify.html">Verify Permit Now</a>
+      <a class="btn ghost" href="guides/vehicle-verification.html">Read verification guide</a>
+    </div>
+  </section>
 
-        <a class="service-card" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">
-          <div class="service-art">
-            <div class="service-art-box" aria-hidden="true">
-              <svg viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="48" y="12" width="64" height="116" rx="12" stroke="#0b5c57" stroke-width="3"/>
-                <rect x="58" y="28" width="44" height="70" rx="6" stroke="#0b5c57" stroke-width="3"/>
-                <circle cx="80" cy="108" r="5" fill="#0b5c57"/>
-                <rect x="70" y="40" width="48" height="34" rx="6" fill="#eaf3f0" stroke="#0b5c57" stroke-width="3"/>
-                <path d="M78 50h20M78 60h14" stroke="#0b5c57" stroke-width="3" stroke-linecap="round"/>
-                <path d="M118 78v22M108 90h20" stroke="#e8b23a" stroke-width="4" stroke-linecap="round"/>
-                <path d="M118 104l-8-8M118 104l8-8" stroke="#e8b23a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-          <div class="service-label">E-Smart Card</div>
-        </a>
+  <div class="ad-slot ad-top" data-ad="top">Advertisement</div>
 
-        <a class="service-card" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">
-          <div class="service-art">
-            <div class="service-art-box" aria-hidden="true">
-              <svg viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="18" y="28" width="84" height="54" rx="10" stroke="#0b5c57" stroke-width="3"/>
-                <circle cx="42" cy="55" r="12" stroke="#0b5c57" stroke-width="3"/>
-                <path d="M60 46h28M60 58h20" stroke="#0b5c57" stroke-width="3" stroke-linecap="round"/>
-                <path d="M78 82c18 8 34 4 48-10" stroke="#0b5c57" stroke-width="3" stroke-linecap="round"/>
-                <path d="M110 88c10 10 8 24-2 34" stroke="#0b5c57" stroke-width="3" stroke-linecap="round"/>
-                <circle cx="118" cy="118" r="12" fill="#0b5c57"/>
-                <path d="M118 110v10l7 4" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-          <div class="service-label">Track Smart Card</div>
-        </a>
-      </div>
-    </section>
+  <div class="page-wrap">
+    <div>
+      <article class="article">
+        <h1>Online vehicle &amp; route permit help for Punjab</h1>
+        <p class="lead">Use this site to understand Excise-style vehicle checks and to verify commercial route permits. Guides below cover the topics people search for most before buying or moving a vehicle.</p>
 
-    <section class="section reveal" id="about">
-      <h2>What is PDTG Transport Punjab?</h2>
-      <p class="lead">An online route-permit verification guide and lookup for citizens, buyers, and transport operators across Punjab.</p>
-      <p>Before this kind of check was online, confirming a commercial vehicle’s route paperwork often meant a visit to the transport office, paper files, and long waiting times. Now you can open the record on your phone: enter the registration number and see whether a matching route permit exists, who is named on it, and whether the dates still look valid.</p>
-      <p>This portal focuses on <strong>route permits</strong> issued under the Punjab Provincial Transport Authority system. It is separate from Excise MTMIS, which covers vehicle ownership registration and token tax. For a full safety check before buying or transferring a commercial vehicle, many people use both.</p>
-    </section>
-
-    <section class="photo-band reveal" aria-label="Highway freight in Punjab">
-      <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&amp;fit=crop&amp;w=1800&amp;q=80');"></div>
-      <div class="copy">
-        <h2>Built for Punjab’s freight roads</h2>
-        <p>Trucks, tankers, trailers, and pickups move goods across districts every day. A clear permit record helps checkpoints, buyers, and operators trust the paperwork in front of them.</p>
-      </div>
-    </section>
-
-    <section class="section wide reveal" id="how">
-      <div class="split">
-        <div>
-          <h2>How to verify a route permit</h2>
-          <p class="lead">The whole check takes under a minute. No login is required for the public.</p>
-          <ol class="steps">
-            <li>
-              <div class="num" aria-hidden="true"></div>
-              <div>
-                <strong>Open Verify Permit</strong>
-                <span>Use the Verify button on this site. Anyone can search — no staff account needed.</span>
-              </div>
-            </li>
-            <li>
-              <div class="num" aria-hidden="true"></div>
-              <div>
-                <strong>Enter the registration number</strong>
-                <span>Start with the format printed on the plate, for example LEB-1234 or TAK 325 PESHAWAR.</span>
-              </div>
-            </li>
-            <li>
-              <div class="num" aria-hidden="true"></div>
-              <div>
-                <strong>Try format variations if needed</strong>
-                <span>If the first search returns nothing, retry with and without spaces or dashes. Plate storage formats vary.</span>
-              </div>
-            </li>
-            <li>
-              <div class="num" aria-hidden="true"></div>
-              <div>
-                <strong>Match the result to the vehicle</strong>
-                <span>Compare owner name, engine number, chassis number, and validity dates with the physical vehicle and papers.</span>
-              </div>
-            </li>
-            <li>
-              <div class="num" aria-hidden="true"></div>
-              <div>
-                <strong>Open the full permit when needed</strong>
-                <span>From the result you can open the public permit page for the complete document view and QR link.</span>
-              </div>
-            </li>
-          </ol>
+        <div class="service-grid" aria-label="Quick services">
+          <a class="service-card" href="verify.html">
+            <div class="service-art"><div class="service-art-box">✓</div></div>
+            <div class="service-label">Vehicle Verification</div>
+          </a>
+          <a class="service-card" href="guides/smart-card.html">
+            <div class="service-art"><div class="service-art-box">▣</div></div>
+            <div class="service-label">E-Smart Card</div>
+          </a>
+          <a class="service-card" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">
+            <div class="service-art"><div class="service-art-box">◎</div></div>
+            <div class="service-label">Track Smart Card</div>
+          </a>
         </div>
-        <div class="split-media">
-          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Logistics trucks parked at a freight yard" width="1200" height="800" loading="lazy">
+
+        <div class="ad-slot ad-inarticle" data-ad="inarticle">Advertisement</div>
+
+        <h2>Popular guides</h2>
+        <ul>
+          <li><a href="guides/vehicle-verification.html"><strong>Vehicle verification in Punjab</strong></a> — MTMIS steps, SMS tip, what each result field means, and route-permit checks.</li>
+          <li><a href="guides/token-tax.html"><strong>Token tax basics</strong></a> — why dues matter before purchase and how status is usually checked.</li>
+          <li><a href="guides/smart-card.html"><strong>E-Smart card</strong></a> — what the card is for and how tracking usually works.</li>
+          <li><a href="guides/e-challan.html"><strong>E-Challan checks</strong></a> — unpaid fines that can block transfers.</li>
+          <li><a href="guides/route-permit.html"><strong>Route permit guide</strong></a> — commercial paperwork fields and online verify flow.</li>
+        </ul>
+
+        <h2>Two checks that prevent bad deals</h2>
+        <p>For private cars and bikes, start with the official Excise MTMIS portal for ownership and tax clues. For trucks, tankers, pickups, and other commercial units, also verify the route permit on this site and match engine/chassis numbers on the vehicle itself.</p>
+
+        <div class="cta-box">
+          <strong>Ready to check a registration number?</strong>
+          <p>Public permit verification needs no login.</p>
+          <a class="btn" href="verify.html">Open Verify Tool</a>
+          <a class="btn ghost" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Official MTMIS</a>
         </div>
+
+        <h2>District coverage</h2>
+        <p>Punjab vehicle and permit checks are provincial. Plate city codes show where a vehicle was registered, but you do not need a separate Lahore-only or Multan-only website for these lookups.</p>
+
+        <h2>Disclaimer</h2>
+        <p>PDTG Transport Punjab publishes independent guides and a route-permit lookup tool. It is not a substitute for official Excise offices or the government MTMIS website. Always confirm critical payments and ownership on official portals.</p>
+      </article>
+    </div>
+
+    <aside class="sidebar">
+      <div class="ad-slot ad-sidebar" data-ad="sidebar">Advertisement</div>
+      <div class="side-panel">
+        <h3>Quick links</h3>
+        <a href="verify.html">Verify route permit</a>
+        <a href="guides/vehicle-verification.html">Verification guide</a>
+        <a href="guides/token-tax.html">Token tax guide</a>
+        <a href="guides/smart-card.html">Smart card guide</a>
+        <a href="guides/e-challan.html">E-Challan guide</a>
+        <a href="guides/route-permit.html">Route permit guide</a>
       </div>
-    </section>
-
-    <section class="section reveal" id="details">
-      <h2>What details does verification show?</h2>
-      <p class="lead">A successful search returns the core fields from the route permit record — similar in spirit to an MTMIS-style check, but for PTA route permits.</p>
-      <ul class="detail-list">
-        <li>
-          <strong>Owner details</strong>
-          <span>Full name, CNIC/NTN, and owner address as stored on the permit. The seller’s identity documents should match these fields before money changes hands.</span>
-        </li>
-        <li>
-          <strong>Vehicle details</strong>
-          <span>Registration number, vehicle type (truck, tanker, pickup, and more), engine number, and chassis number. Match engine and chassis on the metal, not only on photocopies.</span>
-        </li>
-        <li>
-          <strong>Permit &amp; application details</strong>
-          <span>Route permit number (P.CO.P.NO), application number, fitness certificate number, issuing district, and authority footer text.</span>
-        </li>
-        <li>
-          <strong>Validity window</strong>
-          <span>Valid from / valid upto dates, counter-signature upto, fee, and PSID references where recorded — so you can see if the permit period still looks current.</span>
-        </li>
-        <li>
-          <strong>District coverage</strong>
-          <span>Other districts listed on the permit for route alignment across Punjab.</span>
-        </li>
-      </ul>
-    </section>
-
-    <section class="section wide reveal" id="vehicles">
-      <div class="split reverse">
-        <div>
-          <h2>Which vehicles can you check?</h2>
-          <p class="lead">Route permits commonly cover commercial and goods vehicles operating across Punjab districts.</p>
-          <ul class="type-grid">
-            <li>Truck</li>
-            <li>Truck Trailer</li>
-            <li>Pickup</li>
-            <li>Mini Truck</li>
-            <li>Gas Bowser</li>
-            <li>Gas Bowser Trailer</li>
-            <li>Oil Tanker</li>
-            <li>Oil Tanker Trailer</li>
-            <li>Other commercial types</li>
-          </ul>
-          <p style="margin-top:18px;">If a private car or motorcycle has no route permit in this database, that is normal — use Excise MTMIS for ownership and token tax on those classes.</p>
-        </div>
-        <div class="split-media">
-          <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Semi truck on an open highway" width="1200" height="800" loading="lazy">
-        </div>
+      <div class="side-panel">
+        <h3>Site</h3>
+        <a href="about.html">About us</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy.html">Privacy policy</a>
+        <a href="admin.html">Staff login</a>
       </div>
-    </section>
+      <div class="ad-slot ad-sidebar" data-ad="sidebar">Advertisement</div>
+    </aside>
+  </div>
 
-    <section class="photo-band reveal" aria-label="Night highway transport">
-      <div class="bg" style="background-image:url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&amp;fit=crop&amp;w=1800&amp;q=80');"></div>
-      <div class="copy">
-        <h2>Why verification matters before you move</h2>
-        <p>A clean-looking file is not enough. Matching live permit data to the vehicle protects buyers, sellers, and operators from fake papers and expired route rights.</p>
-      </div>
-    </section>
-
-    <section class="section reveal" id="why">
-      <h2>Risks a one-minute check can catch</h2>
-      <p class="lead">Use verification before deposits, transfers, or long-route deployments.</p>
-      <ul class="why-list">
-        <li><strong>Wrong owner on record</strong> — the person presenting papers may not match the permit name.</li>
-        <li><strong>Engine or chassis mismatch</strong> — a red flag for tampering or swapped documents.</li>
-        <li><strong>Expired validity</strong> — the route window may already have ended.</li>
-        <li><strong>Photocopy-only deals</strong> — informal letters without a live record create transfer headaches later.</li>
-        <li><strong>District confusion</strong> — confirm the issuing district and listed route districts before you rely on the permit.</li>
-      </ul>
-      <h3>Also check Excise records when buying</h3>
-      <p>Route permit verification does not replace MTMIS. For ownership name, token tax status, and registration history, open the official Excise portal as well, then compare both sets of details to the vehicle.</p>
-    </section>
-
-    <section class="section reveal" id="coverage">
-      <h2>Which cities and districts are covered?</h2>
-      <p class="lead">One provincial route-permit database — not a separate Lahore-only or Multan-only site.</p>
-      <p>City prefixes on number plates usually show where a vehicle was registered, but permit checks on this portal are not limited to a single city. Records can include alignment across many Punjab districts.</p>
-      <div class="district-chips" aria-label="Common districts">
-        <span>Lahore</span><span>Rawalpindi</span><span>Faisalabad</span><span>Multan</span><span>Gujranwala</span><span>Sialkot</span><span>Sargodha</span><span>Bahawalpur</span><span>Sahiwal</span><span>D.G. Khan</span><span>Rahim Yar Khan</span><span>Sheikhupura</span><span>Kasur</span><span>Okara</span><span>+ more Punjab districts</span>
-      </div>
-      <p style="margin-top:18px;">Vehicles registered outside Punjab may need their own provincial systems for ownership checks. This portal is for Punjab route-permit records.</p>
-    </section>
-
-    <section class="section wide reveal" id="problems">
-      <div class="split">
-        <div class="split-media">
-          <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Warehouse loading dock with freight trucks" width="1200" height="800" loading="lazy">
-        </div>
-        <div>
-          <h2>Common problems and quick fixes</h2>
-          <p class="lead">Most “not found” results are formatting or timing issues — not always a missing vehicle.</p>
-          <ul class="fix-list">
-            <li>
-              <strong>Permit not found</strong>
-              <span>Retry with/without dashes and spaces. Confirm the plate is complete, including city segment if printed.</span>
-            </li>
-            <li>
-              <strong>Owner name looks outdated</strong>
-              <span>The database shows the last completed permit record. Informal sales may not update names until formal processing finishes.</span>
-            </li>
-            <li>
-              <strong>New permit not appearing yet</strong>
-              <span>Freshly issued records can take time to appear. Check again later before assuming an error.</span>
-            </li>
-            <li>
-              <strong>Details look wrong on your own vehicle</strong>
-              <span>Contact the issuing transport authority with original documents for correction. Public search cannot edit records.</span>
-            </li>
-            <li>
-              <strong>Need ownership / tax data</strong>
-              <span>Use the official MTMIS Excise portal for registration ownership and token tax — that is a different system.</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="topics">
-      <h2>Related topics</h2>
-      <p class="lead">Useful next steps after you verify a registration number.</p>
-      <ul class="topic-list">
-        <li>
-          <strong><a href="verify.html">Online route permit verification</a></strong>
-          <span>Search by registration number and open matching PTA permit records.</span>
-        </li>
-        <li>
-          <strong><a href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">MTMIS Punjab vehicle verification (Excise)</a></strong>
-          <span>Official ownership, engine/chassis, and token tax style checks from Excise &amp; Taxation.</span>
-        </li>
-        <li>
-          <strong>Engine &amp; chassis matching</strong>
-          <span>Always compare portal numbers with stampings on the vehicle body before paying a deposit.</span>
-        </li>
-        <li>
-          <strong>Permit validity &amp; counter signature</strong>
-          <span>Check valid-from / valid-upto and counter-signature dates so the route window is still usable.</span>
-        </li>
-        <li>
-          <strong>QR permit viewing</strong>
-          <span>Scan the QR on an issued permit to open the public permit page with the full summary layout.</span>
-        </li>
-        <li>
-          <strong>Commercial vehicle paperwork checklist</strong>
-          <span>Route permit + Excise record + physical match + seller CNIC alignment before transfer or long-route work.</span>
-        </li>
-        <li>
-          <strong>Token tax &amp; e-challan (via official channels)</strong>
-          <span>Handled on government Excise / traffic systems, not inside this route-permit lookup. Link out to official portals when needed.</span>
-        </li>
-      </ul>
-    </section>
-
-    <section class="band reveal" id="start">
-      <div class="section">
-        <h2>Ready to check a vehicle?</h2>
-        <p class="lead">Public verification is free and does not require a staff account. Bookmark this page and run the check before every serious deal.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="verify.html">Verify Route Permit</a>
-          <a class="btn btn-ghost" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Official MTMIS Excise portal</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="faq">
-      <h2>Frequently asked questions</h2>
-      <p class="lead">Answers for first-time users and roadside checks.</p>
-      <div class="faq">
-        <details>
-          <summary>Is public verification free?</summary>
-          <p>Yes. Anyone can check a registration number on this site at no cost. Staff login is only for issuing and managing permits.</p>
-        </details>
-        <details>
-          <summary>Do I need to create an account?</summary>
-          <p>No. Open the verify page, enter the registration number, and view matching permit records. Staff accounts are separate.</p>
-        </details>
-        <details>
-          <summary>Is this the same as MTMIS Punjab?</summary>
-          <p>No. MTMIS is the Excise vehicle registration and tax system. This portal checks Punjab route permit records from the PTA permit database. Use both when you need full confidence before a purchase or transfer.</p>
-        </details>
-        <details>
-          <summary>What if no permit is found?</summary>
-          <p>Try another plate format (spaces or dashes). The vehicle may not have a route permit in this database, or the record may still be processing. You can also open the official MTMIS portal for Excise ownership details.</p>
-        </details>
-        <details>
-          <summary>Can I verify with a QR code?</summary>
-          <p>Yes. If you have a permit QR, scan it to open the public permit page directly. You can also search by registration number on the verify page.</p>
-        </details>
-        <details>
-          <summary>Can I check a motorcycle or private car here?</summary>
-          <p>This lookup is built around route-permit records, which are typically for commercial/goods vehicles. Private cars and motorcycles are usually checked on Excise MTMIS for ownership and tax status.</p>
-        </details>
-        <details>
-          <summary>Does one search cover all Punjab districts?</summary>
-          <p>Yes. You do not need a separate Lahore or Multan portal for this permit database. District names on the permit show registration/route alignment, not a different website.</p>
-        </details>
-        <details>
-          <summary>What should I check before buying a used commercial vehicle?</summary>
-          <p>Verify the route permit here, verify ownership/tax on official MTMIS, match engine and chassis physically, confirm the seller’s CNIC against the owner fields, and insist on proper transfer paperwork.</p>
-        </details>
-      </div>
-    </section>
-  </main>
+  <div class="ad-slot ad-footer" data-ad="footer">Advertisement</div>
 
   <footer class="site-footer">
-    <div>© PDTG Transport Punjab — Route permit verification</div>
-    <div>
-      <a href="verify.html">Verify</a> ·
-      <a href="#topics">Related topics</a> ·
-      <a href="admin.html">Staff login</a> ·
-      <a href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">MTMIS Excise</a>
+    <div class="site-footer-inner">
+      <div>© PDTG Transport Punjab — guides &amp; route permit verification</div>
+      <div>
+        <a href="privacy.html">Privacy</a> ·
+        <a href="about.html">About</a> ·
+        <a href="contact.html">Contact</a> ·
+        <a href="ads.txt">ads.txt</a>
+      </div>
     </div>
   </footer>
 
-  <div class="mobile-cta">
-    <a href="verify.html">Verify Permit</a>
-  </div>
-
-  <script>
-    (function () {
-      var nav = document.getElementById('site-nav');
-      var toggle = document.getElementById('nav-toggle');
-      var drawer = document.getElementById('mobile-drawer');
-      var closeBtn = document.getElementById('nav-close');
-
-      function setNavSolid() {
-        if (!nav) return;
-        nav.classList.toggle('is-solid', window.scrollY > 40);
-      }
-
-      function openNav() {
-        document.body.classList.add('nav-open');
-        drawer.hidden = false;
-        toggle.setAttribute('aria-expanded', 'true');
-        toggle.setAttribute('aria-label', 'Close menu');
-      }
-
-      function closeNav() {
-        document.body.classList.remove('nav-open');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.setAttribute('aria-label', 'Open menu');
-        window.setTimeout(function () {
-          if (!document.body.classList.contains('nav-open')) drawer.hidden = true;
-        }, 280);
-      }
-
-      setNavSolid();
-      window.addEventListener('scroll', setNavSolid, { passive: true });
-
-      if (toggle) {
-        toggle.addEventListener('click', function () {
-          if (document.body.classList.contains('nav-open')) closeNav();
-          else openNav();
-        });
-      }
-      if (closeBtn) closeBtn.addEventListener('click', closeNav);
-      drawer.querySelectorAll('a').forEach(function (link) {
-        link.addEventListener('click', closeNav);
-      });
-      window.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeNav();
-      });
-
-      if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-in');
-              io.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-      } else {
-        document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
-      }
-    })();
-  </script>
+  <script src="js/ads-config.js"></script>
+  <script src="js/ads-render.js"></script>
+  <script src="js/site.js"></script>
 </body>
 </html>

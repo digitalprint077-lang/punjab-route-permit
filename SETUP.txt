@@ -24,17 +24,24 @@ correct host — no PHP/MySQL needed on the server.
 3) Public URLs:
    - Home:    https://pdtg-transport-punjab.com/
    - Verify:  https://pdtg-transport-punjab.com/verify.html
+   - Guides:  https://pdtg-transport-punjab.com/guides/
    - Permit:  https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
    - Admin:   https://pdtg-transport-punjab.com/admin.html
+   - Privacy: https://pdtg-transport-punjab.com/privacy.html
 
 4) Official Excise MTMIS (ownership / token tax — separate system):
    https://mtmis.excise.punjab.gov.pk
 
+5) Ads setup (AdSense-friendly layout already included):
+   - Placeholder slots: top, in-article, sidebar, footer on content pages
+   - Edit js/ads-config.js → set enabled:true, client, and slot IDs
+   - Put your publisher line in ads.txt after AdSense approval
+   - Privacy policy page is required for most ad networks
+
 Notes
 -----
-- QR codes always point at https://pdtg-transport-punjab.com (even on
-  Cloudflare preview URLs), so scanned links stay on production.
-- Database / auth stay on Supabase (configured inside admin.html and
-  permit.html). Cloudflare Pages only serves the static files.
-- If you later move off Supabase to PHP+MySQL, you need different
-  hosting (cPanel/VPS) — Pages cannot run PHP.
+- Content on guide pages is original PDTG writing about the same topics
+  people search (verification, token tax, smart card, e-challan, permits).
+  It is not a verbatim copy of third-party sites.
+- QR codes always point at https://pdtg-transport-punjab.com
+- Database / auth stay on Supabase (admin.html + permit.html).
