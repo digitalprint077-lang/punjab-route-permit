@@ -23,11 +23,14 @@ correct host — no PHP/MySQL needed on the server.
 
 3) Public URLs:
    - Home:    https://pdtg-transport-punjab.com/
-   - Verify:  https://pdtg-transport-punjab.com/verify.html
    - Guides:  https://pdtg-transport-punjab.com/guides/
-   - Permit:  https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
-   - Admin:   https://pdtg-transport-punjab.com/admin.html
    - Privacy: https://pdtg-transport-punjab.com/privacy.html
+
+   Private (not linked in public nav — bookmark for yourself only):
+   - Admin:   https://pdtg-transport-punjab.com/admin.html
+   - Verify:  https://pdtg-transport-punjab.com/verify.html
+   - Permit:  https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
+   - ads.txt: https://pdtg-transport-punjab.com/ads.txt  (file stays public for AdSense; no site link)
 
 4) Official Excise MTMIS (ownership / token tax — separate system):
    https://mtmis.excise.punjab.gov.pk

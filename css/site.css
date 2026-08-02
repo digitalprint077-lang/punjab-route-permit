@@ -283,15 +283,18 @@ button { font: inherit; }
   background: #fff;
 }
 .service-art-box {
-  width: min(100%, 180px);
-  aspect-ratio: 1.1;
+  width: min(100%, 200px);
+  aspect-ratio: 1.15;
   border-radius: 14px;
   background: linear-gradient(180deg, #f4f8f6, #eaf3f0);
   display: grid;
   place-items: center;
-  color: #0b5c57;
-  font-weight: 800;
-  font-size: 2rem;
+  padding: 16px;
+}
+.service-art-box svg {
+  width: min(100%, 148px);
+  height: auto;
+  display: block;
 }
 .service-label {
   background: #0b5c57;
