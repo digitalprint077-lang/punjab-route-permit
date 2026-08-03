@@ -56,14 +56,6 @@ fun MoreScreen(
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
         ) {
             item {
-                Text(
-                    text = stringResource(id = R.string.more_intro),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-            item {
                 MoreRow(
                     icon = Icons.Rounded.Public,
                     title = stringResource(id = R.string.open_website),
