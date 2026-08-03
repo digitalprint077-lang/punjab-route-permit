@@ -88,6 +88,9 @@ private fun AppRoot(
     val opening by viewModel.opening.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+    val openUrl: (String) -> Unit = remember(context, viewModel) {
+        { url -> viewModel.openUrl(context, url) }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.messages.collect { messageRes ->
@@ -159,7 +162,7 @@ private fun AppRoot(
                                 restoreState = true
                             }
                         },
-                        onOpenOfficial = viewModel::openUrl,
+                        onOpenOfficial = openUrl,
                     )
                 }
                 composable(route = "provinces") {
@@ -171,13 +174,13 @@ private fun AppRoot(
                 composable(route = "services") {
                     ServicesScreen(
                         guides = content.guides,
-                        onOpenOfficial = viewModel::openUrl,
-                        onOpenGuide = viewModel::openUrl,
+                        onOpenOfficial = openUrl,
+                        onOpenGuide = openUrl,
                     )
                 }
                 composable(route = "more") {
                     MoreScreen(
-                        onOpenUrl = viewModel::openUrl,
+                        onOpenUrl = openUrl,
                         onRefreshConfig = viewModel::refreshConfig,
                     )
                 }
@@ -191,8 +194,8 @@ private fun AppRoot(
                     ProvinceDetailScreen(
                         province = content.provinceById(id),
                         onBack = { navController.popBackStack() },
-                        onOpenOfficial = viewModel::openUrl,
-                        onOpenGuide = viewModel::openUrl,
+                        onOpenOfficial = openUrl,
+                        onOpenGuide = openUrl,
                     )
                 }
             }

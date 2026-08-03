@@ -1,6 +1,7 @@
 package com.pakexciseinfo.app.ui
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.pakexciseinfo.app.data.AppConfigRepository
@@ -50,11 +51,15 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun openUrl(url: String) {
+    fun openUrl(context: Context, url: String) {
         viewModelScope.launch {
             _opening.value = true
+            // Use Activity context when available so Custom Tabs / browser intents work.
+            val launchContext = context.applicationContext.let { appCtx ->
+                if (context is android.app.Activity) context else appCtx
+            }
             val result = runCatching {
-                LinkOpener.open(getApplication(), url)
+                LinkOpener.open(launchContext, url)
             }.getOrDefault(OpenLinkResult.NoApp)
             _opening.value = false
             when (result) {

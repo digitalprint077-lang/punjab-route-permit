@@ -1,5 +1,6 @@
 package com.pakexciseinfo.app.util
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -20,7 +21,10 @@ sealed class OpenLinkResult {
 object LinkOpener {
     fun open(context: Context, url: String): OpenLinkResult {
         val trimmed = url.trim()
-        if (!URLUtil.isNetworkUrl(trimmed) && !trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
+        if (!URLUtil.isNetworkUrl(trimmed) &&
+            !trimmed.startsWith("http://") &&
+            !trimmed.startsWith("https://")
+        ) {
             return OpenLinkResult.InvalidUrl
         }
         if (!NetworkMonitor.isOnline(context)) {
@@ -33,32 +37,49 @@ object LinkOpener {
             return OpenLinkResult.InvalidUrl
         }
 
-        val color = ContextCompat.getColor(context, R.color.brand_teal)
-        val params = CustomTabColorSchemeParams.Builder()
-            .setToolbarColor(color)
-            .build()
-        val customTabs = CustomTabsIntent.Builder()
-            .setDefaultColorSchemeParams(params)
-            .setShowTitle(true)
-            .setUrlBarHidingEnabled(true)
-            .setShareState(CustomTabsIntent.SHARE_STATE_ON)
-            .build()
+        // Prefer Custom Tabs, then fall back to any VIEW handler.
+        if (launchCustomTab(context, uri)) {
+            return OpenLinkResult.Opened
+        }
+        return launchBrowser(context, uri)
+    }
 
+    private fun launchCustomTab(context: Context, uri: Uri): Boolean {
         return try {
+            val color = ContextCompat.getColor(context, R.color.brand_teal)
+            val params = CustomTabColorSchemeParams.Builder()
+                .setToolbarColor(color)
+                .build()
+            val customTabs = CustomTabsIntent.Builder()
+                .setDefaultColorSchemeParams(params)
+                .setShowTitle(true)
+                .setUrlBarHidingEnabled(true)
+                .setShareState(CustomTabsIntent.SHARE_STATE_ON)
+                .build()
+            if (context !is Activity) {
+                customTabs.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
             customTabs.launchUrl(context, uri)
+            true
+        } catch (_: ActivityNotFoundException) {
+            false
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    private fun launchBrowser(context: Context, uri: Uri): OpenLinkResult {
+        return try {
+            val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+                addCategory(Intent.CATEGORY_BROWSABLE)
+                if (context !is Activity) {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+            }
+            context.startActivity(intent)
             OpenLinkResult.Opened
         } catch (_: ActivityNotFoundException) {
-            try {
-                val intent = Intent(Intent.ACTION_VIEW, uri).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (intent.resolveActivity(context.packageManager) == null) {
-                    OpenLinkResult.NoApp
-                } else {
-                    context.startActivity(intent)
-                    OpenLinkResult.Opened
-                }
-            } catch (_: Exception) {
-                OpenLinkResult.NoApp
-            }
+            OpenLinkResult.NoApp
         } catch (_: Exception) {
             OpenLinkResult.NoApp
         }
