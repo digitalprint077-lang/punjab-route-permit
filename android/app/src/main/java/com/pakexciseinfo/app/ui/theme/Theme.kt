@@ -1,0 +1,58 @@
+package com.pakexciseinfo.app.ui.theme
+
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+
+private val LightColors = lightColorScheme(
+    primary = Sea,
+    onPrimary = Color.White,
+    primaryContainer = Sand,
+    onPrimaryContainer = SeaDeep,
+    secondary = Gold,
+    onSecondary = Ink,
+    secondaryContainer = Color(0xFFFFF1CC),
+    onSecondaryContainer = Ink,
+    tertiary = InkSoft,
+    background = Fog,
+    onBackground = Ink,
+    surface = Paper,
+    onSurface = Ink,
+    surfaceVariant = SurfaceSoft,
+    onSurfaceVariant = Muted,
+    outline = Color(0x33102033),
+)
+
+private val DarkColors = darkColorScheme(
+    primary = SeaDark,
+    onPrimary = FogDark,
+    primaryContainer = Color(0xFF1A2A2E),
+    onPrimaryContainer = SeaDeepDark,
+    secondary = Gold,
+    onSecondary = FogDark,
+    secondaryContainer = Color(0xFF3A2E12),
+    onSecondaryContainer = Color(0xFFFFF1CC),
+    tertiary = InkSoftDark,
+    background = FogDark,
+    onBackground = InkDark,
+    surface = PaperDark,
+    onSurface = InkDark,
+    surfaceVariant = SurfaceSoftDark,
+    onSurfaceVariant = MutedDark,
+    outline = Color(0x24E8EEF2),
+)
+
+@Composable
+fun PakExciseTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
+) {
+    MaterialTheme(
+        colorScheme = if (darkTheme) DarkColors else LightColors,
+        typography = AppTypography,
+        content = content,
+    )
+}

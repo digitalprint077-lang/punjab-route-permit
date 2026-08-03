@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.PakExciseInfo" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/brand_teal</item>
-        <item name="colorPrimaryDark">@color/brand_teal_dark</item>
-        <item name="colorSecondary">@color/brand_gold</item>
-        <item name="android:statusBarColor">@color/brand_navy</item>
-        <item name="android:navigationBarColor">@color/brand_navy</item>
-        <item name="android:windowBackground">@color/surface</item>
-        <item name="android:windowLightStatusBar">false</item>
+    <style name="Theme.PakExciseInfo" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/splash_bg</item>
     </style>
 </resources>

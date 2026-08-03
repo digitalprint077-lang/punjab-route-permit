@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pak Excise Info</string>
-    <string name="loading">Loading…</string>
-    <string name="retry">Try again</string>
-    <string name="open_in_browser">Open in browser</string>
-    <string name="error_title">Couldn’t load the site</string>
-    <string name="error_message">Check your internet connection, then try again.</string>
-    <string name="menu_refresh">Refresh</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_share">Share</string>
-    <string name="share_subject">Pak Excise Info</string>
-    <string name="share_text">Pak Excise Info — vehicle verification &amp; Excise guides: https://pdtg-transport-punjab.com/</string>
+    <string name="hero_tagline">Excise services by province</string>
+    <string name="hero_support">Browse provinces and service categories with icons — then open the official portals in one tap.</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_provinces">Provinces</string>
+    <string name="nav_services">Services</string>
+    <string name="nav_more">More</string>
+
+    <string name="section_provinces">Provinces</string>
+    <string name="section_provinces_sub">Official Excise portals for Punjab, Sindh, KPK, Islamabad, and Balochistan.</string>
+    <string name="section_categories">Categories</string>
+    <string name="section_categories_sub">Popular Excise services with clear icons.</string>
+    <string name="section_quick_services">Quick services</string>
+    <string name="section_quick_services_sub">Tap a card to open the official service.</string>
+    <string name="section_service_categories">Service categories</string>
+    <string name="section_service_categories_sub">Each category opens the official tool for this province.</string>
+
+    <string name="see_all">See all</string>
+    <string name="open_service">Open service</string>
+    <string name="visit_portal">Visit portal</string>
+    <string name="read_guide">Read guide</string>
+    <string name="read_guide_hint">Open the Pak Excise Info guide page for this topic.</string>
+    <string name="guide_for">Guide: %1$s</string>
+    <string name="go_back">Back</string>
+    <string name="not_found">Province not found.</string>
+
+    <string name="more_intro">App shortcuts. Your website stays unchanged — these links open site pages or official portals.</string>
+    <string name="open_website">Open full website</string>
+    <string name="about">About</string>
+    <string name="about_hint">About Pak Excise Info</string>
+    <string name="contact">Contact</string>
+    <string name="contact_hint">Get in touch</string>
+    <string name="privacy">Privacy</string>
+    <string name="privacy_hint">Privacy policy</string>
+    <string name="app_version">App version %1$s</string>
 </resources>

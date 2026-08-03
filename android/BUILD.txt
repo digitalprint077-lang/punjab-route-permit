@@ -1,62 +1,32 @@
-Pak Excise Info — Android app
-=============================
+Pak Excise Info — Android app (native UI)
+=========================================
 
-This folder is an Android Studio project that wraps the live site:
+Modern native Android app for the Pak Excise Info website.
+The website itself is not modified.
 
-  https://pdtg-transport-punjab.com/
+Features
+--------
+- Native Home with brand hero, category icons, and province cards
+- Provinces tab → province detail with service category icons
+- Services tab with icon categories + optional guide links
+- More tab (website, about, contact, privacy)
+- Tapping a category opens the official portal (Chrome Custom Tabs)
 
-in a native WebView app named "Pak Excise Info".
+Open in Android Studio
+----------------------
+Open the `android/` folder, sync Gradle, Run ▶
 
-Requirements
-------------
-- Android Studio Ladybug / Hedgehog or newer (AGP 8.7)
-- JDK 17
-- Android SDK 35
-
-Open & run
-----------
-1. Open Android Studio → Open → select this `android/` folder
-2. Let Gradle sync finish
-3. Run on an emulator or phone (Run ▶)
-
-Prebuilt debug APK (download this)
-----------------------------------
-  android/dist/PakExciseInfo-debug.apk
-
-Install on a phone: copy the APK to the device and open it
-(enable “Install unknown apps” if prompted).
-
-Build a debug APK from the command line
----------------------------------------
+Build debug APK
+---------------
   cd android
   ./gradlew assembleDebug
-
-APK output:
-  app/build/outputs/apk/debug/app-debug.apk
-
-Copy into dist/ after rebuilding:
   cp app/build/outputs/apk/debug/app-debug.apk dist/PakExciseInfo-debug.apk
 
-Install on a connected device:
-  adb install -r dist/PakExciseInfo-debug.apk
-
-Build a release APK (unsigned)
-------------------------------
-  ./gradlew assembleRelease
-
-Sign it in Android Studio (Build → Generate Signed Bundle / APK) before
-uploading to Google Play.
-
-What the app does
+Prebuilt download
 -----------------
-- Loads the live website with JavaScript + DOM storage
-- Keeps navigation on pdtg-transport-punjab.com inside the app
-- Opens external links, tel:, and mailto: in the system browser/apps
-- Deep-links https://pdtg-transport-punjab.com/... into the app
-- Pull-to-refresh, back-button history, Home / Share / Open in browser menu
-- Offline / load-error screen with retry
-- Uses the Pak Excise Info logo as the launcher icon
+  android/dist/PakExciseInfo-debug.apk
 
-Change the site URL
--------------------
-Edit SITE_URL / SITE_HOST in app/build.gradle.kts (defaultConfig), then rebuild.
+Package
+-------
+  applicationId: com.pakexciseinfo.app
+  Site: https://pdtg-transport-punjab.com/
