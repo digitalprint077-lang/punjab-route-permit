@@ -1,5 +1,5 @@
 (function () {
-  var cfg = window.PDTG_ADS || { enabled: false };
+  var cfg = window.SITE_ADS || window.PDTG_ADS || { enabled: false };
   if (!cfg.enabled || !cfg.client) return;
 
   var s = document.createElement('script');

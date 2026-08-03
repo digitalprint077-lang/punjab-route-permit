@@ -43,7 +43,7 @@ correct host — no PHP/MySQL needed on the server.
 
 Notes
 -----
-- Content on guide pages is original PDTG writing about the same topics
+- Content on guide pages is original Pak Excise Info writing about the same topics
   people search (verification, token tax, smart card, e-challan, permits).
   It is not a verbatim copy of third-party sites.
 - QR codes always point at https://pdtg-transport-punjab.com
