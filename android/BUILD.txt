@@ -1,0 +1,52 @@
+Pak Excise Info — Android app
+=============================
+
+This folder is an Android Studio project that wraps the live site:
+
+  https://pdtg-transport-punjab.com/
+
+in a native WebView app named "Pak Excise Info".
+
+Requirements
+------------
+- Android Studio Ladybug / Hedgehog or newer (AGP 8.7)
+- JDK 17
+- Android SDK 35
+
+Open & run
+----------
+1. Open Android Studio → Open → select this `android/` folder
+2. Let Gradle sync finish
+3. Run on an emulator or phone (Run ▶)
+
+Build a debug APK from the command line
+---------------------------------------
+  cd android
+  ./gradlew assembleDebug
+
+APK output:
+  app/build/outputs/apk/debug/app-debug.apk
+
+Install on a connected device:
+  adb install -r app/build/outputs/apk/debug/app-debug.apk
+
+Build a release APK (unsigned)
+------------------------------
+  ./gradlew assembleRelease
+
+Sign it in Android Studio (Build → Generate Signed Bundle / APK) before
+uploading to Google Play.
+
+What the app does
+-----------------
+- Loads the live website with JavaScript + DOM storage
+- Keeps navigation on pdtg-transport-punjab.com inside the app
+- Opens external links, tel:, and mailto: in the system browser/apps
+- Deep-links https://pdtg-transport-punjab.com/... into the app
+- Pull-to-refresh, back-button history, Home / Share / Open in browser menu
+- Offline / load-error screen with retry
+- Uses the Pak Excise Info logo as the launcher icon
+
+Change the site URL
+-------------------
+Edit SITE_URL / SITE_HOST in app/build.gradle.kts (defaultConfig), then rebuild.

@@ -41,6 +41,11 @@ correct host — no PHP/MySQL needed on the server.
    - Put your publisher line in ads.txt after AdSense approval
    - Privacy policy page is required for most ad networks
 
+6) Android app
+   - Native WebView wrapper lives in android/
+   - Open android/ in Android Studio, or see android/BUILD.txt
+   - Loads https://pdtg-transport-punjab.com/ inside the app
+
 Notes
 -----
 - Content on guide pages is original Pak Excise Info writing about the same topics
