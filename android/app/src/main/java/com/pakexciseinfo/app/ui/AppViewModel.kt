@@ -29,21 +29,33 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val opening: StateFlow<Boolean> = _opening.asStateFlow()
 
     init {
-        refreshConfig()
+        // Silent refresh on startup — do not snackbar.
+        viewModelScope.launch {
+            runCatching {
+                val config = configRepository.load()
+                _content.value = AppContent.snapshot(config)
+            }
+        }
     }
 
     fun refreshConfig() {
         viewModelScope.launch {
-            val config = configRepository.load()
-            _content.value = AppContent.snapshot(config)
-            _messages.emit(com.pakexciseinfo.app.R.string.refresh_links_done)
+            runCatching {
+                val config = configRepository.load()
+                _content.value = AppContent.snapshot(config)
+                _messages.emit(com.pakexciseinfo.app.R.string.refresh_links_done)
+            }.onFailure {
+                _messages.emit(com.pakexciseinfo.app.R.string.error_offline)
+            }
         }
     }
 
     fun openUrl(url: String) {
         viewModelScope.launch {
             _opening.value = true
-            val result = LinkOpener.open(getApplication(), url)
+            val result = runCatching {
+                LinkOpener.open(getApplication(), url)
+            }.getOrDefault(OpenLinkResult.NoApp)
             _opening.value = false
             when (result) {
                 OpenLinkResult.Opened -> Unit

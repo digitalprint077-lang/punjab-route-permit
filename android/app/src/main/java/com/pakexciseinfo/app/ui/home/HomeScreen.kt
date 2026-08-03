@@ -22,8 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,7 +33,6 @@ import com.pakexciseinfo.app.ui.components.CategoryCard
 import com.pakexciseinfo.app.ui.components.CompactCategoryTile
 import com.pakexciseinfo.app.ui.components.ProvinceCard
 import com.pakexciseinfo.app.ui.components.SectionHeader
-import com.pakexciseinfo.app.ui.theme.Fog
 import com.pakexciseinfo.app.ui.theme.Ink
 import com.pakexciseinfo.app.ui.theme.Sand
 import com.pakexciseinfo.app.ui.theme.SeaDeep
@@ -121,11 +118,7 @@ private fun HomeHero() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(Sand, Fog, Color.White),
-                ),
-            )
+            .background(color = Sand)
             .padding(horizontal = 20.dp, vertical = 28.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

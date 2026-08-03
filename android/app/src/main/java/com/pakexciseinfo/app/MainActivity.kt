@@ -1,19 +1,20 @@
 package com.pakexciseinfo.app
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.MoreHoriz
+import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,10 +48,9 @@ import com.pakexciseinfo.app.ui.provinces.ProvincesScreen
 import com.pakexciseinfo.app.ui.services.ServicesScreen
 import com.pakexciseinfo.app.ui.theme.PakExciseTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             PakExciseTheme {
                 AppRoot()
@@ -64,17 +65,19 @@ private data class TopDest(
     val icon: ImageVector,
 )
 
-private val HomeDest = TopDest("home", R.string.nav_home, Icons.Rounded.Home)
-private val ProvincesDest = TopDest("provinces", R.string.nav_provinces, Icons.Rounded.Map)
-private val ServicesDest = TopDest("services", R.string.nav_services, Icons.Rounded.Apps)
-private val MoreDest = TopDest("more", R.string.nav_more, Icons.Rounded.MoreHoriz)
-
-private val topDestinations = listOf(HomeDest, ProvincesDest, ServicesDest, MoreDest)
-
 @Composable
 private fun AppRoot(
     viewModel: AppViewModel = viewModel(),
 ) {
+    val topDestinations = remember {
+        listOf(
+            TopDest("home", R.string.nav_home, Icons.Rounded.Home),
+            TopDest("provinces", R.string.nav_provinces, Icons.Rounded.Public),
+            TopDest("services", R.string.nav_services, Icons.Rounded.Apps),
+            TopDest("more", R.string.nav_more, Icons.Rounded.MoreHoriz),
+        )
+    }
+
     val navController = rememberNavController()
     val backStack by navController.currentBackStackEntryAsState()
     val currentDestination = backStack?.destination
@@ -84,15 +87,19 @@ private fun AppRoot(
     val content by viewModel.content.collectAsStateWithLifecycle()
     val opening by viewModel.opening.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    val context = androidx.compose.ui.platform.LocalContext.current
+    val context = LocalContext.current
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.messages.collect { messageRes ->
             snackbarHostState.showSnackbar(message = context.getString(messageRes))
         }
     }
 
     Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         bottomBar = {
             if (showBottomBar) {
@@ -126,16 +133,16 @@ private fun AppRoot(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = HomeDest.route,
+                startDestination = "home",
                 modifier = Modifier.fillMaxSize(),
             ) {
-                composable(route = HomeDest.route) {
+                composable(route = "home") {
                     HomeScreen(
                         guides = content.guides,
                         provinces = content.provinces,
                         onProvinceClick = { id -> navController.navigate("province/$id") },
                         onOpenProvinces = {
-                            navController.navigate(ProvincesDest.route) {
+                            navController.navigate("provinces") {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
@@ -144,7 +151,7 @@ private fun AppRoot(
                             }
                         },
                         onOpenServices = {
-                            navController.navigate(ServicesDest.route) {
+                            navController.navigate("services") {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
@@ -155,20 +162,20 @@ private fun AppRoot(
                         onOpenOfficial = viewModel::openUrl,
                     )
                 }
-                composable(route = ProvincesDest.route) {
+                composable(route = "provinces") {
                     ProvincesScreen(
                         provinces = content.provinces,
                         onProvinceClick = { id -> navController.navigate("province/$id") },
                     )
                 }
-                composable(route = ServicesDest.route) {
+                composable(route = "services") {
                     ServicesScreen(
                         guides = content.guides,
                         onOpenOfficial = viewModel::openUrl,
                         onOpenGuide = viewModel::openUrl,
                     )
                 }
-                composable(route = MoreDest.route) {
+                composable(route = "more") {
                     MoreScreen(
                         onOpenUrl = viewModel::openUrl,
                         onRefreshConfig = viewModel::refreshConfig,
@@ -191,9 +198,7 @@ private fun AppRoot(
             }
 
             if (opening) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                )
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }

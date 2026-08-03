@@ -53,7 +53,7 @@ Crashlytics (optional)
 Package
 -------
   applicationId: com.pakexciseinfo.app
-  versionName: 2.1.1
+  versionName: 2.1.2
   Site: https://pdtg-transport-punjab.com/
 
 Note: release minify/R8 is intentionally off. Turning it on without full
