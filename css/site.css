@@ -470,6 +470,111 @@ button { font: inherit; }
   border: 1px solid rgba(255,255,255,.35);
 }
 
+.district-tools {
+  margin: 18px 0 8px;
+  display: grid;
+  gap: 8px;
+}
+.district-search-label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.district-search {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0 14px;
+  font: inherit;
+  background: #fff;
+  color: var(--ink);
+}
+.district-search:focus {
+  outline: 2px solid rgba(13, 107, 102, 0.35);
+  border-color: var(--sea);
+}
+.district-count {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.district-province {
+  margin: 28px 0 8px;
+}
+.district-province-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-bottom: 14px;
+}
+.district-province-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+}
+.district-province-count {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.district-portal-link {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.district-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+.district-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: linear-gradient(180deg, #fff, #f7fbf9);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  min-height: 76px;
+}
+.district-logo {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+}
+.district-meta {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.district-meta strong {
+  font-size: 0.95rem;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.district-meta span {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.district-empty {
+  color: var(--muted);
+  margin: 18px 0;
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
   margin-top: 20px;
