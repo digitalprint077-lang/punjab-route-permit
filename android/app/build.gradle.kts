@@ -23,8 +23,8 @@ android {
         applicationId = "com.pakexciseinfo.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 3
-        versionName = "2.1.0"
+        versionCode = 4
+        versionName = "2.1.1"
         buildConfigField("String", "SITE_URL", "\"https://pdtg-transport-punjab.com/\"")
         buildConfigField("String", "SITE_HOST", "\"pdtg-transport-punjab.com\"")
         buildConfigField("boolean", "CRASHLYTICS_ENABLED", crashlyticsEnabled.toString())
@@ -43,8 +43,10 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            // Keep minify off for Compose stability. Enabling R8 previously stripped
+            // screens/icons and produced a blank white launch screen.
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

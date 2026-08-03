@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PakExciseTheme {
-                PakExciseApp()
+                AppRoot()
             }
         }
     }
@@ -72,7 +72,7 @@ private val MoreDest = TopDest("more", R.string.nav_more, Icons.Rounded.MoreHori
 private val topDestinations = listOf(HomeDest, ProvincesDest, ServicesDest, MoreDest)
 
 @Composable
-private fun PakExciseApp(
+private fun AppRoot(
     viewModel: AppViewModel = viewModel(),
 ) {
     val navController = rememberNavController()

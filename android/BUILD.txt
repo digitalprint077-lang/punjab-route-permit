@@ -53,5 +53,8 @@ Crashlytics (optional)
 Package
 -------
   applicationId: com.pakexciseinfo.app
-  versionName: 2.1.0
+  versionName: 2.1.1
   Site: https://pdtg-transport-punjab.com/
+
+Note: release minify/R8 is intentionally off. Turning it on without full
+Compose keep rules previously caused a blank white screen on launch.
