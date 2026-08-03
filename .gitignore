@@ -15,3 +15,5 @@ android/captures/
 *.aab
 *.ap_
 *.dex
+!android/dist/
+!android/dist/*.apk

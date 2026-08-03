@@ -19,6 +19,13 @@ Open & run
 2. Let Gradle sync finish
 3. Run on an emulator or phone (Run ▶)
 
+Prebuilt debug APK (download this)
+----------------------------------
+  android/dist/PakExciseInfo-debug.apk
+
+Install on a phone: copy the APK to the device and open it
+(enable “Install unknown apps” if prompted).
+
 Build a debug APK from the command line
 ---------------------------------------
   cd android
@@ -27,8 +34,11 @@ Build a debug APK from the command line
 APK output:
   app/build/outputs/apk/debug/app-debug.apk
 
+Copy into dist/ after rebuilding:
+  cp app/build/outputs/apk/debug/app-debug.apk dist/PakExciseInfo-debug.apk
+
 Install on a connected device:
-  adb install -r app/build/outputs/apk/debug/app-debug.apk
+  adb install -r dist/PakExciseInfo-debug.apk
 
 Build a release APK (unsigned)
 ------------------------------
