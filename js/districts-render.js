@@ -92,6 +92,10 @@
       countEl.textContent =
         shown + ' of ' + data.length + ' districts shown';
     }
+
+    if (window.PEI && typeof window.PEI.refreshReveal === 'function') {
+      window.PEI.refreshReveal(sectionsEl);
+    }
   }
 
   render('');

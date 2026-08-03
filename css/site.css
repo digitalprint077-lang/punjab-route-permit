@@ -99,6 +99,10 @@ button { font: inherit; }
   flex: 0 0 auto;
   display: block;
   border-radius: 10px;
+  transition: transform .25s ease;
+}
+.brand-link:hover .brand-mark {
+  transform: rotate(-4deg) scale(1.05);
 }
 .hero-brand {
   display: inline-flex;
@@ -156,10 +160,15 @@ html[data-theme="dark"] .nav-desktop .btn-nav {
   align-items: center;
   justify-content: center;
   padding: 0;
+  transition: border-color .2s ease, color .2s ease, transform .2s ease, background-color .2s ease;
 }
 .theme-toggle:hover {
   border-color: var(--sea);
   color: var(--sea-deep);
+  transform: translateY(-1px);
+}
+.theme-toggle:active {
+  transform: scale(.96);
 }
 .theme-toggle svg {
   width: 20px;
@@ -193,13 +202,22 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
   background: var(--nav-panel);
   padding: 10px var(--pad-x) 16px;
 }
-.mobile-nav.open { display: grid; gap: 4px; }
+.mobile-nav.open {
+  display: grid;
+  gap: 4px;
+  animation: pei-nav-in .28s ease both;
+}
 .mobile-nav a {
   padding: 12px 4px;
   text-decoration: none;
   color: var(--ink);
   font-weight: 600;
   border-bottom: 1px solid var(--line);
+  transition: color .2s ease, padding-left .2s ease;
+}
+.mobile-nav a:hover {
+  color: var(--sea-deep);
+  padding-left: 6px;
 }
 
 .ad-slot {
@@ -362,6 +380,15 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
   flex-direction: column;
   gap: 10px;
   min-height: 100%;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.province-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(16, 32, 51, 0.14);
+  border-color: rgba(13, 107, 102, 0.28);
+}
+html[data-theme="dark"] .province-card:hover {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
 }
 .province-card-top {
   display: flex;
@@ -437,11 +464,20 @@ html[data-theme="dark"] .theme-logo .logo-dark { display: block; }
   padding: 16px;
   min-height: 100%;
   box-shadow: var(--shadow);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.category-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(13, 107, 102, 0.28);
+}
+.category-card:hover .category-card-icon {
+  transform: scale(1.06) rotate(-2deg);
 }
 .category-card-icon {
   width: 56px;
   height: 56px;
   display: block;
+  transition: transform .25s ease;
 }
 .category-card h3 {
   margin: 0;
@@ -605,6 +641,8 @@ html[data-theme="dark"] .theme-logo .logo-dark { display: block; }
   background:
     linear-gradient(180deg, rgba(8,20,34,.3), rgba(8,20,34,.88)),
     url("https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=80") center / cover no-repeat;
+  transform: scale(1.06);
+  animation: pei-hero-zoom 10s ease-out both;
 }
 .home-hero-inner {
   width: min(1200px, calc(100% - var(--pad-x) * 2));
@@ -613,6 +651,7 @@ html[data-theme="dark"] .theme-logo .logo-dark { display: block; }
 }
 .home-hero .hero-brand {
   margin: 0 0 12px;
+  animation: pei-rise .7s cubic-bezier(.22,1,.36,1) both;
 }
 .home-hero h1 {
   margin: 0;
@@ -620,12 +659,14 @@ html[data-theme="dark"] .theme-logo .logo-dark { display: block; }
   font-size: clamp(2.2rem, 6vw, 3.8rem);
   line-height: 1;
   max-width: 14ch;
+  animation: pei-rise .75s cubic-bezier(.22,1,.36,1) .08s both;
 }
 .home-hero p {
   margin: 0 0 18px;
   max-width: 42ch;
   color: rgba(245,248,246,.92);
   font-size: clamp(1rem, 2.2vw, 1.2rem);
+  animation: pei-rise .75s cubic-bezier(.22,1,.36,1) .16s both;
 }
 .home-hero .btn {
   display: inline-flex;
@@ -640,6 +681,11 @@ html[data-theme="dark"] .theme-logo .logo-dark { display: block; }
   font-weight: 700;
   margin-right: 8px;
   margin-bottom: 8px;
+  animation: pei-rise .75s cubic-bezier(.22,1,.36,1) .24s both;
+  transition: transform .2s ease, background-color .2s ease;
+}
+.home-hero .btn:hover {
+  transform: translateY(-2px);
 }
 .home-hero .btn.ghost {
   background: rgba(255,255,255,.1);
@@ -725,6 +771,12 @@ html[data-theme="dark"] .theme-logo .logo-dark { display: block; }
   border: 1px solid var(--line);
   border-radius: 14px;
   min-height: 76px;
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+.district-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(13, 107, 102, 0.28);
+  box-shadow: var(--shadow);
 }
 .district-logo {
   width: 52px;
@@ -782,4 +834,82 @@ html[data-theme="dark"] .theme-logo .logo-dark { display: block; }
 }
 @media (min-width: 700px) and (max-width: 980px) {
   .service-grid { grid-template-columns: repeat(3, 1fr); max-width: none; }
+}
+
+/* Motion */
+@keyframes pei-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pei-hero-zoom {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+@keyframes pei-nav-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity .55s cubic-bezier(.22,1,.36,1),
+    transform .55s cubic-bezier(.22,1,.36,1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.province-card .btn,
+.category-card .btn,
+.cta-box .btn {
+  transition: transform .2s ease, background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+.province-card .btn:hover,
+.category-card .btn:hover,
+.cta-box .btn:hover {
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .home-hero-bg {
+    transform: none;
+  }
+  .province-card:hover,
+  .category-card:hover,
+  .district-card:hover,
+  .home-hero .btn:hover,
+  .province-card .btn:hover,
+  .category-card .btn:hover,
+  .cta-box .btn:hover {
+    transform: none;
+  }
 }
