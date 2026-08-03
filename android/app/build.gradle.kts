@@ -15,6 +15,10 @@ val keystoreProperties = Properties().apply {
     }
 }
 
+// Keep in sync with AdsConfig.useTestAds / AdsConfig.realAppId
+// Test App ID is used until you switch AdsConfig.useTestAds = false
+val admobAppId = "ca-app-pub-3940256099942544~3347511713"
+
 android {
     namespace = "com.pakexciseinfo.app"
     compileSdk = 35
@@ -23,11 +27,12 @@ android {
         applicationId = "com.pakexciseinfo.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 6
-        versionName = "2.1.3"
+        versionCode = 7
+        versionName = "2.2.0"
         buildConfigField("String", "SITE_URL", "\"https://pdtg-transport-punjab.com/\"")
         buildConfigField("String", "SITE_HOST", "\"pdtg-transport-punjab.com\"")
         buildConfigField("boolean", "CRASHLYTICS_ENABLED", crashlyticsEnabled.toString())
+        manifestPlaceholders["admobAppId"] = admobAppId
     }
 
     signingConfigs {
@@ -92,6 +97,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.browser:browser:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    implementation("com.google.android.gms:play-services-ads:23.6.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     if (crashlyticsEnabled) {

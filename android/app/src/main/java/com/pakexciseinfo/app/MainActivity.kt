@@ -5,7 +5,9 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Apps
@@ -40,6 +42,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.pakexciseinfo.app.ads.BannerAd
 import com.pakexciseinfo.app.ui.AppViewModel
 import com.pakexciseinfo.app.ui.home.HomeScreen
 import com.pakexciseinfo.app.ui.more.MoreScreen
@@ -106,24 +109,27 @@ private fun AppRoot(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         bottomBar = {
             if (showBottomBar) {
-                NavigationBar {
-                    topDestinations.forEach { dest ->
-                        val selected =
-                            currentDestination?.hierarchy?.any { it.route == dest.route } == true
-                        NavigationBarItem(
-                            selected = selected,
-                            onClick = {
-                                navController.navigate(dest.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    BannerAd()
+                    NavigationBar {
+                        topDestinations.forEach { dest ->
+                            val selected =
+                                currentDestination?.hierarchy?.any { it.route == dest.route } == true
+                            NavigationBarItem(
+                                selected = selected,
+                                onClick = {
+                                    navController.navigate(dest.route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = { Icon(imageVector = dest.icon, contentDescription = null) },
-                            label = { Text(text = stringResource(id = dest.labelRes)) },
-                        )
+                                },
+                                icon = { Icon(imageVector = dest.icon, contentDescription = null) },
+                                label = { Text(text = stringResource(id = dest.labelRes)) },
+                            )
+                        }
                     }
                 }
             }
