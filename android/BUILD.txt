@@ -58,5 +58,7 @@ Crashlytics (optional)
 Package
 -------
   applicationId: com.pakexciseinfo.app
-  versionName: 2.2.0
+  versionName: 2.2.1
   Site: https://pdtg-transport-punjab.com/
+  AdMob App ID: ca-app-pub-7023406601971230~3121629531
+  Banner unit:  ca-app-pub-7023406601971230/4027517096

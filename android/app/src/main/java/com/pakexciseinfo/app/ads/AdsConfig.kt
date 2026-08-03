@@ -17,11 +17,11 @@ object AdsConfig {
      * true  = Google sample test ads (safe while developing)
      * false = your real AdMob unit IDs below
      */
-    const val useTestAds: Boolean = true
+    const val useTestAds: Boolean = false
 
-    // ---- Paste your real AdMob IDs here ----
-    const val realAppId: String = "ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"
-    const val realBannerUnitId: String = "ca-app-pub-xxxxxxxxxxxxxxxx/zzzzzzzzzz"
+    // ---- Real AdMob IDs (Pak Excise Info) ----
+    const val realAppId: String = "ca-app-pub-7023406601971230~3121629531"
+    const val realBannerUnitId: String = "ca-app-pub-7023406601971230/4027517096"
 
     // Google official test IDs
     private const val testAppId: String = "ca-app-pub-3940256099942544~3347511713"
