@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Pak Excise Info">
+  <defs>
+    <clipPath id="shield">
+      <path d="M32 2.5c10.2 5.2 18.8 7.2 25.5 7.6v24.2c0 12.4-8.6 22.8-25.5 29.2C15.1 57.1 6.5 46.7 6.5 34.3V10.1C13.2 9.7 21.8 7.7 32 2.5Z"/>
+    </clipPath>
+  </defs>
+  <path fill="#0d6b66" d="M32 2.5c10.2 5.2 18.8 7.2 25.5 7.6v24.2c0 12.4-8.6 22.8-25.5 29.2C15.1 57.1 6.5 46.7 6.5 34.3V10.1C13.2 9.7 21.8 7.7 32 2.5Z"/>
+  <g clip-path="url(#shield)">
+    <path fill="#102033" d="M6.5 40.5 32 52.5l25.5-12V64H6.5Z"/>
+  </g>
+  <path fill="none" stroke="#e8b23a" stroke-width="2.4" stroke-linecap="round" d="M14.8 11.2c5.4-2.4 11.3-4.6 17.2-7.1 5.9 2.5 11.8 4.7 17.2 7.1"/>
+  <path fill="#ffffff" d="M24 18.5h13.2l6.3 6.3V45H24Z"/>
+  <path fill="#d7e3df" d="M37.2 18.5V27h8.3Z"/>
+  <path fill="none" stroke="#0d6b66" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" d="M28.2 33.2 31.6 36.5 39.4 28.2"/>
+</svg>

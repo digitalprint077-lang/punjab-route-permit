@@ -51,12 +51,35 @@ button { font: inherit; }
   padding: 10px 0;
 }
 .brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.05rem;
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
+}
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  display: block;
+}
+.hero-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 10px;
+}
+.hero-brand .brand-mark {
+  width: 56px;
+  height: 56px;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.25));
+}
+.hero-brand h1 {
+  margin: 0;
 }
 .nav-desktop {
   display: flex;
@@ -411,8 +434,11 @@ button { font: inherit; }
   margin: 0 auto;
   padding: 48px 0 36px;
 }
-.home-hero h1 {
+.home-hero .hero-brand {
   margin: 0 0 12px;
+}
+.home-hero h1 {
+  margin: 0;
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 6vw, 3.8rem);
   line-height: 1;
