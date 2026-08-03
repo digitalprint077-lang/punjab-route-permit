@@ -300,10 +300,15 @@ button { font: inherit; }
   gap: 10px;
 }
 .province-logo {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   flex: 0 0 auto;
   display: block;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid var(--line);
 }
 .province-card h3 {
   margin: 0;
