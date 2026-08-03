@@ -378,9 +378,14 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
   grid-area: 1 / 1;
   width: 64px;
   height: 64px;
-  background: transparent;
-  border: 0;
+  background: #fff;
+  border: 1px solid var(--line);
   padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+html[data-theme="dark"] .theme-logo .province-logo {
+  background: #121820;
 }
 .theme-logo .logo-dark { display: none; }
 html[data-theme="dark"] .theme-logo .logo-light { display: none; }
