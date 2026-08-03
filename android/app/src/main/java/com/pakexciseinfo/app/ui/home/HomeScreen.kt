@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,7 +33,9 @@ import com.pakexciseinfo.app.ui.components.CategoryCard
 import com.pakexciseinfo.app.ui.components.CompactCategoryTile
 import com.pakexciseinfo.app.ui.components.ProvinceCard
 import com.pakexciseinfo.app.ui.components.SectionHeader
+import com.pakexciseinfo.app.ui.theme.Fog
 import com.pakexciseinfo.app.ui.theme.Ink
+import com.pakexciseinfo.app.ui.theme.Sand
 import com.pakexciseinfo.app.ui.theme.Sea
 import com.pakexciseinfo.app.ui.theme.SeaDeep
 
@@ -113,7 +116,11 @@ private fun HomeHero() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(brush = Brush.verticalGradient(colors = listOf(Ink, SeaDeep, Sea)))
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Sand, Fog, Color.White),
+                ),
+            )
             .padding(horizontal = 20.dp, vertical = 28.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -130,12 +137,12 @@ private fun HomeHero() {
                 Text(
                     text = stringResource(id = R.string.app_name),
                     style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Ink,
                 )
                 Text(
                     text = stringResource(id = R.string.hero_tagline),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
+                    color = SeaDeep,
                 )
             }
         }
@@ -143,7 +150,7 @@ private fun HomeHero() {
         Text(
             text = stringResource(id = R.string.hero_support),
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.92f),
+            color = Ink.copy(alpha = 0.78f),
         )
     }
 }

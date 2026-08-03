@@ -1,6 +1,5 @@
 package com.pakexciseinfo.app.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -47,7 +46,8 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun PakExciseTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Match the website’s default light look instead of following system dark mode.
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
