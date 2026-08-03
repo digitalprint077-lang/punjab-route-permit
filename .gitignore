@@ -5,6 +5,7 @@ Thumbs.db
 
 # Android
 android/.gradle/
+android/.kotlin/
 android/.idea/
 android/local.properties
 android/**/build/
@@ -17,3 +18,7 @@ android/captures/
 *.dex
 !android/dist/
 !android/dist/*.apk
+android/keystore.properties
+android/*.jks
+android/*.keystore
+android/app/google-services.json

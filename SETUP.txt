@@ -42,9 +42,10 @@ correct host — no PHP/MySQL needed on the server.
    - Privacy policy page is required for most ad networks
 
 6) Android app
-   - Native WebView wrapper lives in android/
+   - Native app lives in android/ (Compose UI with icons/categories)
    - Open android/ in Android Studio, or see android/BUILD.txt
-   - Loads https://pdtg-transport-punjab.com/ inside the app
+   - Deploy app-config.json (repo root) with the site so portal URLs
+     can update without a Play Store release
 
 Notes
 -----

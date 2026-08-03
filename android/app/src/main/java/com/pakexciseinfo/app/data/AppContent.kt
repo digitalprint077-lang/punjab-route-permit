@@ -33,6 +33,13 @@ data class GuideItem(
     val officialUrl: String,
 )
 
+data class ContentSnapshot(
+    val guides: List<GuideItem>,
+    val provinces: List<Province>,
+) {
+    fun provinceById(id: String): Province? = provinces.find { it.id == id }
+}
+
 object AppContent {
     const val SITE_BASE = BuildConfig.SITE_URL
 
@@ -164,4 +171,19 @@ object AppContent {
     )
 
     fun provinceById(id: String): Province? = provinces.find { it.id == id }
+
+    fun snapshot(config: AppConfig = AppConfig()): ContentSnapshot {
+        val guides = popularGuides.map { guide ->
+            guide.copy(officialUrl = config.urlFor(guide.id, guide.officialUrl))
+        }
+        val nextProvinces = provinces.map { province ->
+            province.copy(
+                portalUrl = config.urlFor("${province.id}.portal", province.portalUrl),
+                services = province.services.map { service ->
+                    service.copy(officialUrl = config.urlFor(service.id, service.officialUrl))
+                },
+            )
+        }
+        return ContentSnapshot(guides = guides, provinces = nextProvinces)
+    }
 }

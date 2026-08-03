@@ -18,6 +18,7 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MailOutline
 import androidx.compose.material.icons.rounded.Policy
 import androidx.compose.material.icons.rounded.Public
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +42,7 @@ import com.pakexciseinfo.app.ui.theme.Sea
 @Composable
 fun MoreScreen(
     onOpenUrl: (String) -> Unit,
+    onRefreshConfig: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
@@ -67,6 +69,14 @@ fun MoreScreen(
                     title = stringResource(id = R.string.open_website),
                     subtitle = BuildConfig.SITE_HOST,
                     onClick = { onOpenUrl(BuildConfig.SITE_URL) },
+                )
+            }
+            item {
+                MoreRow(
+                    icon = Icons.Rounded.Refresh,
+                    title = stringResource(id = R.string.refresh_links),
+                    subtitle = stringResource(id = R.string.refresh_links_hint),
+                    onClick = onRefreshConfig,
                 )
             }
             item {

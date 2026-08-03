@@ -2,15 +2,18 @@ Pak Excise Info — Android app (native UI)
 =========================================
 
 Modern native Android app for the Pak Excise Info website.
-The website itself is not modified.
+Website pages are unchanged except optional app-config.json for live URL updates.
 
-Features
---------
-- Native Home with brand hero, category icons, and province cards
-- Provinces tab → province detail with service category icons
-- Services tab with icon categories + optional guide links
-- More tab (website, about, contact, privacy)
-- Tapping a category opens the official portal (Chrome Custom Tabs)
+Reliability features (v2.1)
+---------------------------
+- Offline check before opening portals
+- Safer Custom Tabs + browser fallback
+- Remote/updatable service URLs via app-config.json
+- Optional Firebase Crashlytics
+- Search on Provinces / Services
+- Scroll position kept while browsing lists
+- Loading indicator when opening a link
+- Signed release build support
 
 Open in Android Studio
 ----------------------
@@ -22,11 +25,33 @@ Build debug APK
   ./gradlew assembleDebug
   cp app/build/outputs/apk/debug/app-debug.apk dist/PakExciseInfo-debug.apk
 
-Prebuilt download
------------------
-  android/dist/PakExciseInfo-debug.apk
+Build signed release APK
+------------------------
+1) Copy keystore.properties.example → keystore.properties
+2) Create a keystore (once):
+     keytool -genkeypair -v -keystore release.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias pakexcise
+3) Fill store/key passwords in keystore.properties
+4) Build:
+     ./gradlew assembleRelease
+     cp app/build/outputs/apk/release/app-release.apk dist/PakExciseInfo-release.apk
+
+Updatable portal URLs
+---------------------
+Bundled: android/app/src/main/assets/app-config.json
+Remote:  https://pdtg-transport-punjab.com/app-config.json
+(also in repo root as app-config.json — deploy with the site)
+
+Edit remote JSON `urls` map (keys like verify, pb-pay, sindh.portal).
+App loads remote on launch / More → Refresh service links.
+
+Crashlytics (optional)
+----------------------
+1) Create a Firebase Android app for package com.pakexciseinfo.app
+2) Download google-services.json into android/app/
+3) Rebuild — Crashlytics enables automatically
 
 Package
 -------
   applicationId: com.pakexciseinfo.app
+  versionName: 2.1.0
   Site: https://pdtg-transport-punjab.com/

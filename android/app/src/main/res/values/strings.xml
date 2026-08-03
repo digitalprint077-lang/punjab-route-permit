@@ -26,9 +26,19 @@
     <string name="guide_for">Guide: %1$s</string>
     <string name="go_back">Back</string>
     <string name="not_found">Province not found.</string>
+    <string name="search_provinces">Search provinces</string>
+    <string name="search_services">Search services</string>
+    <string name="search_empty">No matches. Try another search.</string>
 
-    <string name="more_intro">App shortcuts. Your website stays unchanged — these links open site pages or official portals.</string>
+    <string name="error_offline">You’re offline. Connect to the internet and try again.</string>
+    <string name="error_invalid_url">This link looks invalid.</string>
+    <string name="error_no_browser">No browser app found to open this link.</string>
+
+    <string name="more_intro">App shortcuts. Service portal links can update from the website config without a store update.</string>
     <string name="open_website">Open full website</string>
+    <string name="refresh_links">Refresh service links</string>
+    <string name="refresh_links_hint">Reload official URLs from app-config.json</string>
+    <string name="refresh_links_done">Service links updated.</string>
     <string name="about">About</string>
     <string name="about_hint">About Pak Excise Info</string>
     <string name="contact">Contact</string>

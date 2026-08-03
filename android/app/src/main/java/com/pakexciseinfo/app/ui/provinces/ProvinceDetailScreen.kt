@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pakexciseinfo.app.R
 import com.pakexciseinfo.app.data.AppContent
+import com.pakexciseinfo.app.data.Province
 import com.pakexciseinfo.app.ui.components.CategoryCard
 import com.pakexciseinfo.app.ui.components.SectionHeader
 import com.pakexciseinfo.app.ui.theme.Sand
@@ -44,12 +46,11 @@ import com.pakexciseinfo.app.ui.theme.Sea
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProvinceDetailScreen(
-    provinceId: String,
+    province: Province?,
     onBack: () -> Unit,
     onOpenOfficial: (String) -> Unit,
     onOpenGuide: (String) -> Unit,
 ) {
-    val province = AppContent.provinceById(provinceId)
     if (province == null) {
         Column(modifier = Modifier.fillMaxSize().padding(all = 20.dp)) {
             Text(text = stringResource(id = R.string.not_found))
@@ -61,6 +62,7 @@ fun ProvinceDetailScreen(
         return
     }
 
+    val listState = rememberLazyListState()
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text(text = province.name) },
@@ -79,6 +81,7 @@ fun ProvinceDetailScreen(
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
+            state = listState,
             contentPadding = PaddingValues(bottom = 28.dp),
         ) {
             item {

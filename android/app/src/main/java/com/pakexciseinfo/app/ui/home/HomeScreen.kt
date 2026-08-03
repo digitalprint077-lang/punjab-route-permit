@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,7 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pakexciseinfo.app.R
-import com.pakexciseinfo.app.data.AppContent
+import com.pakexciseinfo.app.data.GuideItem
+import com.pakexciseinfo.app.data.Province
 import com.pakexciseinfo.app.ui.components.CategoryCard
 import com.pakexciseinfo.app.ui.components.CompactCategoryTile
 import com.pakexciseinfo.app.ui.components.ProvinceCard
@@ -36,18 +38,21 @@ import com.pakexciseinfo.app.ui.components.SectionHeader
 import com.pakexciseinfo.app.ui.theme.Fog
 import com.pakexciseinfo.app.ui.theme.Ink
 import com.pakexciseinfo.app.ui.theme.Sand
-import com.pakexciseinfo.app.ui.theme.Sea
 import com.pakexciseinfo.app.ui.theme.SeaDeep
 
 @Composable
 fun HomeScreen(
+    guides: List<GuideItem>,
+    provinces: List<Province>,
     onProvinceClick: (String) -> Unit,
     onOpenProvinces: () -> Unit,
     onOpenServices: () -> Unit,
     onOpenOfficial: (String) -> Unit,
 ) {
+    val listState = rememberLazyListState()
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        state = listState,
         contentPadding = PaddingValues(bottom = 28.dp),
     ) {
         item { HomeHero() }
@@ -61,7 +66,7 @@ fun HomeScreen(
                     onAction = onOpenServices,
                 )
                 Spacer(modifier = Modifier.height(14.dp))
-                CategoryIconGrid(onOpenOfficial = onOpenOfficial)
+                CategoryIconGrid(guides = guides, onOpenOfficial = onOpenOfficial)
             }
         }
 
@@ -77,7 +82,7 @@ fun HomeScreen(
             }
         }
 
-        items(items = AppContent.provinces, key = { it.id }) { province ->
+        items(items = provinces, key = { it.id }) { province ->
             ProvinceCard(
                 name = province.name,
                 badge = province.badge,
@@ -98,7 +103,7 @@ fun HomeScreen(
             }
         }
 
-        items(items = AppContent.popularGuides, key = { "svc-${it.id}" }) { guide ->
+        items(items = guides, key = { "svc-${it.id}" }) { guide ->
             CategoryCard(
                 title = guide.title,
                 description = guide.description,
@@ -156,8 +161,10 @@ private fun HomeHero() {
 }
 
 @Composable
-private fun CategoryIconGrid(onOpenOfficial: (String) -> Unit) {
-    val guides = AppContent.popularGuides
+private fun CategoryIconGrid(
+    guides: List<GuideItem>,
+    onOpenOfficial: (String) -> Unit,
+) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         guides.chunked(2).forEach { rowItems ->
             Row(

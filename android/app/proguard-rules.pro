@@ -1,4 +1,7 @@
-# Keep WebView bridge classes if JS interfaces are added later.
--keepclassmembers class * {
-    @android.webkit.JavascriptInterface <methods>;
-}
+# Keep optional Crashlytics reflection bridge.
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# Keep Compose / navigation
+-keep class androidx.compose.** { *; }
+-dontwarn androidx.compose.**
