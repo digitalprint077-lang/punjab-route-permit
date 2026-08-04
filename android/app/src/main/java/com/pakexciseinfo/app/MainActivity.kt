@@ -8,37 +8,29 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Apps
+import androidx.compose.material.icons.rounded.Category
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.MoreHoriz
-import androidx.compose.material.icons.rounded.Public
+import androidx.compose.material.icons.rounded.Map
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -51,52 +43,45 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.pakexciseinfo.app.ads.BannerAd
 import com.pakexciseinfo.app.ui.AppViewModel
+import com.pakexciseinfo.app.ui.components.AnimatedBottomBar
+import com.pakexciseinfo.app.ui.components.BottomTab
 import com.pakexciseinfo.app.ui.home.HomeScreen
 import com.pakexciseinfo.app.ui.more.MoreScreen
 import com.pakexciseinfo.app.ui.provinces.ProvinceDetailScreen
 import com.pakexciseinfo.app.ui.provinces.ProvincesScreen
 import com.pakexciseinfo.app.ui.services.ServicesScreen
-import com.pakexciseinfo.app.ui.theme.Line
-import com.pakexciseinfo.app.ui.theme.PakExciseTheme
+import com.pakexciseinfo.app.ui.theme.VehicleHubTheme
 import com.pakexciseinfo.app.ui.theme.Sea
-import com.pakexciseinfo.app.ui.theme.SeaDeep
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            PakExciseTheme {
+            VehicleHubTheme {
                 AppRoot()
             }
         }
     }
 }
 
-private data class TopDest(
-    val route: String,
-    val labelRes: Int,
-    val icon: ImageVector,
-)
-
 @Composable
 private fun AppRoot(
     viewModel: AppViewModel = viewModel(),
 ) {
-    val topDestinations = remember {
-        listOf(
-            TopDest("home", R.string.nav_home, Icons.Rounded.Home),
-            TopDest("provinces", R.string.nav_provinces, Icons.Rounded.Public),
-            TopDest("services", R.string.nav_services, Icons.Rounded.Apps),
-            TopDest("more", R.string.nav_more, Icons.Rounded.MoreHoriz),
-        )
-    }
+    val tabs = listOf(
+        BottomTab("home", stringResource(R.string.nav_home), Icons.Rounded.Home),
+        BottomTab("provinces", stringResource(R.string.nav_provinces), Icons.Rounded.Map),
+        BottomTab("services", stringResource(R.string.nav_services), Icons.Rounded.Category),
+        BottomTab("more", stringResource(R.string.nav_more), Icons.Rounded.Tune),
+    )
 
     val navController = rememberNavController()
     val backStack by navController.currentBackStackEntryAsState()
     val currentDestination = backStack?.destination
-    val showBottomBar = topDestinations.any { dest ->
+    val selectedRoute = tabs.firstOrNull { dest ->
         currentDestination?.hierarchy?.any { it.route == dest.route } == true
-    }
+    }?.route
+    val showBottomBar = selectedRoute != null
     val content by viewModel.content.collectAsStateWithLifecycle()
     val opening by viewModel.opening.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -121,37 +106,19 @@ private fun AppRoot(
             if (showBottomBar) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     BannerAd()
-                    NavigationBar(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        tonalElevation = 0.dp,
-                        modifier = Modifier.border(width = 1.dp, color = Line),
-                    ) {
-                        topDestinations.forEach { dest ->
-                            val selected =
-                                currentDestination?.hierarchy?.any { it.route == dest.route } == true
-                            NavigationBarItem(
-                                selected = selected,
-                                onClick = {
-                                    navController.navigate(dest.route) {
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
-                                        launchSingleTop = true
-                                        restoreState = true
-                                    }
-                                },
-                                icon = { Icon(imageVector = dest.icon, contentDescription = null) },
-                                label = { Text(text = stringResource(id = dest.labelRes)) },
-                                colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = Sea,
-                                    selectedTextColor = SeaDeep,
-                                    indicatorColor = Sea.copy(alpha = 0.14f),
-                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                ),
-                            )
-                        }
-                    }
+                    AnimatedBottomBar(
+                        tabs = tabs,
+                        selectedRoute = selectedRoute,
+                        onTabSelected = { route ->
+                            navController.navigate(route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                    )
                 }
             }
         },

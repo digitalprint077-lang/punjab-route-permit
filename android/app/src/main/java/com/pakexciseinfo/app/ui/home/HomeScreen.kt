@@ -41,6 +41,7 @@ import com.pakexciseinfo.app.ui.components.GhostButton
 import com.pakexciseinfo.app.ui.components.PrimaryButton
 import com.pakexciseinfo.app.ui.components.ProvinceCard
 import com.pakexciseinfo.app.ui.components.SectionHeader
+import com.pakexciseinfo.app.ui.components.enterFade
 import com.pakexciseinfo.app.ui.components.enterFadeUp
 import com.pakexciseinfo.app.ui.components.responsiveContentPadding
 import com.pakexciseinfo.app.ui.components.responsiveGridColumns
@@ -66,7 +67,7 @@ fun HomeScreen(
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         state = listState,
-        contentPadding = PaddingValues(bottom = 36.dp),
+        contentPadding = PaddingValues(bottom = 48.dp),
     ) {
         item {
             HomeHero(
@@ -111,9 +112,10 @@ fun HomeScreen(
                                 description = province.description,
                                 logoRes = province.logoRes,
                                 onClick = { onProvinceClick(province.id) },
+                                compact = true,
                                 modifier = Modifier
-                                    .width(292.dp)
-                                    .enterFadeUp(delayMs = 60 + index * 40),
+                                    .width(280.dp)
+                                    .enterFade(delayMs = 60 + index * 40),
                             )
                         }
                     }

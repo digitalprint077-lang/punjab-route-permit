@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -51,6 +52,7 @@ fun ProvinceCard(
     @DrawableRes logoRes: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    compact: Boolean = false,
 ) {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
@@ -58,6 +60,7 @@ fun ProvinceCard(
     Surface(
         modifier = modifier
             .fillMaxWidth()
+            .heightIn(min = if (compact) 168.dp else 0.dp)
             .pressScale(pressed)
             .clip(CardShape)
             .clickable(interactionSource = interaction, indication = null, onClick = onClick),
@@ -74,19 +77,23 @@ fun ProvinceCard(
                         brush = Brush.horizontalGradient(listOf(Sea, SeaDeep.copy(alpha = 0.7f))),
                     ),
             )
-            Column(modifier = Modifier.padding(18.dp)) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .then(if (compact) Modifier.fillMaxSize() else Modifier),
+            ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = logoRes),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(60.dp)
+                            .size(56.dp)
                             .clip(RoundedCornerShape(16.dp))
                             .background(Sand)
                             .padding(8.dp),
                         contentScale = ContentScale.Fit,
                     )
-                    Spacer(modifier = Modifier.width(14.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = badge.uppercase(),
@@ -96,7 +103,7 @@ fun ProvinceCard(
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = name,
-                            style = MaterialTheme.typography.titleLarge,
+                            style = MaterialTheme.typography.titleMedium,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
@@ -112,8 +119,9 @@ fun ProvinceCard(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 3,
+                    maxLines = if (compact) 2 else 3,
                     overflow = TextOverflow.Ellipsis,
+                    softWrap = true,
                 )
             }
         }
@@ -179,6 +187,7 @@ fun CategoryCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
+                    softWrap = true,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -247,6 +256,7 @@ fun CompactCategoryTile(
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
+                softWrap = true,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Box(

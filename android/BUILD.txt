@@ -6,47 +6,25 @@ Modern native Android app for Vehicle Hub PK
 
 Features
 --------
-- Native Home / Provinces / Services / More matching the live site
-- Vehicle Hub PK branding (green hub-wheel logo from logo.svg)
+- Native Home / Provinces / Services / More
+- Vehicle Hub PK branding (green hub-wheel logo)
 - Green theme (#038B45) + Outfit font
-- Gilgit Excise included with other provinces
-- Responsive layouts (phone / tablet column counts)
-- Entrance + press animations
-- Offline-aware portal opening (Custom Tabs)
-- Remote/updatable service URLs via app-config.json
+- Animated bottom tabs + screen transitions
+- Responsive layouts
 - Google AdMob banner (real unit IDs)
-- Search on Provinces / Services
 - Signed release APK + AAB
 
-Open in Android Studio
-----------------------
-Open the `android/` folder, sync Gradle, Run ▶
-
-Build debug / release
----------------------
+Build
+-----
   cd android
   ./gradlew assembleRelease bundleRelease
-  cp app/build/outputs/apk/release/app-release.apk dist/PakExciseInfo-vX.Y.Z-release.apk
-  cp app/build/outputs/bundle/release/app-release.aab dist/PakExciseInfo-vX.Y.Z-release.aab
-
-AdMob ads
----------
-Config: app/src/main/java/com/pakexciseinfo/app/ads/AdsConfig.kt
-Play Store release uses REAL AdMob IDs (useTestAds = false).
-
-Banner shows above the bottom navigation on all main tabs.
-
-Updatable portal URLs
----------------------
-Bundled: android/app/src/main/assets/app-config.json
-Remote:  https://pdtg-transport-punjab.com/app-config.json
+  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.0.0-release.apk
+  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.0.0-release.aab
 
 Package
 -------
   applicationId: com.pakexciseinfo.app
   display name: Vehicle Hub PK
-  versionName: 2.4.0
+  versionName: 1.0.0
+  versionCode: 1
   Site: https://pdtg-transport-punjab.com/
-  AdMob App ID: ca-app-pub-7023406601971230~3121629531
-  Banner unit:  ca-app-pub-7023406601971230/4027517096
-  Logo: green hub-wheel mark rendered from live site logo.svg

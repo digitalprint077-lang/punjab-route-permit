@@ -12,7 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +41,7 @@ fun BannerAd(
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
     val handler = remember { Handler(Looper.getMainLooper()) }
     val retryState = remember { intArrayOf(0) }
+    var adLoaded by remember { mutableStateOf(false) }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -46,9 +50,10 @@ fun BannerAd(
     }
 
     AndroidView(
+        // Collapse empty slot so content isn't crushed above the tab bar
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp),
+            .height(if (adLoaded) 60.dp else 0.dp),
         factory = { ctx ->
             val activity = ctx.findActivity()
             val adContext = activity ?: ctx
@@ -65,11 +70,12 @@ fun BannerAd(
                 adListener = object : AdListener() {
                     override fun onAdLoaded() {
                         retryState[0] = 0
+                        adLoaded = true
                         Log.i(TAG, "Banner loaded (testAds=${AdsConfig.useTestAds})")
                     }
 
                     override fun onAdFailedToLoad(error: LoadAdError) {
-                        // 3 = NO_FILL — common for new/unpublished real units
+                        adLoaded = false
                         Log.w(
                             TAG,
                             "Banner failed code=${error.code} domain=${error.domain} msg=${error.message}",

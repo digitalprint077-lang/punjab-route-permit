@@ -20,7 +20,7 @@ object AdsConfig {
      */
     const val useTestAds: Boolean = false
 
-    // ---- Real AdMob IDs (Pak Excise Info) ----
+    // ---- Real AdMob IDs (Vehicle Hub PK) ----
     const val realAppId: String = "ca-app-pub-7023406601971230~3121629531"
     const val realBannerUnitId: String = "ca-app-pub-7023406601971230/4027517096"
 

@@ -45,7 +45,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun PakExciseTheme(
+fun VehicleHubTheme(
     darkTheme: Boolean = false,
     content: @Composable () -> Unit,
 ) {
@@ -56,3 +56,10 @@ fun PakExciseTheme(
         content = content,
     )
 }
+
+/** @deprecated Use [VehicleHubTheme] */
+@Composable
+fun PakExciseTheme(
+    darkTheme: Boolean = false,
+    content: @Composable () -> Unit,
+) = VehicleHubTheme(darkTheme = darkTheme, content = content)
