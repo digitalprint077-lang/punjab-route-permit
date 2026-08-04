@@ -18,8 +18,8 @@ Build
 -----
   cd android
   ./gradlew assembleRelease bundleRelease
-  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.0.1-release.apk
-  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.0.1-release.aab
+  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.0.2-release.apk
+  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.0.2-release.aab
 
 Package
 -------
