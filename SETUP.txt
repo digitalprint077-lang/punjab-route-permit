@@ -41,6 +41,12 @@ correct host — no PHP/MySQL needed on the server.
    - Put your publisher line in ads.txt after AdSense approval
    - Privacy policy page is required for most ad networks
 
+6) Android app
+   - Native app lives in android/ (Compose UI with icons/categories)
+   - Open android/ in Android Studio, or see android/BUILD.txt
+   - Deploy app-config.json (repo root) with the site so portal URLs
+     can update without a Play Store release
+
 Notes
 -----
 - Content on guide pages is original Vehicle Hub PK writing about the same topics

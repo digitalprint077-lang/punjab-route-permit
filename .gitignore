@@ -2,3 +2,24 @@ _git_*.txt
 *.py
 .DS_Store
 Thumbs.db
+
+# Android
+android/.gradle/
+android/.kotlin/
+android/.idea/
+android/local.properties
+android/**/build/
+android/*.iml
+android/app/*.iml
+android/captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+!android/dist/
+!android/dist/*.apk
+!android/dist/*.aab
+android/keystore.properties
+android/*.jks
+android/*.keystore
+android/app/google-services.json

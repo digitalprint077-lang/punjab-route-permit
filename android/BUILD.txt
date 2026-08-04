@@ -1,0 +1,30 @@
+Vehicle Hub PK — Android app (native UI)
+========================================
+
+Modern native Android app for Vehicle Hub PK
+(https://pdtg-transport-punjab.com/).
+
+Features
+--------
+- Native Home / Provinces / Services / More
+- Vehicle Hub PK branding (green hub-wheel logo)
+- Green theme (#038B45) + Outfit font
+- Animated bottom tabs + screen transitions
+- Responsive layouts
+- Google AdMob banner (real unit IDs)
+- Signed release APK + AAB
+
+Build
+-----
+  cd android
+  ./gradlew assembleRelease bundleRelease
+  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.0.0-release.apk
+  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.0.0-release.aab
+
+Package
+-------
+  applicationId: com.pakexciseinfo.app
+  display name: Vehicle Hub PK
+  versionName: 1.0.0
+  versionCode: 1
+  Site: https://pdtg-transport-punjab.com/
