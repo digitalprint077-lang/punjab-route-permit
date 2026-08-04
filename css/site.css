@@ -99,10 +99,12 @@ button { font: inherit; }
   flex: 0 0 auto;
   display: block;
   border-radius: 10px;
-  transition: transform .25s ease;
+  animation: pei-logo-spin 10s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
 }
 .brand-link:hover .brand-mark {
-  transform: rotate(-4deg) scale(1.05);
+  animation-duration: 3.5s;
 }
 .hero-brand {
   display: inline-flex;
@@ -115,6 +117,7 @@ button { font: inherit; }
   height: 56px;
   border-radius: 16px;
   filter: drop-shadow(0 10px 20px rgba(8, 40, 38, 0.35));
+  animation-duration: 12s;
 }
 .hero-brand h1 {
   margin: 0;
