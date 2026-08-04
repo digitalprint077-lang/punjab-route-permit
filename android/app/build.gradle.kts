@@ -26,10 +26,10 @@ android {
         applicationId = "com.pakexciseinfo.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
-        buildConfigField("String", "SITE_URL", "\"https://pdtg-transport-punjab.com/\"")
-        buildConfigField("String", "SITE_HOST", "\"pdtg-transport-punjab.com\"")
+        versionCode = 2
+        versionName = "1.0.1"
+        buildConfigField("String", "SITE_URL", "\"https://vehiclehubpk.com/\"")
+        buildConfigField("String", "SITE_HOST", "\"vehiclehubpk.com\"")
         buildConfigField("boolean", "CRASHLYTICS_ENABLED", crashlyticsEnabled.toString())
         manifestPlaceholders["admobAppId"] = admobAppId
     }
