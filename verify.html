@@ -299,7 +299,7 @@
         return;
       }
       var key = normalizeRegKey(raw);
-      status.textContent = 'Searchingâ€¦';
+      status.textContent = 'Searching…';
       btn.disabled = true;
       try {
         var result = await sb.from('permits').select('*').order('created_at', { ascending: false });
