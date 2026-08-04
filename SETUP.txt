@@ -1,50 +1,56 @@
-﻿CLOUDFLARE PAGES DEPLOY
-=======================
+﻿DUAL-DOMAIN DEPLOY (SPLIT)
+==========================
 
-Domain: https://pdtg-transport-punjab.com/
+This repo is split into two sites:
 
-This project is a static site (HTML + Supabase). Cloudflare Pages is the
-correct host — no PHP/MySQL needed on the server.
+1) PERMIT / LOGIN  (this folder = repo root)
+   Domain: https://pdtg-transport-punjab.com
+   Cloudflare Pages → Root directory: /  (or leave blank)
+   Files:
+   - index.html      (staff landing — not the public guide site)
+   - admin.html      (staff login)
+   - permit.html     (QR permit view — keep URLs stable)
+   - verify.html     (public permit lookup by reg no)
+   - route-permit.html (legacy; optional)
+   - database.sql    (reference only)
 
-1) In Cloudflare Pages, create/connect the project and deploy these files
-   from the site root:
-   - index.html          (public homepage — like a guide/landing page)
-   - verify.html         (public MTMIS-style reg-no check, no login)
-   - permit.html         (public permit view via QR)
-   - admin.html          (staff login: issue / edit / verify permits)
-   - SETUP.txt           (optional)
+2) VEHICLE HUB PK  (public guides / web content)
+   Folder: vehicle-hub/
+   Domain: your new Vehicle Hub PK domain (set in vehicle-hub/SITE.txt)
+   Cloudflare Pages → create a SECOND project
+   Root directory: vehicle-hub
+   Files: everything under vehicle-hub/ (index, guides, assets, css, js, ads)
 
-   Do not add a _redirects file that rewrites paths to *.html — Cloudflare
-   already strips .html and those rules cause deploy error 100324.
+----------------------------------------------------------------------
+A) Keep login on pdtg-transport-punjab.com
+----------------------------------------------------------------------
+1. Existing Pages project should deploy from repo ROOT (not vehicle-hub).
+2. Custom domain stays: pdtg-transport-punjab.com
+3. Bookmarks:
+   - Login:  https://pdtg-transport-punjab.com/admin.html
+   - Verify: https://pdtg-transport-punjab.com/verify.html
+   - Permit: https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
+4. QR codes must keep pointing at https://pdtg-transport-punjab.com
+   (SITE_ORIGIN inside admin.html / permit.html).
 
-2) Custom domain
-   - Pages â†’ Custom domains â†’ add pdtg-transport-punjab.com
-   - Also add www if you use it, and redirect www â†’ apex (or vice versa)
+----------------------------------------------------------------------
+B) Deploy Vehicle Hub PK on the new domain
+----------------------------------------------------------------------
+1. Cloudflare → Create application → Pages → Connect same GitHub repo.
+2. Project name e.g. vehicle-hub-pk
+3. Build settings:
+   - Framework preset: None
+   - Build command: (empty)
+   - Build output / Root directory: vehicle-hub
+4. After first deploy, Pages → Custom domains → add your new domain
+   (example: vehiclehub.pk or www.vehiclehub.pk).
+5. Edit vehicle-hub/SITE.txt with the real domain when you buy it.
+6. Point ads.txt / AdSense to the new Vehicle Hub domain.
 
-3) Public URLs:
-   - Home:    https://pdtg-transport-punjab.com/
-   - Guides:  https://pdtg-transport-punjab.com/guides/
-   - Privacy: https://pdtg-transport-punjab.com/privacy.html
-
-   Private (not linked in public nav — bookmark for yourself only):
-   - Admin:   https://pdtg-transport-punjab.com/admin.html
-   - Verify:  https://pdtg-transport-punjab.com/verify.html
-   - Permit:  https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
-   - ads.txt: https://pdtg-transport-punjab.com/ads.txt  (file stays public for AdSense; no site link)
-
-4) Official Excise MTMIS (ownership / token tax — separate system):
-   https://mtmis.excise.punjab.gov.pk
-
-5) Ads setup (AdSense-friendly layout already included):
-   - Placeholder slots: top, in-article, sidebar, footer on content pages
-   - Edit js/ads-config.js â†’ set enabled:true, client, and slot IDs
-   - Put your publisher line in ads.txt after AdSense approval
-   - Privacy policy page is required for most ad networks
-
-Notes
------
-- Content on guide pages is original Vehicle Hub PK writing about the same topics
-  people search (verification, token tax, smart card, e-challan, permits).
-  It is not a verbatim copy of third-party sites.
-- QR codes always point at https://pdtg-transport-punjab.com
-- Database / auth stay on Supabase (admin.html + permit.html).
+----------------------------------------------------------------------
+Important
+----------------------------------------------------------------------
+- Do NOT deploy admin.html to the Vehicle Hub domain.
+- Do NOT add _redirects that rewrite to *.html (Cloudflare error 100324).
+- Auth + permits database stay on Supabase (used only by admin/permit/verify).
+- Official Excise MTMIS (separate): https://mtmis.excise.punjab.gov.pk
