@@ -1053,6 +1053,9 @@ html[data-theme="dark"] .pei-logo-circle {
 .pei-logo-circle img {
   width: 52px;
   height: 52px;
+  border-radius: 12px;
+  animation: pei-logo-spin 8s linear infinite;
+  transform-origin: center center;
 }
 .pei-knock-text {
   margin: 0;
@@ -1084,9 +1087,16 @@ html[data-theme="dark"] .pei-knock-text { color: #3ecf7a; }
   50% { opacity: 1; transform: translateY(-2px); }
 }
 
+@keyframes pei-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pei-knocker .ripple,
   .pei-logo-circle,
+  .pei-logo-circle img,
+  .brand-mark,
   .pei-knock-text span { animation: none !important; }
   #pei-preloader.is-done .door.left,
   #pei-preloader.is-done .door.right { transition: none; }
