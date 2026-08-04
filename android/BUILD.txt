@@ -28,18 +28,11 @@ AdMob ads
 ---------
 Config file: app/src/main/java/com/pakexciseinfo/app/ads/AdsConfig.kt
 
-IMPORTANT: Real AdMob units often show NOTHING (NO_FILL / code 3) until:
-- AdMob payment/account is verified
-- App is linked / published on Play Store
-- AdMob app status shows Ready (can take hours–days)
+Play Store release uses REAL AdMob IDs (useTestAds = false).
 
-Right now useTestAds = true so Google TEST banners always appear and prove
-the ad slot works. Your real IDs are already saved in AdsConfig.
-
-Before Play Store release (when AdMob status is Ready):
-1) In AdsConfig.kt set useTestAds = false
-2) In app/build.gradle.kts set admobAppId = AdsConfig.realAppId
-3) Rebuild
+Real units may return NO_FILL until AdMob marks the app Ready after
+Play listing + account verification. Do not ship Google test ad IDs
+to production.
 
 Banner shows above the bottom navigation on all main tabs.
 
@@ -60,8 +53,7 @@ Crashlytics (optional)
 Package
 -------
   applicationId: com.pakexciseinfo.app
-  versionName: 2.2.4
+  versionName: 2.2.5
   Site: https://pdtg-transport-punjab.com/
-  Real AdMob App ID: ca-app-pub-7023406601971230~3121629531
-  Real Banner unit:  ca-app-pub-7023406601971230/4027517096
-  (Currently shipping Google TEST ads so banners are visible)
+  AdMob App ID: ca-app-pub-7023406601971230~3121629531
+  Banner unit:  ca-app-pub-7023406601971230/4027517096

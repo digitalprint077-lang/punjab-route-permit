@@ -15,13 +15,10 @@ object AdsConfig {
     const val enabled: Boolean = true
 
     /**
-     * true  = Google sample test ads (ALWAYS fill — use to verify banner UI)
-     * false = your real AdMob unit IDs below (may be empty until AdMob Ready)
-     *
-     * Currently TRUE so ads are visible while AdMob reviews the app.
-     * Set to FALSE before Play Store release once AdMob status is Ready.
+     * true  = Google sample test ads (dev only — never ship to Play Store)
+     * false = real AdMob unit IDs below (required for Play Store release)
      */
-    const val useTestAds: Boolean = true
+    const val useTestAds: Boolean = false
 
     // ---- Real AdMob IDs (Pak Excise Info) ----
     const val realAppId: String = "ca-app-pub-7023406601971230~3121629531"

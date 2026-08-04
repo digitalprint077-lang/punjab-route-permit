@@ -18,6 +18,7 @@ android/captures/
 *.dex
 !android/dist/
 !android/dist/*.apk
+!android/dist/*.aab
 android/keystore.properties
 android/*.jks
 android/*.keystore
