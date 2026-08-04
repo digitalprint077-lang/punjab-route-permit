@@ -1,7 +1,6 @@
 package com.pakexciseinfo.app.ui.more
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
@@ -39,14 +37,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.pakexciseinfo.app.BuildConfig
 import com.pakexciseinfo.app.R
 import com.pakexciseinfo.app.data.AppContent
+import com.pakexciseinfo.app.ui.components.SpinningBrandLogo
 import com.pakexciseinfo.app.ui.components.enterFadeUp
 import com.pakexciseinfo.app.ui.components.pressScale
 import com.pakexciseinfo.app.ui.components.responsiveContentPadding
@@ -144,13 +141,11 @@ private fun BoxProfile(pad: Dp) {
             .enterFadeUp(),
         horizontalAlignment = Alignment.Start,
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_brand),
-            contentDescription = null,
-            modifier = Modifier
-                .size(72.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Fit,
+        SpinningBrandLogo(
+            size = 72.dp,
+            durationMs = 4800,
+            elevated = false,
+            contentDescription = stringResource(id = R.string.app_name),
         )
         Spacer(modifier = Modifier.height(14.dp))
         Text(
