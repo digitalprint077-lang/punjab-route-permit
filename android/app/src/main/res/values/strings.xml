@@ -34,7 +34,6 @@
     <string name="error_invalid_url">This link looks invalid.</string>
     <string name="error_no_browser">No browser app found to open this link.</string>
 
-    <string name="open_website">Open full website</string>
     <string name="refresh_links">Refresh service links</string>
     <string name="refresh_links_hint">Reload official URLs from app-config.json</string>
     <string name="refresh_links_done">Service links updated.</string>

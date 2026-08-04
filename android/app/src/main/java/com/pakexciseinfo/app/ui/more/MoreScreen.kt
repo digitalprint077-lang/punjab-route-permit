@@ -17,7 +17,6 @@ import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MailOutline
 import androidx.compose.material.icons.rounded.Policy
-import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -55,14 +54,6 @@ fun MoreScreen(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
         ) {
-            item {
-                MoreRow(
-                    icon = Icons.Rounded.Public,
-                    title = stringResource(id = R.string.open_website),
-                    subtitle = BuildConfig.SITE_HOST,
-                    onClick = { onOpenUrl(BuildConfig.SITE_URL) },
-                )
-            }
             item {
                 MoreRow(
                     icon = Icons.Rounded.Refresh,
