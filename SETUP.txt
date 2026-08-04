@@ -54,3 +54,11 @@ Important
 - Do NOT add _redirects that rewrite to *.html (Cloudflare error 100324).
 - Auth + permits database stay on Supabase (used only by admin/permit/verify).
 - Official Excise MTMIS (separate): https://mtmis.excise.punjab.gov.pk
+
+----------------------------------------------------------------------
+Cloudflare deploy note (Workers / Pages assets)
+----------------------------------------------------------------------
+Root must include wrangler.jsonc with assets.directory = ".".
+Vehicle Hub project (root directory vehicle-hub) uses vehicle-hub/wrangler.jsonc.
+If deploy fails with "Missing entry-point to Worker script or to assets directory",
+the wrangler.jsonc assets directory is missing or wrong.
