@@ -1,64 +1,33 @@
-﻿DUAL-DOMAIN DEPLOY (SPLIT)
-==========================
+PUNJAB ROUTE PERMIT — LOGIN / PERMITS ONLY
+==========================================
 
-This repo is split into two sites:
+Domain: https://pdtg-transport-punjab.com/
 
-1) PERMIT / LOGIN  (this folder = repo root)
-   Domain: https://pdtg-transport-punjab.com
-   Cloudflare Pages → Root directory: /  (or leave blank)
-   Files:
-   - index.html      (staff landing — not the public guide site)
-   - admin.html      (staff login)
-   - permit.html     (QR permit view — keep URLs stable)
-   - verify.html     (public permit lookup by reg no)
-   - route-permit.html (legacy; optional)
-   - database.sql    (reference only)
+This repository is the staff permit system only:
+- index.html       (staff landing)
+- admin.html       (staff login)
+- permit.html      (QR permit view — keep URL stable)
+- verify.html      (permit lookup)
+- route-permit.html (legacy optional)
+- database.sql     (reference)
+- wrangler.jsonc   (Cloudflare static assets)
 
-2) VEHICLE HUB PK  (public guides / web content)
-   Folder: vehicle-hub/
-   Domain: your new Vehicle Hub PK domain (set in vehicle-hub/SITE.txt)
-   Cloudflare Pages → create a SECOND project
-   Root directory: vehicle-hub
-   Files: everything under vehicle-hub/ (index, guides, assets, css, js, ads)
+Public Vehicle Hub PK guides were moved out to a separate repository.
+Transfer branch (Vehicle Hub files at repo root):
+  https://github.com/digitalprint077-lang/punjab-route-permit/tree/export/vehicle-hub-pk
 
-----------------------------------------------------------------------
-A) Keep login on pdtg-transport-punjab.com
-----------------------------------------------------------------------
-1. Existing Pages project should deploy from repo ROOT (not vehicle-hub).
-2. Custom domain stays: pdtg-transport-punjab.com
-3. Bookmarks:
-   - Login:  https://pdtg-transport-punjab.com/admin.html
-   - Verify: https://pdtg-transport-punjab.com/verify.html
-   - Permit: https://pdtg-transport-punjab.com/permit.html?id=PERMIT_ID
-4. QR codes must keep pointing at https://pdtg-transport-punjab.com
-   (SITE_ORIGIN inside admin.html / permit.html).
+Create a new empty GitHub repo (example name: vehicle-hub-pk), then push that branch:
+  git clone https://github.com/digitalprint077-lang/punjab-route-permit.git
+  cd punjab-route-permit
+  git checkout export/vehicle-hub-pk
+  git remote add hub https://github.com/digitalprint077-lang/YOUR-NEW-REPO.git
+  git push -u hub export/vehicle-hub-pk:main
 
-----------------------------------------------------------------------
-B) Deploy Vehicle Hub PK on the new domain
-----------------------------------------------------------------------
-1. Cloudflare → Create application → Pages → Connect same GitHub repo.
-2. Project name e.g. vehicle-hub-pk
-3. Build settings:
-   - Framework preset: None
-   - Build command: (empty)
-   - Build output / Root directory: vehicle-hub
-4. After first deploy, Pages → Custom domains → add your new domain
-   (example: vehiclehub.pk or www.vehiclehub.pk).
-5. Edit vehicle-hub/SITE.txt with the real domain when you buy it.
-6. Point ads.txt / AdSense to the new Vehicle Hub domain.
+Cloudflare (this repo / pdtg domain)
+------------------------------------
+- Root directory: repository root
+- wrangler.jsonc assets.directory = "."
+- Custom domain: pdtg-transport-punjab.com
+- QR codes must keep pointing at https://pdtg-transport-punjab.com
 
-----------------------------------------------------------------------
-Important
-----------------------------------------------------------------------
-- Do NOT deploy admin.html to the Vehicle Hub domain.
-- Do NOT add _redirects that rewrite to *.html (Cloudflare error 100324).
-- Auth + permits database stay on Supabase (used only by admin/permit/verify).
-- Official Excise MTMIS (separate): https://mtmis.excise.punjab.gov.pk
-
-----------------------------------------------------------------------
-Cloudflare deploy note (Workers / Pages assets)
-----------------------------------------------------------------------
-Root must include wrangler.jsonc with assets.directory = ".".
-Vehicle Hub project (root directory vehicle-hub) uses vehicle-hub/wrangler.jsonc.
-If deploy fails with "Missing entry-point to Worker script or to assets directory",
-the wrangler.jsonc assets directory is missing or wrong.
+Do not add _redirects that rewrite to *.html (error 100324).
