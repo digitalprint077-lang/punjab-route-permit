@@ -1,4 +1,4 @@
-CLOUDFLARE PAGES DEPLOY
+﻿CLOUDFLARE PAGES DEPLOY
 =======================
 
 Domain: https://pdtg-transport-punjab.com/
@@ -18,8 +18,8 @@ correct host — no PHP/MySQL needed on the server.
    already strips .html and those rules cause deploy error 100324.
 
 2) Custom domain
-   - Pages → Custom domains → add pdtg-transport-punjab.com
-   - Also add www if you use it, and redirect www → apex (or vice versa)
+   - Pages â†’ Custom domains â†’ add pdtg-transport-punjab.com
+   - Also add www if you use it, and redirect www â†’ apex (or vice versa)
 
 3) Public URLs:
    - Home:    https://pdtg-transport-punjab.com/
@@ -37,13 +37,13 @@ correct host — no PHP/MySQL needed on the server.
 
 5) Ads setup (AdSense-friendly layout already included):
    - Placeholder slots: top, in-article, sidebar, footer on content pages
-   - Edit js/ads-config.js → set enabled:true, client, and slot IDs
+   - Edit js/ads-config.js â†’ set enabled:true, client, and slot IDs
    - Put your publisher line in ads.txt after AdSense approval
    - Privacy policy page is required for most ad networks
 
 Notes
 -----
-- Content on guide pages is original Pak Excise Info writing about the same topics
+- Content on guide pages is original Vehicle Hub PK writing about the same topics
   people search (verification, token tax, smart card, e-challan, permits).
   It is not a verbatim copy of third-party sites.
 - QR codes always point at https://pdtg-transport-punjab.com
