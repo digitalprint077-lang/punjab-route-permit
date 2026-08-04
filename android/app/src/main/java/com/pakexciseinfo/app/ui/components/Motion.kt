@@ -11,13 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
-/** Horizontal content padding that grows on wider screens. */
 @Composable
-fun responsiveContentPadding(): androidx.compose.ui.unit.Dp {
+fun responsiveContentPadding(): Dp {
     val width = LocalConfiguration.current.screenWidthDp
     return when {
         width >= 840 -> 40.dp
@@ -26,7 +26,6 @@ fun responsiveContentPadding(): androidx.compose.ui.unit.Dp {
     }
 }
 
-/** Category / province column count based on screen width. */
 @Composable
 fun responsiveGridColumns(compact: Int = 2, medium: Int = 3, expanded: Int = 4): Int {
     val width = LocalConfiguration.current.screenWidthDp
@@ -37,12 +36,11 @@ fun responsiveGridColumns(compact: Int = 2, medium: Int = 3, expanded: Int = 4):
     }
 }
 
-/** Fade + slight rise entrance used for hero and list sections. */
 @Composable
 fun Modifier.enterFadeUp(
     visible: Boolean = true,
     delayMs: Int = 0,
-    durationMs: Int = 420,
+    durationMs: Int = 480,
 ): Modifier {
     val progress = remember { Animatable(0f) }
     LaunchedEffect(visible) {
@@ -61,17 +59,16 @@ fun Modifier.enterFadeUp(
     val value = progress.value
     return this
         .alpha(value)
-        .offset { IntOffset(0, ((1f - value) * 18f).roundToInt()) }
+        .offset { IntOffset(0, ((1f - value) * 22f).roundToInt()) }
 }
 
-/** Soft press scale for interactive surfaces. */
 @Composable
 fun Modifier.pressScale(pressed: Boolean): Modifier {
     val scale = remember { Animatable(1f) }
     LaunchedEffect(pressed) {
         scale.animateTo(
-            targetValue = if (pressed) 0.97f else 1f,
-            animationSpec = tween(durationMillis = 120, easing = FastOutSlowInEasing),
+            targetValue = if (pressed) 0.96f else 1f,
+            animationSpec = tween(durationMillis = 110, easing = FastOutSlowInEasing),
         )
     }
     return this.graphicsLayer {

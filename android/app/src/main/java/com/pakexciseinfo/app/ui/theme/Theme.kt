@@ -13,7 +13,7 @@ private val LightColors = lightColorScheme(
     onPrimaryContainer = SeaDeep,
     secondary = Gold,
     onSecondary = Ink,
-    secondaryContainer = Color(0xFFFFF1CC),
+    secondaryContainer = Color(0xFFFFF3C4),
     onSecondaryContainer = Ink,
     tertiary = InkSoft,
     background = Fog,
@@ -46,13 +46,13 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun PakExciseTheme(
-    // Match the website’s default light look instead of following system dark mode.
     darkTheme: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colorScheme = if (darkTheme) DarkColors else LightColors,
         typography = AppTypography,
+        shapes = AppShapes,
         content = content,
     )
 }

@@ -1,21 +1,19 @@
 package com.pakexciseinfo.app.ui.provinces
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,10 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.pakexciseinfo.app.R
 import com.pakexciseinfo.app.data.Province
+import com.pakexciseinfo.app.ui.components.AppSearchField
 import com.pakexciseinfo.app.ui.components.ProvinceCard
+import com.pakexciseinfo.app.ui.components.ScreenHeader
+import com.pakexciseinfo.app.ui.components.enterFadeUp
 import com.pakexciseinfo.app.ui.components.responsiveContentPadding
+import com.pakexciseinfo.app.ui.components.responsiveGridColumns
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProvincesScreen(
     provinces: List<Province>,
@@ -44,45 +45,63 @@ fun ProvincesScreen(
     }
     val listState = rememberLazyListState()
     val pad = responsiveContentPadding()
+    val columns = responsiveGridColumns(compact = 1, medium = 2, expanded = 3)
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(
-            title = { Text(text = stringResource(id = R.string.nav_provinces)) },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.background,
-            ),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = pad),
+    ) {
+        ScreenHeader(
+            title = stringResource(id = R.string.nav_provinces),
+            subtitle = stringResource(id = R.string.section_provinces_sub),
         )
-        OutlinedTextField(
+        AppSearchField(
             value = query,
             onValueChange = { query = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = pad, vertical = 4.dp),
-            singleLine = true,
-            label = { Text(text = stringResource(id = R.string.search_provinces)) },
+            placeholder = stringResource(id = R.string.search_provinces),
+            modifier = Modifier.enterFadeUp(delayMs = 40),
         )
+        Spacer(modifier = Modifier.height(14.dp))
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = listState,
-            contentPadding = PaddingValues(horizontal = pad, vertical = 8.dp),
+            contentPadding = PaddingValues(bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            item {
-                Text(
-                    text = stringResource(id = R.string.section_provinces_sub),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(14.dp))
-            }
-            items(items = filtered, key = { it.id }) { province ->
-                ProvinceCard(
-                    name = province.name,
-                    badge = province.badge,
-                    description = province.description,
-                    logoRes = province.logoRes,
-                    onClick = { onProvinceClick(province.id) },
-                    modifier = Modifier.padding(vertical = 6.dp),
-                )
+            if (columns == 1) {
+                itemsIndexed(filtered, key = { _, p -> p.id }) { index, province ->
+                    ProvinceCard(
+                        name = province.name,
+                        badge = province.badge,
+                        description = province.description,
+                        logoRes = province.logoRes,
+                        onClick = { onProvinceClick(province.id) },
+                        modifier = Modifier.enterFadeUp(delayMs = 50 + index * 35),
+                    )
+                }
+            } else {
+                val rows = filtered.chunked(columns)
+                itemsIndexed(rows, key = { index, _ -> "row-$index" }) { rowIndex, row ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        row.forEachIndexed { colIndex, province ->
+                            ProvinceCard(
+                                name = province.name,
+                                badge = province.badge,
+                                description = province.description,
+                                logoRes = province.logoRes,
+                                onClick = { onProvinceClick(province.id) },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .enterFadeUp(delayMs = 50 + (rowIndex * columns + colIndex) * 35),
+                            )
+                        }
+                        repeat(columns - row.size) { Spacer(modifier = Modifier.weight(1f)) }
+                    }
+                }
             }
             if (filtered.isEmpty()) {
                 item {
@@ -90,7 +109,7 @@ fun ProvincesScreen(
                         text = stringResource(id = R.string.search_empty),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(vertical = 20.dp),
+                        modifier = Modifier.padding(vertical = 24.dp),
                     )
                 }
             }

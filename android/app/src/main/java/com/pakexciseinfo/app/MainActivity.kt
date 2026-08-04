@@ -3,7 +3,12 @@ package com.pakexciseinfo.app
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +22,6 @@ import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.foundation.border
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -161,6 +165,24 @@ private fun AppRoot(
                 navController = navController,
                 startDestination = "home",
                 modifier = Modifier.fillMaxSize(),
+                enterTransition = {
+                    fadeIn(animationSpec = tween(220)) + slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                        animationSpec = tween(280),
+                    )
+                },
+                exitTransition = {
+                    fadeOut(animationSpec = tween(180))
+                },
+                popEnterTransition = {
+                    fadeIn(animationSpec = tween(220)) + slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.End,
+                        animationSpec = tween(280),
+                    )
+                },
+                popExitTransition = {
+                    fadeOut(animationSpec = tween(180))
+                },
             ) {
                 composable(route = "home") {
                     HomeScreen(
@@ -224,7 +246,10 @@ private fun AppRoot(
             }
 
             if (opening) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Sea,
+                )
             }
         }
     }

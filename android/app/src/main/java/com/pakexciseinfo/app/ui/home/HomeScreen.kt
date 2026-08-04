@@ -13,19 +13,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -34,13 +30,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.pakexciseinfo.app.R
 import com.pakexciseinfo.app.data.AppContent
 import com.pakexciseinfo.app.data.GuideItem
 import com.pakexciseinfo.app.data.Province
-import com.pakexciseinfo.app.ui.components.CategoryCard
 import com.pakexciseinfo.app.ui.components.CompactCategoryTile
+import com.pakexciseinfo.app.ui.components.GhostButton
+import com.pakexciseinfo.app.ui.components.PrimaryButton
 import com.pakexciseinfo.app.ui.components.ProvinceCard
 import com.pakexciseinfo.app.ui.components.SectionHeader
 import com.pakexciseinfo.app.ui.components.enterFadeUp
@@ -63,12 +61,12 @@ fun HomeScreen(
 ) {
     val listState = rememberLazyListState()
     val pad = responsiveContentPadding()
-    val provinceCols = responsiveGridColumns(compact = 1, medium = 2, expanded = 3)
+    val columns = responsiveGridColumns(compact = 1, medium = 2, expanded = 3)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         state = listState,
-        contentPadding = PaddingValues(bottom = 32.dp),
+        contentPadding = PaddingValues(bottom = 36.dp),
     ) {
         item {
             HomeHero(
@@ -82,22 +80,44 @@ fun HomeScreen(
         item {
             Column(
                 modifier = Modifier
-                    .padding(horizontal = pad)
-                    .padding(top = 28.dp, bottom = 8.dp)
-                    .enterFadeUp(delayMs = 60),
+                    .padding(top = 28.dp)
+                    .enterFadeUp(delayMs = 70),
             ) {
-                SectionHeader(
-                    title = stringResource(id = R.string.section_provinces),
-                    subtitle = stringResource(id = R.string.section_provinces_sub),
-                    actionLabel = stringResource(id = R.string.see_all),
-                    onAction = onOpenProvinces,
-                )
+                Column(modifier = Modifier.padding(horizontal = pad)) {
+                    SectionHeader(
+                        title = stringResource(id = R.string.section_provinces),
+                        subtitle = stringResource(id = R.string.section_provinces_sub),
+                        actionLabel = stringResource(id = R.string.see_all),
+                        onAction = onOpenProvinces,
+                    )
+                }
                 Spacer(modifier = Modifier.height(16.dp))
-                ProvinceGrid(
-                    provinces = provinces,
-                    columns = provinceCols,
-                    onProvinceClick = onProvinceClick,
-                )
+                if (columns > 1) {
+                    ProvinceGrid(
+                        provinces = provinces,
+                        columns = columns,
+                        onProvinceClick = onProvinceClick,
+                        pad = pad,
+                    )
+                } else {
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = pad),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        itemsIndexed(provinces, key = { _, p -> p.id }) { index, province ->
+                            ProvinceCard(
+                                name = province.name,
+                                badge = province.badge,
+                                description = province.description,
+                                logoRes = province.logoRes,
+                                onClick = { onProvinceClick(province.id) },
+                                modifier = Modifier
+                                    .width(292.dp)
+                                    .enterFadeUp(delayMs = 60 + index * 40),
+                            )
+                        }
+                    }
+                }
             }
         }
 
@@ -105,7 +125,7 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .padding(horizontal = pad)
-                    .padding(top = 28.dp, bottom = 8.dp)
+                    .padding(top = 32.dp)
                     .enterFadeUp(delayMs = 120),
             ) {
                 SectionHeader(
@@ -117,33 +137,6 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 CategoryIconGrid(guides = guides, onOpenOfficial = onOpenOfficial)
             }
-        }
-
-        item {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = pad)
-                    .padding(top = 28.dp, bottom = 8.dp)
-                    .enterFadeUp(delayMs = 160),
-            ) {
-                SectionHeader(
-                    title = stringResource(id = R.string.section_quick_services),
-                    subtitle = stringResource(id = R.string.section_quick_services_sub),
-                )
-            }
-        }
-
-        itemsIndexed(items = guides, key = { _, g -> "svc-${g.id}" }) { index, guide ->
-            CategoryCard(
-                title = guide.title,
-                description = guide.description,
-                iconRes = guide.iconRes,
-                onClick = { onOpenOfficial(guide.officialUrl) },
-                actionHint = stringResource(id = R.string.open_service),
-                modifier = Modifier
-                    .padding(horizontal = pad, vertical = 6.dp)
-                    .enterFadeUp(delayMs = 40 + index * 35),
-            )
         }
     }
 }
@@ -158,55 +151,41 @@ private fun HomeHero(
             .fillMaxWidth()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFD8F0E2),
-                        Sand,
-                        Fog,
-                    ),
+                    colors = listOf(Color(0xFFCDEEDB), Sand, Fog),
                 ),
             ),
     ) {
-        // Soft atmospheric wash (not a card)
         Box(
             modifier = Modifier
                 .matchParentSize()
                 .background(
                     brush = Brush.radialGradient(
-                        colors = listOf(
-                            Sea.copy(alpha = 0.14f),
-                            Color.Transparent,
-                        ),
+                        colors = listOf(Sea.copy(alpha = 0.18f), Color.Transparent),
                     ),
                 ),
         )
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .widthIn(max = 720.dp)
-                .align(Alignment.CenterStart)
-                .padding(horizontal = responsiveContentPadding(), vertical = 36.dp)
-                .enterFadeUp(delayMs = 0),
-            horizontalAlignment = Alignment.Start,
+                .padding(horizontal = responsiveContentPadding(), vertical = 40.dp)
+                .enterFadeUp(),
         ) {
             Text(
                 text = stringResource(id = R.string.hero_kicker),
                 style = MaterialTheme.typography.labelLarge,
                 color = SeaDeep,
             )
-            Spacer(modifier = Modifier.height(18.dp))
-
+            Spacer(modifier = Modifier.height(20.dp))
             Image(
                 painter = painterResource(id = R.drawable.ic_brand),
                 contentDescription = stringResource(id = R.string.app_name),
                 modifier = Modifier
-                    .size(84.dp)
-                    .shadow(elevation = 12.dp, shape = CircleShape, clip = false)
+                    .size(88.dp)
+                    .shadow(14.dp, CircleShape, clip = false)
                     .clip(CircleShape),
                 contentScale = ContentScale.Fit,
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(18.dp))
             Text(
                 text = stringResource(id = R.string.app_name),
                 style = MaterialTheme.typography.displaySmall,
@@ -225,27 +204,15 @@ private fun HomeHero(
                 color = Ink.copy(alpha = 0.78f),
             )
             Spacer(modifier = Modifier.height(22.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                Button(
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                PrimaryButton(
+                    text = stringResource(id = R.string.cta_explore_services),
                     onClick = onExplore,
-                    colors = ButtonDefaults.buttonColors(containerColor = Sea),
-                    shape = RoundedCornerShape(14.dp),
-                    modifier = Modifier.height(50.dp),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
-                ) {
-                    Text(text = stringResource(id = R.string.cta_explore_services))
-                }
-                OutlinedButton(
+                )
+                GhostButton(
+                    text = stringResource(id = R.string.cta_verification_guide),
                     onClick = onVerification,
-                    shape = RoundedCornerShape(14.dp),
-                    modifier = Modifier.height(50.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = SeaDeep),
-                ) {
-                    Text(text = stringResource(id = R.string.cta_verification_guide))
-                }
+                )
             }
         }
     }
@@ -256,14 +223,18 @@ private fun ProvinceGrid(
     provinces: List<Province>,
     columns: Int,
     onProvinceClick: (String) -> Unit,
+    pad: Dp,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        provinces.chunked(columns).forEachIndexed { rowIndex, rowItems ->
+    Column(
+        modifier = Modifier.padding(horizontal = pad),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        provinces.chunked(columns).forEachIndexed { rowIndex, row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                rowItems.forEachIndexed { colIndex, province ->
+                row.forEachIndexed { colIndex, province ->
                     ProvinceCard(
                         name = province.name,
                         badge = province.badge,
@@ -272,12 +243,10 @@ private fun ProvinceGrid(
                         onClick = { onProvinceClick(province.id) },
                         modifier = Modifier
                             .weight(1f)
-                            .enterFadeUp(delayMs = 50 + (rowIndex * columns + colIndex) * 40),
+                            .enterFadeUp(delayMs = 50 + (rowIndex * columns + colIndex) * 35),
                     )
                 }
-                repeat(columns - rowItems.size) {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
+                repeat(columns - row.size) { Spacer(modifier = Modifier.weight(1f)) }
             }
         }
     }
@@ -290,24 +259,22 @@ private fun CategoryIconGrid(
 ) {
     val columns = responsiveGridColumns(compact = 2, medium = 3, expanded = 4)
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        guides.chunked(columns).forEachIndexed { rowIndex, rowItems ->
+        guides.chunked(columns).forEachIndexed { rowIndex, row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                rowItems.forEachIndexed { colIndex, guide ->
+                row.forEachIndexed { colIndex, guide ->
                     CompactCategoryTile(
                         title = guide.title,
                         iconRes = guide.iconRes,
                         onClick = { onOpenOfficial(guide.officialUrl) },
                         modifier = Modifier
                             .weight(1f)
-                            .enterFadeUp(delayMs = 70 + (rowIndex * columns + colIndex) * 35),
+                            .enterFadeUp(delayMs = 80 + (rowIndex * columns + colIndex) * 35),
                     )
                 }
-                repeat(columns - rowItems.size) {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
+                repeat(columns - row.size) { Spacer(modifier = Modifier.weight(1f)) }
             }
         }
     }
