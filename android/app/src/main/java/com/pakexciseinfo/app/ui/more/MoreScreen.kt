@@ -36,6 +36,7 @@ import com.pakexciseinfo.app.BuildConfig
 import com.pakexciseinfo.app.R
 import com.pakexciseinfo.app.data.AppContent
 import com.pakexciseinfo.app.ui.theme.Sea
+import com.pakexciseinfo.app.ui.components.responsiveContentPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,6 +44,7 @@ fun MoreScreen(
     onOpenUrl: (String) -> Unit,
     onRefreshConfig: () -> Unit,
 ) {
+    val pad = responsiveContentPadding()
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text(text = stringResource(id = R.string.nav_more)) },
@@ -52,7 +54,7 @@ fun MoreScreen(
         )
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+            contentPadding = PaddingValues(horizontal = pad, vertical = 8.dp),
         ) {
             item {
                 MoreRow(

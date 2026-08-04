@@ -4,6 +4,8 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -78,15 +82,23 @@ fun ProvinceCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(20.dp),
+            .pressScale(pressed)
+            .clip(RoundedCornerShape(18.dp))
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
+        shape = RoundedCornerShape(18.dp),
         color = MaterialTheme.colorScheme.surface,
         tonalElevation = 1.dp,
         shadowElevation = 2.dp,
+        border = androidx.compose.foundation.BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+        ),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -95,8 +107,9 @@ fun ProvinceCard(
                     contentDescription = null,
                     modifier = Modifier
                         .size(56.dp)
-                        .clip(RoundedCornerShape(14.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(6.dp),
                     contentScale = ContentScale.Fit,
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -140,15 +153,23 @@ fun CategoryCard(
     modifier: Modifier = Modifier,
     actionHint: String = "Open service",
 ) {
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+
     Surface(
         modifier = modifier
             .fillMaxWidth()
+            .pressScale(pressed)
             .clip(RoundedCornerShape(18.dp))
-            .clickable(onClick = onClick),
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
         shape = RoundedCornerShape(18.dp),
         color = MaterialTheme.colorScheme.surface,
         tonalElevation = 1.dp,
         shadowElevation = 1.dp,
+        border = androidx.compose.foundation.BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+        ),
     ) {
         Row(
             modifier = Modifier.padding(14.dp),
@@ -196,14 +217,22 @@ fun CompactCategoryTile(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+
     Surface(
         modifier = modifier
+            .pressScale(pressed)
             .clip(RoundedCornerShape(18.dp))
-            .clickable(onClick = onClick),
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
         shape = RoundedCornerShape(18.dp),
         color = MaterialTheme.colorScheme.surface,
         tonalElevation = 1.dp,
         shadowElevation = 1.dp,
+        border = androidx.compose.foundation.BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+        ),
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Image(

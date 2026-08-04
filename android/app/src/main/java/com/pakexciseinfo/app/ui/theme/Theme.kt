@@ -22,13 +22,13 @@ private val LightColors = lightColorScheme(
     onSurface = Ink,
     surfaceVariant = SurfaceSoft,
     onSurfaceVariant = Muted,
-    outline = Color(0x33102033),
+    outline = Line,
 )
 
 private val DarkColors = darkColorScheme(
     primary = SeaDark,
     onPrimary = FogDark,
-    primaryContainer = Color(0xFF1A2A2E),
+    primaryContainer = Color(0xFF1A3D28),
     onPrimaryContainer = SeaDeepDark,
     secondary = Gold,
     onSecondary = FogDark,
@@ -41,7 +41,7 @@ private val DarkColors = darkColorScheme(
     onSurface = InkDark,
     surfaceVariant = SurfaceSoftDark,
     onSurfaceVariant = MutedDark,
-    outline = Color(0x24E8EEF2),
+    outline = Color(0x293ECF7A),
 )
 
 @Composable

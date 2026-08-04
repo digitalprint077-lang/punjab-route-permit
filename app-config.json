@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "updatedAt": "2026-08-03",
+  "version": 2,
+  "updatedAt": "2026-08-04",
   "urls": {
     "verify": "https://mtmis.excise.punjab.gov.pk/",
     "token": "https://epay.punjab.gov.pk/",
@@ -11,6 +11,7 @@
     "pb-smart": "https://vrcentpunjab.com/",
     "pb-track": "https://ep.gov.pk/track.asp",
     "pb-pay": "https://epay.punjab.gov.pk/",
+    "pb-route": "https://pdtg-transport.punjab.gov.pk/route-permit",
     "sindh.portal": "https://excise.gos.pk/",
     "sd-verify": "https://excise.gos.pk/vehicle/vehicle_search",
     "sd-cnic": "https://excise.gos.pk/vehicle/vehicle_search_by_cnic",
@@ -38,6 +39,12 @@
     "bl-plate": "https://excise.balochistan.gov.pk/wp-content/uploads/2026/01/np1.html",
     "bl-tax": "https://excise.balochistan.gov.pk/wp-content/uploads/2026/01/mvtx.pdf",
     "bl-calc": "https://taxes.excise.gob.pk/IdentityInfo",
-    "bl-portal": "https://excise.balochistan.gov.pk/"
+    "bl-portal": "https://excise.balochistan.gov.pk/",
+    "gilgit.portal": "https://gbexcise.gov.pk/",
+    "gb-register": "https://gbexcise.gov.pk/",
+    "gb-verify": "https://gbexcise.gov.pk/vehicle-search/",
+    "gb-search": "https://gbexcise.gov.pk/vehicle-search/",
+    "gb-tax": "https://gbexcise.gov.pk/",
+    "gb-portal": "https://gbexcise.gov.pk/"
   }
 }

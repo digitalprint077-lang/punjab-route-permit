@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pak Excise Info</string>
-    <string name="hero_tagline">Excise services by province</string>
-    <string name="hero_support">Browse provinces and service categories with icons — then open the official portals in one tap.</string>
+    <string name="app_name">Vehicle Hub PK</string>
+    <string name="hero_kicker">One window for Excise services</string>
+    <string name="hero_tagline">Just a click away</string>
+    <string name="hero_support">Browse official Excise portals by province — Punjab, Sindh, KPK, Islamabad, Balochistan, and Gilgit — with clear guides for verification, taxes, smart cards, and more.</string>
+    <string name="cta_explore_services">Explore services</string>
+    <string name="cta_verification_guide">Verification guide</string>
 
     <string name="nav_home">Home</string>
     <string name="nav_provinces">Provinces</string>
     <string name="nav_services">Services</string>
     <string name="nav_more">More</string>
 
-    <string name="section_provinces">Provinces</string>
-    <string name="section_provinces_sub">Official Excise portals for Punjab, Sindh, KPK, Islamabad, and Balochistan.</string>
-    <string name="section_categories">Categories</string>
-    <string name="section_categories_sub">Popular Excise services with clear icons.</string>
+    <string name="section_provinces">Explore available services</string>
+    <string name="section_provinces_sub">Pick your province or region, then open the official portal for the service you need.</string>
+    <string name="section_categories">Popular guides</string>
+    <string name="section_categories_sub">Verification, token tax, smart card, and e-challan — with clear icons.</string>
     <string name="section_quick_services">Quick services</string>
     <string name="section_quick_services_sub">Tap a card to open the official service.</string>
     <string name="section_service_categories">Service categories</string>
@@ -22,7 +25,7 @@
     <string name="open_service">Open service</string>
     <string name="visit_portal">Visit portal</string>
     <string name="read_guide">Read guide</string>
-    <string name="read_guide_hint">Open the Pak Excise Info guide page for this topic.</string>
+    <string name="read_guide_hint">Open the Vehicle Hub PK guide page for this topic.</string>
     <string name="guide_for">Guide: %1$s</string>
     <string name="go_back">Back</string>
     <string name="not_found">Province not found.</string>
@@ -38,7 +41,7 @@
     <string name="refresh_links_hint">Reload official URLs from app-config.json</string>
     <string name="refresh_links_done">Service links updated.</string>
     <string name="about">About</string>
-    <string name="about_hint">About Pak Excise Info</string>
+    <string name="about_hint">About Vehicle Hub PK</string>
     <string name="contact">Contact</string>
     <string name="contact_hint">Get in touch</string>
     <string name="privacy">Privacy</string>

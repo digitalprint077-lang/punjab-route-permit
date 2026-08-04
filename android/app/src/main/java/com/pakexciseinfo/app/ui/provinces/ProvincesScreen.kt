@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.pakexciseinfo.app.R
 import com.pakexciseinfo.app.data.Province
 import com.pakexciseinfo.app.ui.components.ProvinceCard
+import com.pakexciseinfo.app.ui.components.responsiveContentPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +43,7 @@ fun ProvincesScreen(
             province.description.contains(query, ignoreCase = true)
     }
     val listState = rememberLazyListState()
+    val pad = responsiveContentPadding()
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
@@ -55,14 +57,14 @@ fun ProvincesScreen(
             onValueChange = { query = it },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 4.dp),
+                .padding(horizontal = pad, vertical = 4.dp),
             singleLine = true,
             label = { Text(text = stringResource(id = R.string.search_provinces)) },
         )
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = listState,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+            contentPadding = PaddingValues(horizontal = pad, vertical = 8.dp),
         ) {
             item {
                 Text(

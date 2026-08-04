@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PakExciseInfo"
+rootProject.name = "VehicleHubPK"
 include(":app")

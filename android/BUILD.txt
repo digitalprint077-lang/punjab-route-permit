@@ -1,59 +1,50 @@
-Pak Excise Info — Android app (native UI)
-=========================================
+Vehicle Hub PK — Android app (native UI)
+========================================
 
-Modern native Android app for the Pak Excise Info website.
-Website pages are unchanged except optional app-config.json for live URL updates.
+Modern native Android app for Vehicle Hub PK
+(https://pdtg-transport-punjab.com/).
 
 Features
 --------
-- Native Home / Provinces / Services / More with icons
+- Native Home / Provinces / Services / More matching the live site
+- Vehicle Hub PK branding, green theme (#038B45), Outfit font
+- Gilgit Excise included with other provinces
+- Responsive layouts (phone / tablet column counts)
+- Entrance + press animations
 - Offline-aware portal opening (Custom Tabs)
 - Remote/updatable service URLs via app-config.json
-- Optional Firebase Crashlytics
-- Google AdMob banner ads (test IDs by default)
+- Google AdMob banner (real unit IDs)
 - Search on Provinces / Services
-- Signed release build support
+- Signed release APK + AAB
 
 Open in Android Studio
 ----------------------
 Open the `android/` folder, sync Gradle, Run ▶
 
-Build debug / release APK
--------------------------
+Build debug / release
+---------------------
   cd android
-  ./gradlew assembleDebug assembleRelease
-  cp app/build/outputs/apk/release/app-release.apk dist/PakExciseInfo-release.apk
+  ./gradlew assembleRelease bundleRelease
+  cp app/build/outputs/apk/release/app-release.apk dist/PakExciseInfo-vX.Y.Z-release.apk
+  cp app/build/outputs/bundle/release/app-release.aab dist/PakExciseInfo-vX.Y.Z-release.aab
 
 AdMob ads
 ---------
-Config file: app/src/main/java/com/pakexciseinfo/app/ads/AdsConfig.kt
-
+Config: app/src/main/java/com/pakexciseinfo/app/ads/AdsConfig.kt
 Play Store release uses REAL AdMob IDs (useTestAds = false).
 
-Real units may return NO_FILL until AdMob marks the app Ready after
-Play listing + account verification. Do not ship Google test ad IDs
-to production.
-
 Banner shows above the bottom navigation on all main tabs.
-
-Also update your privacy policy to mention AdMob, and complete
-Play Console Ads + Data safety forms before publishing.
 
 Updatable portal URLs
 ---------------------
 Bundled: android/app/src/main/assets/app-config.json
 Remote:  https://pdtg-transport-punjab.com/app-config.json
 
-Crashlytics (optional)
-----------------------
-1) Create a Firebase Android app for package com.pakexciseinfo.app
-2) Download google-services.json into android/app/
-3) Rebuild — Crashlytics enables automatically
-
 Package
 -------
   applicationId: com.pakexciseinfo.app
-  versionName: 2.2.5
+  display name: Vehicle Hub PK
+  versionName: 2.3.0
   Site: https://pdtg-transport-punjab.com/
   AdMob App ID: ca-app-pub-7023406601971230~3121629531
   Banner unit:  ca-app-pub-7023406601971230/4027517096

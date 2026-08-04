@@ -26,8 +26,8 @@ android {
         applicationId = "com.pakexciseinfo.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 12
-        versionName = "2.2.5"
+        versionCode = 13
+        versionName = "2.3.0"
         buildConfigField("String", "SITE_URL", "\"https://pdtg-transport-punjab.com/\"")
         buildConfigField("String", "SITE_HOST", "\"pdtg-transport-punjab.com\"")
         buildConfigField("boolean", "CRASHLYTICS_ENABLED", crashlyticsEnabled.toString())

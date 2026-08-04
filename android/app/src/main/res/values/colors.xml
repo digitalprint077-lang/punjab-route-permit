@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="brand_teal">#0D6B66</color>
-    <color name="brand_teal_dark">#084F4B</color>
-    <color name="brand_navy">#102033</color>
-    <color name="brand_gold">#E8B23A</color>
-    <color name="ic_launcher_background">#0B5551</color>
-    <color name="splash_bg">#F3F7F5</color>
+    <color name="brand_teal">#038B45</color>
+    <color name="brand_teal_dark">#026B35</color>
+    <color name="brand_navy">#1A2E22</color>
+    <color name="brand_gold">#F5BB18</color>
+    <color name="ic_launcher_background">#038B45</color>
+    <color name="splash_bg">#F1F8F3</color>
 </resources>
