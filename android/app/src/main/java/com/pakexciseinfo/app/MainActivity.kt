@@ -17,8 +17,10 @@ import androidx.compose.material.icons.rounded.Public
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.border
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -32,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -49,7 +52,10 @@ import com.pakexciseinfo.app.ui.more.MoreScreen
 import com.pakexciseinfo.app.ui.provinces.ProvinceDetailScreen
 import com.pakexciseinfo.app.ui.provinces.ProvincesScreen
 import com.pakexciseinfo.app.ui.services.ServicesScreen
+import com.pakexciseinfo.app.ui.theme.Line
 import com.pakexciseinfo.app.ui.theme.PakExciseTheme
+import com.pakexciseinfo.app.ui.theme.Sea
+import com.pakexciseinfo.app.ui.theme.SeaDeep
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +117,11 @@ private fun AppRoot(
             if (showBottomBar) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     BannerAd()
-                    NavigationBar {
+                    NavigationBar(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        tonalElevation = 0.dp,
+                        modifier = Modifier.border(width = 1.dp, color = Line),
+                    ) {
                         topDestinations.forEach { dest ->
                             val selected =
                                 currentDestination?.hierarchy?.any { it.route == dest.route } == true
@@ -128,6 +138,13 @@ private fun AppRoot(
                                 },
                                 icon = { Icon(imageVector = dest.icon, contentDescription = null) },
                                 label = { Text(text = stringResource(id = dest.labelRes)) },
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = Sea,
+                                    selectedTextColor = SeaDeep,
+                                    indicatorColor = Sea.copy(alpha = 0.14f),
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                ),
                             )
                         }
                     }

@@ -1,21 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Pak Excise Info">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Vehicle Hub PK">
   <defs>
-    <linearGradient id="peiBg" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#148f87"/>
-      <stop offset="100%" stop-color="#0b5551"/>
+    <linearGradient id="vhg" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1aa85a"/>
+      <stop offset="100%" stop-color="#038b45"/>
     </linearGradient>
   </defs>
-
-  <!-- Modern rounded tile -->
-  <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#peiBg)"/>
-
-  <!-- Smart card / document -->
-  <rect x="15" y="19" width="34" height="26" rx="7" fill="#ffffff"/>
-  <rect x="19.5" y="23.5" width="10" height="7.5" rx="2.2" fill="#cfe5e2"/>
-  <rect x="32.5" y="24.5" width="12.5" height="2.4" rx="1.2" fill="#9fc4bf"/>
-  <rect x="32.5" y="29" width="9" height="2.4" rx="1.2" fill="#bdd7d3"/>
-
-  <!-- Verified badge -->
-  <circle cx="41" cy="39.5" r="8" fill="#102033"/>
-  <path d="M37.1 39.5l2.4 2.4 5.2-5.4" fill="none" stroke="#e8b23a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="32" cy="32" r="30" fill="url(#vhg)"/>
+  <circle cx="32" cy="32" r="25.5" fill="none" stroke="#f5bb18" stroke-width="2"/>
+  <!-- hub / wheel -->
+  <circle cx="32" cy="32" r="16" fill="none" stroke="#fff" stroke-width="2.4"/>
+  <circle cx="32" cy="32" r="5.5" fill="#fff"/>
+  <path d="M32 16.5v9.5M32 38v9.5M16.5 32h9.5M38 32h9.5M21.2 21.2l6.7 6.7M36.1 36.1l6.7 6.7M42.8 21.2l-6.7 6.7M27.9 36.1l-6.7 6.7" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="2.4" fill="#f5bb18"/>
 </svg>

@@ -7,7 +7,8 @@ Modern native Android app for Vehicle Hub PK
 Features
 --------
 - Native Home / Provinces / Services / More matching the live site
-- Vehicle Hub PK branding, green theme (#038B45), Outfit font
+- Vehicle Hub PK branding (green hub-wheel logo from logo.svg)
+- Green theme (#038B45) + Outfit font
 - Gilgit Excise included with other provinces
 - Responsive layouts (phone / tablet column counts)
 - Entrance + press animations
@@ -44,7 +45,8 @@ Package
 -------
   applicationId: com.pakexciseinfo.app
   display name: Vehicle Hub PK
-  versionName: 2.3.0
+  versionName: 2.3.1
   Site: https://pdtg-transport-punjab.com/
   AdMob App ID: ca-app-pub-7023406601971230~3121629531
   Banner unit:  ca-app-pub-7023406601971230/4027517096
+  Logo: green hub-wheel mark rendered from live site logo.svg
