@@ -3,21 +3,25 @@ package com.pakexciseinfo.app.ads
 /**
  * AdMob configuration.
  *
- * 1) Create an AdMob Android app for package com.pakexciseinfo.app
- * 2) Paste your real App ID + Banner unit ID below
- * 3) Set [useTestAds] = false before Play Store release
+ * Real ads often return NO_FILL until:
+ * - AdMob payment/account verification is complete
+ * - App is published on Play Store and linked in AdMob
+ * - App status in AdMob shows Ready (can take 1–3 days after linking)
  *
- * Keep [enabled] = false if you want to ship without ads temporarily.
+ * To confirm the banner code works, temporarily set [useTestAds] = true.
  */
 object AdsConfig {
     /** Master switch for showing ads in the UI. */
     const val enabled: Boolean = true
 
     /**
-     * true  = Google sample test ads (safe while developing)
-     * false = your real AdMob unit IDs below
+     * true  = Google sample test ads (ALWAYS fill — use to verify banner UI)
+     * false = your real AdMob unit IDs below (may be empty until AdMob Ready)
+     *
+     * Currently TRUE so ads are visible while AdMob reviews the app.
+     * Set to FALSE before Play Store release once AdMob status is Ready.
      */
-    const val useTestAds: Boolean = false
+    const val useTestAds: Boolean = true
 
     // ---- Real AdMob IDs (Pak Excise Info) ----
     const val realAppId: String = "ca-app-pub-7023406601971230~3121629531"

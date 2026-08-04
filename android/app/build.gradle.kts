@@ -15,8 +15,8 @@ val keystoreProperties = Properties().apply {
     }
 }
 
-// Keep in sync with AdsConfig.realAppId when useTestAds = false
-val admobAppId = "ca-app-pub-7023406601971230~3121629531"
+// Keep in sync with AdsConfig: test App ID while useTestAds = true
+val admobAppId = "ca-app-pub-3940256099942544~3347511713"
 
 android {
     namespace = "com.pakexciseinfo.app"
@@ -26,8 +26,8 @@ android {
         applicationId = "com.pakexciseinfo.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 10
-        versionName = "2.2.3"
+        versionCode = 11
+        versionName = "2.2.4"
         buildConfigField("String", "SITE_URL", "\"https://pdtg-transport-punjab.com/\"")
         buildConfigField("String", "SITE_HOST", "\"pdtg-transport-punjab.com\"")
         buildConfigField("boolean", "CRASHLYTICS_ENABLED", crashlyticsEnabled.toString())

@@ -3,6 +3,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Needed for personalized ads on Android 13+ -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <!-- Android 11+ package visibility: allow discovering browsers / Custom Tabs -->
     <queries>
