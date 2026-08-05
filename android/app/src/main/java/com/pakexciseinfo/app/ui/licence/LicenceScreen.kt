@@ -1,0 +1,115 @@
+package com.pakexciseinfo.app.ui.licence
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.pakexciseinfo.app.R
+import com.pakexciseinfo.app.data.AppContent
+import com.pakexciseinfo.app.data.LicencePortal
+import com.pakexciseinfo.app.ui.components.CategoryCard
+import com.pakexciseinfo.app.ui.components.GhostButton
+import com.pakexciseinfo.app.ui.components.PrimaryButton
+import com.pakexciseinfo.app.ui.components.ScreenHeader
+import com.pakexciseinfo.app.ui.components.SectionHeader
+import com.pakexciseinfo.app.ui.components.enterFadeUp
+import com.pakexciseinfo.app.ui.components.responsiveContentPadding
+import com.pakexciseinfo.app.ui.theme.SeaDeep
+
+@Composable
+fun LicenceScreen(
+    licences: List<LicencePortal>,
+    onOpenUrl: (String) -> Unit,
+) {
+    val pad = responsiveContentPadding()
+    val listState = rememberLazyListState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = pad),
+    ) {
+        ScreenHeader(
+            title = stringResource(id = R.string.nav_licence),
+            subtitle = stringResource(id = R.string.section_licence_sub),
+        )
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = listState,
+            contentPadding = PaddingValues(bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .enterFadeUp(delayMs = 40),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.licence_intro),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        PrimaryButton(
+                            text = stringResource(id = R.string.licence_open_guide),
+                            onClick = { onOpenUrl(AppContent.siteUrl(AppContent.LICENCE_GUIDE_PATH)) },
+                        )
+                        GhostButton(
+                            text = stringResource(id = R.string.licence_verify_jump),
+                            onClick = {
+                                onOpenUrl(
+                                    AppContent.siteUrl("${AppContent.LICENCE_GUIDE_PATH}#verify"),
+                                )
+                            },
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(22.dp))
+                    SectionHeader(
+                        title = stringResource(id = R.string.section_licence_portals),
+                        subtitle = stringResource(id = R.string.section_licence_portals_sub),
+                    )
+                }
+            }
+
+            itemsIndexed(licences, key = { _, item -> item.id }) { index, portal ->
+                CategoryCard(
+                    title = portal.title,
+                    description = "${portal.region} · ${portal.description}",
+                    iconRes = portal.logoRes,
+                    onClick = { onOpenUrl(portal.verifyUrl) },
+                    actionHint = stringResource(id = R.string.licence_verify),
+                    secondaryAction = stringResource(id = R.string.visit_portal),
+                    onSecondaryAction = { onOpenUrl(portal.portalUrl) },
+                    modifier = Modifier.enterFadeUp(delayMs = 50 + index * 35),
+                )
+            }
+
+            item {
+                Text(
+                    text = stringResource(id = R.string.licence_note),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = SeaDeep,
+                    modifier = Modifier
+                        .padding(top = 8.dp, bottom = 12.dp)
+                        .enterFadeUp(delayMs = 120),
+                )
+            }
+        }
+    }
+}

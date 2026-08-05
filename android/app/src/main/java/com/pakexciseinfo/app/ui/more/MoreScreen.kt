@@ -20,10 +20,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.Badge
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MailOutline
 import androidx.compose.material.icons.rounded.Policy
 import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.rounded.Route
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -84,6 +86,18 @@ fun MoreScreen(
                     title = stringResource(id = R.string.refresh_links),
                     subtitle = stringResource(id = R.string.refresh_links_hint),
                     onClick = onRefreshConfig,
+                )
+                MoreRow(
+                    icon = Icons.Rounded.Badge,
+                    title = stringResource(id = R.string.cta_driving_licence),
+                    subtitle = stringResource(id = R.string.section_licence_sub),
+                    onClick = { onOpenUrl(AppContent.siteUrl(AppContent.LICENCE_GUIDE_PATH)) },
+                )
+                MoreRow(
+                    icon = Icons.Rounded.Route,
+                    title = stringResource(id = R.string.how_it_works),
+                    subtitle = stringResource(id = R.string.how_it_works_hint),
+                    onClick = { onOpenUrl(AppContent.siteUrl("how-it-works.html")) },
                 )
             }
         }

@@ -52,6 +52,7 @@ fun HomeScreen(
     onProvinceClick: (String) -> Unit,
     onOpenProvinces: () -> Unit,
     onOpenServices: () -> Unit,
+    onOpenLicence: () -> Unit,
     onOpenOfficial: (String) -> Unit,
 ) {
     val listState = rememberLazyListState()
@@ -66,8 +67,8 @@ fun HomeScreen(
         item {
             HomeHero(
                 onExplore = onOpenProvinces,
-                onVerification = {
-                    onOpenOfficial(AppContent.siteUrl("guides/vehicle-verification.html"))
+                onHowItWorks = {
+                    onOpenOfficial(AppContent.siteUrl("how-it-works.html"))
                 },
             )
         }
@@ -131,7 +132,11 @@ fun HomeScreen(
                     onAction = onOpenServices,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                CategoryIconGrid(guides = guides, onOpenOfficial = onOpenOfficial)
+                CategoryIconGrid(
+                    guides = guides,
+                    onOpenLicence = onOpenLicence,
+                    onOpenOfficial = onOpenOfficial,
+                )
             }
         }
     }
@@ -140,7 +145,7 @@ fun HomeScreen(
 @Composable
 private fun HomeHero(
     onExplore: () -> Unit,
-    onVerification: () -> Unit,
+    onHowItWorks: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -199,7 +204,7 @@ private fun HomeHero(
                 )
                 GhostButton(
                     text = stringResource(id = R.string.cta_verification_guide),
-                    onClick = onVerification,
+                    onClick = onHowItWorks,
                 )
             }
         }
@@ -243,6 +248,7 @@ private fun ProvinceGrid(
 @Composable
 private fun CategoryIconGrid(
     guides: List<GuideItem>,
+    onOpenLicence: () -> Unit,
     onOpenOfficial: (String) -> Unit,
 ) {
     val columns = responsiveGridColumns(compact = 2, medium = 3, expanded = 4)
@@ -256,7 +262,13 @@ private fun CategoryIconGrid(
                     CompactCategoryTile(
                         title = guide.title,
                         iconRes = guide.iconRes,
-                        onClick = { onOpenOfficial(guide.officialUrl) },
+                        onClick = {
+                            if (guide.id == "licence") {
+                                onOpenLicence()
+                            } else {
+                                onOpenOfficial(guide.officialUrl)
+                            }
+                        },
                         modifier = Modifier
                             .weight(1f)
                             .enterFadeUp(delayMs = 80 + (rowIndex * columns + colIndex) * 35),

@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.pakexciseinfo.app.ui.theme.Line
 import com.pakexciseinfo.app.ui.theme.Sea
@@ -143,6 +144,8 @@ private fun RowScope.BottomTabItem(
             style = MaterialTheme.typography.labelLarge,
             color = textColor,
             fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }

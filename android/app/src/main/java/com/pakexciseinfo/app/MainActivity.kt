@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Badge
 import androidx.compose.material.icons.rounded.Category
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Map
@@ -46,6 +47,7 @@ import com.pakexciseinfo.app.ui.AppViewModel
 import com.pakexciseinfo.app.ui.components.AnimatedBottomBar
 import com.pakexciseinfo.app.ui.components.BottomTab
 import com.pakexciseinfo.app.ui.home.HomeScreen
+import com.pakexciseinfo.app.ui.licence.LicenceScreen
 import com.pakexciseinfo.app.ui.more.MoreScreen
 import com.pakexciseinfo.app.ui.provinces.ProvinceDetailScreen
 import com.pakexciseinfo.app.ui.provinces.ProvincesScreen
@@ -70,10 +72,22 @@ private fun AppRoot(
 ) {
     val tabs = listOf(
         BottomTab("home", stringResource(R.string.nav_home), Icons.Rounded.Home),
+        BottomTab("licence", stringResource(R.string.nav_licence), Icons.Rounded.Badge),
         BottomTab("provinces", stringResource(R.string.nav_provinces), Icons.Rounded.Map),
         BottomTab("services", stringResource(R.string.nav_services), Icons.Rounded.Category),
         BottomTab("more", stringResource(R.string.nav_more), Icons.Rounded.Tune),
     )
+    val navigateToTab: (String) -> Unit = remember(navController) {
+        { route ->
+            navController.navigate(route) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
+    }
 
     val navController = rememberNavController()
     val backStack by navController.currentBackStackEntryAsState()
@@ -109,15 +123,7 @@ private fun AppRoot(
                     AnimatedBottomBar(
                         tabs = tabs,
                         selectedRoute = selectedRoute,
-                        onTabSelected = { route ->
-                            navController.navigate(route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
+                        onTabSelected = navigateToTab,
                     )
                 }
             }
@@ -156,25 +162,16 @@ private fun AppRoot(
                         guides = content.guides,
                         provinces = content.provinces,
                         onProvinceClick = { id -> navController.navigate("province/$id") },
-                        onOpenProvinces = {
-                            navController.navigate("provinces") {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        onOpenServices = {
-                            navController.navigate("services") {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
+                        onOpenProvinces = { navigateToTab("provinces") },
+                        onOpenServices = { navigateToTab("services") },
+                        onOpenLicence = { navigateToTab("licence") },
                         onOpenOfficial = openUrl,
+                    )
+                }
+                composable(route = "licence") {
+                    LicenceScreen(
+                        licences = content.licences,
+                        onOpenUrl = openUrl,
                     )
                 }
                 composable(route = "provinces") {
