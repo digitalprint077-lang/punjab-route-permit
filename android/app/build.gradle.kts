@@ -15,8 +15,8 @@ val keystoreProperties = Properties().apply {
     }
 }
 
-// Keep in sync with AdsConfig.realAppId when useTestAds = false
-val admobAppId = "ca-app-pub-7023406601971230~3121629531"
+// Google sample AdMob App ID (required in manifest; ads are disabled in AdsConfig)
+val admobAppId = "ca-app-pub-3940256099942544~3347511713"
 
 android {
     namespace = "com.pakexciseinfo.app"
@@ -26,8 +26,8 @@ android {
         applicationId = "com.pakexciseinfo.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 4
-        versionName = "1.1.0"
+        versionCode = 5
+        versionName = "1.1.1"
         buildConfigField("String", "SITE_URL", "\"https://vehiclehubpk.com/\"")
         buildConfigField("String", "SITE_HOST", "\"vehiclehubpk.com\"")
         buildConfigField("boolean", "CRASHLYTICS_ENABLED", crashlyticsEnabled.toString())
