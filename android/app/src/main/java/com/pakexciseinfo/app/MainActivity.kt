@@ -77,6 +77,8 @@ private fun AppRoot(
         BottomTab("services", stringResource(R.string.nav_services), Icons.Rounded.Category),
         BottomTab("more", stringResource(R.string.nav_more), Icons.Rounded.Tune),
     )
+
+    val navController = rememberNavController()
     val navigateToTab: (String) -> Unit = remember(navController) {
         { route ->
             navController.navigate(route) {
@@ -88,8 +90,6 @@ private fun AppRoot(
             }
         }
     }
-
-    val navController = rememberNavController()
     val backStack by navController.currentBackStackEntryAsState()
     val currentDestination = backStack?.destination
     val selectedRoute = tabs.firstOrNull { dest ->
