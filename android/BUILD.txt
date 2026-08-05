@@ -6,7 +6,8 @@ Modern native Android app for Vehicle Hub PK
 
 Features
 --------
-- Native Home / Provinces / Services / More
+- Native Home / Licence / Provinces / Guides / More
+- Driving licence portals (Punjab, Sindh, Islamabad, KPK, Balochistan, Gilgit)
 - Vehicle Hub PK branding (green hub-wheel logo)
 - Green theme (#038B45) + Outfit font
 - Animated bottom tabs + screen transitions
@@ -18,13 +19,13 @@ Build
 -----
   cd android
   ./gradlew assembleRelease bundleRelease
-  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.0.2-release.apk
-  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.0.2-release.aab
+  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.1.0-release.apk
+  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.1.0-release.aab
 
 Package
 -------
   applicationId: com.pakexciseinfo.app
   display name: Vehicle Hub PK
-  versionName: 1.0.2
-  versionCode: 3
+  versionName: 1.1.0
+  versionCode: 4
   Site: https://vehiclehubpk.com/
