@@ -12,20 +12,20 @@ Features
 - Green theme (#038B45) + Outfit font
 - Animated bottom tabs + screen transitions
 - Responsive layouts
-- Google AdMob banner support (disabled; no real publisher IDs)
+- Google AdMob banner (real unit IDs)
 - Signed release APK + AAB
 
 Build
 -----
   cd android
   ./gradlew assembleRelease bundleRelease
-  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.1.1-release.apk
-  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.1.1-release.aab
+  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.1.2-release.apk
+  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.1.2-release.aab
 
 Package
 -------
   applicationId: com.pakexciseinfo.app
   display name: Vehicle Hub PK
-  versionName: 1.1.1
-  versionCode: 5
+  versionName: 1.1.2
+  versionCode: 6
   Site: https://vehiclehubpk.com/

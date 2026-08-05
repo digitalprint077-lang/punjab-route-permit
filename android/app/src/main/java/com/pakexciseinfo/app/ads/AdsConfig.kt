@@ -3,27 +3,34 @@ package com.pakexciseinfo.app.ads
 /**
  * AdMob configuration.
  *
- * Ads are off. Google sample IDs are kept only as placeholders for the
- * AndroidManifest App ID requirement and for local testing if re-enabled.
- * Do not commit real publisher / unit IDs here.
+ * Real ads often return NO_FILL until:
+ * - AdMob payment/account verification is complete
+ * - App is published on Play Store and linked in AdMob
+ * - App status in AdMob shows Ready (can take 1–3 days after linking)
+ *
+ * To confirm the banner code works, temporarily set [useTestAds] = true.
  */
 object AdsConfig {
     /** Master switch for showing ads in the UI. */
-    const val enabled: Boolean = false
+    const val enabled: Boolean = true
 
     /**
      * true  = Google sample test ads (dev only — never ship to Play Store)
-     * false = unused while [enabled] is false; set real IDs before shipping ads
+     * false = real AdMob unit IDs below (required for Play Store release)
      */
-    const val useTestAds: Boolean = true
+    const val useTestAds: Boolean = false
 
-    // Google official sample IDs only (no real publisher IDs in the app)
+    // ---- Real AdMob IDs (Vehicle Hub PK) ----
+    const val realAppId: String = "ca-app-pub-7023406601971230~3327080454"
+    const val realBannerUnitId: String = "ca-app-pub-7023406601971230/2670153060"
+
+    // Google official test IDs
     private const val testAppId: String = "ca-app-pub-3940256099942544~3347511713"
     private const val testBannerUnitId: String = "ca-app-pub-3940256099942544/6300978111"
 
     val appId: String
-        get() = testAppId
+        get() = if (useTestAds) testAppId else realAppId
 
     val bannerUnitId: String
-        get() = testBannerUnitId
+        get() = if (useTestAds) testBannerUnitId else realBannerUnitId
 }
