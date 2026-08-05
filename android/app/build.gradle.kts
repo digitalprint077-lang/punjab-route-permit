@@ -19,15 +19,15 @@ val keystoreProperties = Properties().apply {
 val admobAppId = "ca-app-pub-7023406601971230~3327080454"
 
 android {
-    namespace = "com.pakexciseinfo.app"
+    namespace = "com.vehiclehubpk.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.pakexciseinfo.app"
+        applicationId = "com.vehiclehubpk.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.1.2"
+        versionCode = 7
+        versionName = "1.2.0"
         buildConfigField("String", "SITE_URL", "\"https://vehiclehubpk.com/\"")
         buildConfigField("String", "SITE_HOST", "\"vehiclehubpk.com\"")
         buildConfigField("boolean", "CRASHLYTICS_ENABLED", crashlyticsEnabled.toString())

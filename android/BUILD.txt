@@ -19,13 +19,13 @@ Build
 -----
   cd android
   ./gradlew assembleRelease bundleRelease
-  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.1.2-release.apk
-  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.1.2-release.aab
+  cp app/build/outputs/apk/release/app-release.apk dist/VehicleHubPK-v1.2.0-release.apk
+  cp app/build/outputs/bundle/release/app-release.aab dist/VehicleHubPK-v1.2.0-release.aab
 
 Package
 -------
-  applicationId: com.pakexciseinfo.app
+  applicationId: com.vehiclehubpk.app
   display name: Vehicle Hub PK
-  versionName: 1.1.2
-  versionCode: 6
+  versionName: 1.2.0
+  versionCode: 7
   Site: https://vehiclehubpk.com/

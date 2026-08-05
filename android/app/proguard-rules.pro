@@ -1,6 +1,6 @@
 # App code (needed if minify is turned back on)
--keep class com.pakexciseinfo.app.** { *; }
--keepclassmembers class com.pakexciseinfo.app.** { *; }
+-keep class com.vehiclehubpk.app.** { *; }
+-keepclassmembers class com.vehiclehubpk.app.** { *; }
 
 # Compose
 -keep class androidx.compose.** { *; }
