@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "updatedAt": "2026-08-05",
+  "version": 4,
+  "updatedAt": "2026-08-06",
   "urls": {
     "licence": "https://vehiclehubpk.com/guides/driving-licence.html",
     "verify": "https://mtmis.excise.punjab.gov.pk/",
@@ -40,7 +40,7 @@
     "is-challan": "http://58.65.189.226:8080/DSonline/Public/VEH/CHDETAIL/REQCHALLAN.php",
     "is-portal": "https://islamabadexcise.gov.pk/",
     "balochistan.portal": "https://excise.balochistan.gov.pk/",
-    "bl-verify": "https://etanb.com/vehicle-verification/",
+    "bl-verify": "https://excise.balochistan.gov.pk/",
     "bl-dl": "https://qtp.gob.pk/driving/verfication",
     "bl-pay": "https://taxes.excise.gob.pk/",
     "bl-plate": "https://excise.balochistan.gov.pk/wp-content/uploads/2026/01/np1.html",

@@ -230,21 +230,12 @@ fun CategoryCard(
             if (officialSourceUrl != null || authorityName != null) {
                 Spacer(modifier = Modifier.height(12.dp))
                 if (officialSourceUrl != null) {
-                    Text(
-                        text = stringResource(id = R.string.official_source_label, officialSourceUrl),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Sea,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = if (onOpenOfficialSource != null) {
-                            Modifier.clickable { onOpenOfficialSource(officialSourceUrl) }
-                        } else {
-                            Modifier
-                        },
+                    OfficialSourceBlock(
+                        sourceUrl = officialSourceUrl,
+                        authorityName = authorityName.orEmpty(),
+                        onOpenSource = onOpenOfficialSource,
                     )
-                }
-                if (authorityName != null) {
-                    Spacer(modifier = Modifier.height(2.dp))
+                } else if (authorityName != null) {
                     Text(
                         text = stringResource(id = R.string.official_authority_label, authorityName),
                         style = MaterialTheme.typography.bodyMedium,

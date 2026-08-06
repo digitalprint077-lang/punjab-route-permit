@@ -223,7 +223,7 @@ object AppContent {
             guidePath = "guides/balochistan-excise.html",
             portalUrl = "https://excise.balochistan.gov.pk/",
             services = listOf(
-                ServiceItem("bl-verify", "Online vehicle verification", "Verify vehicle records online.", R.drawable.ic_cat_verify, "https://etanb.com/vehicle-verification/"),
+                ServiceItem("bl-verify", "Online vehicle verification", "Verify vehicle records online.", R.drawable.ic_cat_verify, "https://excise.balochistan.gov.pk/"),
                 ServiceItem("bl-dl", "Driving licence (QTP)", "Quetta Traffic Police — verify and licence services.", R.drawable.ic_cat_license, "https://qtp.gob.pk/driving/verfication", LICENCE_GUIDE_PATH),
                 ServiceItem("bl-pay", "Online tax payment", "Pay motor vehicle taxes online.", R.drawable.ic_cat_pay, "https://taxes.excise.gob.pk/"),
                 ServiceItem("bl-plate", "Check number plate", "Number plate information service.", R.drawable.ic_cat_plate, "https://excise.balochistan.gov.pk/wp-content/uploads/2026/01/np1.html"),

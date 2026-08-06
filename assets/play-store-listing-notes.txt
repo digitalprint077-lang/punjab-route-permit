@@ -1,0 +1,47 @@
+Vehicle Hub PK — Play Store listing notes (v1.2.2)
+=================================================
+
+SHORT DESCRIPTION
+-----------------
+Guides & links to Excise and driving-licence portals across Pakistan. Independent info app.
+
+FULL DESCRIPTION (append / replace disclaimer section)
+------------------------------------------------------
+Vehicle Hub PK — One window for Excise services. Just a click away.
+
+Browse guides and links to Excise, traffic, and driving licence portals across Pakistan. Open the correct government website for your province in one tap.
+
+WHAT YOU CAN DO
+• Open vehicle verification portals by province
+• Open token tax and payment links
+• Open e-smart card / tracking tools
+• Open e-challan related services
+• Apply, renew, or verify a driving licence by region
+• Open province portals for Punjab, Sindh, KPK, Islamabad, Balochistan, and Gilgit
+
+IMPORTANT — INDEPENDENT APP
+Vehicle Hub PK is an independent informational app. It is not affiliated with, endorsed by, or operated by the Government of Pakistan or any provincial Excise & Taxation Department. All verification, payments, licences and government services are provided only through the official government websites.
+
+OFFICIAL SOURCES (examples)
+• Punjab Excise / MTMIS: https://mtmis.excise.punjab.gov.pk/
+• Punjab Excise department: https://excise.punjab.gov.pk/
+• Sindh Excise: https://excise.gos.pk/
+• KPK Dastak: https://dastak.kp.gov.pk/
+• Islamabad Excise: https://islamabadexcise.gov.pk/
+• Balochistan Excise: https://excise.balochistan.gov.pk/
+• Gilgit Excise: https://gbexcise.gov.pk/
+• Punjab DLIMS: https://dlims.punjab.gov.pk/
+• Sindh DLS: https://dls.gos.pk/
+• Islamabad ITP DLIMS: https://dlims.islamabadpolice.gov.pk/
+• KPK Dastak Citizen: https://dastakappecitizenkp.pk/
+• Quetta Traffic Police: https://qtp.gob.pk/
+• GB Police DLMIS: https://dlmis.gbp.gov.pk/
+
+Vehicle Hub PK only explains steps and opens the correct website. It does not provide government services itself.
+
+RELEASE NOTES (1.2.2)
+---------------------
+• Stronger independent-app disclaimer
+• “Open Official Website” wording when leaving the app
+• Tap-to-open official source URLs on province and licence screens
+• Non-government links no longer labeled as “Official source”
