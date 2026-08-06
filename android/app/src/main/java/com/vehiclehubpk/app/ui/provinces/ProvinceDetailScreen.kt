@@ -1,6 +1,5 @@
 package com.vehiclehubpk.app.ui.provinces
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,16 +25,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.data.AppContent
 import com.vehiclehubpk.app.data.Province
+import com.vehiclehubpk.app.ui.components.AffiliationDisclaimer
 import com.vehiclehubpk.app.ui.components.CategoryCard
 import com.vehiclehubpk.app.ui.components.GhostButton
+import com.vehiclehubpk.app.ui.components.OfficialSourceBlock
 import com.vehiclehubpk.app.ui.components.PrimaryButton
+import com.vehiclehubpk.app.ui.components.RegionIcons
 import com.vehiclehubpk.app.ui.components.ScreenHeader
 import com.vehiclehubpk.app.ui.components.SectionHeader
 import com.vehiclehubpk.app.ui.components.enterFadeUp
@@ -80,16 +81,20 @@ fun ProvinceDetailScreen(
                 Column {
                     ScreenHeader(title = province.name, onBack = onBack)
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = painterResource(id = province.logoRes),
-                            contentDescription = null,
+                        Box(
                             modifier = Modifier
                                 .size(76.dp)
                                 .clip(RoundedCornerShape(20.dp))
-                                .background(Color.White)
-                                .padding(10.dp),
-                            contentScale = ContentScale.Fit,
-                        )
+                                .background(Color.White),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Icon(
+                                imageVector = RegionIcons.forProvince(province.id),
+                                contentDescription = null,
+                                tint = Sea,
+                                modifier = Modifier.size(36.dp),
+                            )
+                        }
                         Spacer(modifier = Modifier.size(16.dp))
                         Column {
                             Text(
@@ -111,6 +116,14 @@ fun ProvinceDetailScreen(
                         style = MaterialTheme.typography.bodyLarge,
                         color = Ink.copy(alpha = 0.8f),
                     )
+                    Spacer(modifier = Modifier.height(14.dp))
+                    OfficialSourceBlock(
+                        sourceUrl = province.portalUrl,
+                        authorityName = province.authorityName,
+                        onOpenSource = onOpenOfficial,
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    AffiliationDisclaimer()
                     Spacer(modifier = Modifier.height(18.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         PrimaryButton(
@@ -147,9 +160,21 @@ fun ProvinceDetailScreen(
                 iconRes = service.iconRes,
                 onClick = { onOpenOfficial(service.officialUrl) },
                 actionHint = stringResource(id = R.string.open_service),
+                officialSourceUrl = service.officialUrl,
+                authorityName = province.authorityName,
+                onOpenOfficialSource = onOpenOfficial,
                 modifier = Modifier
                     .padding(horizontal = pad, vertical = 6.dp)
                     .enterFadeUp(delayMs = 40 + index * 35),
+            )
+        }
+
+        item {
+            AffiliationDisclaimer(
+                modifier = Modifier
+                    .padding(horizontal = pad)
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .enterFadeUp(delayMs = 80),
             )
         }
     }

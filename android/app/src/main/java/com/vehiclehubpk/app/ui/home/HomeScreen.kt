@@ -32,7 +32,9 @@ import com.vehiclehubpk.app.data.Province
 import com.vehiclehubpk.app.ui.components.CompactCategoryTile
 import com.vehiclehubpk.app.ui.components.GhostButton
 import com.vehiclehubpk.app.ui.components.PrimaryButton
+import com.vehiclehubpk.app.ui.components.AffiliationDisclaimer
 import com.vehiclehubpk.app.ui.components.ProvinceCard
+import com.vehiclehubpk.app.ui.components.RegionIcons
 import com.vehiclehubpk.app.ui.components.SectionHeader
 import com.vehiclehubpk.app.ui.components.SpinningBrandLogo
 import com.vehiclehubpk.app.ui.components.enterFade
@@ -105,7 +107,7 @@ fun HomeScreen(
                                 name = province.name,
                                 badge = province.badge,
                                 description = province.description,
-                                logoRes = province.logoRes,
+                                icon = RegionIcons.forProvince(province.id),
                                 onClick = { onProvinceClick(province.id) },
                                 compact = true,
                                 modifier = Modifier
@@ -137,6 +139,8 @@ fun HomeScreen(
                     onOpenLicence = onOpenLicence,
                     onOpenOfficial = onOpenOfficial,
                 )
+                Spacer(modifier = Modifier.height(20.dp))
+                AffiliationDisclaimer()
             }
         }
     }
@@ -232,7 +236,7 @@ private fun ProvinceGrid(
                         name = province.name,
                         badge = province.badge,
                         description = province.description,
-                        logoRes = province.logoRes,
+                        icon = RegionIcons.forProvince(province.id),
                         onClick = { onProvinceClick(province.id) },
                         modifier = Modifier
                             .weight(1f)

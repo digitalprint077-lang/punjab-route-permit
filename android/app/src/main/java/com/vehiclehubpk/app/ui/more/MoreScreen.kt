@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.vehiclehubpk.app.BuildConfig
 import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.data.AppContent
+import com.vehiclehubpk.app.ui.components.AffiliationDisclaimer
 import com.vehiclehubpk.app.ui.components.SpinningBrandLogo
 import com.vehiclehubpk.app.ui.components.enterFadeUp
 import com.vehiclehubpk.app.ui.components.pressScale
@@ -132,6 +133,8 @@ fun MoreScreen(
                     subtitle = stringResource(id = R.string.privacy_hint),
                     onClick = { onOpenUrl(AppContent.siteUrl("privacy.html")) },
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                AffiliationDisclaimer()
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = stringResource(id = R.string.app_version, BuildConfig.VERSION_NAME),

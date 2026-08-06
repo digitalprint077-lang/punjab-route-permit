@@ -3,7 +3,7 @@
     <string name="app_name">Vehicle Hub PK</string>
     <string name="hero_kicker">One window for Excise services</string>
     <string name="hero_tagline">Just a click away</string>
-    <string name="hero_support">Official Excise portals and plain-language guides for Punjab, Sindh, KPK, Islamabad, Balochistan, and Gilgit — plus driving licence verify links.</string>
+    <string name="hero_support">Guides and links to Excise and driving-licence portals for Punjab, Sindh, KPK, Islamabad, Balochistan, and Gilgit.</string>
     <string name="cta_explore_services">Browse services</string>
     <string name="cta_verification_guide">How it works</string>
     <string name="cta_driving_licence">Driving licence</string>
@@ -15,19 +15,22 @@
     <string name="nav_more">More</string>
 
     <string name="section_provinces">Provinces</string>
-    <string name="section_provinces_sub">Choose a region, then open the official portal you need.</string>
+    <string name="section_provinces_sub">Choose a region, then open the government portal you need.</string>
     <string name="section_categories">Popular guides</string>
     <string name="section_categories_sub">Start with the checks people use most.</string>
     <string name="section_service_categories">Services</string>
-    <string name="section_service_categories_sub">Official tools for this province.</string>
-    <string name="section_licence_sub">Apply, renew, or verify on official traffic / police portals.</string>
+    <string name="section_service_categories_sub">Tools linked from this region’s government portal.</string>
+    <string name="section_licence_sub">Apply, renew, or verify on traffic / police portals for each region.</string>
     <string name="section_licence_portals">Licence portals</string>
     <string name="section_licence_portals_sub">Tap Verify for the issuing region — or open the full portal.</string>
-    <string name="licence_intro">Licensing is run by provincial / ICT / GB traffic authorities — not Excise. Pick your region to apply, renew, or verify a licence on the official site.</string>
+    <string name="licence_intro">Licensing is run by provincial / ICT / GB traffic authorities — not Excise. Pick your region to apply, renew, or verify a licence on the government site.</string>
     <string name="licence_open_guide">Full guide</string>
     <string name="licence_verify_jump">How to verify</string>
     <string name="licence_verify">Verify</string>
     <string name="licence_note">Never use third-party “checkers” for important decisions. Always use the official verify page for the region that issued the licence.</string>
+    <string name="official_source_label">Official source: %1$s</string>
+    <string name="official_authority_label">Source: %1$s</string>
+    <string name="affiliation_disclaimer">Vehicle Hub PK is an independent guide and is not affiliated with any government entity. Results and payments come only from official government websites.</string>
     <string name="more_profile_sub">Guides, portals, and settings</string>
     <string name="more_group_tools">Tools</string>
     <string name="more_group_info">Information</string>

@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.data.Province
 import com.vehiclehubpk.app.ui.components.AppSearchField
+import com.vehiclehubpk.app.ui.components.AffiliationDisclaimer
 import com.vehiclehubpk.app.ui.components.ProvinceCard
+import com.vehiclehubpk.app.ui.components.RegionIcons
 import com.vehiclehubpk.app.ui.components.ScreenHeader
 import com.vehiclehubpk.app.ui.components.enterFadeUp
 import com.vehiclehubpk.app.ui.components.responsiveContentPadding
@@ -75,7 +77,7 @@ fun ProvincesScreen(
                         name = province.name,
                         badge = province.badge,
                         description = province.description,
-                        logoRes = province.logoRes,
+                        icon = RegionIcons.forProvince(province.id),
                         onClick = { onProvinceClick(province.id) },
                         modifier = Modifier.enterFadeUp(delayMs = 50 + index * 35),
                     )
@@ -92,7 +94,7 @@ fun ProvincesScreen(
                                 name = province.name,
                                 badge = province.badge,
                                 description = province.description,
-                                logoRes = province.logoRes,
+                                icon = RegionIcons.forProvince(province.id),
                                 onClick = { onProvinceClick(province.id) },
                                 modifier = Modifier
                                     .weight(1f)
@@ -103,6 +105,15 @@ fun ProvincesScreen(
                     }
                 }
             }
+            
+            item {
+                AffiliationDisclaimer(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .enterFadeUp(delayMs = 80),
+                )
+            }
+
             if (filtered.isEmpty()) {
                 item {
                     Text(

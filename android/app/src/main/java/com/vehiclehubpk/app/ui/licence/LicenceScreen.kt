@@ -21,9 +21,11 @@ import androidx.compose.ui.unit.dp
 import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.data.AppContent
 import com.vehiclehubpk.app.data.LicencePortal
+import com.vehiclehubpk.app.ui.components.AffiliationDisclaimer
 import com.vehiclehubpk.app.ui.components.CategoryCard
 import com.vehiclehubpk.app.ui.components.GhostButton
 import com.vehiclehubpk.app.ui.components.PrimaryButton
+import com.vehiclehubpk.app.ui.components.RegionIcons
 import com.vehiclehubpk.app.ui.components.ScreenHeader
 import com.vehiclehubpk.app.ui.components.SectionHeader
 import com.vehiclehubpk.app.ui.components.enterFadeUp
@@ -64,6 +66,8 @@ fun LicenceScreen(
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    AffiliationDisclaimer()
                     Spacer(modifier = Modifier.height(14.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         PrimaryButton(
@@ -91,11 +95,14 @@ fun LicenceScreen(
                 CategoryCard(
                     title = portal.title,
                     description = "${portal.region} · ${portal.description}",
-                    iconRes = portal.logoRes,
+                    icon = RegionIcons.forLicence(portal.id),
                     onClick = { onOpenUrl(portal.verifyUrl) },
                     actionHint = stringResource(id = R.string.licence_verify),
                     secondaryAction = stringResource(id = R.string.visit_portal),
                     onSecondaryAction = { onOpenUrl(portal.portalUrl) },
+                    officialSourceUrl = portal.verifyUrl,
+                    authorityName = portal.authorityName,
+                    onOpenOfficialSource = onOpenUrl,
                     modifier = Modifier.enterFadeUp(delayMs = 50 + index * 35),
                 )
             }
@@ -106,8 +113,15 @@ fun LicenceScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     color = SeaDeep,
                     modifier = Modifier
-                        .padding(top = 8.dp, bottom = 12.dp)
+                        .padding(top = 8.dp)
                         .enterFadeUp(delayMs = 120),
+                )
+            }
+            item {
+                AffiliationDisclaimer(
+                    modifier = Modifier
+                        .padding(top = 8.dp, bottom = 12.dp)
+                        .enterFadeUp(delayMs = 140),
                 )
             }
         }

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
+import androidx.compose.material.icons.rounded.LocationCity
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -33,10 +34,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.ui.theme.Gold
 import com.vehiclehubpk.app.ui.theme.Sand
 import com.vehiclehubpk.app.ui.theme.Sea
@@ -49,7 +53,7 @@ fun ProvinceCard(
     name: String,
     badge: String,
     description: String,
-    @DrawableRes logoRes: Int,
+    icon: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     compact: Boolean = false,
@@ -83,16 +87,20 @@ fun ProvinceCard(
                     .then(if (compact) Modifier.fillMaxSize() else Modifier),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = logoRes),
-                        contentDescription = null,
+                    Box(
                         modifier = Modifier
                             .size(56.dp)
                             .clip(RoundedCornerShape(16.dp))
-                            .background(Sand)
-                            .padding(8.dp),
-                        contentScale = ContentScale.Fit,
-                    )
+                            .background(Sand),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = Sea,
+                            modifier = Modifier.size(28.dp),
+                        )
+                    }
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
@@ -132,15 +140,20 @@ fun ProvinceCard(
 fun CategoryCard(
     title: String,
     description: String,
-    @DrawableRes iconRes: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    @DrawableRes iconRes: Int? = null,
+    icon: ImageVector? = null,
     actionHint: String = "Open service",
     secondaryAction: String? = null,
     onSecondaryAction: (() -> Unit)? = null,
+    officialSourceUrl: String? = null,
+    authorityName: String? = null,
+    onOpenOfficialSource: ((String) -> Unit)? = null,
 ) {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
+    val resolvedIcon = icon ?: Icons.Rounded.LocationCity
 
     Surface(
         modifier = modifier
@@ -152,58 +165,93 @@ fun CategoryCard(
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(58.dp)
-                    .clip(RoundedCornerShape(18.dp))
-                    .background(Sand),
-                contentAlignment = Alignment.Center,
-            ) {
-                Image(
-                    painter = painterResource(id = iconRes),
-                    contentDescription = null,
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp),
-                    contentScale = ContentScale.Fit,
-                )
-            }
-            Spacer(modifier = Modifier.width(14.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(modifier = Modifier.height(3.dp))
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    softWrap = true,
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    Text(
-                        text = actionHint,
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Sea,
-                    )
-                    if (secondaryAction != null && onSecondaryAction != null) {
-                        Text(
-                            text = secondaryAction,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = SeaDeep,
-                            modifier = Modifier.clickable(onClick = onSecondaryAction),
+                        .size(58.dp)
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(Sand),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    if (iconRes != null) {
+                        Image(
+                            painter = painterResource(id = iconRes),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                            contentScale = ContentScale.Fit,
+                        )
+                    } else {
+                        Icon(
+                            imageVector = resolvedIcon,
+                            contentDescription = null,
+                            tint = Sea,
+                            modifier = Modifier.size(28.dp),
                         )
                     }
+                }
+                Spacer(modifier = Modifier.width(14.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Spacer(modifier = Modifier.height(3.dp))
+                    Text(
+                        text = description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        softWrap = true,
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                        Text(
+                            text = actionHint,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Sea,
+                        )
+                        if (secondaryAction != null && onSecondaryAction != null) {
+                            Text(
+                                text = secondaryAction,
+                                style = MaterialTheme.typography.labelLarge,
+                                color = SeaDeep,
+                                modifier = Modifier.clickable(onClick = onSecondaryAction),
+                            )
+                        }
+                    }
+                }
+            }
+            if (officialSourceUrl != null || authorityName != null) {
+                Spacer(modifier = Modifier.height(12.dp))
+                if (officialSourceUrl != null) {
+                    Text(
+                        text = stringResource(id = R.string.official_source_label, officialSourceUrl),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Sea,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = if (onOpenOfficialSource != null) {
+                            Modifier.clickable { onOpenOfficialSource(officialSourceUrl) }
+                        } else {
+                            Modifier
+                        },
+                    )
+                }
+                if (authorityName != null) {
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = stringResource(id = R.string.official_authority_label, authorityName),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             }
         }
