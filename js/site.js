@@ -122,11 +122,25 @@
     initReveal(root || document);
   };
 
+  function ensureIndependentFooterNote() {
+    var footer = document.querySelector('.site-footer-inner');
+    if (!footer || footer.querySelector('.footer-independent-note')) return;
+    var note = document.createElement('p');
+    note.className = 'footer-independent-note';
+    note.innerHTML =
+      '<strong>Vehicle Hub PK / Pak Excise Info</strong> is an independent guide. ' +
+      'Not affiliated with any Government department. ' +
+      'Government information comes from official websites listed throughout this website.';
+    footer.appendChild(note);
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       initReveal(document);
+      ensureIndependentFooterNote();
     });
   } else {
     initReveal(document);
+    ensureIndependentFooterNote();
   }
 })();

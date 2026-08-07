@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.data.AppContent
 import com.vehiclehubpk.app.data.LicencePortal
+import com.vehiclehubpk.app.data.PortalInfo
 import com.vehiclehubpk.app.ui.components.AffiliationDisclaimer
 import com.vehiclehubpk.app.ui.components.CategoryCard
 import com.vehiclehubpk.app.ui.components.GhostButton
@@ -35,10 +36,12 @@ import com.vehiclehubpk.app.ui.theme.SeaDeep
 @Composable
 fun LicenceScreen(
     licences: List<LicencePortal>,
-    onOpenUrl: (String) -> Unit,
+    onOpenSitePage: (String) -> Unit,
+    onOpenPortalInfo: (PortalInfo) -> Unit,
 ) {
     val pad = responsiveContentPadding()
     val listState = rememberLazyListState()
+    val licenceCta = stringResource(id = R.string.cta_open_driving_licence)
 
     Column(
         modifier = Modifier
@@ -72,12 +75,12 @@ fun LicenceScreen(
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         PrimaryButton(
                             text = stringResource(id = R.string.licence_open_guide),
-                            onClick = { onOpenUrl(AppContent.siteUrl(AppContent.LICENCE_GUIDE_PATH)) },
+                            onClick = { onOpenSitePage(AppContent.siteUrl(AppContent.LICENCE_GUIDE_PATH)) },
                         )
                         GhostButton(
                             text = stringResource(id = R.string.licence_verify_jump),
                             onClick = {
-                                onOpenUrl(
+                                onOpenSitePage(
                                     AppContent.siteUrl("${AppContent.LICENCE_GUIDE_PATH}#verify"),
                                 )
                             },
@@ -96,13 +99,43 @@ fun LicenceScreen(
                     title = portal.title,
                     description = "${portal.region} · ${portal.description}",
                     icon = RegionIcons.forLicence(portal.id),
-                    onClick = { onOpenUrl(portal.verifyUrl) },
+                    onClick = {
+                        onOpenPortalInfo(
+                            PortalInfo(
+                                title = portal.title,
+                                authorityName = portal.authorityName,
+                                officialUrl = portal.verifyUrl,
+                                detail = portal.description,
+                                openCta = licenceCta,
+                            ),
+                        )
+                    },
                     actionHint = stringResource(id = R.string.licence_verify),
                     secondaryAction = stringResource(id = R.string.visit_portal),
-                    onSecondaryAction = { onOpenUrl(portal.portalUrl) },
+                    onSecondaryAction = {
+                        onOpenPortalInfo(
+                            PortalInfo(
+                                title = portal.title,
+                                authorityName = portal.authorityName,
+                                officialUrl = portal.portalUrl,
+                                detail = portal.description,
+                                openCta = licenceCta,
+                            ),
+                        )
+                    },
                     officialSourceUrl = portal.verifyUrl,
                     authorityName = portal.authorityName,
-                    onOpenOfficialSource = onOpenUrl,
+                    onOpenOfficialSource = {
+                        onOpenPortalInfo(
+                            PortalInfo(
+                                title = portal.title,
+                                authorityName = portal.authorityName,
+                                officialUrl = portal.verifyUrl,
+                                detail = portal.description,
+                                openCta = licenceCta,
+                            ),
+                        )
+                    },
                     modifier = Modifier.enterFadeUp(delayMs = 50 + index * 35),
                 )
             }

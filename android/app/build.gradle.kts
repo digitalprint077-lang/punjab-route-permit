@@ -26,8 +26,8 @@ android {
         applicationId = "com.vehiclehubpk.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 9
-        versionName = "1.2.2"
+        versionCode = 10
+        versionName = "1.3.0"
         buildConfigField("String", "SITE_URL", "\"https://vehiclehubpk.com/\"")
         buildConfigField("String", "SITE_HOST", "\"vehiclehubpk.com\"")
         buildConfigField("boolean", "CRASHLYTICS_ENABLED", crashlyticsEnabled.toString())

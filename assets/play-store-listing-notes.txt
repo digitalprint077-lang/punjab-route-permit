@@ -1,47 +1,63 @@
-Vehicle Hub PK — Play Store listing notes (v1.2.2)
+Vehicle Hub PK — Play Store listing notes (v1.3.0)
 =================================================
 
 SHORT DESCRIPTION
 -----------------
-Guides & links to Excise and driving-licence portals across Pakistan. Independent info app.
+Independent guide to official Excise & driving-licence websites across Pakistan.
 
-FULL DESCRIPTION (append / replace disclaimer section)
-------------------------------------------------------
-Vehicle Hub PK — One window for Excise services. Just a click away.
+FULL DESCRIPTION
+----------------
+IMPORTANT
 
-Browse guides and links to Excise, traffic, and driving licence portals across Pakistan. Open the correct government website for your province in one tap.
+Vehicle Hub PK is an independent guide.
 
-WHAT YOU CAN DO
-• Open vehicle verification portals by province
-• Open token tax and payment links
-• Open e-smart card / tracking tools
-• Open e-challan related services
-• Apply, renew, or verify a driving licence by region
-• Open province portals for Punjab, Sindh, KPK, Islamabad, Balochistan, and Gilgit
+It is NOT affiliated with,
+endorsed by,
+or representing
+any Government entity.
 
-IMPORTANT — INDEPENDENT APP
-Vehicle Hub PK is an independent informational app. It is not affiliated with, endorsed by, or operated by the Government of Pakistan or any provincial Excise & Taxation Department. All verification, payments, licences and government services are provided only through the official government websites.
+Vehicle Hub PK does not provide government services.
 
-OFFICIAL SOURCES (examples)
-• Punjab Excise / MTMIS: https://mtmis.excise.punjab.gov.pk/
-• Punjab Excise department: https://excise.punjab.gov.pk/
-• Sindh Excise: https://excise.gos.pk/
-• KPK Dastak: https://dastak.kp.gov.pk/
-• Islamabad Excise: https://islamabadexcise.gov.pk/
-• Balochistan Excise: https://excise.balochistan.gov.pk/
-• Gilgit Excise: https://gbexcise.gov.pk/
-• Punjab DLIMS: https://dlims.punjab.gov.pk/
-• Sindh DLS: https://dls.gos.pk/
-• Islamabad ITP DLIMS: https://dlims.islamabadpolice.gov.pk/
-• KPK Dastak Citizen: https://dastakappecitizenkp.pk/
-• Quetta Traffic Police: https://qtp.gob.pk/
-• GB Police DLMIS: https://dlmis.gbp.gov.pk/
+It helps users find official government websites.
+
+---
+
+Vehicle Hub PK — One window for Excise guides. Just a click away.
+
+Browse guides and links to Excise, traffic, and driving licence portals across Pakistan. Review the official source, then open the correct government website in your browser.
+
+WHAT THIS APP HELPS YOU FIND
+• Official vehicle verification websites by province
+• Official token tax and payment portals
+• Official e-smart card / tracking tools
+• Official e-challan related government portals
+• Official driving licence apply / renew / verify websites by region
+• Province portals for Punjab, Sindh, KPK, Islamabad, Balochistan, and Gilgit
+
+OFFICIAL SOURCES
+• Punjab Excise — https://excise.punjab.gov.pk/
+• Punjab Vehicle Verification (MTMIS) — https://mtmis.excise.punjab.gov.pk/
+• Punjab DLIMS — https://dlims.punjab.gov.pk/
+• Sindh Excise — https://excise.gos.pk/
+• Sindh DLS — https://dls.gos.pk/
+• Islamabad Excise — https://islamabadexcise.gov.pk/
+• Islamabad Police DLIMS — https://dlims.islamabadpolice.gov.pk/
+• KPK Dastak — https://dastak.kp.gov.pk/
+• KPK Dastak Citizen (Licence) — https://dastakappecitizenkp.pk/
+• Balochistan Excise — https://excise.balochistan.gov.pk/
+• Quetta Traffic Police — https://qtp.gob.pk/
+• Gilgit Excise — https://gbexcise.gov.pk/
+• GB Police DLMIS — https://dlmis.gbp.gov.pk/
+
+HOW THE APP WORKS
+Home → Choose province / service → Information page (source + official URL + disclaimer) → Open Official Government Website → Chrome / browser.
 
 Vehicle Hub PK only explains steps and opens the correct website. It does not provide government services itself.
 
-RELEASE NOTES (1.2.2)
+RELEASE NOTES (1.3.0)
 ---------------------
-• Stronger independent-app disclaimer
-• “Open Official Website” wording when leaving the app
-• Tap-to-open official source URLs on province and licence screens
-• Non-government links no longer labeled as “Official source”
+• Information page before every official government website open
+• Government Sources screen in More
+• Stronger Independent Notice on Home
+• Clearer “Open Official … Portal/Website” button labels
+• No WebView — links open in Chrome Custom Tabs / browser

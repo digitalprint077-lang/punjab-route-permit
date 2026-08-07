@@ -31,6 +31,7 @@ data class GuideItem(
     @DrawableRes val iconRes: Int,
     val guidePath: String,
     val officialUrl: String,
+    val authorityName: String = "",
 )
 
 data class LicencePortal(
@@ -65,51 +66,57 @@ object AppContent {
     val popularGuides = listOf(
         GuideItem(
             id = "licence",
-            title = "Driving licence",
-            description = "Official portals for Punjab, Sindh, Islamabad, KPK, Balochistan, and Gilgit.",
+            title = "Driving licence portals",
+            description = "Find official driving-licence websites by province.",
             iconRes = R.drawable.ic_cat_license,
             guidePath = LICENCE_GUIDE_PATH,
             officialUrl = siteUrl(LICENCE_GUIDE_PATH),
+            authorityName = "Provincial / ICT / GB traffic authorities",
         ),
         GuideItem(
             id = "verify",
-            title = "Vehicle verification",
-            description = "Official MTMIS steps, SMS tip, and what result fields mean.",
+            title = "Vehicle verification (Punjab)",
+            description = "Open the Punjab MTMIS government verification website.",
             iconRes = R.drawable.ic_cat_verify,
             guidePath = "guides/vehicle-verification.html",
             officialUrl = "https://mtmis.excise.punjab.gov.pk/",
+            authorityName = "Government of Punjab – Excise, Taxation & Narcotics Control Department",
         ),
         GuideItem(
             id = "token",
-            title = "Token tax",
-            description = "Why dues matter before purchase and how status is usually checked.",
+            title = "Token tax (Punjab)",
+            description = "Open the Punjab e-Pay government payment website.",
             iconRes = R.drawable.ic_cat_pay,
             guidePath = "guides/token-tax.html",
             officialUrl = "https://epay.punjab.gov.pk/",
+            authorityName = "Government of Punjab – e-Pay Punjab",
         ),
         GuideItem(
             id = "challan",
-            title = "E-Challan",
-            description = "Unpaid fines that can block transfers — check early.",
+            title = "E-Challan (Punjab)",
+            description = "Open government payment tools used for challan-related dues.",
             iconRes = R.drawable.ic_cat_challan,
             guidePath = "guides/e-challan.html",
             officialUrl = "https://epay.punjab.gov.pk/",
+            authorityName = "Government of Punjab – e-Pay Punjab",
         ),
         GuideItem(
             id = "districts",
             title = "District Excise offices",
-            description = "Find local office contacts when online tools are not enough.",
+            description = "Independent guide to local Excise office contacts.",
             iconRes = R.drawable.ic_cat_portal,
             guidePath = "guides/districts.html",
             officialUrl = siteUrl("guides/districts.html"),
+            authorityName = "Vehicle Hub PK independent guide",
         ),
         GuideItem(
             id = "smartcard",
-            title = "E-Smart card",
-            description = "What the card is for and how tracking usually works.",
+            title = "E-Smart card (Punjab)",
+            description = "Open the Punjab e-registration card website.",
             iconRes = R.drawable.ic_cat_smartcard,
             guidePath = "guides/smart-card.html",
             officialUrl = "https://vrcentpunjab.com/",
+            authorityName = "Government of Punjab – Excise, Taxation & Narcotics Control Department",
         ),
     )
 
@@ -284,6 +291,23 @@ object AppContent {
                 ServiceItem("gb-portal", "Official Gilgit portal", "Open gbexcise.gov.pk.", R.drawable.ic_cat_portal, "https://gbexcise.gov.pk/"),
             ),
         ),
+    )
+
+
+    val governmentSources = listOf(
+        GovernmentSource("Punjab Excise", "Government of Punjab – Excise, Taxation & Narcotics Control Department", "https://excise.punjab.gov.pk/"),
+        GovernmentSource("Punjab Vehicle Verification (MTMIS)", "Government of Punjab – Excise, Taxation & Narcotics Control Department", "https://mtmis.excise.punjab.gov.pk/"),
+        GovernmentSource("Punjab DLIMS", "Government of Punjab – Driving Licence Issuance Management System (DLIMS)", "https://dlims.punjab.gov.pk/"),
+        GovernmentSource("Sindh Excise", "Government of Sindh – Excise, Taxation & Narcotics Control Department", "https://excise.gos.pk/"),
+        GovernmentSource("Sindh DLS", "Government of Sindh – Sindh Police Driving License Sindh (DLS)", "https://dls.gos.pk/"),
+        GovernmentSource("Islamabad Excise", "Islamabad Capital Territory – Excise & Taxation Department", "https://islamabadexcise.gov.pk/"),
+        GovernmentSource("Islamabad Police DLIMS", "Islamabad Traffic Police – Driving License Information Management System (DLIMS)", "https://dlims.islamabadpolice.gov.pk/"),
+        GovernmentSource("KPK Dastak", "Government of Khyber Pakhtunkhwa – Dastak Portal", "https://dastak.kp.gov.pk/"),
+        GovernmentSource("KPK Dastak Citizen (Licence)", "Government of Khyber Pakhtunkhwa – Dastak Citizen Portal", "https://dastakappecitizenkp.pk/"),
+        GovernmentSource("Balochistan Excise", "Government of Balochistan – Excise, Taxation & Anti-Narcotics Department", "https://excise.balochistan.gov.pk/"),
+        GovernmentSource("Quetta Traffic Police", "Government of Balochistan – Quetta Traffic Police", "https://qtp.gob.pk/"),
+        GovernmentSource("Gilgit Excise", "Gilgit-Baltistan – Excise & Taxation Department", "https://gbexcise.gov.pk/"),
+        GovernmentSource("GB Police DLMIS", "Gilgit-Baltistan Police – Driving License Management Issuance System (DLMIS)", "https://dlmis.gbp.gov.pk/"),
     )
 
     fun provinceById(id: String): Province? = provinces.find { it.id == id }

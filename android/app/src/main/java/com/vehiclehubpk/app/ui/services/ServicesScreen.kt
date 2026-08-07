@@ -18,11 +18,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.data.AppContent
 import com.vehiclehubpk.app.data.GuideItem
+import com.vehiclehubpk.app.data.PortalInfo
+import com.vehiclehubpk.app.data.UrlHelpers
+import com.vehiclehubpk.app.data.guideOpenCta
+import com.vehiclehubpk.app.ui.components.AffiliationDisclaimer
 import com.vehiclehubpk.app.ui.components.AppSearchField
 import com.vehiclehubpk.app.ui.components.CategoryCard
 import com.vehiclehubpk.app.ui.components.ScreenHeader
@@ -32,8 +37,8 @@ import com.vehiclehubpk.app.ui.components.responsiveContentPadding
 @Composable
 fun ServicesScreen(
     guides: List<GuideItem>,
-    onOpenOfficial: (String) -> Unit,
-    onOpenGuide: (String) -> Unit,
+    onOpenSitePage: (String) -> Unit,
+    onOpenPortalInfo: (PortalInfo) -> Unit,
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     val filtered = guides.filter { guide ->
@@ -43,6 +48,7 @@ fun ServicesScreen(
     }
     val listState = rememberLazyListState()
     val pad = responsiveContentPadding()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -71,11 +77,39 @@ fun ServicesScreen(
                     title = guide.title,
                     description = guide.description,
                     iconRes = guide.iconRes,
-                    onClick = { onOpenOfficial(guide.officialUrl) },
+                    onClick = {
+                        if (UrlHelpers.isGovernmentSource(guide.officialUrl)) {
+                            onOpenPortalInfo(
+                                PortalInfo.forGuide(
+                                    guide = guide,
+                                    openCta = guideOpenCta(context, guide.id),
+                                ),
+                            )
+                        } else {
+                            onOpenSitePage(guide.officialUrl)
+                        }
+                    },
                     actionHint = stringResource(id = R.string.open_service),
                     secondaryAction = stringResource(id = R.string.read_guide),
-                    onSecondaryAction = { onOpenGuide(AppContent.siteUrl(guide.guidePath)) },
+                    onSecondaryAction = { onOpenSitePage(AppContent.siteUrl(guide.guidePath)) },
+                    officialSourceUrl = guide.officialUrl.takeIf { UrlHelpers.isGovernmentSource(it) },
+                    authorityName = guide.authorityName.takeIf { it.isNotBlank() },
+                    onOpenOfficialSource = {
+                        onOpenPortalInfo(
+                            PortalInfo.forGuide(
+                                guide = guide,
+                                openCta = guideOpenCta(context, guide.id),
+                            ),
+                        )
+                    },
                     modifier = Modifier.enterFadeUp(delayMs = 50 + index * 40),
+                )
+            }
+            item {
+                AffiliationDisclaimer(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .enterFadeUp(delayMs = 80),
                 )
             }
             if (filtered.isEmpty()) {

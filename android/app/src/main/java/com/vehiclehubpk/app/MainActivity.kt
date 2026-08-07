@@ -43,17 +43,21 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.vehiclehubpk.app.ads.BannerAd
+import com.vehiclehubpk.app.data.AppContent
+import com.vehiclehubpk.app.data.PortalInfo
 import com.vehiclehubpk.app.ui.AppViewModel
 import com.vehiclehubpk.app.ui.components.AnimatedBottomBar
 import com.vehiclehubpk.app.ui.components.BottomTab
 import com.vehiclehubpk.app.ui.home.HomeScreen
+import com.vehiclehubpk.app.ui.info.ServiceInfoScreen
+import com.vehiclehubpk.app.ui.info.SourcesScreen
 import com.vehiclehubpk.app.ui.licence.LicenceScreen
 import com.vehiclehubpk.app.ui.more.MoreScreen
 import com.vehiclehubpk.app.ui.provinces.ProvinceDetailScreen
 import com.vehiclehubpk.app.ui.provinces.ProvincesScreen
 import com.vehiclehubpk.app.ui.services.ServicesScreen
-import com.vehiclehubpk.app.ui.theme.VehicleHubTheme
 import com.vehiclehubpk.app.ui.theme.Sea
+import com.vehiclehubpk.app.ui.theme.VehicleHubTheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,11 +101,19 @@ private fun AppRoot(
     }?.route
     val showBottomBar = selectedRoute != null
     val content by viewModel.content.collectAsStateWithLifecycle()
+    val portalInfo by viewModel.portalInfo.collectAsStateWithLifecycle()
     val opening by viewModel.opening.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
-    val openUrl: (String) -> Unit = remember(context, viewModel) {
+
+    val openBrowser: (String) -> Unit = remember(context, viewModel) {
         { url -> viewModel.openUrl(context, url) }
+    }
+    val openPortalInfo: (PortalInfo) -> Unit = remember(navController, viewModel) {
+        { info ->
+            viewModel.preparePortalInfo(info)
+            navController.navigate("service-info")
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -165,13 +177,15 @@ private fun AppRoot(
                         onOpenProvinces = { navigateToTab("provinces") },
                         onOpenServices = { navigateToTab("services") },
                         onOpenLicence = { navigateToTab("licence") },
-                        onOpenOfficial = openUrl,
+                        onOpenSitePage = openBrowser,
+                        onOpenPortalInfo = openPortalInfo,
                     )
                 }
                 composable(route = "licence") {
                     LicenceScreen(
                         licences = content.licences,
-                        onOpenUrl = openUrl,
+                        onOpenSitePage = openBrowser,
+                        onOpenPortalInfo = openPortalInfo,
                     )
                 }
                 composable(route = "provinces") {
@@ -183,14 +197,32 @@ private fun AppRoot(
                 composable(route = "services") {
                     ServicesScreen(
                         guides = content.guides,
-                        onOpenOfficial = openUrl,
-                        onOpenGuide = openUrl,
+                        onOpenSitePage = openBrowser,
+                        onOpenPortalInfo = openPortalInfo,
                     )
                 }
                 composable(route = "more") {
                     MoreScreen(
-                        onOpenUrl = openUrl,
+                        onOpenSitePage = openBrowser,
+                        onOpenSources = { navController.navigate("sources") },
                         onRefreshConfig = viewModel::refreshConfig,
+                    )
+                }
+                composable(route = "sources") {
+                    SourcesScreen(
+                        sources = AppContent.governmentSources,
+                        onBack = { navController.popBackStack() },
+                        onOpenSourceInfo = openPortalInfo,
+                    )
+                }
+                composable(route = "service-info") {
+                    ServiceInfoScreen(
+                        info = portalInfo,
+                        onBack = {
+                            navController.popBackStack()
+                            viewModel.clearPortalInfo()
+                        },
+                        onOpenOfficialWebsite = openBrowser,
                     )
                 }
                 composable(
@@ -203,8 +235,8 @@ private fun AppRoot(
                     ProvinceDetailScreen(
                         province = content.provinceById(id),
                         onBack = { navController.popBackStack() },
-                        onOpenOfficial = openUrl,
-                        onOpenGuide = openUrl,
+                        onOpenSitePage = openBrowser,
+                        onOpenPortalInfo = openPortalInfo,
                     )
                 }
             }

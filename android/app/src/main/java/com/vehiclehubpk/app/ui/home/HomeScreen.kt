@@ -22,13 +22,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.data.AppContent
 import com.vehiclehubpk.app.data.GuideItem
+import com.vehiclehubpk.app.data.PortalInfo
 import com.vehiclehubpk.app.data.Province
+import com.vehiclehubpk.app.data.UrlHelpers
+import com.vehiclehubpk.app.data.guideOpenCta
 import com.vehiclehubpk.app.ui.components.CompactCategoryTile
 import com.vehiclehubpk.app.ui.components.GhostButton
 import com.vehiclehubpk.app.ui.components.PrimaryButton
@@ -55,7 +59,8 @@ fun HomeScreen(
     onOpenProvinces: () -> Unit,
     onOpenServices: () -> Unit,
     onOpenLicence: () -> Unit,
-    onOpenOfficial: (String) -> Unit,
+    onOpenSitePage: (String) -> Unit,
+    onOpenPortalInfo: (PortalInfo) -> Unit,
 ) {
     val listState = rememberLazyListState()
     val pad = responsiveContentPadding()
@@ -70,7 +75,7 @@ fun HomeScreen(
             HomeHero(
                 onExplore = onOpenProvinces,
                 onHowItWorks = {
-                    onOpenOfficial(AppContent.siteUrl("how-it-works.html"))
+                    onOpenSitePage(AppContent.siteUrl("how-it-works.html"))
                 },
             )
         }
@@ -137,9 +142,22 @@ fun HomeScreen(
                 CategoryIconGrid(
                     guides = guides,
                     onOpenLicence = onOpenLicence,
-                    onOpenOfficial = onOpenOfficial,
+                    onOpenSitePage = onOpenSitePage,
+                    onOpenPortalInfo = onOpenPortalInfo,
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(24.dp))
+                Text(
+                    text = stringResource(id = R.string.independent_notice_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = SeaDeep,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(id = R.string.independent_notice_body),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(modifier = Modifier.height(14.dp))
                 AffiliationDisclaimer()
             }
         }
@@ -253,8 +271,10 @@ private fun ProvinceGrid(
 private fun CategoryIconGrid(
     guides: List<GuideItem>,
     onOpenLicence: () -> Unit,
-    onOpenOfficial: (String) -> Unit,
+    onOpenSitePage: (String) -> Unit,
+    onOpenPortalInfo: (PortalInfo) -> Unit,
 ) {
+    val context = LocalContext.current
     val columns = responsiveGridColumns(compact = 2, medium = 3, expanded = 4)
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         guides.chunked(columns).forEachIndexed { rowIndex, row ->
@@ -267,10 +287,15 @@ private fun CategoryIconGrid(
                         title = guide.title,
                         iconRes = guide.iconRes,
                         onClick = {
-                            if (guide.id == "licence") {
-                                onOpenLicence()
-                            } else {
-                                onOpenOfficial(guide.officialUrl)
+                            when {
+                                guide.id == "licence" -> onOpenLicence()
+                                UrlHelpers.isGovernmentSource(guide.officialUrl) -> onOpenPortalInfo(
+                                    PortalInfo.forGuide(
+                                        guide = guide,
+                                        openCta = guideOpenCta(context, guide.id),
+                                    ),
+                                )
+                                else -> onOpenSitePage(guide.officialUrl)
                             }
                         },
                         modifier = Modifier

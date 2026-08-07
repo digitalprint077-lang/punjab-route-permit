@@ -25,11 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.vehiclehubpk.app.R
 import com.vehiclehubpk.app.data.AppContent
+import com.vehiclehubpk.app.data.PortalInfo
 import com.vehiclehubpk.app.data.Province
+import com.vehiclehubpk.app.data.serviceOpenCta
 import com.vehiclehubpk.app.ui.components.AffiliationDisclaimer
 import com.vehiclehubpk.app.ui.components.CategoryCard
 import com.vehiclehubpk.app.ui.components.GhostButton
@@ -49,8 +52,8 @@ import com.vehiclehubpk.app.ui.theme.Sea
 fun ProvinceDetailScreen(
     province: Province?,
     onBack: () -> Unit,
-    onOpenOfficial: (String) -> Unit,
-    onOpenGuide: (String) -> Unit,
+    onOpenSitePage: (String) -> Unit,
+    onOpenPortalInfo: (PortalInfo) -> Unit,
 ) {
     val pad = responsiveContentPadding()
     if (province == null) {
@@ -62,6 +65,7 @@ fun ProvinceDetailScreen(
     }
 
     val listState = rememberLazyListState()
+    val context = LocalContext.current
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         state = listState,
@@ -120,19 +124,28 @@ fun ProvinceDetailScreen(
                     OfficialSourceBlock(
                         sourceUrl = province.portalUrl,
                         authorityName = province.authorityName,
-                        onOpenSource = onOpenOfficial,
+                        onOpenSource = null,
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     AffiliationDisclaimer()
                     Spacer(modifier = Modifier.height(18.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         PrimaryButton(
-                            text = stringResource(id = R.string.visit_portal),
-                            onClick = { onOpenOfficial(province.portalUrl) },
+                            text = stringResource(id = R.string.open_official_gov_website),
+                            onClick = {
+                                onOpenPortalInfo(
+                                    PortalInfo(
+                                        title = province.name,
+                                        authorityName = province.authorityName,
+                                        officialUrl = province.portalUrl,
+                                        detail = province.description,
+                                    ),
+                                )
+                            },
                         )
                         GhostButton(
                             text = stringResource(id = R.string.read_guide),
-                            onClick = { onOpenGuide(AppContent.siteUrl(province.guidePath)) },
+                            onClick = { onOpenSitePage(AppContent.siteUrl(province.guidePath)) },
                         )
                     }
                 }
@@ -154,15 +167,36 @@ fun ProvinceDetailScreen(
         }
 
         itemsIndexed(province.services, key = { _, s -> s.id }) { index, service ->
+            val cta = serviceOpenCta(context, service.id, service.title)
             CategoryCard(
                 title = service.title,
                 description = service.description,
                 iconRes = service.iconRes,
-                onClick = { onOpenOfficial(service.officialUrl) },
+                onClick = {
+                    onOpenPortalInfo(
+                        PortalInfo(
+                            title = service.title,
+                            authorityName = province.authorityName,
+                            officialUrl = service.officialUrl,
+                            detail = service.description,
+                            openCta = cta,
+                        ),
+                    )
+                },
                 actionHint = stringResource(id = R.string.open_service),
                 officialSourceUrl = service.officialUrl,
                 authorityName = province.authorityName,
-                onOpenOfficialSource = onOpenOfficial,
+                onOpenOfficialSource = {
+                    onOpenPortalInfo(
+                        PortalInfo(
+                            title = service.title,
+                            authorityName = province.authorityName,
+                            officialUrl = service.officialUrl,
+                            detail = service.description,
+                            openCta = cta,
+                        ),
+                    )
+                },
                 modifier = Modifier
                     .padding(horizontal = pad, vertical = 6.dp)
                     .enterFadeUp(delayMs = 40 + index * 35),

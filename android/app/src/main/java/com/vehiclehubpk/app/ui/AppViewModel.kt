@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.vehiclehubpk.app.data.AppConfigRepository
 import com.vehiclehubpk.app.data.AppContent
 import com.vehiclehubpk.app.data.ContentSnapshot
+import com.vehiclehubpk.app.data.PortalInfo
 import com.vehiclehubpk.app.util.LinkOpener
 import com.vehiclehubpk.app.util.OpenLinkResult
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,6 +24,9 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     private val _content = MutableStateFlow(AppContent.snapshot())
     val content: StateFlow<ContentSnapshot> = _content.asStateFlow()
 
+    private val _portalInfo = MutableStateFlow<PortalInfo?>(null)
+    val portalInfo: StateFlow<PortalInfo?> = _portalInfo.asStateFlow()
+
     private val _messages = MutableSharedFlow<Int>(extraBufferCapacity = 1)
     val messages: SharedFlow<Int> = _messages.asSharedFlow()
 
@@ -30,13 +34,20 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val opening: StateFlow<Boolean> = _opening.asStateFlow()
 
     init {
-        // Silent refresh on startup — do not snackbar.
         viewModelScope.launch {
             runCatching {
                 val config = configRepository.load()
                 _content.value = AppContent.snapshot(config)
             }
         }
+    }
+
+    fun preparePortalInfo(info: PortalInfo) {
+        _portalInfo.value = info
+    }
+
+    fun clearPortalInfo() {
+        _portalInfo.value = null
     }
 
     fun refreshConfig() {
@@ -51,13 +62,11 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /** Opens URL in Chrome Custom Tabs / external browser — never WebView. */
     fun openUrl(context: Context, url: String) {
         viewModelScope.launch {
             _opening.value = true
-            // Use Activity context when available so Custom Tabs / browser intents work.
-            val launchContext = context.applicationContext.let { appCtx ->
-                if (context is android.app.Activity) context else appCtx
-            }
+            val launchContext = if (context is android.app.Activity) context else context.applicationContext
             val result = runCatching {
                 LinkOpener.open(launchContext, url)
             }.getOrDefault(OpenLinkResult.NoApp)

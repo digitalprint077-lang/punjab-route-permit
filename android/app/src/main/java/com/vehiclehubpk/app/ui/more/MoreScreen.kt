@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.AccountBalance
 import androidx.compose.material.icons.rounded.Badge
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MailOutline
@@ -58,7 +59,8 @@ import com.vehiclehubpk.app.ui.theme.SeaDeep
 
 @Composable
 fun MoreScreen(
-    onOpenUrl: (String) -> Unit,
+    onOpenSitePage: (String) -> Unit,
+    onOpenSources: () -> Unit,
     onRefreshConfig: () -> Unit,
 ) {
     val pad = responsiveContentPadding()
@@ -92,13 +94,19 @@ fun MoreScreen(
                     icon = Icons.Rounded.Badge,
                     title = stringResource(id = R.string.cta_driving_licence),
                     subtitle = stringResource(id = R.string.section_licence_sub),
-                    onClick = { onOpenUrl(AppContent.siteUrl(AppContent.LICENCE_GUIDE_PATH)) },
+                    onClick = { onOpenSitePage(AppContent.siteUrl(AppContent.LICENCE_GUIDE_PATH)) },
                 )
                 MoreRow(
                     icon = Icons.Rounded.Route,
                     title = stringResource(id = R.string.how_it_works),
                     subtitle = stringResource(id = R.string.how_it_works_hint),
-                    onClick = { onOpenUrl(AppContent.siteUrl("how-it-works.html")) },
+                    onClick = { onOpenSitePage(AppContent.siteUrl("how-it-works.html")) },
+                )
+                MoreRow(
+                    icon = Icons.Rounded.AccountBalance,
+                    title = stringResource(id = R.string.nav_sources),
+                    subtitle = stringResource(id = R.string.sources_hint),
+                    onClick = onOpenSources,
                 )
             }
         }
@@ -119,19 +127,19 @@ fun MoreScreen(
                     icon = Icons.Rounded.Info,
                     title = stringResource(id = R.string.about),
                     subtitle = stringResource(id = R.string.about_hint),
-                    onClick = { onOpenUrl(AppContent.siteUrl("about.html")) },
+                    onClick = { onOpenSitePage(AppContent.siteUrl("about.html")) },
                 )
                 MoreRow(
                     icon = Icons.Rounded.MailOutline,
                     title = stringResource(id = R.string.contact),
                     subtitle = stringResource(id = R.string.contact_hint),
-                    onClick = { onOpenUrl(AppContent.siteUrl("contact.html")) },
+                    onClick = { onOpenSitePage(AppContent.siteUrl("contact.html")) },
                 )
                 MoreRow(
                     icon = Icons.Rounded.Policy,
                     title = stringResource(id = R.string.privacy),
                     subtitle = stringResource(id = R.string.privacy_hint),
-                    onClick = { onOpenUrl(AppContent.siteUrl("privacy.html")) },
+                    onClick = { onOpenSitePage(AppContent.siteUrl("privacy.html")) },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 AffiliationDisclaimer()
