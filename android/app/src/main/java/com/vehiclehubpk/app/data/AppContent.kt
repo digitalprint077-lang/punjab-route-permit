@@ -168,7 +168,7 @@ object AppContent {
             description = "Learner, permanent, international, duplicate, and CNIC verification.",
             authorityName = "Government of Balochistan – Quetta Traffic Police",
             portalUrl = "https://qtp.gob.pk/",
-            verifyUrl = "https://qtp.gob.pk/driving/verfication",
+            verifyUrl = "https://qtp.gob.pk/",
             guideAnchor = "balochistan",
         ),
         LicencePortal(
@@ -231,7 +231,7 @@ object AppContent {
             portalUrl = "https://excise.balochistan.gov.pk/",
             services = listOf(
                 ServiceItem("bl-verify", "Online vehicle verification", "Open the Balochistan Excise department website for verification tools.", R.drawable.ic_cat_verify, "https://excise.balochistan.gov.pk/"),
-                ServiceItem("bl-dl", "Driving licence (QTP)", "Quetta Traffic Police — verify and licence services.", R.drawable.ic_cat_license, "https://qtp.gob.pk/driving/verfication", LICENCE_GUIDE_PATH),
+                ServiceItem("bl-dl", "Driving licence (QTP)", "Open Quetta Traffic Police website for licence verification and related services.", R.drawable.ic_cat_license, "https://qtp.gob.pk/", LICENCE_GUIDE_PATH),
                 ServiceItem("bl-tax", "Tax rates (PDF)", "Published motor vehicle tax rates from Balochistan Excise.", R.drawable.ic_cat_tax, "https://excise.balochistan.gov.pk/wp-content/uploads/2026/01/mvtx.pdf"),
                 ServiceItem("bl-portal", "Official portal", "Open the Balochistan Excise website.", R.drawable.ic_cat_portal, "https://excise.balochistan.gov.pk/"),
             ),
