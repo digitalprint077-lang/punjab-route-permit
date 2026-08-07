@@ -1,4 +1,4 @@
-Vehicle Hub PK — Play Store listing notes (v1.3.1)
+Vehicle Hub PK — Play Store listing notes (v1.3.2)
 =================================================
 
 SHORT DESCRIPTION
@@ -36,23 +36,30 @@ WHAT THIS APP HELPS YOU FIND
 
 OFFICIAL SOURCES
 • Punjab Excise — https://excise.punjab.gov.pk/
-• Punjab Vehicle Verification (MTMIS) — https://mtmis.excise.punjab.gov.pk/
 • Punjab DLIMS — https://dlims.punjab.gov.pk/
+• Punjab e-Pay — https://epay.punjab.gov.pk/
 • Sindh Excise — https://excise.gos.pk/
 • Sindh DLS — https://dls.gos.pk/
 • Islamabad Excise — https://islamabadexcise.gov.pk/
-• Islamabad Police DLIMS — https://dlims.islamabadpolice.gov.pk/
+• Islamabad Police — https://islamabadpolice.gov.pk/
 • KPK Dastak — https://dastak.kp.gov.pk/
 • KPK Dastak Citizen (Licence) — https://dastakappecitizenkp.pk/
 • Balochistan Excise — https://excise.balochistan.gov.pk/
 • Quetta Traffic Police — https://qtp.gob.pk/
 • Gilgit Excise — https://gbexcise.gov.pk/
-• GB Police DLMIS — https://dlmis.gbp.gov.pk/
+• Gilgit-Baltistan Police — https://gbp.gov.pk/
 
 HOW THE APP WORKS
 Home → Choose province / service → Information page (source + official URL + disclaimer) → Open Official Government Website → Chrome / browser.
 
 Vehicle Hub PK only explains steps and opens the correct website. It does not provide government services itself.
+
+RELEASE NOTES (1.3.2)
+---------------------
+• Removed broken / inaccessible government source links (Islamabad IP services, dead licence/tax deep links)
+• Replaced inaccessible portals with working official department websites
+• Added missing driving-licence guide page
+• All in-app official source URLs rechecked for accessibility
 
 RELEASE NOTES (1.3.1)
 ---------------------
@@ -60,11 +67,3 @@ RELEASE NOTES (1.3.1)
 • Explicit notice: app does not collect, verify, or store government records
 • Official URL is tappable on the information page (plus the Open Official Website button)
 • Consistent info-page flow for all provinces, licences, verification, tax, smart card, challan
-
-RELEASE NOTES (1.3.0)
----------------------
-• Information page before every official government website open
-• Government Sources screen in More
-• Stronger Independent Notice on Home
-• Clearer “Open Official … Portal/Website” button labels
-• No WebView — links open in Chrome Custom Tabs / browser

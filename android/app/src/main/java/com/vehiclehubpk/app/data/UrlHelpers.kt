@@ -17,11 +17,10 @@ object UrlHelpers {
         val allowed = setOf(
             "dastakappecitizenkp.pk",
             "www.dastakappecitizenkp.pk",
-            "vrcentpunjab.com",
-            "www.vrcentpunjab.com",
-            "dlims.punjab.gov.pk",
-            "dlims.islamabadpolice.gov.pk",
-            "dlmis.gbp.gov.pk",
+            "islamabadpolice.gov.pk",
+            "www.islamabadpolice.gov.pk",
+            "gbp.gov.pk",
+            "www.gbp.gov.pk",
             "qtp.gob.pk",
             "www.qtp.gob.pk",
         )
