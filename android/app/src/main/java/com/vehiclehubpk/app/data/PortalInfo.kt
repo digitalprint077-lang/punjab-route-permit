@@ -32,6 +32,7 @@ fun guideOpenCta(context: Context, guideId: String): String = when (guideId) {
     "token" -> context.getString(R.string.cta_open_token_tax)
     "challan" -> context.getString(R.string.cta_open_echallan)
     "licence" -> context.getString(R.string.cta_open_driving_licence)
+    "smartcard" -> context.getString(R.string.cta_open_smart_card)
     else -> ""
 }
 
@@ -40,12 +41,16 @@ fun serviceOpenCta(context: Context, serviceId: String, title: String): String {
     return when {
         "verify" in key || "mtmis" in key || "vehicle detail" in key || "vehicle search" in key ->
             context.getString(R.string.cta_open_vehicle_verification)
-        "licence" in key || "license" in key || "dlims" in key || "dlmis" in key || "dls" in key ->
+        "arms" in key -> ""
+        "-dl" in serviceId || "dlims" in key || "dlmis" in key || "driving licence" in key ||
+            "driving license" in key || key.contains(" dls") || key.endsWith("dls") ->
             context.getString(R.string.cta_open_driving_licence)
-        "token" in key || "tax" in key || "epay" in key || "e-pay" in key ->
-            context.getString(R.string.cta_open_token_tax)
+        "smart" in key || "vrc" in key ->
+            context.getString(R.string.cta_open_smart_card)
         "challan" in key ->
             context.getString(R.string.cta_open_echallan)
+        "token" in key || "tax" in key || "epay" in key || "e-pay" in key ->
+            context.getString(R.string.cta_open_token_tax)
         else -> ""
     }
 }

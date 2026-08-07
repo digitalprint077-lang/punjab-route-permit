@@ -82,7 +82,7 @@ fun ServiceInfoScreen(
             OfficialSourceBlock(
                 sourceUrl = info.officialUrl,
                 authorityName = info.authorityName,
-                onOpenSource = null, // open only via the CTA below
+                onOpenSource = onOpenOfficialWebsite,
                 modifier = Modifier.enterFadeUp(delayMs = 70),
             )
         }

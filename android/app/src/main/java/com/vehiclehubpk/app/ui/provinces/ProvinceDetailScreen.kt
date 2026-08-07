@@ -124,7 +124,16 @@ fun ProvinceDetailScreen(
                     OfficialSourceBlock(
                         sourceUrl = province.portalUrl,
                         authorityName = province.authorityName,
-                        onOpenSource = null,
+                        onOpenSource = {
+                            onOpenPortalInfo(
+                                PortalInfo(
+                                    title = province.name,
+                                    authorityName = province.authorityName,
+                                    officialUrl = province.portalUrl,
+                                    detail = province.description,
+                                ),
+                            )
+                        },
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     AffiliationDisclaimer()

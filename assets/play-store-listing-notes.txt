@@ -1,4 +1,4 @@
-Vehicle Hub PK — Play Store listing notes (v1.3.0)
+Vehicle Hub PK — Play Store listing notes (v1.3.1)
 =================================================
 
 SHORT DESCRIPTION
@@ -53,6 +53,13 @@ HOW THE APP WORKS
 Home → Choose province / service → Information page (source + official URL + disclaimer) → Open Official Government Website → Chrome / browser.
 
 Vehicle Hub PK only explains steps and opens the correct website. It does not provide government services itself.
+
+RELEASE NOTES (1.3.1)
+---------------------
+• Clearer info-page subtitle: review official source before opening the government website
+• Explicit notice: app does not collect, verify, or store government records
+• Official URL is tappable on the information page (plus the Open Official Website button)
+• Consistent info-page flow for all provinces, licences, verification, tax, smart card, challan
 
 RELEASE NOTES (1.3.0)
 ---------------------

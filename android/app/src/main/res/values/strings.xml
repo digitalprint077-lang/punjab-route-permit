@@ -8,7 +8,7 @@
     <string name="cta_verification_guide">How it works</string>
     <string name="cta_driving_licence">Driving licence portals</string>
     <string name="independent_notice_title">Independent Notice</string>
-    <string name="independent_notice_body">Vehicle Hub PK is an independent guide that helps users find official government vehicle services.\n\nVehicle Hub PK is not affiliated with, endorsed by, or representing any Government department.\n\nAll verification, licence, challan, tax, registration and payment services are performed only on the respective official government websites.</string>
+    <string name="independent_notice_body">Vehicle Hub PK is an independent guide that helps users find official government vehicle services.\n\nVehicle Hub PK is not affiliated with, endorsed by, or representing any Government department.\n\nAll verification, licence, challan, tax, registration and payment services are performed only on the respective official government websites.\n\nVehicle Hub PK does not collect, verify, or store government records. All searches and verification are performed only on the official government website.</string>
 
     <string name="nav_home">Home</string>
     <string name="nav_provinces">Provinces</string>
@@ -24,12 +24,12 @@
     <string name="section_provinces">Provinces</string>
     <string name="section_provinces_sub">Choose a region, review the source, then open the government website.</string>
     <string name="section_categories">Popular portals</string>
-    <string name="section_categories_sub">Each item opens an information page before the government website.</string>
+    <string name="section_categories_sub">Review the official source before opening the government website.</string>
     <string name="section_service_categories">Services</string>
     <string name="section_service_categories_sub">Review the source, then open the official government website.</string>
     <string name="section_licence_sub">Review the source for each region, then open the traffic / police website.</string>
     <string name="section_licence_portals">Licence portals</string>
-    <string name="section_licence_portals_sub">Information page first — then the official government website.</string>
+    <string name="section_licence_portals_sub">Review the official source, then open the government website.</string>
     <string name="licence_intro">Licensing is run by provincial / ICT / GB traffic authorities — not Excise. Vehicle Hub PK only helps you find the correct official website.</string>
     <string name="licence_open_guide">Read our guide</string>
     <string name="licence_verify_jump">How to verify</string>
@@ -38,9 +38,10 @@
     <string name="official_source_label">Official Website</string>
     <string name="related_source_label">Website</string>
     <string name="official_authority_label">Source: %1$s</string>
-    <string name="tap_to_open_source">Shown for reference — use the button below to open it in your browser</string>
-    <string name="affiliation_disclaimer">Vehicle Hub PK is an independent informational app. It is not affiliated with, endorsed by, or operated by the Government of Pakistan or any provincial Excise &amp; Taxation Department. All verification, payments, licences and government services are provided only through the official government websites.</string>
-    <string name="service_info_subtitle">Information page before leaving the app</string>
+    <string name="tap_to_open_source">Tap the URL or use the button below to open it in your browser</string>
+    <string name="affiliation_disclaimer">Vehicle Hub PK is an independent informational app. It is not affiliated with, endorsed by, or operated by the Government of Pakistan or any provincial Excise &amp; Taxation Department. All verification, payments, licences and government services are provided only through the official government websites.\n\nVehicle Hub PK does not collect, verify, or store government records. All searches and verification are performed only on the official government website.</string>
+    <string name="records_disclaimer">Vehicle Hub PK does not collect, verify, or store government records. All searches and verification are performed only on the official government website.</string>
+    <string name="service_info_subtitle">Review the official source before opening the government website.</string>
     <string name="service_info_source_heading">Source</string>
     <string name="service_info_leave_app">Vehicle Hub PK is an independent directory. It is not affiliated with, endorsed by, or representing this government department. The service is performed only on the official government website after you leave this app.</string>
     <string name="open_official_gov_website">Open Official Government Website</string>
@@ -58,6 +59,7 @@
     <string name="cta_open_driving_licence">Open Official Driving Licence Portal</string>
     <string name="cta_open_token_tax">Open Official Token Tax Portal</string>
     <string name="cta_open_echallan">Open Official E-Challan / Payment Portal</string>
+    <string name="cta_open_smart_card">Open Official Smart Card Portal</string>
     <string name="read_guide">Our guide</string>
     <string name="read_guide_hint">Open the Vehicle Hub PK guide for this topic.</string>
     <string name="guide_for">Guide: %1$s</string>
