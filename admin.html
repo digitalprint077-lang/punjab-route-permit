@@ -191,52 +191,43 @@
   #doc-noc { display: none; }
   #document.doc-mode-noc #doc-permit { display: none; }
   #document.doc-mode-noc #doc-noc { display: block; }
-  .noc-wrap { position: relative; padding-top: 52px; }
+  .noc-wrap { position: relative; padding-top: 48px; }
   .noc-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 4px;
+    position: relative;
+    text-align: center;
+    margin-bottom: 2px;
+    padding: 0 100px;
+    min-height: 0;
   }
   .noc-header-center {
-    flex: 1;
     text-align: center;
-    padding-top: 4px;
   }
   .noc-qr {
-    width: 92px;
-    height: 92px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    margin-right: 4px;
+    position: absolute;
+    top: 0;
+    right: 8px;
+    width: 88px;
+    height: 88px;
   }
   #qrcode-img-noc canvas, #qrcode-img-noc img {
-    width: 92px !important;
-    height: 92px !important;
+    width: 88px !important;
+    height: 88px !important;
   }
   .noc-office {
-    margin: 0 0 2px;
+    margin: 0 0 1px;
     font-size: 11px;
     font-weight: bold;
-    letter-spacing: 0.2px;
-    line-height: 1.3;
+    letter-spacing: 0.15px;
+    line-height: 1.25;
   }
   .noc-office.main {
     font-size: 12px;
-    margin-bottom: 3px;
-  }
-  .noc-title-box {
-    margin: 0 auto 12px;
-    border: 1.5px solid #c8c8c8;
-    background: transparent;
-    text-align: center;
-    font-weight: bold;
-    box-sizing: border-box;
+    margin-bottom: 1px;
   }
   .noc-app-box {
-    margin: 0 auto 6px;
-    border: none;
+    margin: 2px auto 10px;
+    border: none !important;
+    outline: none;
     background: transparent;
     text-align: center;
     font-weight: bold;
@@ -246,38 +237,44 @@
     font-size: 12.5px;
   }
   .noc-title-box {
-    width: 72%;
-    max-width: 460px;
-    padding: 5px 10px;
-    font-size: 12.5px;
+    display: block;
+    width: 70%;
+    max-width: 440px;
+    margin: 0 auto 16px;
+    padding: 6px 12px;
+    border: 1.5px solid #9a9a9a;
+    background: transparent;
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
     letter-spacing: 0.3px;
-    margin-bottom: 14px;
+    box-sizing: border-box;
   }
   .noc-body {
     text-align: left;
-    padding: 0 6px;
-    font-size: 12.8px;
-    line-height: 1.55;
+    padding: 0 10px;
+    font-size: 12.5px;
+    line-height: 1.5;
     font-weight: bold;
   }
-  .noc-line { margin: 0 0 8px; font-weight: bold; }
+  .noc-line { margin: 0 0 7px; font-weight: bold; }
   .noc-para {
-    margin: 0 0 12px;
+    margin: 0 0 10px;
     font-size: 12.5px;
-    line-height: 1.65;
+    line-height: 1.6;
     font-weight: bold;
     text-align: left;
   }
   .noc-note {
-    margin: 34px auto 0;
+    margin: 32px auto 0;
     text-align: center;
     font-size: 11.5px;
-    line-height: 1.55;
+    line-height: 1.5;
     font-style: italic;
     font-weight: bold;
   }
   .noc-print {
-    margin-top: 18px;
+    margin-top: 16px;
     text-align: center;
     font-size: 12.5px;
     font-weight: normal;
@@ -1867,7 +1864,6 @@
       <div id="doc-noc">
         <div class="noc-wrap">
           <div class="noc-header">
-            <div style="width:92px;flex-shrink:0;"></div>
             <div class="noc-header-center">
               <p class="noc-office">OFFICE OF THE CHAIRMAN</p>
               <p class="noc-office main">PUNJAB PROVINCIAL TRANSPORT AUTHORITY</p>
@@ -2057,7 +2053,7 @@
   }
 
   function generateQR(text) {
-    [{ id: 'qrcode-img', size: 103 }, { id: 'qrcode-img-noc', size: 92 }].forEach(function(item) {
+    [{ id: 'qrcode-img', size: 103 }, { id: 'qrcode-img-noc', size: 88 }].forEach(function(item) {
       var box = document.getElementById(item.id);
       if (!box) return;
       box.innerHTML = '';
@@ -2218,27 +2214,27 @@
   .doc-footer { text-align:center; margin-top:8px; }
   .doc-footer .authority-name { font-size:16px; font-weight:bold; }
   .doc-footer .issue-date { font-size:12.5px; margin-top:3px; }
-  .noc-wrap { position:relative; padding-top:52px; }
-  .noc-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:4px; }
-  .noc-header-center { flex:1; text-align:center; padding-top:4px; }
-  .noc-qr { width:92px; height:92px; flex-shrink:0; margin-top:2px; margin-right:4px; }
-  #qrcode-img canvas, #qrcode-img img { width:92px !important; height:92px !important; }
-  .noc-office { margin:0 0 2px; font-size:11px; font-weight:bold; letter-spacing:0.2px; line-height:1.3; }
-  .noc-office.main { font-size:12px; margin-bottom:3px; }
-  .noc-title-box {
-    margin:0 auto 12px; border:1.5px solid #c8c8c8; background:transparent;
-    text-align:center; font-weight:bold; box-sizing:border-box;
-  }
+  .noc-wrap { position:relative; padding-top:48px; }
+  .noc-header { position:relative; text-align:center; margin-bottom:2px; padding:0 100px; min-height:0; }
+  .noc-header-center { text-align:center; }
+  .noc-qr { position:absolute; top:0; right:8px; width:88px; height:88px; }
+  #qrcode-img canvas, #qrcode-img img { width:88px !important; height:88px !important; }
+  .noc-office { margin:0 0 1px; font-size:11px; font-weight:bold; letter-spacing:0.15px; line-height:1.25; }
+  .noc-office.main { font-size:12px; margin-bottom:1px; }
   .noc-app-box {
-    margin:0 auto 6px; border:none; background:transparent; text-align:center;
+    margin:2px auto 10px; border:none !important; outline:none; background:transparent; text-align:center;
     font-weight:bold; width:auto; max-width:none; padding:0; font-size:12.5px;
   }
-  .noc-title-box { width:72%; max-width:460px; padding:5px 10px; font-size:12.5px; letter-spacing:0.3px; margin-bottom:14px; }
-  .noc-body { text-align:left; padding:0 6px; font-size:12.8px; line-height:1.55; font-weight:bold; }
-  .noc-line { margin:0 0 8px; font-weight:bold; }
-  .noc-para { margin:0 0 12px; font-size:12.5px; line-height:1.65; font-weight:bold; text-align:left; }
-  .noc-note { margin:34px auto 0; text-align:center; font-size:11.5px; line-height:1.55; font-style:italic; font-weight:bold; }
-  .noc-print { margin-top:18px; text-align:center; font-size:12.5px; font-weight:normal; font-style:normal; }
+  .noc-title-box {
+    display:block; width:70%; max-width:440px; margin:0 auto 16px; padding:6px 12px;
+    border:1.5px solid #9a9a9a; background:transparent; text-align:center;
+    font-weight:bold; font-size:13px; letter-spacing:0.3px; box-sizing:border-box;
+  }
+  .noc-body { text-align:left; padding:0 10px; font-size:12.5px; line-height:1.5; font-weight:bold; }
+  .noc-line { margin:0 0 7px; font-weight:bold; }
+  .noc-para { margin:0 0 10px; font-size:12.5px; line-height:1.6; font-weight:bold; text-align:left; }
+  .noc-note { margin:32px auto 0; text-align:center; font-size:11.5px; line-height:1.5; font-style:italic; font-weight:bold; }
+  .noc-print { margin-top:16px; text-align:center; font-size:12.5px; font-weight:normal; font-style:normal; }
   @media print {
     body { background:white; }
     #document { box-shadow:none; margin:0; width:210mm; min-height:297mm; }
@@ -2252,7 +2248,6 @@
 <div id="document">
   <div class="noc-wrap">
     <div class="noc-header">
-      <div style="width:92px;flex-shrink:0;"></div>
       <div class="noc-header-center">
         <p class="noc-office">OFFICE OF THE CHAIRMAN</p>
         <p class="noc-office main">PUNJAB PROVINCIAL TRANSPORT AUTHORITY</p>
@@ -2345,7 +2340,7 @@
 <script>
   new QRCode(document.getElementById('qrcode-img'), {
     text: '` + qrTextPrint + `',
-    width: ` + (isNocPrint ? 92 : 103) + `, height: ` + (isNocPrint ? 92 : 103) + `,
+    width: ` + (isNocPrint ? 88 : 103) + `, height: ` + (isNocPrint ? 88 : 103) + `,
     colorDark: '#000000', colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.H
   });
