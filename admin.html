@@ -191,22 +191,94 @@
   #doc-noc { display: none; }
   #document.doc-mode-noc #doc-permit { display: none; }
   #document.doc-mode-noc #doc-noc { display: block; }
-  .noc-wrap { position: relative; }
-  .noc-qr { position: absolute; top: 55px; right: 35px; width: 103px; height: 103px; }
-  #qrcode-img-noc canvas, #qrcode-img-noc img { width: 103px !important; height: 103px !important; }
+  .noc-wrap { position: relative; padding-top: 8px; }
+  .noc-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .noc-header-center {
+    flex: 1;
+    text-align: center;
+    padding-top: 4px;
+  }
+  .noc-qr {
+    width: 92px;
+    height: 92px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    margin-right: 4px;
+  }
+  #qrcode-img-noc canvas, #qrcode-img-noc img {
+    width: 92px !important;
+    height: 92px !important;
+  }
+  .noc-office {
+    margin: 0 0 3px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.2px;
+    line-height: 1.35;
+  }
+  .noc-office.main {
+    font-size: 14.5px;
+    margin-bottom: 4px;
+  }
+  .noc-app-box,
+  .noc-title-box {
+    margin: 0 auto 12px;
+    border: 1.5px solid #c8c8c8;
+    background: transparent;
+    text-align: center;
+    font-weight: bold;
+    box-sizing: border-box;
+  }
+  .noc-app-box {
+    width: 48%;
+    max-width: 280px;
+    padding: 7px 10px;
+    font-size: 12.5px;
+  }
+  .noc-title-box {
+    width: 78%;
+    max-width: 520px;
+    padding: 9px 14px;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    margin-bottom: 18px;
+  }
   .noc-body {
-    text-align: center; padding: 70px 8px 0; font-size: 13px; line-height: 1.55; font-weight: bold;
+    text-align: left;
+    padding: 0 6px;
+    font-size: 12.8px;
+    line-height: 1.55;
+    font-weight: bold;
   }
-  .noc-office { margin: 0 0 2px; letter-spacing: 0.2px; }
-  .noc-app { margin: 10px 0 14px; font-size: 12.5px; }
-  .noc-title { font-size: 16px; margin: 8px 0 18px; letter-spacing: 0.4px; }
-  .noc-line { margin: 3px 0; }
-  .noc-para { margin: 14px auto 0; max-width: 94%; font-size: 12.5px; line-height: 1.7; font-weight: bold; }
+  .noc-line { margin: 0 0 8px; font-weight: bold; }
+  .noc-para {
+    margin: 0 0 12px;
+    font-size: 12.5px;
+    line-height: 1.65;
+    font-weight: bold;
+    text-align: left;
+  }
   .noc-note {
-    margin: 36px auto 0; max-width: 92%; font-size: 11.5px; line-height: 1.55;
-    font-style: italic; font-weight: normal;
+    margin: 34px auto 0;
+    text-align: center;
+    font-size: 11.5px;
+    line-height: 1.55;
+    font-style: italic;
+    font-weight: bold;
   }
-  .noc-print { margin-top: 22px; font-size: 12.5px; font-weight: bold; font-style: normal; }
+  .noc-print {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: bold;
+    font-style: normal;
+  }
 
   /* ── PRINT ── */
   @media print {
@@ -1790,22 +1862,27 @@
 
       <div id="doc-noc">
         <div class="noc-wrap">
-          <div class="noc-qr" title="QR Code"><div id="qrcode-img-noc"></div></div>
+          <div class="noc-header">
+            <div style="width:92px;flex-shrink:0;"></div>
+            <div class="noc-header-center">
+              <p class="noc-office">OFFICE OF THE CHAIRMAN</p>
+              <p class="noc-office main">PUNJAB PROVINCIAL TRANSPORT AUTHORITY</p>
+              <p class="noc-office">TRANSPORT HOUSE, 11-A EGERTON ROAD LAHORE</p>
+            </div>
+            <div class="noc-qr" title="QR Code"><div id="qrcode-img-noc"></div></div>
+          </div>
+          <div class="noc-app-box">APPLICATION NO.<span id="d-noc-appno">336171</span></div>
+          <div class="noc-title-box">NO OBJECTION CERTIFICATE</div>
           <div class="noc-body">
-            <p class="noc-office">OFFICE OF THE CHAIRMAN</p>
-            <p class="noc-office">PUNJAB PROVINCIAL TRANSPORT AUTHORITY</p>
-            <p class="noc-office">TRANSPORT HOUSE, 11-A EGERTON ROAD LAHORE</p>
-            <p class="noc-app">APPLICATION NO. <span id="d-noc-appno">336171</span></p>
-            <p class="noc-title">NO OBJECTION CERTIFICATE</p>
             <p class="noc-line">CERTIFIED THAT P.ST P NO. <span id="d-noc-pstno">3221150/12026/PTA/LHR</span></p>
             <p class="noc-line">IN RESPECT OF VEHICLE NO. <span id="d-noc-vreg">TAK 325 PESHAWAR</span></p>
             <p class="noc-line">ISSUES <span id="d-noc-district">LAHORE</span></p>
             <p class="noc-para">HAS BEEN SURRENDERED BY ITS HOLDER OR CANCELLATION, WHICH HAS BEEN CANCELED.</p>
             <p class="noc-para">THIS OFFICE HAS THEREFORE, NO OBJECTION TO THE GRANT OF A FRESH PERMIT IN RESPECT OF ABOVE MENTIONED VEHICLE BY ANY TRANSPORT AUTHORITY IN ACCORDANCE WITH THE LAW/POLICY</p>
             <p class="noc-para">A COPY IS FORWARDED FOR INFORMATION TO THE SECRETARY, PROVINCIAL TRANSPORT AUTHORITY.</p>
-            <p class="noc-note">*NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED SIGNATURES. VERIFY THROUGH QR CODE.*</p>
-            <p class="noc-print">PRINT DATE: <span id="d-noc-idate">24-MAY-2026</span></p>
           </div>
+          <p class="noc-note">NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED<br>SIGNATURES. VERIFY THROUGH QR CODE.</p>
+          <p class="noc-print">PRINT DATE: <span id="d-noc-idate">24-MAY-2026</span></p>
         </div>
       </div><!-- /doc-noc -->
 
@@ -1976,13 +2053,13 @@
   }
 
   function generateQR(text) {
-    ['qrcode-img', 'qrcode-img-noc'].forEach(function(id) {
-      var box = document.getElementById(id);
+    [{ id: 'qrcode-img', size: 103 }, { id: 'qrcode-img-noc', size: 92 }].forEach(function(item) {
+      var box = document.getElementById(item.id);
       if (!box) return;
       box.innerHTML = '';
       new QRCode(box, {
         text: text,
-        width: 103, height: 103,
+        width: item.size, height: item.size,
         colorDark: '#000000', colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
       });
@@ -2137,16 +2214,24 @@
   .doc-footer { text-align:center; margin-top:8px; }
   .doc-footer .authority-name { font-size:16px; font-weight:bold; }
   .doc-footer .issue-date { font-size:12.5px; margin-top:3px; }
-  .noc-wrap { position:relative; }
-  .noc-qr { position:absolute; top:55px; right:35px; width:103px; height:103px; }
-  .noc-body { text-align:center; padding:70px 8px 0; font-size:13px; line-height:1.55; font-weight:bold; }
-  .noc-office { margin:0 0 2px; }
-  .noc-app { margin:10px 0 14px; font-size:12.5px; }
-  .noc-title { font-size:16px; margin:8px 0 18px; }
-  .noc-line { margin:3px 0; }
-  .noc-para { margin:14px auto 0; max-width:94%; font-size:12.5px; line-height:1.7; font-weight:bold; }
-  .noc-note { margin:36px auto 0; max-width:92%; font-size:11.5px; line-height:1.55; font-style:italic; font-weight:normal; }
-  .noc-print { margin-top:22px; font-size:12.5px; font-weight:bold; font-style:normal; }
+  .noc-wrap { position:relative; padding-top:8px; }
+  .noc-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
+  .noc-header-center { flex:1; text-align:center; padding-top:4px; }
+  .noc-qr { width:92px; height:92px; flex-shrink:0; margin-top:2px; margin-right:4px; }
+  #qrcode-img canvas, #qrcode-img img { width:92px !important; height:92px !important; }
+  .noc-office { margin:0 0 3px; font-size:13px; font-weight:bold; letter-spacing:0.2px; line-height:1.35; }
+  .noc-office.main { font-size:14.5px; margin-bottom:4px; }
+  .noc-app-box, .noc-title-box {
+    margin:0 auto 12px; border:1.5px solid #c8c8c8; background:transparent;
+    text-align:center; font-weight:bold; box-sizing:border-box;
+  }
+  .noc-app-box { width:48%; max-width:280px; padding:7px 10px; font-size:12.5px; }
+  .noc-title-box { width:78%; max-width:520px; padding:9px 14px; font-size:15px; letter-spacing:0.4px; margin-bottom:18px; }
+  .noc-body { text-align:left; padding:0 6px; font-size:12.8px; line-height:1.55; font-weight:bold; }
+  .noc-line { margin:0 0 8px; font-weight:bold; }
+  .noc-para { margin:0 0 12px; font-size:12.5px; line-height:1.65; font-weight:bold; text-align:left; }
+  .noc-note { margin:34px auto 0; text-align:center; font-size:11.5px; line-height:1.55; font-style:italic; font-weight:bold; }
+  .noc-print { margin-top:18px; text-align:center; font-size:12.5px; font-weight:bold; font-style:normal; }
   @media print {
     body { background:white; }
     #document { box-shadow:none; margin:0; width:210mm; min-height:297mm; }
@@ -2159,22 +2244,27 @@
 ` + (isNocPrint ? `
 <div id="document">
   <div class="noc-wrap">
-    <div class="noc-qr"><div id="qrcode-img"></div></div>
+    <div class="noc-header">
+      <div style="width:92px;flex-shrink:0;"></div>
+      <div class="noc-header-center">
+        <p class="noc-office">OFFICE OF THE CHAIRMAN</p>
+        <p class="noc-office main">PUNJAB PROVINCIAL TRANSPORT AUTHORITY</p>
+        <p class="noc-office">TRANSPORT HOUSE, 11-A EGERTON ROAD LAHORE</p>
+      </div>
+      <div class="noc-qr"><div id="qrcode-img"></div></div>
+    </div>
+    <div class="noc-app-box">APPLICATION NO.` + data.appno + `</div>
+    <div class="noc-title-box">NO OBJECTION CERTIFICATE</div>
     <div class="noc-body">
-      <p class="noc-office">OFFICE OF THE CHAIRMAN</p>
-      <p class="noc-office">PUNJAB PROVINCIAL TRANSPORT AUTHORITY</p>
-      <p class="noc-office">TRANSPORT HOUSE, 11-A EGERTON ROAD LAHORE</p>
-      <p class="noc-app">APPLICATION NO. ` + data.appno + `</p>
-      <p class="noc-title">NO OBJECTION CERTIFICATE</p>
       <p class="noc-line">CERTIFIED THAT P.ST P NO. ` + data.rpno + `</p>
       <p class="noc-line">IN RESPECT OF VEHICLE NO. ` + data.vreg + `</p>
       <p class="noc-line">ISSUES ` + data.idistrict + `</p>
       <p class="noc-para">HAS BEEN SURRENDERED BY ITS HOLDER OR CANCELLATION, WHICH HAS BEEN CANCELED.</p>
       <p class="noc-para">THIS OFFICE HAS THEREFORE, NO OBJECTION TO THE GRANT OF A FRESH PERMIT IN RESPECT OF ABOVE MENTIONED VEHICLE BY ANY TRANSPORT AUTHORITY IN ACCORDANCE WITH THE LAW/POLICY</p>
       <p class="noc-para">A COPY IS FORWARDED FOR INFORMATION TO THE SECRETARY, PROVINCIAL TRANSPORT AUTHORITY.</p>
-      <p class="noc-note">*NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED SIGNATURES. VERIFY THROUGH QR CODE.*</p>
-      <p class="noc-print">PRINT DATE: ` + data.idate + `</p>
     </div>
+    <p class="noc-note">NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED<br>SIGNATURES. VERIFY THROUGH QR CODE.</p>
+    <p class="noc-print">PRINT DATE: ` + data.idate + `</p>
   </div>
 </div>
 ` : `
@@ -2248,7 +2338,7 @@
 <script>
   new QRCode(document.getElementById('qrcode-img'), {
     text: '` + qrTextPrint + `',
-    width: 103, height: 103,
+    width: ` + (isNocPrint ? 92 : 103) + `, height: ` + (isNocPrint ? 92 : 103) + `,
     colorDark: '#000000', colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.H
   });
