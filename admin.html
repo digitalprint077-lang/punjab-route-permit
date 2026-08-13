@@ -191,7 +191,7 @@
   #doc-noc { display: none; }
   #document.doc-mode-noc #doc-permit { display: none; }
   #document.doc-mode-noc #doc-noc { display: block; }
-  .noc-wrap { position: relative; padding-top: 48px; }
+  .noc-wrap { position: relative; padding-top: 78px; }
   .noc-header {
     position: relative;
     text-align: center;
@@ -232,19 +232,19 @@
     width: auto;
     max-width: none;
     padding: 0;
-    font-size: 12.5px;
+    font-size: 11px;
   }
   .noc-title-box {
     display: block;
     width: 68%;
     max-width: 420px;
     margin: 0 auto 14px;
-    padding: 5px 12px;
+    padding: 4px 12px;
     border: 1.5px solid #777;
     background: transparent;
     text-align: center;
     font-weight: 700;
-    font-size: 12.5px;
+    font-size: 11px;
     letter-spacing: 0.25px;
     box-sizing: border-box;
   }
@@ -256,6 +256,12 @@
     font-weight: 700;
   }
   .noc-line { margin: 0 0 6px; font-weight: 700; }
+  .noc-line .noc-val,
+  #d-noc-pstno,
+  #d-noc-vreg,
+  #d-noc-district {
+    font-weight: 400;
+  }
   .noc-para {
     margin: 0 0 9px;
     font-size: 12.5px;
@@ -1873,9 +1879,9 @@
           <div class="noc-app-box">APPLICATION NO.<span id="d-noc-appno">336171</span></div>
           <div class="noc-title-box">NO OBJECTION CERTIFICATE</div>
           <div class="noc-body">
-            <p class="noc-line">CERTIFIED THAT P.ST P NO. <span id="d-noc-pstno">3221150/12026/PTA/LHR</span></p>
-            <p class="noc-line">IN RESPECT OF VEHICLE NO. <span id="d-noc-vreg">TAK 325 PESHAWAR</span></p>
-            <p class="noc-line">ISSUES <span id="d-noc-district">LAHORE</span></p>
+            <p class="noc-line">CERTIFIED THAT P.ST P NO. <span class="noc-val" id="d-noc-pstno">3221150/12026/PTA/LHR</span></p>
+            <p class="noc-line">IN RESPECT OF VEHICLE NO. <span class="noc-val" id="d-noc-vreg">TAK 325 PESHAWAR</span></p>
+            <p class="noc-line">ISSUES <span class="noc-val" id="d-noc-district">LAHORE</span></p>
             <p class="noc-para">HAS BEEN SURRENDERED BY ITS HOLDER OR CANCELLATION, WHICH HAS BEEN CANCELED.</p>
             <p class="noc-para">THIS OFFICE HAS THEREFORE, NO OBJECTION TO THE GRANT OF A FRESH PERMIT IN RESPECT OF ABOVE MENTIONED VEHICLE BY ANY TRANSPORT AUTHORITY IN ACCORDANCE WITH THE LAW/POLICY</p>
             <p class="noc-para">A COPY IS FORWARDED FOR INFORMATION TO THE SECRETARY, PROVINCIAL TRANSPORT AUTHORITY.</p>
@@ -2213,7 +2219,7 @@
   .doc-footer { text-align:center; margin-top:8px; }
   .doc-footer .authority-name { font-size:16px; font-weight:bold; }
   .doc-footer .issue-date { font-size:12.5px; margin-top:3px; }
-  .noc-wrap { position:relative; padding-top:48px; }
+  .noc-wrap { position:relative; padding-top:78px; }
   .noc-header { position:relative; text-align:center; margin-bottom:0; padding:0 100px; min-height:0; }
   .noc-header-center { text-align:center; }
   .noc-qr { position:absolute; top:0; right:8px; width:88px; height:88px; }
@@ -2222,15 +2228,16 @@
   .noc-office.main { font-size:12px; margin-bottom:1px; }
   .noc-app-box {
     margin:4px auto 8px; border:none !important; outline:none; background:transparent; text-align:center;
-    font-weight:700; width:auto; max-width:none; padding:0; font-size:12.5px;
+    font-weight:700; width:auto; max-width:none; padding:0; font-size:11px;
   }
   .noc-title-box {
-    display:block; width:68%; max-width:420px; margin:0 auto 14px; padding:5px 12px;
+    display:block; width:68%; max-width:420px; margin:0 auto 14px; padding:4px 12px;
     border:1.5px solid #777; background:transparent; text-align:center;
-    font-weight:700; font-size:12.5px; letter-spacing:0.25px; box-sizing:border-box;
+    font-weight:700; font-size:11px; letter-spacing:0.25px; box-sizing:border-box;
   }
   .noc-body { text-align:left; padding:0 12px; font-size:12.5px; line-height:1.45; font-weight:700; }
   .noc-line { margin:0 0 6px; font-weight:700; }
+  .noc-line .noc-val { font-weight:400; }
   .noc-para { margin:0 0 9px; font-size:12.5px; line-height:1.55; font-weight:700; text-align:left; }
   .noc-note { margin:30px auto 0; text-align:center; font-size:11.5px; line-height:1.5; font-style:italic !important; font-weight:700 !important; }
   .noc-print, .noc-print span { margin-top:14px; text-align:center; font-size:12.5px; font-weight:400 !important; font-style:normal !important; }
@@ -2257,9 +2264,9 @@
     <div class="noc-app-box">APPLICATION NO.` + data.appno + `</div>
     <div class="noc-title-box">NO OBJECTION CERTIFICATE</div>
     <div class="noc-body">
-      <p class="noc-line">CERTIFIED THAT P.ST P NO. ` + data.rpno + `</p>
-      <p class="noc-line">IN RESPECT OF VEHICLE NO. ` + data.vreg + `</p>
-      <p class="noc-line">ISSUES ` + data.idistrict + `</p>
+      <p class="noc-line">CERTIFIED THAT P.ST P NO. <span class="noc-val">` + data.rpno + `</span></p>
+      <p class="noc-line">IN RESPECT OF VEHICLE NO. <span class="noc-val">` + data.vreg + `</span></p>
+      <p class="noc-line">ISSUES <span class="noc-val">` + data.idistrict + `</span></p>
       <p class="noc-para">HAS BEEN SURRENDERED BY ITS HOLDER OR CANCELLATION, WHICH HAS BEEN CANCELED.</p>
       <p class="noc-para">THIS OFFICE HAS THEREFORE, NO OBJECTION TO THE GRANT OF A FRESH PERMIT IN RESPECT OF ABOVE MENTIONED VEHICLE BY ANY TRANSPORT AUTHORITY IN ACCORDANCE WITH THE LAW/POLICY</p>
       <p class="noc-para">A COPY IS FORWARDED FOR INFORMATION TO THE SECRETARY, PROVINCIAL TRANSPORT AUTHORITY.</p>
