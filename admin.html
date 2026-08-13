@@ -1997,33 +1997,103 @@
 
   var docMode = 'permit';
 
-  function updateDoc() {
-    Object.keys(fieldMap).forEach(function(k) {
-      var inp = document.getElementById('f-' + k);
-      var el  = document.getElementById(fieldMap[k]);
-      if (inp && el) el.textContent = inp.value;
-    });
-    var mapNoc = {
-      'd-noc-appno': 'f-appno',
-      'd-noc-pstno': 'f-rpno',
-      'd-noc-vreg': 'f-vreg',
-      'd-noc-district': 'f-idistrict',
-      'd-noc-idate': 'f-idate'
-    };
-    Object.keys(mapNoc).forEach(function(id) {
+  var FORM_FIELD_IDS = [
+    'f-appno','f-rpno','f-fcno','f-name','f-cnic','f-addr','f-vtype','f-vreg',
+    'f-eng','f-chassis','f-iauth','f-vfrom','f-vupto','f-fee','f-psid','f-csig',
+    'f-idistrict','f-idate','f-authority','f-qrlink','f-districts','f-idate-picker'
+  ];
+  var formStateByMode = { permit: null, noc: null };
+  var DEFAULT_DISTRICTS = 'ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJRANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUDDIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,RAWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT ADDU,TAUNSA SHAREEF';
+
+  function snapshotForm(mode) {
+    var m = mode || docMode;
+    var snap = {};
+    FORM_FIELD_IDS.forEach(function(id) {
       var el = document.getElementById(id);
-      var inp = document.getElementById(mapNoc[id]);
-      if (el && inp) el.textContent = inp.value;
+      snap[id] = el ? el.value : '';
     });
+    formStateByMode[m] = snap;
+    return snap;
+  }
+
+  function restoreForm(snap) {
+    if (!snap) return;
+    FORM_FIELD_IDS.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = snap[id] != null ? snap[id] : '';
+    });
+    try { formatCnicField(document.getElementById('f-cnic')); } catch (ex) {}
+    try { syncIssueDatePickerFromHidden(); } catch (ex2) {}
+  }
+
+  function applyModeDefaults(mode) {
+    FORM_FIELD_IDS.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    var s = function(id, v) { var el = document.getElementById(id); if (el) el.value = v; };
+    s('f-idistrict', 'LAHORE');
+    s('f-idate', '24-MAY-2026');
+    if (mode === 'permit') {
+      s('f-vtype', 'TRUCK');
+      s('f-iauth', 'TDAS');
+      s('f-vfrom', '30-01-2026');
+      s('f-vupto', '30-07-2026');
+      s('f-fee', '10,550');
+      s('f-csig', '04-02-2029');
+      s('f-psid', generatePsidNo());
+      s('f-authority', 'SECRETARY PUNJAB PROVINCIAL TRANSPORT AUTHORITY,LAHORE');
+      s('f-districts', DEFAULT_DISTRICTS);
+    }
+    try { syncIssueDatePickerFromHidden(); } catch (ex) {}
+  }
+
+  function updateDoc() {
+    if (docMode === 'permit') {
+      Object.keys(fieldMap).forEach(function(k) {
+        var inp = document.getElementById('f-' + k);
+        var el  = document.getElementById(fieldMap[k]);
+        if (inp && el) el.textContent = inp.value;
+      });
+      try { updateDistricts(); } catch (ex) {}
+    } else {
+      var mapNoc = {
+        'd-noc-appno': 'f-appno',
+        'd-noc-pstno': 'f-rpno',
+        'd-noc-vreg': 'f-vreg',
+        'd-noc-district': 'f-idistrict',
+        'd-noc-idate': 'f-idate'
+      };
+      Object.keys(mapNoc).forEach(function(id) {
+        var el = document.getElementById(id);
+        var inp = document.getElementById(mapNoc[id]);
+        if (el && inp) el.textContent = inp.value;
+      });
+    }
     refreshQrCode();
   }
 
   var editIdsByMode = { permit: null, noc: null };
 
-  function setDocMode(mode) {
-    editIdsByMode[docMode] = currentEditId;
-    docMode = mode === 'noc' ? 'noc' : 'permit';
-    currentEditId = editIdsByMode[docMode] || null;
+  function setDocMode(mode, opts) {
+    opts = opts || {};
+    var next = mode === 'noc' ? 'noc' : 'permit';
+    if (next !== docMode) {
+      if (!opts.skipSnapshot) snapshotForm(docMode);
+      editIdsByMode[docMode] = currentEditId;
+      docMode = next;
+      if (!opts.skipRestore) {
+        if (formStateByMode[docMode]) {
+          restoreForm(formStateByMode[docMode]);
+        } else {
+          applyModeDefaults(docMode);
+        }
+      }
+      currentEditId = editIdsByMode[docMode] || null;
+    } else {
+      docMode = next;
+    }
+
     var doc = document.getElementById('document');
     if (doc) {
       doc.classList.toggle('doc-mode-noc', docMode === 'noc');
@@ -2079,7 +2149,10 @@
   }
 
   function generateQR(text) {
-    [{ id: 'qrcode-img', size: 103 }, { id: 'qrcode-img-noc', size: 64 }].forEach(function(item) {
+    var items = docMode === 'noc'
+      ? [{ id: 'qrcode-img-noc', size: 64 }]
+      : [{ id: 'qrcode-img', size: 103 }];
+    items.forEach(function(item) {
       var box = document.getElementById(item.id);
       if (!box) return;
       box.innerHTML = '';
@@ -2444,27 +2517,45 @@ function downloadAsPDF() {
   async function openPrintTabById(id) {
     initSupabase();
     if (!supabaseClient) { showMsg('Not connected', false); return; }
+    var backupMode = docMode;
+    var backupEditId = currentEditId;
+    var backupForm = snapshotForm(docMode);
+    var backupStates = {
+      permit: formStateByMode.permit ? Object.assign({}, formStateByMode.permit) : null,
+      noc: formStateByMode.noc ? Object.assign({}, formStateByMode.noc) : null
+    };
+    var backupEditIds = { permit: editIdsByMode.permit, noc: editIdsByMode.noc };
     try {
       var result = await supabaseClient.from('permits').select('*').eq('id', id).single();
       if (result.error) throw result.error;
       var d = result.data;
+      var recMode = isNocRecord(d) ? 'noc' : 'permit';
+      setDocMode(recMode, { skipSnapshot: true, skipRestore: true });
       var map = {
         'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
         'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vreg':d.vehicle_reg_no,
         'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
         'f-vupto':d.valid_upto,'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
         'f-idistrict':d.issuing_district,'f-idate':d.issuance_date,'f-authority':d.authority_name,
-        'f-qrlink': normalizeDocQrUrl(d.qr_link, id, isNocRecord(d) ? 'noc' : 'permit')
+        'f-qrlink': normalizeDocQrUrl(d.qr_link, id, recMode)
       };
       Object.keys(map).forEach(function(k){ var el=document.getElementById(k); if(el) el.value=map[k]||''; });
       document.getElementById('f-districts').value = d.districts || '';
-      var recMode = isNocRecord(d) ? 'noc' : 'permit';
-      if (recMode !== docMode) setDocMode(recMode);
+      try { syncIssueDatePickerFromHidden(); } catch (ex) {}
       currentEditId = id;
-      editIdsByMode[recMode] = id;
       openPrintTab();
     } catch (err) {
       showMsg((err && err.message) || 'Could not open permit', false);
+    } finally {
+      formStateByMode.permit = backupStates.permit;
+      formStateByMode.noc = backupStates.noc;
+      editIdsByMode.permit = backupEditIds.permit;
+      editIdsByMode.noc = backupEditIds.noc;
+      setDocMode(backupMode, { skipSnapshot: true, skipRestore: true });
+      restoreForm(backupForm);
+      formStateByMode[backupMode] = backupForm;
+      currentEditId = backupEditId;
+      updateDoc();
     }
   }
 
@@ -2514,6 +2605,17 @@ function downloadAsPDF() {
   }
 
   function getFormData() {
+    if (docMode === 'noc') {
+      return {
+        app_no: document.getElementById('f-appno').value,
+        route_permit_no: document.getElementById('f-rpno').value,
+        vehicle_reg_no: document.getElementById('f-vreg').value,
+        issuing_district: document.getElementById('f-idistrict').value,
+        issuance_date: document.getElementById('f-idate').value,
+        qr_link: document.getElementById('f-qrlink').value,
+        doc_type: 'noc'
+      };
+    }
     return {
       app_no: document.getElementById('f-appno').value,
       route_permit_no: document.getElementById('f-rpno').value,
@@ -2536,7 +2638,7 @@ function downloadAsPDF() {
       authority_name: document.getElementById('f-authority').value,
       districts: document.getElementById('f-districts').value,
       qr_link: document.getElementById('f-qrlink').value,
-      doc_type: docMode === 'noc' ? 'noc' : 'permit'
+      doc_type: 'permit'
     };
   }
 
@@ -2635,6 +2737,7 @@ function downloadAsPDF() {
       }
       if (qrResult.data && qrResult.data[0]) saved = qrResult.data[0];
       document.getElementById('f-qrlink').value = docUrl;
+      snapshotForm(docMode);
       generateQR(docUrl);
       showMsg(docMode === 'noc' ? 'NOC saved!' : 'Permit saved!', true);
       setTimeout(function(){
@@ -2707,6 +2810,11 @@ function downloadAsPDF() {
       var result = await supabaseClient.from('permits').select('*').eq('id', id).single();
       if (result.error) throw result.error;
       var d = result.data;
+      var recMode = isNocRecord(d) ? 'noc' : 'permit';
+      // Keep the other mode's in-progress form intact
+      snapshotForm(docMode);
+      editIdsByMode[docMode] = currentEditId;
+      setDocMode(recMode, { skipSnapshot: true, skipRestore: true });
       var map = {
         'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
         'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vreg':d.vehicle_reg_no,
@@ -2720,12 +2828,12 @@ function downloadAsPDF() {
       syncIssueDatePickerFromHidden();
       document.getElementById('f-districts').value = d.districts||'';
       currentEditId = id;
-      var recMode = isNocRecord(d) ? 'noc' : 'permit';
-      if (recMode !== docMode) setDocMode(recMode);
       editIdsByMode[recMode] = id;
-      updateDoc(); updateDistricts();
       var docUrl = normalizeDocQrUrl(d.qr_link, id, recMode);
       document.getElementById('f-qrlink').value = docUrl;
+      snapshotForm(recMode);
+      updateDoc();
+      if (recMode === 'permit') updateDistricts();
       generateQR(docUrl);
       if (d.qr_link !== docUrl) {
         try {
@@ -2748,6 +2856,8 @@ function downloadAsPDF() {
     try {
       var result = await supabaseClient.from('permits').delete().eq('id', id);
       if (result.error) throw result.error;
+      if (editIdsByMode.permit == id) editIdsByMode.permit = null;
+      if (editIdsByMode.noc == id) editIdsByMode.noc = null;
       if (currentEditId == id) { currentEditId = null; clearForm(); }
       showMsg('Deleted', true);
       loadRecords();
@@ -2759,26 +2869,19 @@ function downloadAsPDF() {
   async function clearForm() {
     currentEditId = null;
     editIdsByMode[docMode] = null;
-    ['f-appno','f-rpno','f-fcno','f-name','f-cnic','f-addr','f-vreg','f-eng','f-chassis'].forEach(function(id){
-      var el=document.getElementById(id); if(el) el.value='';
-    });
-    var s=function(id,v){var el=document.getElementById(id);if(el)el.value=v;};
-    s('f-vtype','TRUCK');
-    s('f-iauth','TDAS'); s('f-vfrom','30-01-2026'); s('f-vupto','30-07-2026');
-    s('f-fee','10,550'); s('f-csig','04-02-2029');
+    applyModeDefaults(docMode);
     try {
-      s('f-appno', await getNextAppNo());
+      document.getElementById('f-appno').value = await getNextAppNo();
     } catch (ex) {
-      s('f-appno', String(APP_NO_START));
+      document.getElementById('f-appno').value = String(APP_NO_START);
     }
-    s('f-psid', generatePsidNo());
-    s('f-idistrict','LAHORE'); s('f-idate','24-MAY-2026');
-    syncIssueDatePickerFromHidden();
-    formatCnicField(document.getElementById('f-cnic'));
-    s('f-authority','SECRETARY PUNJAB PROVINCIAL TRANSPORT AUTHORITY,LAHORE');
-    s('f-qrlink','');
-    document.getElementById('f-districts').value='ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJRANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUDDIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,RAWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT ADDU,TAUNSA SHAREEF';
-    updateDoc(); updateDistricts();
+    if (docMode === 'permit') {
+      document.getElementById('f-psid').value = generatePsidNo();
+    }
+    document.getElementById('f-qrlink').value = '';
+    snapshotForm(docMode);
+    updateDoc();
+    if (docMode === 'permit') updateDistricts();
     refreshQrCode();
   }
 
