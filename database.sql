@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS permits (
   authority_name TEXT,
   districts TEXT,
   qr_link TEXT,
+  doc_type VARCHAR(20) DEFAULT 'permit',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_vehicle_reg (vehicle_reg_no(64)),
