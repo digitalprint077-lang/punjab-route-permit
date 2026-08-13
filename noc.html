@@ -149,10 +149,10 @@
   }
 
 
-  .noc-wrap { position:relative; padding-top:70px; }
-  .noc-header { position:relative; text-align:center; margin-bottom:0; padding:0 96px; min-height:0; }
+  .noc-wrap { position:relative; padding-top:78px; padding-bottom:8px; }
+  .noc-header { position:relative; text-align:center; margin-bottom:0; padding:0 90px; min-height:0; }
   .noc-header-center { text-align:center; }
-  .noc-qr { position:absolute; top:-18px; right:8px; width:64px; height:64px; }
+  .noc-qr { position:absolute; top:-10px; right:6px; width:64px; height:64px; }
   #qrcode-img canvas, #qrcode-img img { width:64px !important; height:64px !important; }
   .noc-office { margin:0 0 1px; font-size:11px; font-weight:700; letter-spacing:0.15px; line-height:1.25; }
   .noc-office.main { font-size:12px; margin-bottom:1px; }
@@ -174,112 +174,58 @@
   .noc-note { margin:30px auto 0; text-align:center; font-size:11.5px; line-height:1.5; font-style:italic; font-weight:400; }
   .noc-print { margin-top:14px; text-align:center; font-size:12.5px; font-weight:400; }
 
+  @media screen and (max-width: 768px) {
+    .no-print {
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      z-index: 20;
+    }
+    #loading {
+      position: relative;
+      z-index: 5;
+      padding: 40px 16px;
+    }
+    #document {
+      background-size: 100% 100% !important;
+    }
+  }
+
 </style>
 </head>
 <body>
-
 <div class="no-print">
-  <button onclick="downloadAsPDF()">Download</button>
+  <button type="button" onclick="downloadAsPDF()">Download</button>
 </div>
 
-<div id="loading">Loading permit...</div>
+<div id="loading">Loading NOC...</div>
 
 <div id="doc-viewport">
-<div id="document" style="display:none;">
-  <div class="noc-wrap">
-          <div class="noc-header">
-            <div class="noc-header-center">
-              <p class="noc-office">OFFICE OF THE CHAIRMAN</p>
-              <p class="noc-office main">PUNJAB PROVINCIAL TRANSPORT AUTHORITY</p>
-              <p class="noc-office">TRANSPORT HOUSE, 11-A EGERTON ROAD LAHORE</p>
-            </div>
-            <div class="noc-qr"><div id="qrcode-img"></div></div>
-          </div>
-          <div class="noc-app-box">APPLICATION NO.<span id="d-noc-appno"></span></div>
-          <div class="noc-title-box">NO OBJECTION CERTIFICATE</div>
-          <div class="noc-body">
-            <p class="noc-line">CERTIFIED THAT P.ST P NO. <span class="noc-val" id="d-noc-pstno"></span></p>
-            <p class="noc-line">IN RESPECT OF VEHICLE NO. <span class="noc-val" id="d-noc-vreg"></span></p>
-            <p class="noc-line">ISSUES <span class="noc-val" id="d-noc-district"></span></p>
-            <p class="noc-para">HAS BEEN SURRENDERED BY ITS HOLDER OR CANCELLATION, WHICH HAS BEEN CANCELED.</p>
-            <p class="noc-para noc-para-sm">THIS OFFICE HAS THEREFORE, NO OBJECTION TO THE GRANT OF A FRESH PERMIT IN RESPECT OF ABOVE MENTIONED VEHICLE BY ANY TRANSPORT AUTHORITY IN ACCORDANCE WITH THE LAW/POLICY</p>
-            <p class="noc-para noc-para-sm">A COPY IS FORWARDED FOR INFORMATION TO THE SECRETARY, PROVINCIAL TRANSPORT AUTHORITY.</p>
-          </div>
-          <p class="noc-note">NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED<br>SIGNATURES. VERIFY THROUGH QR CODE.</p>
-          <p class="noc-print">PRINT DATE: <span id="d-noc-idate"></span></p>
+  <div id="document" style="display:none;">
+    <div class="noc-wrap">
+      <div class="noc-header">
+        <div class="noc-header-center">
+          <p class="noc-office">OFFICE OF THE CHAIRMAN</p>
+          <p class="noc-office main">PUNJAB PROVINCIAL TRANSPORT AUTHORITY</p>
+          <p class="noc-office">TRANSPORT HOUSE, 11-A EGERTON ROAD LAHORE</p>
         </div>
-
-<div id="loading">Loading permit...</div>
-
-<div id="doc-viewport">
-<div id="document" style="display:none;">
-  <div class="top-spacer"></div>
-  <div class="header-block">
-    <div class="header-spacer"></div>
-    <div class="header-center">
-      <p class="part-label">PART ' A &amp; B '</p>
-      <p class="main-title">SUMMARY TO BE CARRIED ON THE VEHICLE</p>
-      <p class="sub-title">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN PUNJAB</p>
-      <p class="app-no">APPLICATION NO.<span id="d-appno"></span></p>
+        <div class="noc-qr"><div id="qrcode-img"></div></div>
+      </div>
+      <div class="noc-app-box">APPLICATION NO.<span id="d-noc-appno"></span></div>
+      <div class="noc-title-box">NO OBJECTION CERTIFICATE</div>
+      <div class="noc-body">
+        <p class="noc-line">CERTIFIED THAT P.ST P NO. <span class="noc-val" id="d-noc-pstno"></span></p>
+        <p class="noc-line">IN RESPECT OF VEHICLE NO. <span class="noc-val" id="d-noc-vreg"></span></p>
+        <p class="noc-line">ISSUES <span class="noc-val" id="d-noc-district"></span></p>
+        <p class="noc-para">HAS BEEN SURRENDERED BY ITS HOLDER OR CANCELLATION, WHICH HAS BEEN CANCELED.</p>
+        <p class="noc-para noc-para-sm">THIS OFFICE HAS THEREFORE, NO OBJECTION TO THE GRANT OF A FRESH PERMIT IN RESPECT OF ABOVE MENTIONED VEHICLE BY ANY TRANSPORT AUTHORITY IN ACCORDANCE WITH THE LAW/POLICY</p>
+        <p class="noc-para noc-para-sm">A COPY IS FORWARDED FOR INFORMATION TO THE SECRETARY, PROVINCIAL TRANSPORT AUTHORITY.</p>
+      </div>
+      <p class="noc-note">NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED<br>SIGNATURES. VERIFY THROUGH QR CODE.</p>
+      <p class="noc-print">PRINT DATE: <span id="d-noc-idate"></span></p>
     </div>
-    <div class="qr-box"><div id="qrcode-img"></div></div>
-  </div>
-  <table class="permit-table">
-    <tr>
-      <td>
-        <span class="small-label">P.CO.P.NO</span>
-        <span class="big-val" id="d-rpno"></span>
-        <span class="route-label">(ROUTE PERMIT NUMBER)</span>
-      </td>
-      <td>
-        <span class="small-label">F.FC.NO</span>
-        <span class="big-val" id="d-fcno"></span>
-        <span class="route-label">(FITNESS CERTIFICATE NUMBER)</span>
-      </td>
-    </tr>
-  </table>
-  <div class="doc-row split">
-    <div class="pair"><span class="lbl">1. FULL NAME:</span><span class="val">&nbsp;<span id="d-name"></span></span></div>
-    <div class="pair" style="margin-right:90px;"><span class="lbl">2. CNIC/NTN NO:</span><span class="val">&nbsp;<span id="d-cnic"></span></span></div>
-  </div>
-  <div class="doc-row"><span class="lbl">3. OWNER ADDRESS:</span><span class="val">&nbsp;<span id="d-addr"></span></span></div>
-  <div class="doc-row indent"><span class="lbl">VEHICLE TYPE:</span><span class="val">&nbsp;<span id="d-vtype"></span></span></div>
-  <div class="doc-row indent"><span class="lbl">4. VEHICLE REGISTRATION NO :</span><span class="lbl">&nbsp;<span id="d-vreg"></span></span></div>
-  <div class="two-col-row">
-    <div class="pair"><span class="lbl">ENGINE NO:</span><span class="val">&nbsp;<span id="d-eng"></span></span></div>
-    <div class="pair"><span class="lbl">CHASIS NO:</span><span class="val">&nbsp;<span id="d-chassis"></span></span></div>
-  </div>
-  <p class="fitness-title">5. FINTNESS STATUS AT THE TIME OF ROUTE PERMIT:</p>
-  <div class="fitness-row">
-    <div class="seg"><span class="lbl">ISSUE AUTHORITY:</span>&nbsp;<span id="d-iauth"></span></div>
-    <span class="pipe">|</span>
-    <div class="seg"><span class="lbl">VALID FROM:</span>&nbsp;<span id="d-vfrom"></span></div>
-    <span class="pipe">|</span>
-    <div class="seg"><span class="lbl">VALID UPTO:</span>&nbsp;<span id="d-vupto"></span></div>
-  </div>
-  <div class="fee-psid" style="margin-top:8px;">
-    <div class="pair"><span class="lbl">6. FEE:</span>&nbsp;<span id="d-fee"></span></div>
-    <div class="pair"><span class="lbl">PSID NO:</span>&nbsp;<span id="d-psid"></span></div>
-  </div>
-  <div class="doc-row">
-    <span class="lbl">7. COUNTER SIGNATURE VALID UPTO:</span>&nbsp;<span class="lbl" id="d-csig"></span>&nbsp;&nbsp;
-    <span class="lbl">8. ISSUING DISTRICT:</span>&nbsp;<span class="lbl" id="d-idistrict"></span>
-  </div>
-  <div class="doc-row"><span class="lbl">9. ROUTE DETAIL :</span></div>
-  <div class="districts-box">
-    <span class="dlbl">OTHER DISTRICTS</span><span id="d-districts"></span> <strong>(TOTAL 41 DISTRICT)</strong>
-  </div>
-  <div class="note-block">
-    <span class="nlbl">NOTE:</span> THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED<br>
-    SIGNATURES. VERIFY THROUGH QR CODE.
-  </div>
-  <div class="doc-footer">
-    <p class="authority-name" id="d-authority"></p>
-    <p class="issue-date">ISSUANCE DATE:&nbsp;&nbsp;<span id="d-idate"></span></p>
   </div>
 </div>
-</div>
-
 <script>
   var SUPABASE_URL = 'https://meqkwnujbuovzzeyjywo.supabase.co';
   var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lcWt3bnVqYnVvdnp6ZXlqeXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDIxMTcsImV4cCI6MjA5NjU3ODExN30.1FkeN3NZnT1vmE5QRul0sgF4HMw2wx9Y2wMSdQVgJSc';
@@ -304,17 +250,25 @@
 
     if (window.innerWidth > 768) {
       doc.style.transform = '';
+      doc.style.marginLeft = '';
       vp.style.minHeight = '';
+      vp.style.overflowX = '';
       return;
     }
 
+    var naturalW = doc.offsetWidth || 794;
     doc.style.transform = 'scale(' + docZoom + ')';
-    doc.style.transformOrigin = 'top center';
-    vp.style.minHeight = (doc.offsetHeight * docZoom + 24) + 'px';
+    doc.style.transformOrigin = 'top left';
+    var scaledW = naturalW * docZoom;
+    var left = Math.max(0, (window.innerWidth - scaledW) / 2);
+    doc.style.marginLeft = left + 'px';
+    vp.style.minHeight = (doc.offsetHeight * docZoom + 56) + 'px';
+    vp.style.overflowX = 'hidden';
   }
 
   function fitDocZoom() {
     var doc = document.getElementById('document');
+    var vp = document.getElementById('doc-viewport');
     if (!doc || doc.style.display === 'none') return;
 
     if (window.innerWidth > 768) {
@@ -324,13 +278,15 @@
       return;
     }
 
-    doc.style.transform = '';
-    var naturalW = doc.offsetWidth;
-    if (naturalW > 0) {
-      fitZoom = window.innerWidth / naturalW;
-      docZoom = fitZoom;
-    }
+    doc.style.transform = 'none';
+    var naturalW = doc.offsetWidth || 794;
+    var avail = Math.max(280, window.innerWidth - 8);
+    fitZoom = avail / naturalW;
+    docZoom = fitZoom;
     applyDocZoom();
+    if (vp) {
+      vp.style.minHeight = (doc.offsetHeight * docZoom + 56) + 'px';
+    }
   }
 
   function pinchDistance(touches) {
@@ -374,18 +330,18 @@
       vp.style.height = 'auto';
       vp.style.overflow = 'visible';
       vp.style.display = 'block';
-      vp.style.padding = '0';
+      vp.style.padding = window.innerWidth <= 768 ? '48px 0 20px' : '0';
       vp.style.background = '#fff';
     }
     var doc = document.getElementById('document');
     if (doc) {
-      doc.style.transform = 'none';
       doc.style.margin = '0 auto';
       doc.style.display = 'block';
       doc.style.boxShadow = 'none';
     }
-    docZoom = 1;
-    fitZoom = 1;
+    requestAnimationFrame(function() {
+      fitDocZoom();
+    });
   }
 
   var SITE_ORIGIN = 'https://pdtg-transport-punjab.com';
@@ -440,11 +396,15 @@
       colorDark:'#000000', colorLight:'#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
-    if (popupView) {
+    // Mobile / QR open: always fit document to screen width
+    if (window.innerWidth <= 768 || popupView) {
       applyPopupTabView();
     } else {
       requestAnimationFrame(fitDocZoom);
     }
+    window.addEventListener('resize', function() {
+      if (window.innerWidth <= 768) fitDocZoom();
+    });
   }
 
   function downloadAsPDF() {
