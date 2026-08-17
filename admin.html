@@ -1493,6 +1493,53 @@
     background: #1a3340 !important;
     color: #fff !important;
   }
+
+  .dash-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .dash-stat {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 14px 12px;
+    box-shadow: 0 6px 16px rgba(11,31,42,.06);
+  }
+  .dash-stat.wide { grid-column: 1 / -1; }
+  .dash-stat-label {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .dash-stat-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .dash-stat-hint {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .dash-stat.permits .dash-stat-value { color: var(--sea-deep); }
+  .dash-stat.nocs .dash-stat-value { color: #b45309; }
+  .mode-dark .dash-stat {
+    background: #152833;
+    border-color: #2a4452;
+  }
+  .mode-dark .dash-stat-value { color: #eef5f7; }
+  .mode-dark .dash-stat.permits .dash-stat-value { color: #5eead4; }
+  .mode-dark .dash-stat.nocs .dash-stat-value { color: #fbbf24; }
+  .dash-actions { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
   .mode-dark .icon-btn {
     background: #152833;
     border-color: #2a4452;
@@ -1609,7 +1656,11 @@
         </div>
       </div>
       <div class="panel-tabs" role="tablist">
-        <button class="panel-tab active" onclick="switchTab('tab-edit',this)" type="button">
+        <button class="panel-tab active" onclick="switchTab('tab-dashboard',this)" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3Zm10 0h8v5h-8V3ZM3 13h8v8H3v-8Zm10 7V10h8v10h-8Z"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="panel-tab" onclick="switchTab('tab-edit',this)" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4.6L19.4 9.2l-4.6-4.6L4 15.4V20Zm2-3.2L14.8 6l2.1 2.1L8.1 17H6v-0.2ZM20.7 7.1c.4-.4.4-1 0-1.4l-2.4-2.4a1 1 0 0 0-1.4 0l-1.2 1.2 3.8 3.8 1.2-1.2Z"/></svg>
           <span>Edit</span>
         </button>
@@ -1625,7 +1676,37 @@
     </div>
 
     <div id="panel-body">
-      <div id="tab-edit" class="tab-panel active">
+      <div id="tab-dashboard" class="tab-panel active">
+        <section class="form-section">
+          <div class="form-section-head">
+            <h3>Dashboard</h3>
+            <p>Live counts of saved documents</p>
+          </div>
+          <div class="dash-stats">
+            <div class="dash-stat permits">
+              <div class="dash-stat-label">Route Permits</div>
+              <div class="dash-stat-value" id="dash-permit-count">—</div>
+              <div class="dash-stat-hint">Saved permit records</div>
+            </div>
+            <div class="dash-stat nocs">
+              <div class="dash-stat-label">NOCs</div>
+              <div class="dash-stat-value" id="dash-noc-count">—</div>
+              <div class="dash-stat-hint">Saved NOC records</div>
+            </div>
+            <div class="dash-stat wide">
+              <div class="dash-stat-label">Total Documents</div>
+              <div class="dash-stat-value" id="dash-total-count">—</div>
+              <div class="dash-stat-hint">Created today: <span id="dash-today-count">—</span></div>
+            </div>
+          </div>
+          <div class="dash-actions">
+            <button type="button" class="btn-load-all" onclick="loadDashboardStats()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg><span>Refresh Counts</span></button>
+            <button type="button" class="pbtn" onclick="switchTab('tab-records', document.querySelectorAll('.panel-tab')[2])"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg><span>Open Saved List</span></button>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-edit" class="tab-panel">
         <section class="form-section">
           <div class="form-section-head">
             <h3>Document Type</h3>
@@ -2681,7 +2762,8 @@ function downloadAsPDF() {
       var result = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
       if (result.error) throw result.error;
       showApp(true);
-      try { loadRecords(); } catch (ex) {}
+      try { loadDashboardStats(); } catch (ex) {}
+      try { loadRecords(); } catch (ex2) {}
     } catch (err) {
       errEl.textContent = '❌ ' + ((err && err.message) || 'Invalid email or password');
       errEl.style.display = 'block';
@@ -2741,13 +2823,54 @@ function downloadAsPDF() {
       generateQR(docUrl);
       showMsg(docMode === 'noc' ? 'NOC saved!' : 'Permit saved!', true);
       setTimeout(function(){
-        var t = document.querySelectorAll('.panel-tab')[1];
+        var t = document.querySelectorAll('.panel-tab')[2];
         if (t) switchTab('tab-records', t);
       }, 800);
       loadRecords();
+      try { loadDashboardStats(); } catch (exDash) {}
     } catch (err) {
       showMsg((err && err.message) || 'Save failed', false);
     }
+  }
+
+  function loadDashboardStats() {
+    var permitEl = document.getElementById('dash-permit-count');
+    var nocEl = document.getElementById('dash-noc-count');
+    var totalEl = document.getElementById('dash-total-count');
+    var todayEl = document.getElementById('dash-today-count');
+    function setDash(p, n, t, today) {
+      if (permitEl) permitEl.textContent = p;
+      if (nocEl) nocEl.textContent = n;
+      if (totalEl) totalEl.textContent = t;
+      if (todayEl) todayEl.textContent = today;
+    }
+    setDash('…', '…', '…', '…');
+    initSupabase();
+    if (!supabaseClient) {
+      setDash('—', '—', '—', '—');
+      return;
+    }
+    supabaseClient.from('permits').select('id,doc_type,qr_link,created_at').then(function(result) {
+      if (result.error && /doc_type|schema cache|column/i.test(String(result.error.message || ''))) {
+        return supabaseClient.from('permits').select('id,qr_link,created_at');
+      }
+      return result;
+    }).then(function(result) {
+      if (result.error) {
+        setDash('—', '—', '—', '—');
+        return;
+      }
+      var permits = 0, nocs = 0, today = 0;
+      var todayStr = new Date().toISOString().substring(0, 10);
+      (result.data || []).forEach(function(r) {
+        if (isNocRecord(r)) nocs++;
+        else permits++;
+        if ((r.created_at || '').substring(0, 10) === todayStr) today++;
+      });
+      setDash(String(permits), String(nocs), String(permits + nocs), String(today));
+    }).catch(function() {
+      setDash('—', '—', '—', '—');
+    });
   }
 
   function loadRecords() {
@@ -2861,6 +2984,7 @@ function downloadAsPDF() {
       if (currentEditId == id) { currentEditId = null; clearForm(); }
       showMsg('Deleted', true);
       loadRecords();
+      try { loadDashboardStats(); } catch (exDash) {}
     } catch (err) {
       showMsg((err && err.message) || 'Delete failed', false);
     }
@@ -2994,7 +3118,7 @@ function downloadAsPDF() {
     try {
       var matches = await findPermitsByReg(reg);
       renderVerifyCards(matches, 'inline-verify-result');
-      var tabBtn = document.querySelectorAll('.panel-tab')[2];
+      var tabBtn = document.querySelectorAll('.panel-tab')[3];
       if (tabBtn && matches.length) {
         // keep user on Edit; results also show under the field
       }
@@ -3010,7 +3134,8 @@ function downloadAsPDF() {
     document.querySelectorAll('.tab-panel').forEach(function(t){ t.classList.remove('active'); });
     document.querySelectorAll('.panel-tab').forEach(function(b){ b.classList.remove('active'); });
     document.getElementById(tabId).classList.add('active');
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
+    if (tabId === 'tab-dashboard') loadDashboardStats();
     if (tabId === 'tab-records') loadRecords();
     if (tabId === 'tab-verify') {
       var src = document.getElementById('f-vreg');
