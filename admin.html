@@ -2657,33 +2657,17 @@
   }
 
   function triggerBlobDownload(blob, fileName) {
-    var ua = navigator.userAgent || '';
-    var isIOS = /iPhone|iPad|iPod/i.test(ua);
-    if (navigator.canShare) {
-      try {
-        var file = new File([blob], fileName, { type: blob.type || 'application/pdf' });
-        if (navigator.canShare({ files: [file] })) {
-          return navigator.share({ files: [file], title: fileName }).then(function() { return true; }).catch(function() { return false; });
-        }
-      } catch (e) {}
-    }
     var url = URL.createObjectURL(blob);
     var link = document.createElement('a');
     link.href = url;
     link.download = fileName;
-    link.rel = 'noopener';
-    link.target = '_blank';
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
     setTimeout(function() {
       if (link.parentNode) link.parentNode.removeChild(link);
-      if (!isIOS) URL.revokeObjectURL(url);
-    }, 8000);
-    if (isIOS) {
-      setTimeout(function() { window.location.href = url; }, 250);
-    }
-    return Promise.resolve(true);
+      URL.revokeObjectURL(url);
+    }, 4000);
   }
 
   function saveFromCanvas(canvas, baseName, btn, oldText) {
@@ -2695,9 +2679,12 @@
       var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
       var pdfName = baseName + '.pdf';
-      var blob = pdf.output('blob');
-      Promise.resolve(triggerBlobDownload(blob, pdfName)).finally(finish);
-      try { pdf.save(pdfName); } catch (eSave) {}
+      try {
+        pdf.save(pdfName);
+      } catch (eSave) {
+        triggerBlobDownload(pdf.output('blob'), pdfName);
+      }
+      finish();
     } catch (err) {
       console.error(err);
       alert('Download failed. Please try again.');
