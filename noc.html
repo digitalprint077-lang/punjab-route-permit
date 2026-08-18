@@ -417,79 +417,181 @@
     }
   }
 
-  function enableDownloadBtn() {
-    var btn = document.getElementById('dl-btn');
-    if (btn) { btn.textContent = 'Download'; btn.disabled = false; }
+  function isMobileDevice() {
+    return window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '');
   }
 
+  function prepareDocClone(clonedDoc) {
+    var clonedBtn = clonedDoc.querySelector('.no-print');
+    if (clonedBtn) clonedBtn.remove();
+    var vp = clonedDoc.getElementById('doc-viewport');
+    if (vp) {
+      vp.style.transform = 'none';
+      vp.style.minHeight = 'auto';
+      vp.style.overflow = 'visible';
+      vp.style.height = 'auto';
+      vp.style.padding = '0';
+    }
+    var clonedDocEl = clonedDoc.getElementById('document');
+    if (clonedDocEl) {
+      clonedDocEl.style.transform = 'none';
+      clonedDocEl.style.margin = '0 auto';
+      clonedDocEl.style.width = '794px';
+      clonedDocEl.style.minHeight = '1123px';
+      clonedDocEl.style.padding = '106px 83px';
+      clonedDocEl.style.display = 'block';
+      clonedDocEl.style.boxShadow = 'none';
+      forceTimesNewRoman(clonedDocEl);
+    }
+    clonedDoc.body.style.background = '#ffffff';
+    clonedDoc.body.style.fontFamily = "'Times New Roman', Times, serif";
+    clonedDoc.body.style.margin = '0';
+    clonedDoc.body.style.padding = '0';
+  }
+
+  function getCaptureScales(docEl) {
+    var w = docEl.offsetWidth || 794;
+    var h = docEl.offsetHeight || 1123;
+    var base = isMobileDevice() ? 1 : 2;
+    var scales = [];
+    [base, 1, 0.75].forEach(function(s) {
+      var capped = s;
+      while (capped > 0.5 && (w * capped > 4096 || h * capped > 4096)) capped -= 0.25;
+      if (scales.indexOf(capped) === -1) scales.push(capped);
+    });
+    return scales;
+  }
+
+  function captureDocument(docEl, scale) {
+    window.scrollTo(0, 0);
+    var vp = document.getElementById('doc-viewport');
+    if (vp) vp.scrollTop = 0;
+    var prevTransform = docEl.style.transform;
+    var prevMargin = docEl.style.marginLeft;
+    docEl.style.transform = 'none';
+    docEl.style.marginLeft = '';
+    return html2canvas(docEl, {
+      scale: scale,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      scrollX: 0,
+      scrollY: 0,
+      imageTimeout: 20000,
+      ignoreElements: function(el) {
+        return el.classList && el.classList.contains('no-print');
+      },
+      onclone: prepareDocClone
+    }).then(function(canvas) {
+      docEl.style.transform = prevTransform;
+      docEl.style.marginLeft = prevMargin;
+      return canvas;
+    }).catch(function(err) {
+      docEl.style.transform = prevTransform;
+      docEl.style.marginLeft = prevMargin;
+      throw err;
+    });
+  }
+
+  function downloadBlob(blob, fileName) {
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.rel = 'noopener';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(function() {
+      URL.revokeObjectURL(url);
+      if (link.parentNode) link.parentNode.removeChild(link);
+    }, 4000);
+  }
+
+  function saveFromCanvas(canvas, baseName, btn, oldText) {
+    function finish() {
+      if (btn) { btn.disabled = false; btn.textContent = oldText; }
+    }
+    function openImageFallback() {
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      var imgWin = window.open('about:blank', '_blank');
+      if (!imgWin) {
+        alert('Use browser menu → Print → Save as PDF.');
+        finish();
+        return;
+      }
+      imgWin.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Save document</title></head><body style="margin:0;background:#222;color:#fff;font-family:sans-serif;"><p style="padding:12px;margin:0;font-size:14px;">Long-press the image and tap Save Image.</p><img src="' + dataUrl + '" alt="document" style="width:100%;display:block;background:#fff;"></body></html>');
+      imgWin.document.close();
+      finish();
+    }
+    function saveJpeg() {
+      if (canvas.toBlob) {
+        canvas.toBlob(function(blob) {
+          if (blob) {
+            downloadBlob(blob, baseName + '.jpg');
+            finish();
+          } else {
+            openImageFallback();
+          }
+        }, 'image/jpeg', 0.85);
+      } else {
+        openImageFallback();
+      }
+    }
+    function savePdf() {
+      try {
+        var quality = isMobileDevice() ? 0.82 : 0.92;
+        var imgData = canvas.toDataURL('image/jpeg', quality);
+        var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+        var pdfName = baseName + '.pdf';
+        try {
+          pdf.save(pdfName);
+          finish();
+        } catch (e1) {
+          try {
+            downloadBlob(pdf.output('blob'), pdfName);
+            finish();
+          } catch (e2) {
+            saveJpeg();
+          }
+        }
+      } catch (e3) {
+        saveJpeg();
+      }
+    }
+    savePdf();
+  }
   function downloadAsPDF() {
     var btn = document.getElementById('dl-btn');
-    var doc = document.getElementById('document');
-    if (!doc || doc.style.display === 'none') return;
+    var doc2 = document.getElementById('document');
+    if (!doc2) return;
+    if (doc2.style && doc2.style.display === 'none') return;
     if (typeof html2canvas === 'undefined' || !window.jspdf || !window.jspdf.jsPDF) {
       alert('Download is still loading. Please wait a moment and try again.');
       return;
     }
     var oldText = btn ? btn.textContent : 'Download';
     if (btn) { btn.disabled = true; btn.textContent = 'Preparing…'; }
-    window.scrollTo(0, 0);
-
-    html2canvas(doc, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      logging: false,
-      scrollX: 0,
-      scrollY: -window.scrollY,
-      ignoreElements: function(el) {
-        return el.classList && el.classList.contains('no-print');
-      },
-      onclone: function(clonedDoc) {
-        var clonedBtn = clonedDoc.querySelector('.no-print');
-        if (clonedBtn) clonedBtn.remove();
-        var clonedDocEl = clonedDoc.getElementById('document');
-        if (clonedDocEl) {
-          clonedDocEl.style.transform = 'none';
-          clonedDocEl.style.margin = '0 auto';
-          clonedDocEl.style.width = '210mm';
-          clonedDocEl.style.minHeight = '297mm';
-          clonedDocEl.style.padding = '28mm 22mm 28mm 22mm';
-          clonedDocEl.style.display = 'block';
-          clonedDocEl.style.boxShadow = 'none';
-          forceTimesNewRoman(clonedDocEl);
-        }
-        clonedDoc.body.style.background = '#ffffff';
-        clonedDoc.body.style.fontFamily = "'Times New Roman', Times, serif";
+    var baseName = 'noc';
+    var scales = getCaptureScales(doc2);
+    function tryCapture(i) {
+      if (i >= scales.length) {
+        alert('Download failed. Use browser menu → Print → Save as PDF.');
+        if (btn) { btn.disabled = false; btn.textContent = oldText; }
+        return;
       }
-    }).then(function(canvas) {
-      var imgData = canvas.toDataURL('image/jpeg', 0.98);
-      var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
-      var fileName = 'noc.pdf';
-      try {
-        pdf.save(fileName);
-      } catch (saveErr) {
-        var blob = pdf.output('blob');
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        link.rel = 'noopener';
-        document.body.appendChild(link);
-        link.click();
-        setTimeout(function() {
-          URL.revokeObjectURL(url);
-          link.remove();
-        }, 1500);
-      }
-      if (btn) { btn.disabled = false; btn.textContent = oldText; }
-    }).catch(function(e) {
-      console.error(e);
-      alert('Download failed on this device. Use your browser Print option instead.');
-      if (btn) { btn.disabled = false; btn.textContent = oldText; }
-    });
+      captureDocument(doc2, scales[i]).then(function(canvas) {
+        saveFromCanvas(canvas, baseName, btn, oldText);
+      }).catch(function(err) {
+        console.error(err);
+        tryCapture(i + 1);
+      });
+    }
+    tryCapture(0);
   }
+
 
   window.addEventListener('load', function() {
     initPinchZoom();
