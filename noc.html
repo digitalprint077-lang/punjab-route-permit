@@ -196,7 +196,7 @@
 </head>
 <body>
 <div class="no-print">
-  <button type="button" onclick="downloadAsPDF()">Download</button>
+  <button type="button" id="dl-btn" onclick="downloadAsPDF()" disabled style="touch-action:manipulation;">Loading…</button>
 </div>
 
 <div id="loading">Loading NOC...</div>
@@ -408,9 +408,31 @@
     });
   }
 
+  function forceTimesNewRoman(root) {
+    if (!root) return;
+    root.style.fontFamily = "'Times New Roman', Times, serif";
+    var nodes = root.querySelectorAll('*');
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].style.fontFamily = "'Times New Roman', Times, serif";
+    }
+  }
+
+  function enableDownloadBtn() {
+    var btn = document.getElementById('dl-btn');
+    if (btn) { btn.textContent = 'Download'; btn.disabled = false; }
+  }
+
   function downloadAsPDF() {
+    var btn = document.getElementById('dl-btn');
     var doc = document.getElementById('document');
-    if (!doc) return;
+    if (!doc || doc.style.display === 'none') return;
+    if (typeof html2canvas === 'undefined' || !window.jspdf || !window.jspdf.jsPDF) {
+      alert('Download is still loading. Please wait a moment and try again.');
+      return;
+    }
+    var oldText = btn ? btn.textContent : 'Download';
+    if (btn) { btn.disabled = true; btn.textContent = 'Preparing…'; }
+    window.scrollTo(0, 0);
 
     html2canvas(doc, {
       scale: 2,
@@ -418,6 +440,8 @@
       allowTaint: true,
       backgroundColor: '#ffffff',
       logging: false,
+      scrollX: 0,
+      scrollY: -window.scrollY,
       ignoreElements: function(el) {
         return el.classList && el.classList.contains('no-print');
       },
@@ -427,26 +451,53 @@
         var clonedDocEl = clonedDoc.getElementById('document');
         if (clonedDocEl) {
           clonedDocEl.style.transform = 'none';
+          clonedDocEl.style.margin = '0 auto';
           clonedDocEl.style.width = '210mm';
           clonedDocEl.style.minHeight = '297mm';
           clonedDocEl.style.padding = '28mm 22mm 28mm 22mm';
           clonedDocEl.style.display = 'block';
+          clonedDocEl.style.boxShadow = 'none';
+          forceTimesNewRoman(clonedDocEl);
         }
         clonedDoc.body.style.background = '#ffffff';
+        clonedDoc.body.style.fontFamily = "'Times New Roman', Times, serif";
       }
     }).then(function(canvas) {
-      var imgData = canvas.toDataURL('image/jpeg', 1.0);
+      var imgData = canvas.toDataURL('image/jpeg', 0.98);
       var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
-      pdf.save('noc.pdf');
+      var fileName = 'noc.pdf';
+      try {
+        pdf.save(fileName);
+      } catch (saveErr) {
+        var blob = pdf.output('blob');
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        link.rel = 'noopener';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(function() {
+          URL.revokeObjectURL(url);
+          link.remove();
+        }, 1500);
+      }
+      if (btn) { btn.disabled = false; btn.textContent = oldText; }
     }).catch(function(e) {
       console.error(e);
+      alert('Download failed on this device. Use your browser Print option instead.');
+      if (btn) { btn.disabled = false; btn.textContent = oldText; }
     });
   }
 
   window.addEventListener('load', function() {
     initPinchZoom();
-    loadNoc();
+    loadNoc().then(function() {
+      setTimeout(enableDownloadBtn, 300);
+    }).catch(function() {
+      setTimeout(enableDownloadBtn, 300);
+    });
   });
 </script>
 </body>
