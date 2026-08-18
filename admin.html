@@ -2464,6 +2464,7 @@
 </head>
 <body>
 <button id="dl-btn" onclick="downloadAsPDF()" class="no-print" disabled style="position:fixed;top:8px;left:8px;background:white;color:#333;border:1px solid #999;padding:8px 16px;font-size:13px;font-family:Arial,sans-serif;border-radius:3px;cursor:pointer;z-index:9999;touch-action:manipulation;">Loading…</button>
+<button type="button" onclick="window.print()" class="no-print" style="position:fixed;top:8px;left:110px;background:white;color:#333;border:1px solid #999;padding:8px 16px;font-size:13px;font-family:Arial,sans-serif;border-radius:3px;cursor:pointer;z-index:9999;">Print</button>
 ` + (isNocPrint ? `
 <div id="document">
   <div class="noc-wrap">
@@ -2615,13 +2616,8 @@
   function getCaptureScales(docEl) {
     var w = docEl.offsetWidth || 794;
     var h = docEl.offsetHeight || 1123;
-    var base = isMobileDevice() ? 1 : 2;
-    var scales = [];
-    [base, 1, 0.75].forEach(function(s) {
-      var capped = s;
-      while (capped > 0.5 && (w * capped > 4096 || h * capped > 4096)) capped -= 0.25;
-      if (scales.indexOf(capped) === -1) scales.push(capped);
-    });
+    var scales = [1];
+    if (!isMobileDevice() && w * 1.5 <= 4096 && h * 1.5 <= 4096) scales.push(1.5);
     return scales;
   }
 
@@ -2703,11 +2699,9 @@
       }
     }
     function savePdf() {
-      try {
-        var quality = isMobileDevice() ? 0.82 : 0.92;
-        var imgData = canvas.toDataURL('image/jpeg', quality);
+      function addToPdf(imgSrc, format) {
         var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
-        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+        pdf.addImage(imgSrc, format || 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
         var pdfName = baseName + '.pdf';
         try {
           pdf.save(pdfName);
@@ -2720,8 +2714,32 @@
             saveJpeg();
           }
         }
-      } catch (e3) {
-        saveJpeg();
+      }
+      if (canvas.toBlob) {
+        canvas.toBlob(function(blob) {
+          if (!blob) { saveJpeg(); return; }
+          var reader = new FileReader();
+          reader.onload = function() {
+            try {
+              addToPdf(new Uint8Array(reader.result), 'JPEG');
+            } catch (e3) {
+              try {
+                addToPdf(canvas.toDataURL('image/jpeg', 0.88), 'JPEG');
+              } catch (e4) {
+                downloadBlob(blob, baseName + '.jpg');
+                finish();
+              }
+            }
+          };
+          reader.onerror = function() { saveJpeg(); };
+          reader.readAsArrayBuffer(blob);
+        }, 'image/jpeg', 0.88);
+      } else {
+        try {
+          addToPdf(canvas.toDataURL('image/jpeg', 0.88), 'JPEG');
+        } catch (e5) {
+          saveJpeg();
+        }
       }
     }
     savePdf();
@@ -2736,11 +2754,11 @@
     }
     var oldText = btn ? btn.textContent : 'Download';
     if (btn) { btn.disabled = true; btn.textContent = 'Preparing…'; }
-    var baseName = isNocPrint ? 'noc' : 'route-permit';
+    var baseName = '` + (isNocPrint ? 'noc' : 'route-permit') + `';
     var scales = getCaptureScales(doc2);
     function tryCapture(i) {
       if (i >= scales.length) {
-        alert('Download failed. Use browser menu → Print → Save as PDF.');
+        alert('Download failed. Click Print and choose Save as PDF.');
         if (btn) { btn.disabled = false; btn.textContent = oldText; }
         return;
       }
@@ -2753,7 +2771,7 @@
     }
     tryCapture(0);
   }
-<\/script><\/script>
+<\/script>
 </body>
 </html>`;
 
