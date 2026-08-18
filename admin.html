@@ -2463,8 +2463,7 @@
 </style>
 </head>
 <body>
-<button id="dl-btn" onclick="downloadAsPDF()" class="no-print" disabled style="position:fixed;top:8px;left:8px;background:white;color:#333;border:1px solid #999;padding:8px 16px;font-size:13px;font-family:Arial,sans-serif;border-radius:3px;cursor:pointer;z-index:9999;touch-action:manipulation;">Loading…</button>
-<button type="button" onclick="window.print()" class="no-print" style="position:fixed;top:8px;left:110px;background:white;color:#333;border:1px solid #999;padding:8px 16px;font-size:13px;font-family:Arial,sans-serif;border-radius:3px;cursor:pointer;z-index:9999;">Print</button>
+<button id="dl-btn" onclick="downloadAsPDF()" class="no-print" style="position:fixed;top:8px;left:8px;background:white;color:#333;border:1px solid #999;padding:8px 16px;font-size:13px;font-family:Arial,sans-serif;border-radius:3px;cursor:pointer;z-index:9999;touch-action:manipulation;">Download</button>
 ` + (isNocPrint ? `
 <div id="document">
   <div class="noc-wrap">
@@ -2565,12 +2564,7 @@
     colorDark: '#000000', colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.H
   });
-  function enableDownloadBtn() {
-    var btn = document.getElementById('dl-btn');
-    if (btn) { btn.textContent = 'Download'; btn.disabled = false; }
-  }
-  if (document.readyState === 'complete') setTimeout(enableDownloadBtn, 300);
-  else window.addEventListener('load', function() { setTimeout(enableDownloadBtn, 300); });
+  waitForLibs(function(ok) { if (ok) enableDownloadBtn(); });
 
   function forceTimesNewRoman(root) {
     if (!root) return;
@@ -2581,8 +2575,25 @@
     }
   }
 
-  function isMobileDevice() {
-    return window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '');
+  function libsReady() {
+    return typeof html2canvas === 'function' && window.jspdf && window.jspdf.jsPDF;
+  }
+
+  function enableDownloadBtn() {
+    var btn = document.getElementById('dl-btn');
+    if (!btn) return;
+    btn.textContent = 'Download';
+    btn.disabled = false;
+  }
+
+  function waitForLibs(done) {
+    if (libsReady()) { done(true); return; }
+    var n = 0;
+    var t = setInterval(function() {
+      n++;
+      if (libsReady()) { clearInterval(t); done(true); }
+      else if (n >= 60) { clearInterval(t); done(false); }
+    }, 250);
   }
 
   function prepareDocClone(clonedDoc) {
@@ -2600,9 +2611,9 @@
     if (clonedDocEl) {
       clonedDocEl.style.transform = 'none';
       clonedDocEl.style.margin = '0 auto';
-      clonedDocEl.style.width = '794px';
-      clonedDocEl.style.minHeight = '1123px';
-      clonedDocEl.style.padding = '106px 83px';
+      clonedDocEl.style.width = '210mm';
+      clonedDocEl.style.minHeight = '297mm';
+      clonedDocEl.style.padding = '28mm 22mm';
       clonedDocEl.style.display = 'block';
       clonedDocEl.style.boxShadow = 'none';
       forceTimesNewRoman(clonedDocEl);
@@ -2611,14 +2622,6 @@
     clonedDoc.body.style.fontFamily = "'Times New Roman', Times, serif";
     clonedDoc.body.style.margin = '0';
     clonedDoc.body.style.padding = '0';
-  }
-
-  function getCaptureScales(docEl) {
-    var w = docEl.offsetWidth || 794;
-    var h = docEl.offsetHeight || 1123;
-    var scales = [1];
-    if (!isMobileDevice() && w * 1.5 <= 4096 && h * 1.5 <= 4096) scales.push(1.5);
-    return scales;
   }
 
   function captureDocument(docEl, scale) {
@@ -2637,7 +2640,7 @@
       logging: false,
       scrollX: 0,
       scrollY: 0,
-      imageTimeout: 20000,
+      imageTimeout: 25000,
       ignoreElements: function(el) {
         return el.classList && el.classList.contains('no-print');
       },
@@ -2653,129 +2656,95 @@
     });
   }
 
-  function downloadBlob(blob, fileName) {
+  function triggerBlobDownload(blob, fileName) {
+    var ua = navigator.userAgent || '';
+    var isIOS = /iPhone|iPad|iPod/i.test(ua);
+    if (navigator.canShare) {
+      try {
+        var file = new File([blob], fileName, { type: blob.type || 'application/pdf' });
+        if (navigator.canShare({ files: [file] })) {
+          return navigator.share({ files: [file], title: fileName }).then(function() { return true; }).catch(function() { return false; });
+        }
+      } catch (e) {}
+    }
     var url = URL.createObjectURL(blob);
     var link = document.createElement('a');
     link.href = url;
     link.download = fileName;
     link.rel = 'noopener';
+    link.target = '_blank';
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
     setTimeout(function() {
-      URL.revokeObjectURL(url);
       if (link.parentNode) link.parentNode.removeChild(link);
-    }, 4000);
+      if (!isIOS) URL.revokeObjectURL(url);
+    }, 8000);
+    if (isIOS) {
+      setTimeout(function() { window.location.href = url; }, 250);
+    }
+    return Promise.resolve(true);
   }
 
   function saveFromCanvas(canvas, baseName, btn, oldText) {
     function finish() {
-      if (btn) { btn.disabled = false; btn.textContent = oldText; }
+      if (btn) { btn.disabled = false; btn.textContent = oldText || 'Download'; }
     }
-    function openImageFallback() {
-      var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-      var imgWin = window.open('about:blank', '_blank');
-      if (!imgWin) {
-        alert('Use browser menu → Print → Save as PDF.');
-        finish();
-        return;
-      }
-      imgWin.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Save document</title></head><body style="margin:0;background:#222;color:#fff;font-family:sans-serif;"><p style="padding:12px;margin:0;font-size:14px;">Long-press the image and tap Save Image.</p><img src="' + dataUrl + '" alt="document" style="width:100%;display:block;background:#fff;"></body></html>');
-      imgWin.document.close();
+    try {
+      var imgData = canvas.toDataURL('image/jpeg', 0.95);
+      var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+      var pdfName = baseName + '.pdf';
+      var blob = pdf.output('blob');
+      Promise.resolve(triggerBlobDownload(blob, pdfName)).finally(finish);
+      try { pdf.save(pdfName); } catch (eSave) {}
+    } catch (err) {
+      console.error(err);
+      alert('Download failed. Please try again.');
       finish();
     }
-    function saveJpeg() {
-      if (canvas.toBlob) {
-        canvas.toBlob(function(blob) {
-          if (blob) {
-            downloadBlob(blob, baseName + '.jpg');
-            finish();
-          } else {
-            openImageFallback();
-          }
-        }, 'image/jpeg', 0.85);
-      } else {
-        openImageFallback();
-      }
-    }
-    function savePdf() {
-      function addToPdf(imgSrc, format) {
-        var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
-        pdf.addImage(imgSrc, format || 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
-        var pdfName = baseName + '.pdf';
-        try {
-          pdf.save(pdfName);
-          finish();
-        } catch (e1) {
-          try {
-            downloadBlob(pdf.output('blob'), pdfName);
-            finish();
-          } catch (e2) {
-            saveJpeg();
-          }
-        }
-      }
-      if (canvas.toBlob) {
-        canvas.toBlob(function(blob) {
-          if (!blob) { saveJpeg(); return; }
-          var reader = new FileReader();
-          reader.onload = function() {
-            try {
-              addToPdf(new Uint8Array(reader.result), 'JPEG');
-            } catch (e3) {
-              try {
-                addToPdf(canvas.toDataURL('image/jpeg', 0.88), 'JPEG');
-              } catch (e4) {
-                downloadBlob(blob, baseName + '.jpg');
-                finish();
-              }
-            }
-          };
-          reader.onerror = function() { saveJpeg(); };
-          reader.readAsArrayBuffer(blob);
-        }, 'image/jpeg', 0.88);
-      } else {
-        try {
-          addToPdf(canvas.toDataURL('image/jpeg', 0.88), 'JPEG');
-        } catch (e5) {
-          saveJpeg();
-        }
-      }
-    }
-    savePdf();
   }
+
   function downloadAsPDF() {
     var btn = document.getElementById('dl-btn');
     var doc2 = document.getElementById('document');
     if (!doc2) return;
-    if (typeof html2canvas === 'undefined' || !window.jspdf || !window.jspdf.jsPDF) {
-      alert('Download is still loading. Please wait a moment and try again.');
+    if (doc2.style && doc2.style.display === 'none') {
+      alert('Document is still loading. Please wait a moment.');
       return;
     }
-    var oldText = btn ? btn.textContent : 'Download';
+    var oldText = 'Download';
     if (btn) { btn.disabled = true; btn.textContent = 'Preparing…'; }
-    var baseName = '` + (isNocPrint ? 'noc' : 'route-permit') + `';
-    var scales = getCaptureScales(doc2);
-    function tryCapture(i) {
-      if (i >= scales.length) {
-        alert('Download failed. Click Print and choose Save as PDF.');
+    waitForLibs(function(ok) {
+      if (!ok) {
+        alert('Download is still loading. Please wait a moment and try again.');
         if (btn) { btn.disabled = false; btn.textContent = oldText; }
         return;
       }
-      captureDocument(doc2, scales[i]).then(function(canvas) {
-        saveFromCanvas(canvas, baseName, btn, oldText);
-      }).catch(function(err) {
-        console.error(err);
-        tryCapture(i + 1);
-      });
-    }
-    tryCapture(0);
+      var baseName = '` + (isNocPrint ? 'noc' : 'route-permit') + `';
+      var scales = [2, 1.5, 1];
+      function tryCapture(i) {
+        if (i >= scales.length) {
+          alert('Download failed. Please try again.');
+          if (btn) { btn.disabled = false; btn.textContent = oldText; }
+          return;
+        }
+        captureDocument(doc2, scales[i]).then(function(canvas) {
+          saveFromCanvas(canvas, baseName, btn, oldText);
+        }).catch(function(err) {
+          console.error(err);
+          tryCapture(i + 1);
+        });
+      }
+      tryCapture(0);
+    });
   }
+
 <\/script>
 </body>
 </html>`;
 
-    var win = window.open('about:blank', '_blank');
+    var win = window.open('', 'PrintPreview', 'width=900,height=750,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
     if (!win) {
       showMsg('Popup blocked. Allow popups to open print preview.', false);
       return;
