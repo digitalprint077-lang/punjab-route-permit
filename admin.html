@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="site-gate.js" data-enforce="false"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -730,6 +731,12 @@
     background: #f4fbf9;
   }
   .pbtn:active { transform: translateY(0); }
+  .pbtn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
 
   .search-box button,
   .btn-load-all {
@@ -1532,6 +1539,79 @@
   }
   .dash-stat.permits .dash-stat-value { color: var(--sea-deep); }
   .dash-stat.nocs .dash-stat-value { color: #b45309; }
+  .site-switch-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 6px 16px rgba(11,31,42,.06);
+  }
+  .site-switch-label {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .site-switch-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--sea-deep);
+    line-height: 1.15;
+  }
+  .site-switch-card.is-off .site-switch-value { color: var(--danger); }
+  .site-switch-hint {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .site-switch-card .pbtn {
+    flex: 0 0 auto;
+    min-width: 148px;
+  }
+  .site-switch-card.is-off .pbtn {
+    background: var(--sea-deep);
+    color: #fff;
+  }
+  .site-switch-msg {
+    margin-top: 8px;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+  .mode-dark .site-switch-card {
+    background: #152833;
+    border-color: #2a4452;
+  }
+  .mode-dark .site-switch-value { color: #5eead4; }
+  .mode-dark .site-switch-card.is-off .site-switch-value { color: #ffb4aa; }
+  #site-offline-banner {
+    display: none;
+    margin: 0 14px 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: #fff5f4;
+    border: 1px solid #efc4bf;
+    color: var(--danger);
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .mode-dark #site-offline-banner {
+    background: rgba(180,35,24,.15);
+    border-color: rgba(180,35,24,.3);
+    color: #ffb4aa;
+  }
   .mode-dark .dash-stat {
     background: #152833;
     border-color: #2a4452;
@@ -1673,6 +1753,7 @@
           <span>Verify</span>
         </button>
       </div>
+      <div id="site-offline-banner">Public website is currently OFF. Creating and saving permits is disabled.</div>
     </div>
 
     <div id="panel-body">
@@ -1703,6 +1784,21 @@
             <button type="button" class="btn-load-all" onclick="loadDashboardStats()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg><span>Refresh Counts</span></button>
             <button type="button" class="pbtn" onclick="switchTab('tab-records', document.querySelectorAll('.panel-tab')[2])"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg><span>Open Saved List</span></button>
           </div>
+        </section>
+        <section class="form-section">
+          <div class="form-section-head">
+            <h3>Website</h3>
+            <p>Turn the public site on or off for all visitors</p>
+          </div>
+          <div class="site-switch-card" id="site-switch-card">
+            <div>
+              <div class="site-switch-label">Public website</div>
+              <div class="site-switch-value" id="site-switch-value">Checking…</div>
+              <div class="site-switch-hint" id="site-switch-hint">Verify and permit pages stay reachable until you switch them off</div>
+            </div>
+            <button type="button" class="pbtn pbtn-glass" id="site-switch-btn" onclick="togglePublicSite()">Disable website</button>
+          </div>
+          <p class="site-switch-msg" id="site-switch-msg" style="display:none"></p>
         </section>
       </div>
 
@@ -1803,10 +1899,10 @@
         <div class="panel-actions">
           <div class="btn-row">
             <button class="pbtn pbtn-glass" onclick="openPrintTab()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17h10v4H7v-4Zm0-14h10v5H7V3Zm12 7H5a3 3 0 0 0-3 3v5h4v-2h12v2h4v-5a3 3 0 0 0-3-3Z"/></svg><span>Print</span></button>
-            <button class="pbtn pbtn-gold" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
+            <button type="button" class="pbtn pbtn-gold" id="btn-save-permit" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
           </div>
           <div class="btn-row">
-            <button class="pbtn pbtn-glass" onclick="clearForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg><span id="btn-new-label">New Permit</span></button>
+            <button type="button" class="pbtn pbtn-glass" id="btn-new-permit" onclick="clearForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg><span id="btn-new-label">New Permit</span></button>
           </div>
           <div id="db-message"></div>
         </div>
@@ -2909,6 +3005,7 @@
       if (result.error) throw result.error;
       showApp(true);
       try { loadDashboardStats(); } catch (ex) {}
+      try { loadSiteStatus(); } catch (exSite) {}
       try { loadRecords(); } catch (ex2) {}
     } catch (err) {
       errEl.textContent = '❌ ' + ((err && err.message) || 'Invalid email or password');
@@ -2929,7 +3026,10 @@
     document.getElementById('login-error').style.display = 'none';
   }
 
+  var publicSiteEnabled = true;
+
   async function savePermit() {
+    if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); return; }
     initSupabase();
     if (!supabaseClient) { showMsg('Not connected', false); return; }
     try {
@@ -2979,6 +3079,95 @@
     }
   }
 
+  function renderSiteStatus(enabled, note) {
+    var card = document.getElementById('site-switch-card');
+    var valueEl = document.getElementById('site-switch-value');
+    var hintEl = document.getElementById('site-switch-hint');
+    var btn = document.getElementById('site-switch-btn');
+    var msg = document.getElementById('site-switch-msg');
+    var banner = document.getElementById('site-offline-banner');
+    if (card) card.classList.toggle('is-off', !enabled);
+    if (valueEl) valueEl.textContent = enabled ? 'ON' : 'OFF';
+    if (hintEl) {
+      hintEl.textContent = enabled
+        ? 'Visitors can verify and view permits'
+        : 'Public pages and permit saving are switched off';
+    }
+    if (btn) {
+      btn.textContent = enabled ? 'Disable website' : 'Enable website';
+      btn.disabled = false;
+    }
+    if (banner) banner.style.display = enabled ? 'none' : 'block';
+    if (msg) {
+      if (note) {
+        msg.textContent = note;
+        msg.style.display = 'block';
+      } else {
+        msg.style.display = 'none';
+      }
+    }
+    applyPermitLock(enabled);
+  }
+
+  function isPublicSiteOn() {
+    if (window.PTASiteGate && typeof PTASiteGate.cacheGet === 'function') {
+      var cached = PTASiteGate.cacheGet();
+      if (cached !== null) return cached;
+    }
+    return publicSiteEnabled;
+  }
+
+  function applyPermitLock(enabled) {
+    publicSiteEnabled = !!enabled;
+    ['btn-save-permit', 'btn-new-permit'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (!btn) return;
+      btn.disabled = !enabled;
+    });
+  }
+
+  function siteEditsBlockedMessage() {
+    return docMode === 'noc'
+      ? 'Website is OFF. Creating and saving NOCs is disabled.'
+      : 'Website is OFF. Creating and saving permits is disabled.';
+  }
+
+  async function loadSiteStatus() {
+    if (!window.PTASiteGate) return;
+    initSupabase();
+    var enabled = await PTASiteGate.fetchSiteEnabled(supabaseClient);
+    renderSiteStatus(enabled);
+  }
+
+  async function togglePublicSite() {
+    if (!window.PTASiteGate) return;
+    initSupabase();
+    var btn = document.getElementById('site-switch-btn');
+    var currentlyOn = true;
+    try {
+      currentlyOn = await PTASiteGate.fetchSiteEnabled(supabaseClient);
+    } catch (ex) {}
+    var nextOn = !currentlyOn;
+    if (!nextOn && !confirm('Turn OFF the public website?\n\nVisitors cannot view or verify permits, and staff cannot create or save permits until you turn it back on.')) {
+      return;
+    }
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = nextOn ? 'Enabling…' : 'Disabling…';
+    }
+    try {
+      var result = await PTASiteGate.setSiteEnabled(nextOn, supabaseClient);
+      var note = '';
+      if (result && result.localOnly) {
+        note = 'Saved on this device. Sign in with staff email to turn the site off for every visitor.';
+      }
+      renderSiteStatus(nextOn, note);
+    } catch (err) {
+      renderSiteStatus(currentlyOn, (err && err.message) || 'Could not update website status');
+    }
+    if (btn) btn.disabled = false;
+  }
+
   function loadDashboardStats() {
     var permitEl = document.getElementById('dash-permit-count');
     var nocEl = document.getElementById('dash-noc-count');
@@ -2994,6 +3183,7 @@
     initSupabase();
     if (!supabaseClient) {
       setDash('—', '—', '—', '—');
+      try { loadSiteStatus(); } catch (exSiteOff) {}
       return;
     }
     supabaseClient.from('permits').select('id,doc_type,qr_link,created_at').then(function(result) {
@@ -3009,6 +3199,7 @@
       var permits = 0, nocs = 0, today = 0;
       var todayStr = new Date().toISOString().substring(0, 10);
       (result.data || []).forEach(function(r) {
+        if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return;
         if (isNocRecord(r)) nocs++;
         else permits++;
         if ((r.created_at || '').substring(0, 10) === todayStr) today++;
@@ -3017,6 +3208,7 @@
     }).catch(function() {
       setDash('—', '—', '—', '—');
     });
+    try { loadSiteStatus(); } catch (exSite) {}
   }
 
   function loadRecords() {
@@ -3045,6 +3237,7 @@
         return;
       }
       var rows = (result.data || []).filter(function(r) {
+        if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return false;
         return docMode === 'noc' ? isNocRecord(r) : !isNocRecord(r);
       });
       if (!rows.length) {
@@ -3137,6 +3330,7 @@
   }
 
   async function clearForm() {
+    if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); return; }
     currentEditId = null;
     editIdsByMode[docMode] = null;
     applyModeDefaults(docMode);
@@ -3281,7 +3475,10 @@
     document.querySelectorAll('.panel-tab').forEach(function(b){ b.classList.remove('active'); });
     document.getElementById(tabId).classList.add('active');
     if (btn) btn.classList.add('active');
-    if (tabId === 'tab-dashboard') loadDashboardStats();
+    if (tabId === 'tab-dashboard') {
+      loadDashboardStats();
+      try { loadSiteStatus(); } catch (ex) {}
+    }
     if (tabId === 'tab-records') loadRecords();
     if (tabId === 'tab-verify') {
       var src = document.getElementById('f-vreg');
@@ -3392,6 +3589,7 @@
       initSupabase();
     } catch (ex) {}
     showApp(false);
+    try { loadSiteStatus(); } catch (exSite) {}
   });
 
 
