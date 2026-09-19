@@ -3557,6 +3557,7 @@
       initSupabase();
     } catch (ex) {}
     showApp(false);
+    try { loadSiteStatus(); } catch (exSite) {}
   });
 
 

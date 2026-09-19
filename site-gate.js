@@ -30,34 +30,34 @@
     return supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   }
 
+  function rowEnabled(row) {
+    return String((row && row.qr_link) || '').toLowerCase() !== 'disabled';
+  }
+
+  async function loadStatusRow(sb) {
+    var byId = await sb.from('permits').select('id,app_no,doc_type,qr_link').eq('id', SITE_STATUS_ID).maybeSingle();
+    if (byId && byId.data) return byId.data;
+    var byApp = await sb.from('permits').select('id,app_no,doc_type,qr_link').eq('app_no', SITE_STATUS_APP).limit(1);
+    if (byApp && byApp.data && byApp.data[0]) return byApp.data[0];
+    if (byId && byId.error && !/multiple|0 rows|no rows|json object|PGRST116/i.test(String(byId.error.message || ''))) {
+      throw byId.error;
+    }
+    return null;
+  }
+
   async function fetchSiteEnabled(existingClient) {
+    var cached = cacheGet();
     var sb = getClient(existingClient);
-    if (!sb) {
-      var cached = cacheGet();
-      return cached == null ? true : cached;
-    }
+    if (!sb) return cached == null ? true : cached;
     try {
-      var result = await sb.from('permits').select('id,app_no,doc_type,qr_link').eq('id', SITE_STATUS_ID).maybeSingle();
-      if ((result.error || !result.data) && (!result.error || /multiple|0 rows|no rows|json object/i.test(String((result.error && result.error.message) || '')))) {
-        var byApp = await sb.from('permits').select('id,app_no,doc_type,qr_link').eq('app_no', SITE_STATUS_APP).limit(1);
-        if (!byApp.error && byApp.data && byApp.data[0]) {
-          result = { data: byApp.data[0], error: null };
-        }
+      var row = await loadStatusRow(sb);
+      if (row) {
+        var enabled = rowEnabled(row);
+        cacheSet(enabled);
+        return enabled;
       }
-      if (result.error && !result.data) throw result.error;
-      if (!result.data) {
-        var cachedNone = cacheGet();
-        if (cachedNone === false) return false;
-        cacheSet(true);
-        return true;
-      }
-      var enabled = String(result.data.qr_link || '').toLowerCase() !== 'disabled';
-      cacheSet(enabled);
-      return enabled;
-    } catch (e) {
-      var cached2 = cacheGet();
-      return cached2 == null ? true : cached2;
-    }
+    } catch (e) {}
+    return cached == null ? true : cached;
   }
 
   async function setSiteEnabled(enabled, existingClient) {
@@ -88,15 +88,19 @@
     return { ok: true, localOnly: false };
   }
 
-  function showOfflineOverlay() {
-    if (document.getElementById('site-offline-overlay')) return;
-    var style = document.createElement('style');
-    style.textContent =
-      '#site-offline-overlay{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(180deg,#f7fbf9,#eef4f1);font-family:"Outfit",system-ui,sans-serif;color:#102033;}' +
+  function overlayStyleText() {
+    return '#site-offline-overlay{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(180deg,#f7fbf9,#eef4f1);font-family:"Outfit",system-ui,sans-serif;color:#102033;}' +
       '#site-offline-overlay .box{width:min(460px,100%);background:#fff;border:1px solid rgba(16,32,51,.12);border-radius:18px;padding:28px 24px;box-shadow:0 18px 40px rgba(16,32,51,.12);text-align:center;}' +
       '#site-offline-overlay .kicker{margin:0 0 10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#0d6b66;font-weight:700;}' +
       '#site-offline-overlay h1{margin:0 0 10px;font-size:1.55rem;line-height:1.2;}' +
       '#site-offline-overlay p{margin:0;color:#5a6b68;line-height:1.55;font-size:.95rem;}';
+  }
+
+  function showOfflineOverlay() {
+    if (document.getElementById('site-offline-overlay')) return;
+    var style = document.createElement('style');
+    style.id = 'site-offline-style';
+    style.textContent = overlayStyleText();
     var wrap = document.createElement('div');
     wrap.id = 'site-offline-overlay';
     wrap.setAttribute('role', 'alertdialog');
@@ -118,6 +122,19 @@
     else document.addEventListener('DOMContentLoaded', mount);
   }
 
+  function hideOfflineOverlay() {
+    var wrap = document.getElementById('site-offline-overlay');
+    var style = document.getElementById('site-offline-style');
+    if (wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
+    if (style && style.parentNode) style.parentNode.removeChild(style);
+    document.documentElement.style.overflow = '';
+  }
+
+  function applyEnabled(enabled) {
+    if (enabled) hideOfflineOverlay();
+    else showOfflineOverlay();
+  }
+
   function markChecking(on) {
     try {
       document.documentElement.classList.toggle('pta-site-checking', !!on);
@@ -125,8 +142,10 @@
   }
 
   async function enforcePublicGate() {
+    var cached = cacheGet();
+    if (cached !== null) applyEnabled(cached);
     var enabled = await fetchSiteEnabled();
-    if (!enabled) showOfflineOverlay();
+    applyEnabled(enabled);
     markChecking(false);
     return enabled;
   }
@@ -141,8 +160,17 @@
     fetchSiteEnabled: fetchSiteEnabled,
     setSiteEnabled: setSiteEnabled,
     showOfflineOverlay: showOfflineOverlay,
+    hideOfflineOverlay: hideOfflineOverlay,
     enforcePublicGate: enforcePublicGate
   };
+
+  try {
+    window.addEventListener('storage', function(e) {
+      if (e.key !== CACHE_KEY) return;
+      if (e.newValue === '0') applyEnabled(false);
+      else if (e.newValue === '1') applyEnabled(true);
+    });
+  } catch (e) {}
 
   var script = document.currentScript;
   var shouldEnforce = !script || script.getAttribute('data-enforce') !== 'false';
@@ -150,5 +178,6 @@
     markChecking(true);
     setTimeout(function(){ markChecking(false); }, 4000);
     enforcePublicGate();
+    window.addEventListener('pageshow', function() { enforcePublicGate(); });
   }
 })(window);
