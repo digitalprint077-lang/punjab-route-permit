@@ -130,7 +130,6 @@
         '<p class="kicker">Punjab Provincial Transport Authority</p>' +
         '<h1 id="site-offline-title">Website temporarily unavailable</h1>' +
         '<p>Public permit services are currently switched off. Please try again later.</p>' +
-        '<p style="margin-top:16px;font-size:12px"><a href="admin.html" style="color:#5a6b68;text-decoration:none;font-weight:650">Staff login</a></p>' +
       '</div>';
     function mount() {
       if (!document.body || document.getElementById('site-offline-overlay')) return;
@@ -181,7 +180,8 @@
     setSiteEnabled: setSiteEnabled,
     showOfflineOverlay: showOfflineOverlay,
     hideOfflineOverlay: hideOfflineOverlay,
-    enforcePublicGate: enforcePublicGate
+    enforcePublicGate: enforcePublicGate,
+    cacheGet: cacheGet
   };
 
   try {

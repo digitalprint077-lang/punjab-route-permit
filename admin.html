@@ -731,6 +731,12 @@
     background: #f4fbf9;
   }
   .pbtn:active { transform: translateY(0); }
+  .pbtn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
 
   .search-box button,
   .btn-load-all {
@@ -1747,7 +1753,7 @@
           <span>Verify</span>
         </button>
       </div>
-      <div id="site-offline-banner">Public website is currently OFF. Visitors cannot view or verify permits.</div>
+      <div id="site-offline-banner">Public website is currently OFF. Creating and saving permits is disabled.</div>
     </div>
 
     <div id="panel-body">
@@ -1893,10 +1899,10 @@
         <div class="panel-actions">
           <div class="btn-row">
             <button class="pbtn pbtn-glass" onclick="openPrintTab()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17h10v4H7v-4Zm0-14h10v5H7V3Zm12 7H5a3 3 0 0 0-3 3v5h4v-2h12v2h4v-5a3 3 0 0 0-3-3Z"/></svg><span>Print</span></button>
-            <button class="pbtn pbtn-gold" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
+            <button type="button" class="pbtn pbtn-gold" id="btn-save-permit" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
           </div>
           <div class="btn-row">
-            <button class="pbtn pbtn-glass" onclick="clearForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg><span id="btn-new-label">New Permit</span></button>
+            <button type="button" class="pbtn pbtn-glass" id="btn-new-permit" onclick="clearForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg><span id="btn-new-label">New Permit</span></button>
           </div>
           <div id="db-message"></div>
         </div>
@@ -3020,7 +3026,10 @@
     document.getElementById('login-error').style.display = 'none';
   }
 
+  var publicSiteEnabled = true;
+
   async function savePermit() {
+    if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); return; }
     initSupabase();
     if (!supabaseClient) { showMsg('Not connected', false); return; }
     try {
@@ -3082,7 +3091,7 @@
     if (hintEl) {
       hintEl.textContent = enabled
         ? 'Visitors can verify and view permits'
-        : 'Public pages show as temporarily unavailable';
+        : 'Public pages and permit saving are switched off';
     }
     if (btn) {
       btn.textContent = enabled ? 'Disable website' : 'Enable website';
@@ -3097,6 +3106,30 @@
         msg.style.display = 'none';
       }
     }
+    applyPermitLock(enabled);
+  }
+
+  function isPublicSiteOn() {
+    if (window.PTASiteGate && typeof PTASiteGate.cacheGet === 'function') {
+      var cached = PTASiteGate.cacheGet();
+      if (cached !== null) return cached;
+    }
+    return publicSiteEnabled;
+  }
+
+  function applyPermitLock(enabled) {
+    publicSiteEnabled = !!enabled;
+    ['btn-save-permit', 'btn-new-permit'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (!btn) return;
+      btn.disabled = !enabled;
+    });
+  }
+
+  function siteEditsBlockedMessage() {
+    return docMode === 'noc'
+      ? 'Website is OFF. Creating and saving NOCs is disabled.'
+      : 'Website is OFF. Creating and saving permits is disabled.';
   }
 
   async function loadSiteStatus() {
@@ -3115,7 +3148,7 @@
       currentlyOn = await PTASiteGate.fetchSiteEnabled(supabaseClient);
     } catch (ex) {}
     var nextOn = !currentlyOn;
-    if (!nextOn && !confirm('Turn OFF the public website?\n\nVerify and permit pages will show as unavailable. Staff login will still work so you can turn it back on.')) {
+    if (!nextOn && !confirm('Turn OFF the public website?\n\nVisitors cannot view or verify permits, and staff cannot create or save permits until you turn it back on.')) {
       return;
     }
     if (btn) {
@@ -3297,6 +3330,7 @@
   }
 
   async function clearForm() {
+    if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); return; }
     currentEditId = null;
     editIdsByMode[docMode] = null;
     applyModeDefaults(docMode);
