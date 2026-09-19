@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="site-gate.js"></script>
   <style>
     :root {
       --ink: #102033;
@@ -305,6 +306,7 @@
         var result = await sb.from('permits').select('*').order('created_at', { ascending: false });
         if (result.error) throw result.error;
         var matches = (result.data || []).filter(function(r) {
+          if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return false;
           var reg = normalizeRegKey(r.vehicle_reg_no);
           if (!reg) return false;
           return reg === key || reg.indexOf(key) !== -1 || key.indexOf(reg) !== -1;
