@@ -3126,9 +3126,7 @@
       var result = await PTASiteGate.setSiteEnabled(nextOn, supabaseClient);
       var note = '';
       if (result && result.localOnly) {
-        note = result.error
-          ? ('Saved on this device only: ' + result.error)
-          : 'Saved on this device only. Sign in to apply for all visitors.';
+        note = 'Saved on this device. Sign in with staff email to turn the site off for every visitor.';
       }
       renderSiteStatus(nextOn, note);
     } catch (err) {

@@ -1,14 +1,25 @@
 /* Shared public-site on/off switch for Punjab Route Permit pages. */
 (function (root) {
-  var SITE_STATUS_ID = 'ffffffff-ffff-4fff-8fff-ffffffffffff';
-  var SITE_STATUS_APP = '__SITE_STATUS__';
+  var SITE_STATUS_ID = 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeee1';
+  var SITE_STATUS_APP = '__PTA_SITE_GATE__';
+  var LEGACY_STATUS_IDS = {
+    'ffffffff-ffff-4fff-8fff-ffffffffffff': true,
+    'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeee1': true
+  };
+  var LEGACY_STATUS_APPS = {
+    '__SITE_STATUS__': true,
+    '__PTA_SITE_GATE__': true
+  };
   var CACHE_KEY = 'pta_site_enabled';
   var SUPABASE_URL = 'https://meqkwnujbuovzzeyjywo.supabase.co';
   var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lcWt3bnVqYnVvdnp6ZXlqeXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDIxMTcsImV4cCI6MjA5NjU3ODExN30.1FkeN3NZnT1vmE5QRul0sgF4HMw2wx9Y2wMSdQVgJSc';
 
   function isStatusRecord(r) {
     if (!r) return false;
-    return r.id === SITE_STATUS_ID || r.doc_type === 'site_status' || r.app_no === SITE_STATUS_APP;
+    if (r.doc_type === 'site_status') return true;
+    if (r.id && LEGACY_STATUS_IDS[r.id]) return true;
+    if (r.app_no && LEGACY_STATUS_APPS[r.app_no]) return true;
+    return false;
   }
 
   function cacheSet(enabled) {
@@ -65,6 +76,15 @@
     cacheSet(enabled);
     var sb = getClient(existingClient);
     if (!sb) return { ok: false, localOnly: true, error: 'Not connected' };
+    try {
+      var sessionRes = await sb.auth.getSession();
+      var session = sessionRes && sessionRes.data && sessionRes.data.session;
+      if (!session) {
+        return { ok: false, localOnly: true, error: 'Sign in to apply for all visitors' };
+      }
+    } catch (e) {
+      return { ok: false, localOnly: true, error: 'Sign in to apply for all visitors' };
+    }
     var payload = {
       id: SITE_STATUS_ID,
       app_no: SITE_STATUS_APP,
