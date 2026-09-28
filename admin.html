@@ -1191,35 +1191,32 @@
     accent-color: var(--sea);
     cursor: pointer;
   }
-  .records-bulk-bar select {
+  .records-bulk-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+  }
+  .btn-bulk-action {
     flex: 1;
-    min-width: 170px;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    color: var(--ink);
-    padding: 9px 12px;
-    font-size: 12.5px;
-    font-family: var(--font-ui);
-    outline: none;
-    cursor: pointer;
-  }
-  .records-bulk-bar select:focus {
-    border-color: var(--sea);
-    box-shadow: 0 0 0 3px rgba(15,110,106,.12);
-  }
-  .btn-bulk-apply {
-    background: var(--sea);
+    min-width: 88px;
+    background: var(--ink);
     color: #fff;
     border: none;
     border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 12.5px;
+    padding: 9px 10px;
+    font-size: 12px;
     font-family: var(--font-ui);
     font-weight: 650;
     cursor: pointer;
   }
-  .btn-bulk-apply:hover { background: var(--sea-deep); }
+  .btn-bulk-action:hover { background: var(--sea-deep); }
+  .btn-bulk-delete {
+    background: #fff;
+    color: var(--danger);
+    border: 1px solid #efc4bf;
+  }
+  .btn-bulk-delete:hover { background: #fff1f0; }
   .records-selected-count {
     font-size: 11px;
     font-weight: 650;
@@ -1407,10 +1404,14 @@
     border-color: #2a4452;
   }
   .mode-dark .records-select-all { color: #d7e4e7; }
-  .mode-dark .records-bulk-bar select {
-    background: #0f1f29;
-    border-color: #2a4452;
+  .mode-dark .btn-bulk-action {
+    background: #1a303b;
     color: #e7eef1;
+  }
+  .mode-dark .btn-bulk-delete {
+    background: rgba(180,35,24,.15);
+    border-color: rgba(180,35,24,.3);
+    color: #ffb4aa;
   }
   .mode-dark .records-selected-count { color: #9fb2b8; }
   .mode-dark .form-section-head { border-color: #243848; }
@@ -1737,7 +1738,7 @@
   }
 
   /* Keep icons aligned even if older button rules override */
-  .hbtn, .pbtn, .panel-tab, .search-box button, .btn-load-all, .btn-bulk-apply, .card-btn-load, .card-btn-del, .login-btn {
+  .hbtn, .pbtn, .panel-tab, .search-box button, .btn-load-all, .btn-bulk-action, .card-btn-load, .card-btn-del, .login-btn {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
@@ -2025,15 +2026,13 @@
               <input type="checkbox" id="records-select-all" onchange="toggleSelectAllRecords(this)">
               <span>Select all</span>
             </label>
-            <select id="records-bulk-action" aria-label="Action for selected permits">
-              <option value="">Choose action</option>
-              <option value="delete">Delete selected</option>
-              <option value="download">Download selected</option>
-              <option value="open">Open selected</option>
-              <option value="copy">Copy public links</option>
-            </select>
-            <button type="button" class="btn-bulk-apply" onclick="applySavedRecordsAction()">Apply</button>
             <span id="records-selected-count" class="records-selected-count">0 selected</span>
+            <div class="records-bulk-actions">
+              <button type="button" class="btn-bulk-action btn-bulk-delete" onclick="applySavedRecordsAction('delete')">Delete</button>
+              <button type="button" class="btn-bulk-action" onclick="applySavedRecordsAction('download')">Download</button>
+              <button type="button" class="btn-bulk-action" onclick="applySavedRecordsAction('open')">Open</button>
+              <button type="button" class="btn-bulk-action" onclick="applySavedRecordsAction('copy')">Copy links</button>
+            </div>
             <div id="records-bulk-msg" class="records-bulk-msg" hidden></div>
           </div>
         </section>
@@ -2261,7 +2260,15 @@
 
   function uppercaseField(el) {
     if (!el || !el.value) return;
+    if (el.tagName === 'SELECT' || el.type === 'checkbox' || el.type === 'radio') return;
+    if (el.id && el.id.indexOf('f-') !== 0) return;
     el.value = el.value.toUpperCase();
+  }
+
+  function isPermitEditorField(el) {
+    if (!el || !el.id || el.id.indexOf('f-') !== 0) return false;
+    if (el.id === 'f-search' || el.id === 'f-verify-reg') return false;
+    return true;
   }
 
   function initFormEnhancements() {
@@ -2539,13 +2546,15 @@
   // Live update on every keystroke
   document.querySelectorAll('#panel input, #panel select').forEach(function(inp) {
     inp.addEventListener('input', function(e) {
+      if (!isPermitEditorField(inp)) return;
       if (inp.id === 'f-cnic') formatCnicField(inp);
-      else if (inp.type !== 'date' && inp.type !== 'hidden' && inp.id !== 'f-search') uppercaseField(inp);
+      else if (inp.type !== 'date' && inp.type !== 'hidden') uppercaseField(inp);
       updateDoc();
     });
     inp.addEventListener('change', function(e) {
+      if (!isPermitEditorField(inp)) return;
       if (inp.id === 'f-cnic') formatCnicField(inp);
-      else if (inp.type !== 'date' && inp.type !== 'hidden' && inp.id !== 'f-search') uppercaseField(inp);
+      else if (inp.type !== 'date' && inp.type !== 'hidden') uppercaseField(inp);
       updateDoc();
     });
   });
@@ -3473,9 +3482,7 @@
     onRecordSelectChange();
   }
 
-  function applySavedRecordsAction() {
-    var actionEl = document.getElementById('records-bulk-action');
-    var action = actionEl ? actionEl.value : '';
+  function applySavedRecordsAction(action) {
     var ids = getSelectedRecordIds();
     showRecordsMsg('', true);
     if (!ids.length) {
@@ -3483,7 +3490,7 @@
       return;
     }
     if (!action) {
-      showRecordsMsg('Choose an action from the list.', false);
+      showRecordsMsg('Choose Delete, Download, Open, or Copy links.', false);
       return;
     }
     if (action === 'delete') {
