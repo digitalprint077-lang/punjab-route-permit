@@ -1162,6 +1162,88 @@
     width: 100%;
     margin-bottom: 4px;
   }
+  .records-bulk-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin: 10px 0 4px;
+    padding: 10px;
+    background: var(--mist);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  .records-select-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 650;
+    font-family: var(--font-ui);
+    color: var(--ink);
+    cursor: pointer;
+    user-select: none;
+  }
+  .records-select-all input,
+  .permit-card-check input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--sea);
+    cursor: pointer;
+  }
+  .records-bulk-bar select {
+    flex: 1;
+    min-width: 170px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--ink);
+    padding: 9px 12px;
+    font-size: 12.5px;
+    font-family: var(--font-ui);
+    outline: none;
+    cursor: pointer;
+  }
+  .records-bulk-bar select:focus {
+    border-color: var(--sea);
+    box-shadow: 0 0 0 3px rgba(15,110,106,.12);
+  }
+  .btn-bulk-apply {
+    background: var(--sea);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    font-family: var(--font-ui);
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .btn-bulk-apply:hover { background: var(--sea-deep); }
+  .records-selected-count {
+    font-size: 11px;
+    font-weight: 650;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .records-bulk-msg {
+    width: 100%;
+    font-size: 12px;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .records-bulk-msg.ok {
+    background: rgba(0,200,100,0.15);
+    color: #15803d;
+    border: 1px solid rgba(0,200,100,0.3);
+  }
+  .records-bulk-msg.err {
+    background: rgba(229,57,53,0.12);
+    color: #dc2626;
+    border: 1px solid rgba(229,57,53,0.25);
+  }
 
   .permit-card {
     background: rgba(255,255,255,.95);
@@ -1178,6 +1260,17 @@
     transform: translateY(-1px);
     border-color: rgba(15,110,106,.25);
     box-shadow: 0 12px 28px rgba(11,31,42,.1);
+  }
+  .permit-card.is-selected {
+    border-color: rgba(15,110,106,.45);
+    box-shadow: 0 12px 28px rgba(15,110,106,.12);
+    background: rgba(15,110,106,.06);
+  }
+  .permit-card-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2px;
   }
   .permit-card-header {
     display: flex;
@@ -1305,6 +1398,21 @@
     border-color: #2a4452;
   }
   .mode-dark .permit-card-date { background: #1a303b; color: #9fb2b8; }
+  .mode-dark .permit-card.is-selected {
+    background: rgba(15,110,106,.16);
+    border-color: rgba(94,234,212,.35);
+  }
+  .mode-dark .records-bulk-bar {
+    background: #152833;
+    border-color: #2a4452;
+  }
+  .mode-dark .records-select-all { color: #d7e4e7; }
+  .mode-dark .records-bulk-bar select {
+    background: #0f1f29;
+    border-color: #2a4452;
+    color: #e7eef1;
+  }
+  .mode-dark .records-selected-count { color: #9fb2b8; }
   .mode-dark .form-section-head { border-color: #243848; }
   .mode-dark #preview-area {
     background: linear-gradient(180deg, #13252e 0%, #0f1d24 100%);
@@ -1629,7 +1737,7 @@
   }
 
   /* Keep icons aligned even if older button rules override */
-  .hbtn, .pbtn, .panel-tab, .search-box button, .btn-load-all, .card-btn-load, .card-btn-del, .login-btn {
+  .hbtn, .pbtn, .panel-tab, .search-box button, .btn-load-all, .btn-bulk-apply, .card-btn-load, .card-btn-del, .login-btn {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
@@ -1905,13 +2013,29 @@
         <section class="form-section records-toolbar">
           <div class="form-section-head">
             <h3 id="saved-title">Saved Permits</h3>
-            <p id="saved-sub">Search by name, app no, or registration</p>
+            <p id="saved-sub">Search, then select permits to delete, download, or open</p>
           </div>
           <div class="search-box">
             <input id="f-search" placeholder="Search name, app no, reg no...">
             <button type="button" onclick="loadRecords()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3a7 7 0 1 0 4.3 12.5l4.1 4.1 1.4-1.4-4.1-4.1A7 7 0 0 0 10 3Zm0 2a5 5 0 1 1 0 10A5 5 0 0 1 10 5Z"/></svg><span>Search</span></button>
           </div>
           <button type="button" class="btn-load-all" onclick="loadRecords()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5Zm-8 8.5V14l8 4 8-4v-2.5l-8 4-8-4Z"/></svg><span>Load All Records</span></button>
+          <div class="records-bulk-bar">
+            <label class="records-select-all">
+              <input type="checkbox" id="records-select-all" onchange="toggleSelectAllRecords(this)">
+              <span>Select all</span>
+            </label>
+            <select id="records-bulk-action" aria-label="Action for selected permits">
+              <option value="">Choose action</option>
+              <option value="delete">Delete selected</option>
+              <option value="download">Download selected</option>
+              <option value="open">Open selected</option>
+              <option value="copy">Copy public links</option>
+            </select>
+            <button type="button" class="btn-bulk-apply" onclick="applySavedRecordsAction()">Apply</button>
+            <span id="records-selected-count" class="records-selected-count">0 selected</span>
+            <div id="records-bulk-msg" class="records-bulk-msg" hidden></div>
+          </div>
         </section>
         <div id="records-list"></div>
       </div>
@@ -2433,7 +2557,8 @@
   initFormEnhancements();
   refreshQrCode();
 
-  function openPrintTab() {
+  function openPrintTab(opts) {
+    opts = opts || {};
     // Gather all current field values
     var data = {};
     var fieldMap2 = {
@@ -2653,7 +2778,7 @@
     colorDark: '#000000', colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.H
   });
-  waitForLibs(function(ok) { if (ok) enableDownloadBtn(); });
+  waitForLibs(function(ok) { if (ok) { enableDownloadBtn(); ` + (opts.autoDownload ? 'setTimeout(function(){ downloadAsPDF(); }, 700);' : '') + ` } });
 
   function forceTimesNewRoman(root) {
     if (!root) return;
@@ -2820,17 +2945,18 @@
 </body>
 </html>`;
 
-    var win = window.open('', 'PrintPreview', 'width=900,height=750,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
+    var win = (opts && opts.win && !opts.win.closed) ? opts.win : window.open('', (opts && opts.windowName) || 'PrintPreview', 'width=900,height=750,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no');
     if (!win) {
       showMsg('Popup blocked. Allow popups to open print preview.', false);
-      return;
+      return null;
     }
     win.document.open();
     win.document.write(html);
     win.document.close();
+    return win;
   }
 
-  async function openPrintTabById(id) {
+  async function openPrintTabById(id, opts) {
     initSupabase();
     if (!supabaseClient) { showMsg('Not connected', false); return; }
     var backupMode = docMode;
@@ -2859,7 +2985,7 @@
       document.getElementById('f-districts').value = d.districts || '';
       try { syncIssueDatePickerFromHidden(); } catch (ex) {}
       currentEditId = id;
-      openPrintTab();
+      return openPrintTab(opts);
     } catch (err) {
       showMsg((err && err.message) || 'Could not open permit', false);
     } finally {
@@ -3171,6 +3297,7 @@
   function loadRecords() {
     var list = document.getElementById('records-list');
     list.innerHTML = '<p style="color:#64748b;font-family:Arial;font-size:11px;padding:8px;">Loading...</p>';
+    onRecordSelectChange();
     initSupabase();
     if (!supabaseClient) {
       list.innerHTML = '<p style="color:red;font-family:Arial;font-size:11px;padding:8px;">Not connected</p>';
@@ -3195,6 +3322,7 @@
             (search
               ? ('No records found for "' + search + '"')
               : (docMode === 'noc' ? 'No NOCs saved yet' : 'No permits saved yet')) + '</p>';
+          onRecordSelectChange();
           return;
         }
         list.innerHTML = rows.map(function(r, i) {
@@ -3202,7 +3330,7 @@
           var cnic = r.cnic_no||'-', vtype = r.vehicle_type||'-', eng = r.engine_no||'-';
           var date = (r.created_at||'').substring(0,10), id = r.id;
           var c = '<div class="permit-card">';
-          c += '<div class="permit-card-header"><div class="permit-card-num">'+(i+1)+'</div><div class="permit-card-name">'+name+'</div><div class="permit-card-views">' + viewCountFor(id) + ' views</div><div class="permit-card-date">'+date+'</div></div>';
+          c += '<div class="permit-card-header"><label class="permit-card-check"><input type="checkbox" class="record-select" value="'+id+'" onchange="onRecordSelectChange()"></label><div class="permit-card-num">'+(i+1)+'</div><div class="permit-card-name">'+name+'</div><div class="permit-card-views">' + viewCountFor(id) + ' views</div><div class="permit-card-date">'+date+'</div></div>';
           c += '<div class="permit-card-info"><div>App: <span>'+appno+'</span></div><div>Reg: <span>'+regno+'</span></div><div>CNIC: <span style="color:#64748b;">'+cnic+'</span></div><div>Type: <span style="color:#64748b;">'+vtype+'</span></div><div style="grid-column:1/-1;">Engine: <span style="color:#64748b;">'+eng+'</span></div></div>';
           c += '<div class="permit-card-actions">';
                   c += '<button class="card-btn-load" onclick="loadRecord(\'' + id + '\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/></svg><span>Load</span></button>';
@@ -3210,9 +3338,11 @@
           c += '</div></div>';
           return c;
         }).join('');
+        onRecordSelectChange();
       }
       if (result.error) {
         list.innerHTML = '<p style="color:red;font-family:Arial;font-size:11px;padding:8px;">' + result.error.message + '</p>';
+        onRecordSelectChange();
         return;
       }
       var rows = (result.data || []).filter(function(r) {
@@ -3293,6 +3423,159 @@
     } catch (err) {
       showMsg((err && err.message) || 'Delete failed', false);
     }
+  }
+
+  function showRecordsMsg(msg, ok) {
+    var el = document.getElementById('records-bulk-msg');
+    if (!el) return;
+    if (!msg) {
+      el.hidden = true;
+      el.textContent = '';
+      el.classList.remove('ok', 'err');
+      return;
+    }
+    el.hidden = false;
+    el.textContent = msg;
+    el.classList.toggle('ok', !!ok);
+    el.classList.toggle('err', !ok);
+  }
+
+  function getSelectedRecordIds() {
+    var ids = [];
+    document.querySelectorAll('#records-list .record-select:checked').forEach(function(box) {
+      if (box.value) ids.push(box.value);
+    });
+    return ids;
+  }
+
+  function onRecordSelectChange() {
+    var boxes = document.querySelectorAll('#records-list .record-select');
+    var checked = 0;
+    boxes.forEach(function(box) {
+      var card = box.closest('.permit-card');
+      if (card) card.classList.toggle('is-selected', box.checked);
+      if (box.checked) checked++;
+    });
+    var all = document.getElementById('records-select-all');
+    if (all) {
+      all.checked = boxes.length > 0 && checked === boxes.length;
+      all.indeterminate = checked > 0 && checked < boxes.length;
+    }
+    var countEl = document.getElementById('records-selected-count');
+    if (countEl) countEl.textContent = checked + ' selected';
+  }
+
+  function toggleSelectAllRecords(el) {
+    var on = !!(el && el.checked);
+    document.querySelectorAll('#records-list .record-select').forEach(function(box) {
+      box.checked = on;
+    });
+    onRecordSelectChange();
+  }
+
+  function applySavedRecordsAction() {
+    var actionEl = document.getElementById('records-bulk-action');
+    var action = actionEl ? actionEl.value : '';
+    var ids = getSelectedRecordIds();
+    showRecordsMsg('', true);
+    if (!ids.length) {
+      showRecordsMsg('Select at least one permit first.', false);
+      return;
+    }
+    if (!action) {
+      showRecordsMsg('Choose an action from the list.', false);
+      return;
+    }
+    if (action === 'delete') {
+      deleteSelectedRecords(ids);
+      return;
+    }
+    if (action === 'open') {
+      ids.forEach(function(id) {
+        window.open(getDocQrUrl(id, docMode), '_blank');
+      });
+      showRecordsMsg('Opened ' + ids.length + ' document(s).', true);
+      return;
+    }
+    if (action === 'copy') {
+      copySelectedRecordLinks(ids);
+      return;
+    }
+    if (action === 'download') {
+      if (ids.length > 8 && !confirm('This will open ' + ids.length + ' download windows. Continue?')) return;
+      var wins = [];
+      for (var i = 0; i < ids.length; i++) {
+        var w = window.open('about:blank', 'pta_dl_' + i, 'width=900,height=750,scrollbars=yes,resizable=yes');
+        if (!w) {
+          wins.forEach(function(opened) { try { opened.close(); } catch (ex) {} });
+          showRecordsMsg('Popup blocked. Allow popups to download selected permits.', false);
+          return;
+        }
+        wins.push(w);
+      }
+      downloadSelectedRecords(ids, wins);
+    }
+  }
+
+  function copySelectedRecordLinks(ids) {
+    var text = ids.map(function(id) { return getDocQrUrl(id, docMode); }).join('\n');
+    function done() { showRecordsMsg('Copied ' + ids.length + ' public link(s).', true); }
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        done();
+      } catch (err) {
+        showRecordsMsg('Could not copy links.', false);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  async function deleteSelectedRecords(ids) {
+    var label = ids.length === 1 ? 'this permit' : (ids.length + ' selected permits');
+    if (!confirm('Delete ' + label + '? This cannot be undone.')) return;
+    initSupabase();
+    if (!supabaseClient) { showRecordsMsg('Not connected', false); return; }
+    try {
+      var result = await supabaseClient.from('permits').delete().in('id', ids);
+      if (result.error) throw result.error;
+      ids.forEach(function(id) {
+        if (editIdsByMode.permit == id) editIdsByMode.permit = null;
+        if (editIdsByMode.noc == id) editIdsByMode.noc = null;
+        if (currentEditId == id) { currentEditId = null; clearForm(); }
+      });
+      showRecordsMsg('Deleted ' + ids.length + ' permit(s).', true);
+      loadRecords();
+      try { loadDashboardStats(); } catch (exDash) {}
+    } catch (err) {
+      showRecordsMsg((err && err.message) || 'Delete failed', false);
+    }
+  }
+
+  async function downloadSelectedRecords(ids, wins) {
+    showRecordsMsg('Preparing ' + ids.length + ' download(s)…', true);
+    var opened = 0;
+    for (var i = 0; i < ids.length; i++) {
+      try {
+        var win = await openPrintTabById(ids[i], { win: wins[i], autoDownload: true, windowName: 'pta_dl_' + i });
+        if (win) opened++;
+      } catch (err) {
+        showRecordsMsg((err && err.message) || ('Could not prepare download ' + (i + 1)), false);
+      }
+    }
+    showRecordsMsg(opened ? ('Started download for ' + opened + ' of ' + ids.length + ' permit(s).') : 'Could not start downloads.', opened > 0);
   }
 
   async function clearForm() {
