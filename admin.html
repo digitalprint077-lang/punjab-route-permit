@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="permit-views.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -1183,6 +1184,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
+    gap: 6px;
+    flex-wrap: wrap;
   }
   .permit-card-num {
     width: 24px; height: 24px;
@@ -1508,6 +1511,7 @@
     box-shadow: 0 6px 16px rgba(11,31,42,.06);
   }
   .dash-stat.wide { grid-column: 1 / -1; }
+  #dash-views-list { max-height: 420px; overflow: auto; padding-right: 2px; }
   .dash-stat-label {
     font-family: var(--font-ui);
     font-size: 11px;
@@ -1532,6 +1536,79 @@
   }
   .dash-stat.permits .dash-stat-value { color: var(--sea-deep); }
   .dash-stat.nocs .dash-stat-value { color: #b45309; }
+  .dash-stat.views .dash-stat-value { color: #1d4ed8; }
+  .dash-views-empty {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    padding: 8px 2px;
+  }
+  .dash-view-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 12px rgba(11,31,42,.05);
+  }
+  .dash-view-name {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 650;
+    color: var(--ink);
+  }
+  .dash-view-meta {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .dash-view-count {
+    flex-shrink: 0;
+    min-width: 46px;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: #1d4ed8;
+    line-height: 1.1;
+  }
+  .dash-view-count span {
+    display: block;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 650;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .mode-dark .dash-view-row {
+    background: #152833;
+    border-color: #2a4452;
+  }
+  .mode-dark .dash-view-name { color: #eef5f7; }
+  .mode-dark .dash-view-count { color: #93c5fd; }
+  .mode-dark .dash-stat.views .dash-stat-value { color: #93c5fd; }
+  .permit-card-views {
+    font-size: 11px;
+    font-weight: 650;
+    color: #1d4ed8;
+    background: rgba(29,78,216,.08);
+    padding: 4px 8px;
+    border-radius: 999px;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+  .mode-dark .permit-card-views {
+    color: #93c5fd;
+    background: rgba(147,197,253,.12);
+  }
   .mode-dark .dash-stat {
     background: #152833;
     border-color: #2a4452;
@@ -1698,11 +1775,23 @@
               <div class="dash-stat-value" id="dash-total-count">—</div>
               <div class="dash-stat-hint">Created today: <span id="dash-today-count">—</span></div>
             </div>
+            <div class="dash-stat wide views">
+              <div class="dash-stat-label">Public views</div>
+              <div class="dash-stat-value" id="dash-view-count">—</div>
+              <div class="dash-stat-hint">Times permits were opened on the public page</div>
+            </div>
           </div>
           <div class="dash-actions">
             <button type="button" class="btn-load-all" onclick="loadDashboardStats()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg><span>Refresh Counts</span></button>
             <button type="button" class="pbtn" onclick="switchTab('tab-records', document.querySelectorAll('.panel-tab')[2])"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg><span>Open Saved List</span></button>
           </div>
+        </section>
+        <section class="form-section">
+          <div class="form-section-head">
+            <h3>Views by permit</h3>
+            <p>Each saved permit and how many times the public page was opened</p>
+          </div>
+          <div id="dash-views-list"><p class="dash-views-empty">Loading views…</p></div>
         </section>
       </div>
 
@@ -2979,11 +3068,56 @@
     }
   }
 
+  var lastViewStats = { byId: {}, total: 0 };
+
+  function formatViewTime(iso) {
+    if (!iso) return 'Never viewed';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return 'Never viewed';
+    var pad = function(n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function viewCountFor(id) {
+    var row = lastViewStats.byId && lastViewStats.byId[id];
+    return row ? (parseInt(row.count, 10) || 0) : 0;
+  }
+
+  function renderPermitViews(permits) {
+    var list = document.getElementById('dash-views-list');
+    var totalEl = document.getElementById('dash-view-count');
+    if (totalEl) totalEl.textContent = String(lastViewStats.total || 0);
+    if (!list) return;
+    var rows = (permits || []).slice();
+    rows.sort(function(a, b) {
+      return viewCountFor(b.id) - viewCountFor(a.id);
+    });
+    if (!rows.length) {
+      list.innerHTML = '<p class="dash-views-empty">No saved permits yet.</p>';
+      return;
+    }
+    list.innerHTML = rows.map(function(r) {
+      var stats = lastViewStats.byId[r.id] || {};
+      var count = parseInt(stats.count, 10) || 0;
+      var name = escapeHtml(r.full_name || stats.full_name || 'Unnamed permit');
+      var reg = escapeHtml(r.vehicle_reg_no || stats.vehicle_reg_no || '-');
+      var kind = isNocRecord(r) ? 'NOC' : 'Permit';
+      var last = formatViewTime(stats.last_viewed);
+      var html = '<div class="dash-view-row">';
+      html += '<div><div class="dash-view-name">' + name + '</div>';
+      html += '<div class="dash-view-meta">' + kind + ' · ' + reg + ' · Last public view: ' + last + '</div></div>';
+      html += '<div class="dash-view-count">' + count + '<span>views</span></div>';
+      html += '</div>';
+      return html;
+    }).join('');
+  }
+
   function loadDashboardStats() {
     var permitEl = document.getElementById('dash-permit-count');
     var nocEl = document.getElementById('dash-noc-count');
     var totalEl = document.getElementById('dash-total-count');
     var todayEl = document.getElementById('dash-today-count');
+    var viewEl = document.getElementById('dash-view-count');
     function setDash(p, n, t, today) {
       if (permitEl) permitEl.textContent = p;
       if (nocEl) nocEl.textContent = n;
@@ -2991,31 +3125,46 @@
       if (todayEl) todayEl.textContent = today;
     }
     setDash('…', '…', '…', '…');
+    if (viewEl) viewEl.textContent = '…';
     initSupabase();
     if (!supabaseClient) {
       setDash('—', '—', '—', '—');
+      if (viewEl) viewEl.textContent = '—';
       return;
     }
-    supabaseClient.from('permits').select('id,doc_type,qr_link,created_at').then(function(result) {
+    supabaseClient.from('permits').select('id,doc_type,qr_link,created_at,full_name,vehicle_reg_no').then(function(result) {
       if (result.error && /doc_type|schema cache|column/i.test(String(result.error.message || ''))) {
-        return supabaseClient.from('permits').select('id,qr_link,created_at');
+        return supabaseClient.from('permits').select('id,qr_link,created_at,full_name,vehicle_reg_no');
       }
       return result;
     }).then(function(result) {
       if (result.error) {
         setDash('—', '—', '—', '—');
-        return;
+        return Promise.resolve({ permits: [] });
       }
       var permits = 0, nocs = 0, today = 0;
       var todayStr = new Date().toISOString().substring(0, 10);
-      (result.data || []).forEach(function(r) {
+      var docs = result.data || [];
+      docs.forEach(function(r) {
         if (isNocRecord(r)) nocs++;
         else permits++;
         if ((r.created_at || '').substring(0, 10) === todayStr) today++;
       });
       setDash(String(permits), String(nocs), String(permits + nocs), String(today));
+      return { permits: docs };
+    }).then(function(payload) {
+      var docs = (payload && payload.permits) || [];
+      if (!window.PTAPermitViews) {
+        renderPermitViews(docs);
+        return;
+      }
+      return PTAPermitViews.fetchViewStats(supabaseClient, docs.map(function(d){ return d.id; })).then(function(stats) {
+        lastViewStats = stats || lastViewStats;
+        renderPermitViews(docs);
+      });
     }).catch(function() {
       setDash('—', '—', '—', '—');
+      if (viewEl) viewEl.textContent = '—';
     });
   }
 
@@ -3040,6 +3189,28 @@
       );
     }
     query.then(function(result) {
+      function paint(rows) {
+        if (!rows.length) {
+          list.innerHTML = '<p style="color:#94a3b8;font-family:Arial;font-size:11px;text-align:center;padding:20px;">' +
+            (search
+              ? ('No records found for "' + search + '"')
+              : (docMode === 'noc' ? 'No NOCs saved yet' : 'No permits saved yet')) + '</p>';
+          return;
+        }
+        list.innerHTML = rows.map(function(r, i) {
+          var name = r.full_name||'-', appno = r.app_no||'-', regno = r.vehicle_reg_no||'-';
+          var cnic = r.cnic_no||'-', vtype = r.vehicle_type||'-', eng = r.engine_no||'-';
+          var date = (r.created_at||'').substring(0,10), id = r.id;
+          var c = '<div class="permit-card">';
+          c += '<div class="permit-card-header"><div class="permit-card-num">'+(i+1)+'</div><div class="permit-card-name">'+name+'</div><div class="permit-card-views">' + viewCountFor(id) + ' views</div><div class="permit-card-date">'+date+'</div></div>';
+          c += '<div class="permit-card-info"><div>App: <span>'+appno+'</span></div><div>Reg: <span>'+regno+'</span></div><div>CNIC: <span style="color:#64748b;">'+cnic+'</span></div><div>Type: <span style="color:#64748b;">'+vtype+'</span></div><div style="grid-column:1/-1;">Engine: <span style="color:#64748b;">'+eng+'</span></div></div>';
+          c += '<div class="permit-card-actions">';
+                  c += '<button class="card-btn-load" onclick="loadRecord(\'' + id + '\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/></svg><span>Load</span></button>';
+          c += '<button class="card-btn-del" onclick="deleteRecord(event,\'' + id + '\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm1 6h2v9h-2V9Zm4 0h2v9h-2V9ZM7 9h2v9H7V9Zm-1 13h12a1 1 0 0 0 1-1V8H5v13a1 1 0 0 0 1 1Z"/></svg><span>Delete</span></button>';
+          c += '</div></div>';
+          return c;
+        }).join('');
+      }
       if (result.error) {
         list.innerHTML = '<p style="color:red;font-family:Arial;font-size:11px;padding:8px;">' + result.error.message + '</p>';
         return;
@@ -3047,26 +3218,14 @@
       var rows = (result.data || []).filter(function(r) {
         return docMode === 'noc' ? isNocRecord(r) : !isNocRecord(r);
       });
-      if (!rows.length) {
-        list.innerHTML = '<p style="color:#94a3b8;font-family:Arial;font-size:11px;text-align:center;padding:20px;">' +
-          (search
-            ? ('No records found for "' + search + '"')
-            : (docMode === 'noc' ? 'No NOCs saved yet' : 'No permits saved yet')) + '</p>';
-        return;
+      if (window.PTAPermitViews) {
+        PTAPermitViews.fetchViewStats(supabaseClient, rows.map(function(r){ return r.id; })).then(function(stats) {
+          lastViewStats = stats || lastViewStats;
+          paint(rows);
+        }).catch(function() { paint(rows); });
+      } else {
+        paint(rows);
       }
-      list.innerHTML = rows.map(function(r, i) {
-        var name = r.full_name||'-', appno = r.app_no||'-', regno = r.vehicle_reg_no||'-';
-        var cnic = r.cnic_no||'-', vtype = r.vehicle_type||'-', eng = r.engine_no||'-';
-        var date = (r.created_at||'').substring(0,10), id = r.id;
-        var c = '<div class="permit-card">';
-        c += '<div class="permit-card-header"><div class="permit-card-num">'+(i+1)+'</div><div class="permit-card-name">'+name+'</div><div class="permit-card-date">'+date+'</div></div>';
-        c += '<div class="permit-card-info"><div>App: <span>'+appno+'</span></div><div>Reg: <span>'+regno+'</span></div><div>CNIC: <span style="color:#64748b;">'+cnic+'</span></div><div>Type: <span style="color:#64748b;">'+vtype+'</span></div><div style="grid-column:1/-1;">Engine: <span style="color:#64748b;">'+eng+'</span></div></div>';
-        c += '<div class="permit-card-actions">';
-                c += '<button class="card-btn-load" onclick="loadRecord(\'' + id + '\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/></svg><span>Load</span></button>';
-        c += '<button class="card-btn-del" onclick="deleteRecord(event,\'' + id + '\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm1 6h2v9h-2V9Zm4 0h2v9h-2V9ZM7 9h2v9H7V9Zm-1 13h12a1 1 0 0 0 1-1V8H5v13a1 1 0 0 0 1 1Z"/></svg><span>Delete</span></button>';
-        c += '</div></div>';
-        return c;
-      }).join('');
     }).catch(function(e) {
       list.innerHTML = '<p style="color:red;font-family:Arial;font-size:11px;padding:8px;">' + (e.message||'Error') + '</p>';
     });
