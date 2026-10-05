@@ -9,6 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="permit-views.js"></script>
 <style>
 
   @page { size: A4 portrait; margin: 0; }
@@ -407,6 +408,15 @@
     } else {
       requestAnimationFrame(fitDocZoom);
     }
+    try {
+      if (window.PTAPermitViews) {
+        PTAPermitViews.recordView(id, {
+          doc_type: 'permit',
+          full_name: d.full_name,
+          vehicle_reg_no: d.vehicle_reg_no
+        }, sb);
+      }
+    } catch (exView) {}
   }
 
   function forceTimesNewRoman(root) {

@@ -41,3 +41,33 @@ CREATE TABLE IF NOT EXISTS permits (
 -- Default admin password: permit@2026
 -- Generate a fresh hash with: php -r "echo password_hash('permit@2026', PASSWORD_DEFAULT);"
 -- Or just use api/install.php which creates the admin automatically.
+
+-- ── Supabase (Postgres) — public view tracking ──────────────────────────
+-- Run this once in the Supabase SQL editor so dashboard view counts work
+-- for every visitor who opens a permit/NOC public page.
+
+CREATE TABLE IF NOT EXISTS permit_views (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  permit_id TEXT NOT NULL,
+  viewed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  doc_type TEXT,
+  full_name TEXT,
+  vehicle_reg_no TEXT
+);
+
+CREATE INDEX IF NOT EXISTS permit_views_permit_id_idx ON permit_views (permit_id);
+CREATE INDEX IF NOT EXISTS permit_views_viewed_at_idx ON permit_views (viewed_at DESC);
+
+ALTER TABLE permit_views ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "public can insert permit views" ON permit_views;
+CREATE POLICY "public can insert permit views"
+  ON permit_views FOR INSERT
+  TO anon, authenticated
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "public can read permit views" ON permit_views;
+CREATE POLICY "public can read permit views"
+  ON permit_views FOR SELECT
+  TO anon, authenticated
+  USING (true);
