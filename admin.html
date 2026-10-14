@@ -93,14 +93,12 @@
 
   .app-no {
     font-size: 12.5px;
-    font-weight: 400;
+    font-weight: 700;
     margin: 0;
-    display: inline-flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 12px;
+    letter-spacing: 0.45px;
+    text-align: center;
   }
-  .app-no-label { font-weight: 400; }
+  .app-no-label,
   .app-no #d-appno,
   .app-no > span:not(.app-no-label) { font-weight: 700; }
 
@@ -1791,7 +1789,7 @@
             <p id="doc-info-sub">Application and permit identifiers</p>
           </div>
           <div class="field-grid">
-            <div class="fg"><label>Application No</label><input id="f-appno" value="336171"></div>
+            <div class="fg"><label>Application No</label><input id="f-appno" value="3400000"></div>
             <div class="fg"><label>Fitness Cert No</label><input id="f-fcno" value="325"></div>
             <div class="fg span-2"><label id="lbl-rpno">Route Permit No (P.CO.P.NO)</label><input id="f-rpno" value="3221150/12026/PTA/LHR"></div>
           </div>
@@ -1927,7 +1925,7 @@
           <p class="main-title"><span class="title-line">SUMMARY TO BE CARRIED ON THE</span><span class="title-line">VEHICLE</span></p>
           <p class="sub-title"><span class="title-line">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN</span><span class="title-line">PUNJAB</span></p>
           <p class="part-label">PART ' A &amp; B '</p>
-          <p class="app-no"><span class="app-no-label">APPLICATION NO.</span><span id="d-appno">329915</span></p>
+          <p class="app-no"><span class="app-no-label">APPLICATION NO.</span><span id="d-appno">3400000</span></p>
         </div>
         <div class="qr-box" onclick="if(currentEditId){openPrintTabById(currentEditId);}" title="Open permit popup" style="cursor:pointer;">
           <div id="qrcode-img"></div>
@@ -2413,7 +2411,7 @@
     }
     if (!link) {
       var appno = document.getElementById('f-appno').value.trim();
-      link = 'APPLICATION NO.' + (appno || '329915');
+      link = 'APPLICATION NO.' + (appno || '3400000');
     }
     generateQR(link);
   }
@@ -2537,14 +2535,12 @@
 
   .app-no {
     font-size: 12.5px;
-    font-weight: 400;
+    font-weight: 700;
     margin: 0;
-    display: inline-flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 12px;
+    letter-spacing: 0.45px;
+    text-align: center;
   }
-  .app-no-label { font-weight: 400; }
+  .app-no-label,
   .app-no #d-appno,
   .app-no > span:not(.app-no-label) { font-weight: 700; }
 
@@ -3077,7 +3073,7 @@
     }
   }
 
-  var APP_NO_START = 336171;
+  var APP_NO_START = 3400000;
   var PSID_PREFIX = '412326020';
 
   function generatePsidNo() {
@@ -3095,7 +3091,7 @@
         if (result.data) {
           result.data.forEach(function(r) {
             var n = parseInt(String(r.app_no || '').replace(/\D/g, ''), 10);
-            if (!isNaN(n) && n >= APP_NO_START && n > max) max = n;
+            if (!isNaN(n) && n >= APP_NO_START && String(n).indexOf('34') === 0 && n > max) max = n;
           });
         }
       } catch (ex) {}
