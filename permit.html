@@ -99,39 +99,50 @@
 
   .permit-table {
     width: 100%;
-    border-collapse: collapse;
-    margin: 8px 0 12px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 8px 0 10px;
     font-size: 11.5px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(70, 70, 70, 0.34);
+    background: transparent;
   }
 
   .permit-table td {
-    border: 2px solid #bdbdbd;
-    padding: 8px 10px;
+    border: 1px solid rgba(70, 70, 70, 0.26);
+    padding: 7px 8px;
     text-align: center;
     width: 50%;
     line-height: 1.25;
-    background: rgba(255,255,255,0.55);
+    background: transparent;
   }
 
   .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: 400; }
   .permit-table .big-val { font-weight: 700; font-size: 13px; display: block; margin: 2px 0; }
   .permit-table .route-label { font-size: 10px; display: block; margin: 0; font-weight: 400; }
 
-  .perm-section { margin: 0 0 10px; }
+  .perm-section {
+    margin: 0 0 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(70, 70, 70, 0.34);
+    background: transparent;
+  }
   .perm-section-head {
-    background: #dcdcdc;
-    border: 1px solid #bdbdbd;
-    border-bottom: none;
-    padding: 5px 8px;
-    font-size: 12px;
+    background: rgba(210, 210, 210, 0.28);
+    border: none;
+    border-bottom: 1px solid rgba(70, 70, 70, 0.24);
+    padding: 4px 8px;
+    font-size: 11.5px;
     font-weight: bold;
     letter-spacing: 0.2px;
     text-transform: uppercase;
   }
   .perm-section-body {
-    border: 1px solid #bdbdbd;
-    background: rgba(255,255,255,0.45);
-    padding: 8px 10px 10px;
+    border: none;
+    background: transparent;
+    padding: 7px 8px 8px;
   }
   .perm-section-body-fit { padding: 0; }
   .perm-grid-2 {
@@ -157,10 +168,11 @@
     grid-template-columns: 1fr 1fr 1fr;
   }
   .perm-fit-cell {
-    border-right: 1px solid #bdbdbd;
+    border-right: 1px solid rgba(70, 70, 70, 0.24);
     text-align: center;
-    padding: 8px 6px 10px;
-    min-height: 52px;
+    padding: 7px 6px 8px;
+    min-height: 48px;
+    background: transparent;
   }
   .perm-fit-cell:last-child { border-right: none; }
   .perm-fit-label {
@@ -175,20 +187,32 @@
     font-weight: 700;
   }
 
-  .perm-route-block { margin: 8px 0 10px; }
-
-  .districts-box {
-    padding: 6px 0 2px;
-    margin: 4px 0 0;
-    font-size: 11px;
-    line-height: 1.35;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+  .perm-route-block {
+    margin: 0 0 8px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    padding: 6px 0 8px;
   }
 
-  .districts-box .dlbl { font-weight: 400; }
-  .districts-box #districts-text,
-  .districts-box #d-districts { font-weight: 700; }
+  .districts-box {
+    padding: 4px 0 2px;
+    margin: 2px 0 0;
+    font-size: 11px;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .districts-box .dlbl,
+  .districts-box .districts-total { font-weight: 700; }
+  .districts-line {
+    white-space: nowrap;
+    font-weight: 400;
+  }
+  .districts-line-last {
+    white-space: nowrap;
+    max-width: 58%;
+  }
 
   .note-block {
     text-align: center;
@@ -372,9 +396,7 @@
   </div>
   <div class="perm-route-block">
     <div class="perm-field perm-field-full"><span class="lbl">15. ROUTE DETAIL :</span></div>
-    <div class="districts-box">
-      <span class="dlbl">OTHER DISTRICTS</span><span id="d-districts"></span> <strong>(TOTAL 41 DISTRICT)</strong>
-    </div>
+    <div class="districts-box" id="districts-box"></div>
   </div>
   <div class="note-block">
     <em>*NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED SIGNATURES. VERIFY THROUGH QR CODE.*</em>
@@ -516,6 +538,56 @@
     if (el) el.textContent = val || '';
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  var DEFAULT_DISTRICTS = 'ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJRANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUDDIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,RAWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT ADDU,TAUNSA SHAREEF';
+  var ROUTE_DISTRICT_REFERENCE_LINES = [
+    'ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJR',
+    'ANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUD',
+    'DIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,R',
+    'AWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT',
+    'ADDU,TAUNSA SHAREEF'
+  ];
+
+  function normalizeDistrictList(val) {
+    return String(val || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean).join(',');
+  }
+
+  function isDefaultRouteDistricts(norm) {
+    return norm === normalizeDistrictList(DEFAULT_DISTRICTS);
+  }
+
+  function splitDistrictsToFiveLines(norm) {
+    var chunkSizes = [89, 95, 95, 95];
+    var lines = ['', '', '', '', ''];
+    var pos = 0;
+    for (var i = 0; i < chunkSizes.length && pos < norm.length; i++) {
+      var end = Math.min(pos + chunkSizes[i], norm.length);
+      lines[i] = norm.substring(pos, end);
+      pos = end;
+    }
+    if (pos < norm.length) lines[4] = norm.substring(pos);
+    return lines;
+  }
+
+  function buildRouteDistrictsHtml(districtVal) {
+    var norm = normalizeDistrictList(districtVal || DEFAULT_DISTRICTS);
+    var count = norm ? norm.split(',').length : 0;
+    var lines = isDefaultRouteDistricts(norm) ? ROUTE_DISTRICT_REFERENCE_LINES.slice() : splitDistrictsToFiveLines(norm);
+    var html = '<div class="districts-line"><strong class="dlbl">OTHER DISTRICTS</strong> ' + escapeHtml(lines[0]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[1]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[2]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[3]) + '</div>';
+    html += '<div class="districts-line districts-line-last">' + escapeHtml(lines[4]) + ' <strong class="districts-total">(TOTAL ' + count + ' DISTRICT)</strong></div>';
+    return html;
+  }
+
   async function loadPermit() {
     var params = new URLSearchParams(window.location.search);
     var id = params.get('id');
@@ -550,7 +622,8 @@
     set('d-idistrict', d.issuing_district);
     set('d-idate',     d.issuance_date);
     set('d-authority', d.authority_name);
-    set('d-districts', ' ' + (d.districts || ''));
+    var districtsBox = document.getElementById('districts-box');
+    if (districtsBox) districtsBox.innerHTML = buildRouteDistrictsHtml(d.districts);
 
     var popupView = params.get('view') === 'popup' || params.get('popup') === '1' ||
       !params.get('view') || (d.qr_link && d.qr_link.indexOf('view=popup') !== -1);

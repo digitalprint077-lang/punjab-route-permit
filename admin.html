@@ -213,25 +213,30 @@
 
   .perm-route-block {
     margin: 0 0 8px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(70, 70, 70, 0.34);
+    border: none;
+    border-radius: 0;
     background: transparent;
-    padding: 6px 8px 8px;
+    padding: 6px 0 8px;
   }
 
   .districts-box {
-    padding: 6px 0 2px;
-    margin: 4px 0 0;
+    padding: 4px 0 2px;
+    margin: 2px 0 0;
     font-size: 11px;
-    line-height: 1.35;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    line-height: 1.2;
+    font-weight: 400;
   }
 
-  .districts-box .dlbl { font-weight: 400; }
-  .districts-box #districts-text,
-  .districts-box #d-districts { font-weight: 700; }
+  .districts-box .dlbl,
+  .districts-box .districts-total { font-weight: 700; }
+  .districts-line {
+    white-space: nowrap;
+    font-weight: 400;
+  }
+  .districts-line-last {
+    white-space: nowrap;
+    max-width: 58%;
+  }
 
   .note-block {
     text-align: center;
@@ -1999,9 +2004,7 @@
 
       <div class="perm-route-block">
         <div class="perm-field perm-field-full"><span class="lbl">15. ROUTE DETAIL :</span></div>
-        <div class="districts-box">
-          <span class="dlbl">OTHER DISTRICTS</span><span id="districts-text"></span> <strong>(TOTAL 41 DISTRICT)</strong>
-        </div>
+        <div class="districts-box" id="districts-box"></div>
       </div>
 
       <div class="note-block">
@@ -2045,14 +2048,6 @@
 </div><!-- /app -->
 
 <script>
-  var districts = ['ATTOCK','BAHAWALNAGAR','BAHAWALPUR','BHAKHAR','CHAKWAL','CHINIOT','D G KHAN','FAISALABAD','GUJRANWALA','GUJRAT','HAFIZABAD','JHANG','JHELUM','KASUR','KHANEWAL','KHUSHAB','LAHORE','LAYYAH','LODHRAN','MANDI BAHAUDDIN','MIANWALI','MULTAN','MUZAFFARGARH','NANKANA SAHIB','NAROWAL','OKARA','PAKPATTAN','RAHIM YAR KHAN','RAJANPUR','RAWALPINDI','SAHIWAL','SARGODHA','SIALKOT','TOBA TEK SINGH','VEHARI','SHEIKHUPURA','WAZIRABAD','MUREE','TALAGANG','KOT ADDU','TAUNSA SHAREEF'];
-  document.getElementById('districts-text').textContent = ' ' + districts.join(',');
-
-  function updateDistricts() {
-    var val = document.getElementById('f-districts').value.trim();
-    document.getElementById('districts-text').textContent = ' ' + val;
-  }
-
   var ISSUE_MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
   function formatIssueDate(iso) {
@@ -2143,6 +2138,52 @@
   ];
   var formStateByMode = { permit: null, noc: null };
   var DEFAULT_DISTRICTS = 'ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJRANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUDDIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,RAWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT ADDU,TAUNSA SHAREEF';
+  var ROUTE_DISTRICT_REFERENCE_LINES = [
+    'ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJR',
+    'ANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUD',
+    'DIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,R',
+    'AWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT',
+    'ADDU,TAUNSA SHAREEF'
+  ];
+
+  function normalizeDistrictList(val) {
+    return String(val || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean).join(',');
+  }
+
+  function isDefaultRouteDistricts(norm) {
+    return norm === normalizeDistrictList(DEFAULT_DISTRICTS);
+  }
+
+  function splitDistrictsToFiveLines(norm) {
+    var chunkSizes = [89, 95, 95, 95];
+    var lines = ['', '', '', '', ''];
+    var pos = 0;
+    for (var i = 0; i < chunkSizes.length && pos < norm.length; i++) {
+      var end = Math.min(pos + chunkSizes[i], norm.length);
+      lines[i] = norm.substring(pos, end);
+      pos = end;
+    }
+    if (pos < norm.length) lines[4] = norm.substring(pos);
+    return lines;
+  }
+
+  function buildRouteDistrictsHtml(districtVal) {
+    var norm = normalizeDistrictList(districtVal || DEFAULT_DISTRICTS);
+    var count = norm ? norm.split(',').length : 0;
+    var lines = isDefaultRouteDistricts(norm) ? ROUTE_DISTRICT_REFERENCE_LINES.slice() : splitDistrictsToFiveLines(norm);
+    var html = '<div class="districts-line"><strong class="dlbl">OTHER DISTRICTS</strong> ' + escapeHtml(lines[0]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[1]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[2]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[3]) + '</div>';
+    html += '<div class="districts-line districts-line-last">' + escapeHtml(lines[4]) + ' <strong class="districts-total">(TOTAL ' + count + ' DISTRICT)</strong></div>';
+    return html;
+  }
+
+  function updateDistricts() {
+    var val = document.getElementById('f-districts').value.trim();
+    var box = document.getElementById('districts-box');
+    if (box) box.innerHTML = buildRouteDistrictsHtml(val);
+  }
 
   function snapshotForm(mode) {
     var m = mode || docMode;
@@ -2401,6 +2442,7 @@
 
   initFormEnhancements();
   refreshQrCode();
+  try { updateDistricts(); } catch (exDistricts) {}
 
   function openPrintTab() {
     // Gather all current field values
@@ -2418,6 +2460,7 @@
       data[k] = el ? el.value : '';
     });
     data['districts'] = document.getElementById('f-districts').value.trim();
+    var routeDistrictsHtml = buildRouteDistrictsHtml(data.districts);
     data['qrlink'] = normalizeDocQrUrl(document.getElementById('f-qrlink').value.trim(), currentEditId, docMode);
     if (!data.qrlink && currentEditId) data.qrlink = getDocQrUrl(currentEditId, docMode);
     var isNocPrint = (docMode === 'noc');
@@ -2618,25 +2661,30 @@
 
   .perm-route-block {
     margin: 0 0 8px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(70, 70, 70, 0.34);
+    border: none;
+    border-radius: 0;
     background: transparent;
-    padding: 6px 8px 8px;
+    padding: 6px 0 8px;
   }
 
   .districts-box {
-    padding: 6px 0 2px;
-    margin: 4px 0 0;
+    padding: 4px 0 2px;
+    margin: 2px 0 0;
     font-size: 11px;
-    line-height: 1.35;
-    word-break: break-word;
-    overflow-wrap: anywhere;
+    line-height: 1.2;
+    font-weight: 400;
   }
 
-  .districts-box .dlbl { font-weight: 400; }
-  .districts-box #districts-text,
-  .districts-box #d-districts { font-weight: 700; }
+  .districts-box .dlbl,
+  .districts-box .districts-total { font-weight: 700; }
+  .districts-line {
+    white-space: nowrap;
+    font-weight: 400;
+  }
+  .districts-line-last {
+    white-space: nowrap;
+    max-width: 58%;
+  }
 
   .note-block {
     text-align: center;
@@ -2784,9 +2832,7 @@
   </div>
   <div class="perm-route-block">
     <div class="perm-field perm-field-full"><span class="lbl">15. ROUTE DETAIL :</span></div>
-    <div class="districts-box">
-      <span class="dlbl">OTHER DISTRICTS</span> ` + data.districts + ` <strong>(TOTAL 41 DISTRICT)</strong>
-    </div>
+    <div class="districts-box">` + routeDistrictsHtml + `</div>
   </div>
   <div class="note-block">
     <em>*NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED SIGNATURES. VERIFY THROUGH QR CODE.*</em>
