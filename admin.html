@@ -2871,48 +2871,6 @@
   .noc-para.noc-para-sm + .noc-para.noc-para-sm { margin-top:40px; }
   .noc-note { margin:90px auto 0; text-align:center; font-size:11.5px; line-height:1.5; font-style:italic !important; font-weight:400 !important; }
   .noc-print, .noc-print span { margin-top:14px; text-align:center; font-size:12.5px; font-weight:400 !important; font-style:normal !important; }
-  #doc-viewport {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 12px 16px 24px;
-    box-sizing: border-box;
-    min-height: 100vh;
-  }
-  .doc-side-toolbar {
-    flex: 0 0 auto;
-    position: sticky;
-    top: 12px;
-    align-self: flex-start;
-    z-index: 2;
-  }
-  .dl-permit-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 11px 20px 11px 16px;
-    border: none;
-    border-radius: 14px;
-    background: #3f2482;
-    color: #fff;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 8px 22px rgba(63, 36, 130, 0.38);
-    touch-action: manipulation;
-  }
-  .dl-permit-btn:hover:not(:disabled) { filter: brightness(1.06); }
-  .dl-permit-btn:active:not(:disabled) {
-    transform: translateY(1px);
-    box-shadow: 0 5px 14px rgba(63, 36, 130, 0.32);
-  }
-  .dl-permit-btn:disabled { opacity: 0.88; cursor: wait; }
-  .dl-permit-btn-icon { width: 18px; height: 18px; flex-shrink: 0; display: block; }
   @media print {
     body { background:white; }
     #document { box-shadow:none; margin:0; width:210mm; min-height:297mm; }
@@ -2921,13 +2879,7 @@
 </style>
 </head>
 <body>
-<div id="doc-viewport">
-<aside class="doc-side-toolbar no-print">
-<button id="dl-btn" onclick="downloadAsPDF()" class="dl-permit-btn" type="button">
-  <svg class="dl-permit-btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v2H5v-2z"/></svg>
-  <span class="dl-permit-btn-label">Download Permit</span>
-</button>
-</aside>
+<button id="dl-btn" onclick="downloadAsPDF()" class="no-print" style="position:fixed;top:8px;left:8px;background:white;color:#333;border:1px solid #999;padding:8px 16px;font-size:13px;font-family:Arial,sans-serif;border-radius:3px;cursor:pointer;z-index:9999;touch-action:manipulation;">Download</button>
 ` + (isNocPrint ? `
 <div id="document">
   <div class="noc-wrap">
@@ -3037,7 +2989,6 @@
     <p class="issue-date">ISSUANCE DATE:&nbsp;&nbsp;` + data.idate + `</p>
   </div>
 </div>
-</div>
 `) + `
 <script>
   new QRCode(document.getElementById('qrcode-img'), {
@@ -3061,19 +3012,10 @@
     return typeof html2canvas === 'function' && window.jspdf && window.jspdf.jsPDF;
   }
 
-  var DL_BTN_LABEL = 'Download Permit';
-
-  function setDlBtnLabel(btn, text) {
-    if (!btn) return;
-    var label = btn.querySelector('.dl-permit-btn-label');
-    if (label) label.textContent = text;
-    else btn.textContent = text;
-  }
-
   function enableDownloadBtn() {
     var btn = document.getElementById('dl-btn');
     if (!btn) return;
-    setDlBtnLabel(btn, DL_BTN_LABEL);
+    btn.textContent = 'Download';
     btn.disabled = false;
   }
 
