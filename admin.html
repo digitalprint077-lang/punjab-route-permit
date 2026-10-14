@@ -1559,52 +1559,184 @@
     color: #fff !important;
   }
 
-  .dash-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 4px;
+  .dash-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
-  .dash-stat {
-    background: #fff;
+  .dash-hero {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 16px 14px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(15,110,106,.12) 0%, rgba(11,31,42,.04) 55%, rgba(255,255,255,.9) 100%);
+    border: 1px solid rgba(15,110,106,.18);
+    box-shadow: 0 10px 28px rgba(11,31,42,.08);
+  }
+  .dash-kicker {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sea-deep);
+    margin: 0 0 4px;
+  }
+  .dash-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 4px;
+    line-height: 1.15;
+  }
+  .dash-sub {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.45;
+  }
+  .dash-refresh {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 12px;
+    border-radius: 999px;
     border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 14px 14px 12px;
-    box-shadow: 0 6px 16px rgba(11,31,42,.06);
-  }
-  .dash-stat.wide { grid-column: 1 / -1; }
-  .dash-stat-label {
+    background: #fff;
+    color: var(--ink-soft);
     font-family: var(--font-ui);
     font-size: 11px;
     font-weight: 650;
-    letter-spacing: .04em;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(11,31,42,.06);
+  }
+  .dash-refresh svg { width: 14px; height: 14px; fill: currentColor; }
+  .dash-refresh:hover { border-color: var(--sea); color: var(--sea-deep); }
+  .dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .dash-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    padding: 14px 14px 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    box-shadow: 0 8px 22px rgba(11,31,42,.07);
+  }
+  .dash-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 100% 0%, rgba(255,255,255,.65), transparent 55%);
+    pointer-events: none;
+  }
+  .dash-card-wide { grid-column: 1 / -1; }
+  .dash-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .dash-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .02em;
+    line-height: 1;
+  }
+  .dash-card.permits { background: linear-gradient(160deg, #fff 0%, #eef9f7 100%); }
+  .dash-card.permits .dash-card-icon { background: rgba(15,110,106,.14); }
+  .dash-card.nocs { background: linear-gradient(160deg, #fff 0%, #fff7ed 100%); }
+  .dash-card.nocs .dash-card-icon { background: rgba(180,83,9,.12); }
+  .dash-card.total { background: linear-gradient(160deg, #fff 0%, #f0f4ff 100%); }
+  .dash-card.total .dash-card-icon { background: rgba(37,99,235,.12); }
+  .dash-card-label {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: .05em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
   }
   .dash-stat-value {
     font-family: var(--font-display);
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 700;
     color: var(--ink);
-    line-height: 1.1;
+    line-height: 1.05;
+    margin: 2px 0 0;
   }
+  .dash-card.permits .dash-stat-value { color: var(--sea-deep); }
+  .dash-card.nocs .dash-stat-value { color: #b45309; }
+  .dash-card.total .dash-stat-value { color: #1d4ed8; }
   .dash-stat-hint {
     font-family: var(--font-ui);
     font-size: 11px;
     color: var(--muted);
     margin-top: 6px;
   }
-  .dash-stat.permits .dash-stat-value { color: var(--sea-deep); }
-  .dash-stat.nocs .dash-stat-value { color: #b45309; }
-  .mode-dark .dash-stat {
-    background: #152833;
+  .dash-quick {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .dash-quick-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 11px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .dash-quick-btn svg { width: 15px; height: 15px; fill: currentColor; }
+  .dash-quick-btn.primary {
+    background: linear-gradient(135deg, var(--sea) 0%, var(--sea-deep) 100%);
+    border-color: transparent;
+    color: #fff;
+  }
+  .dash-quick-btn:hover { filter: brightness(.98); }
+  .mode-dark .dash-hero {
+    background: linear-gradient(135deg, rgba(15,110,106,.22) 0%, #152833 70%);
     border-color: #2a4452;
   }
-  .mode-dark .dash-stat-value { color: #eef5f7; }
-  .mode-dark .dash-stat.permits .dash-stat-value { color: #5eead4; }
-  .mode-dark .dash-stat.nocs .dash-stat-value { color: #fbbf24; }
-  .dash-actions { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .mode-dark .dash-title { color: #eef5f7; }
+  .mode-dark .dash-sub { color: #8aa0a6; }
+  .mode-dark .dash-refresh,
+  .mode-dark .dash-card,
+  .mode-dark .dash-quick-btn {
+    background: #152833;
+    border-color: #2a4452;
+    color: #d7e4e7;
+  }
+  .mode-dark .dash-quick-btn.primary {
+    background: linear-gradient(135deg, #0f6e6a 0%, #0a524f 100%);
+    color: #fff;
+  }
+  .mode-dark .dash-card.permits .dash-stat-value { color: #5eead4; }
+  .mode-dark .dash-card.nocs .dash-stat-value { color: #fbbf24; }
+  .mode-dark .dash-card.total .dash-stat-value { color: #93c5fd; }
   .mode-dark .icon-btn {
     background: #152833;
     border-color: #2a4452;
@@ -1742,33 +1874,55 @@
 
     <div id="panel-body">
       <div id="tab-dashboard" class="tab-panel active">
-        <section class="form-section">
-          <div class="form-section-head">
-            <h3>Dashboard</h3>
-            <p>Live counts of saved documents</p>
+        <div class="dash-shell">
+          <div class="dash-hero">
+            <div>
+              <p class="dash-kicker">Overview</p>
+              <h2 class="dash-title">Control Center</h2>
+              <p class="dash-sub">Live snapshot of permits and NOCs in your workspace.</p>
+            </div>
+            <button type="button" class="dash-refresh" onclick="loadDashboardStats()">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg>
+              <span>Refresh</span>
+            </button>
           </div>
-          <div class="dash-stats">
-            <div class="dash-stat permits">
-              <div class="dash-stat-label">Route Permits</div>
+          <div class="dash-grid">
+            <article class="dash-card permits">
+              <div class="dash-card-top">
+                <span class="dash-card-label">Route Permits</span>
+                <span class="dash-card-icon" aria-hidden="true">RP</span>
+              </div>
               <div class="dash-stat-value" id="dash-permit-count">—</div>
               <div class="dash-stat-hint">Saved permit records</div>
-            </div>
-            <div class="dash-stat nocs">
-              <div class="dash-stat-label">NOCs</div>
+            </article>
+            <article class="dash-card nocs">
+              <div class="dash-card-top">
+                <span class="dash-card-label">NOCs</span>
+                <span class="dash-card-icon" aria-hidden="true">NC</span>
+              </div>
               <div class="dash-stat-value" id="dash-noc-count">—</div>
               <div class="dash-stat-hint">Saved NOC records</div>
-            </div>
-            <div class="dash-stat wide">
-              <div class="dash-stat-label">Total Documents</div>
+            </article>
+            <article class="dash-card total dash-card-wide">
+              <div class="dash-card-top">
+                <span class="dash-card-label">Total Documents</span>
+                <span class="dash-card-icon" aria-hidden="true">Σ</span>
+              </div>
               <div class="dash-stat-value" id="dash-total-count">—</div>
-              <div class="dash-stat-hint">Created today: <span id="dash-today-count">—</span></div>
-            </div>
+              <div class="dash-stat-hint">Created today: <strong id="dash-today-count">—</strong></div>
+            </article>
           </div>
-          <div class="dash-actions">
-            <button type="button" class="btn-load-all" onclick="loadDashboardStats()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg><span>Refresh Counts</span></button>
-            <button type="button" class="pbtn" onclick="switchTab('tab-records', document.querySelectorAll('.panel-tab')[2])"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg><span>Open Saved List</span></button>
+          <div class="dash-quick">
+            <button type="button" class="dash-quick-btn primary" onclick="switchTab('tab-edit', document.querySelectorAll('.panel-tab')[1])">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg>
+              <span>New Document</span>
+            </button>
+            <button type="button" class="dash-quick-btn" onclick="switchTab('tab-records', document.querySelectorAll('.panel-tab')[2])">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg>
+              <span>Saved List</span>
+            </button>
           </div>
-        </section>
+        </div>
       </div>
 
       <div id="tab-edit" class="tab-panel">
@@ -1856,6 +2010,8 @@
             <div class="fg"><label>Valid Upto</label><input id="f-vupto" value="30-07-2026"></div>
             <div class="fg"><label>Fee</label><input id="f-fee" value="10,550"></div>
             <div class="fg"><label>Counter Sig. Upto</label><input id="f-csig" value="04-02-2029"></div>
+            <div class="fg permit-only"><label>13. Guarantee Expiry</label><input id="f-gexp" value="N/A"></div>
+            <div class="fg permit-only"><label>14. Third Party Risk Insurance Expiry</label><input id="f-tpre" value="N/A"></div>
             <div class="fg span-2"><label>PSID No</label><input id="f-psid" value="41232602030366981"></div>
             <div class="fg"><label id="lbl-idate">Issuance Date</label><input type="date" id="f-idate-picker"><input type="hidden" id="f-idate" value="24-MAY-2026"></div>
             <div class="fg"><label>Authority Footer</label><input id="f-authority" value="SECRETARY PUNJAB PROVINCIAL TRANSPORT AUTHORITY,LAHORE"></div>
@@ -1990,8 +2146,8 @@
             <div class="perm-field"><span class="lbl">10. PSID NO:</span> <span class="val" id="d-psid">41232602030366981</span></div>
             <div class="perm-field"><span class="lbl">11. COUNTER SIGNATURE VALID UPTO:</span> <span class="val" id="d-csig">04-02-2029</span></div>
             <div class="perm-field"><span class="lbl">12. ISSUING DISTRICT:</span> <span class="val" id="d-idistrict">LAHORE</span></div>
-            <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val">N/A</span></div>
-            <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val">N/A</span></div>
+            <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val" id="d-gexp">N/A</span></div>
+            <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val" id="d-tpre">N/A</span></div>
           </div>
         </div>
       </div>
@@ -2120,6 +2276,7 @@
     'vtype':'d-vtype','vreg':'d-vreg','eng':'d-eng','chassis':'d-chassis',
     'iauth':'d-iauth','vfrom':'d-vfrom','vupto':'d-vupto',
     'fee':'d-fee','psid':'d-psid','csig':'d-csig',
+    'gexp':'d-gexp','tpre':'d-tpre',
     'idistrict':'d-idistrict','idate':'d-idate','authority':'d-authority'
   };
 
@@ -2128,6 +2285,7 @@
   var FORM_FIELD_IDS = [
     'f-appno','f-rpno','f-fcno','f-name','f-cnic','f-addr','f-vtype','f-vreg',
     'f-eng','f-chassis','f-iauth','f-vfrom','f-vupto','f-fee','f-psid','f-csig',
+    'f-gexp','f-tpre',
     'f-idistrict','f-idate','f-authority','f-qrlink','f-districts','f-idate-picker'
   ];
   var formStateByMode = { permit: null, noc: null };
@@ -2215,6 +2373,8 @@
       s('f-vupto', '30-07-2026');
       s('f-fee', '10,550');
       s('f-csig', '04-02-2029');
+      s('f-gexp', 'N/A');
+      s('f-tpre', 'N/A');
       s('f-psid', generatePsidNo());
       s('f-authority', 'SECRETARY PUNJAB PROVINCIAL TRANSPORT AUTHORITY,LAHORE');
       s('f-districts', DEFAULT_DISTRICTS);
@@ -2447,6 +2607,7 @@
       'vtype':'f-vtype','vreg':'f-vreg','eng':'f-eng','chassis':'f-chassis',
       'iauth':'f-iauth','vfrom':'f-vfrom','vupto':'f-vupto',
       'fee':'f-fee','psid':'f-psid','csig':'f-csig',
+      'gexp':'f-gexp','tpre':'f-tpre',
       'idistrict':'f-idistrict','idate':'f-idate','authority':'f-authority'
     };
     Object.keys(fieldMap2).forEach(function(k){
@@ -2811,8 +2972,8 @@
         <div class="perm-field"><span class="lbl">10. PSID NO:</span> <span class="val">` + data.psid + `</span></div>
         <div class="perm-field"><span class="lbl">11. COUNTER SIGNATURE VALID UPTO:</span> <span class="val">` + data.csig + `</span></div>
         <div class="perm-field"><span class="lbl">12. ISSUING DISTRICT:</span> <span class="val">` + data.idistrict + `</span></div>
-        <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val">N/A</span></div>
-        <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val">N/A</span></div>
+        <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val">` + (data.gexp || 'N/A') + `</span></div>
+        <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val">` + (data.tpre || 'N/A') + `</span></div>
       </div>
     </div>
   </div>
@@ -3034,12 +3195,15 @@
         'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
         'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vreg':d.vehicle_reg_no,
         'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
-        'f-vupto':d.valid_upto,'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
+        'f-vupto':d.valid_upto,        'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
+        'f-gexp':d.guarantee_expiry,'f-tpre':d.third_party_insurance_expiry,
         'f-idistrict':d.issuing_district,'f-idate':d.issuance_date,'f-authority':d.authority_name,
         'f-qrlink': normalizeDocQrUrl(d.qr_link, id, recMode)
       };
       Object.keys(map).forEach(function(k){ var el=document.getElementById(k); if(el) el.value=map[k]||''; });
       document.getElementById('f-districts').value = d.districts || '';
+      if (document.getElementById('f-gexp') && !d.guarantee_expiry) document.getElementById('f-gexp').value = 'N/A';
+      if (document.getElementById('f-tpre') && !d.third_party_insurance_expiry) document.getElementById('f-tpre').value = 'N/A';
       try { syncIssueDatePickerFromHidden(); } catch (ex) {}
       currentEditId = id;
       openPrintTab();
@@ -3154,6 +3318,8 @@
       fee: document.getElementById('f-fee').value,
       psid_no: document.getElementById('f-psid').value,
       counter_sig_upto: document.getElementById('f-csig').value,
+      guarantee_expiry: document.getElementById('f-gexp').value,
+      third_party_insurance_expiry: document.getElementById('f-tpre').value,
       issuing_district: document.getElementById('f-idistrict').value,
       issuance_date: document.getElementById('f-idate').value,
       authority_name: document.getElementById('f-authority').value,
@@ -3236,11 +3402,16 @@
         }
         return supabaseClient.from('permits').insert([payload]).select();
       }
-      result = await writeRow(data);
-      if (result.error && /doc_type|schema cache|column/i.test(String(result.error.message || ''))) {
-        var fallback = Object.assign({}, data);
-        delete fallback.doc_type;
-        result = await writeRow(fallback);
+      var payload = Object.assign({}, data);
+      for (var saveTry = 0; saveTry < 5; saveTry++) {
+        result = await writeRow(payload);
+        if (!result.error) break;
+        var errMsg = String(result.error.message || '');
+        if (!/doc_type|schema cache|column|guarantee_expiry|third_party_insurance_expiry/i.test(errMsg)) break;
+        payload = Object.assign({}, payload);
+        if (/doc_type/i.test(errMsg)) delete payload.doc_type;
+        if (/guarantee_expiry/i.test(errMsg)) delete payload.guarantee_expiry;
+        if (/third_party_insurance_expiry/i.test(errMsg)) delete payload.third_party_insurance_expiry;
       }
       if (result.error) throw result.error;
       var saved = (result.data && result.data[0]) ? result.data[0] : null;
@@ -3383,7 +3554,8 @@
         'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
         'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vreg':d.vehicle_reg_no,
         'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
-        'f-vupto':d.valid_upto,'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
+        'f-vupto':d.valid_upto,        'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
+        'f-gexp':d.guarantee_expiry,'f-tpre':d.third_party_insurance_expiry,
         'f-idistrict':d.issuing_district,'f-idate':d.issuance_date,'f-authority':d.authority_name,
         'f-qrlink':d.qr_link||''
       };
@@ -3391,6 +3563,8 @@
       formatCnicField(document.getElementById('f-cnic'));
       syncIssueDatePickerFromHidden();
       document.getElementById('f-districts').value = d.districts||'';
+      if (document.getElementById('f-gexp') && !d.guarantee_expiry) document.getElementById('f-gexp').value = 'N/A';
+      if (document.getElementById('f-tpre') && !d.third_party_insurance_expiry) document.getElementById('f-tpre').value = 'N/A';
       currentEditId = id;
       editIdsByMode[recMode] = id;
       var docUrl = normalizeDocQrUrl(d.qr_link, id, recMode);

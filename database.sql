@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS permits (
   fee TEXT,
   psid_no TEXT,
   counter_sig_upto TEXT,
+  guarantee_expiry TEXT,
+  third_party_insurance_expiry TEXT,
   issuing_district TEXT,
   issuance_date TEXT,
   authority_name TEXT,

@@ -383,8 +383,8 @@
         <div class="perm-field"><span class="lbl">10. PSID NO:</span> <span class="val" id="d-psid"></span></div>
         <div class="perm-field"><span class="lbl">11. COUNTER SIGNATURE VALID UPTO:</span> <span class="val" id="d-csig"></span></div>
         <div class="perm-field"><span class="lbl">12. ISSUING DISTRICT:</span> <span class="val" id="d-idistrict"></span></div>
-        <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val">N/A</span></div>
-        <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val">N/A</span></div>
+        <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val" id="d-gexp">N/A</span></div>
+        <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val" id="d-tpre">N/A</span></div>
       </div>
     </div>
   </div>
@@ -613,6 +613,8 @@
     set('d-fee',       d.fee);
     set('d-psid',      d.psid_no);
     set('d-csig',      d.counter_sig_upto);
+    set('d-gexp',      d.guarantee_expiry || 'N/A');
+    set('d-tpre',      d.third_party_insurance_expiry || 'N/A');
     set('d-idistrict', d.issuing_district);
     set('d-idate',     d.issuance_date);
     set('d-authority', d.authority_name);
