@@ -59,39 +59,64 @@
   }
 
   .header-block {
+    position: relative;
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 10px;
+    min-height: 104px;
+    padding-right: 106px;
   }
 
-  .header-spacer { width: 90px; flex-shrink: 0; }
+  .header-spacer { display: none; }
 
   .header-center {
     flex: 1;
     text-align: center;
-    margin-left: -120px;
-    margin-top: 18px;
+    margin: 0;
   }
 
   .main-title {
-    font-size: 17px;
+    font-size: 19px;
     font-weight: bold;
-    margin: 0 0 4px;
-    letter-spacing: 0.2px;
+    margin: 0 0 5px;
+    letter-spacing: 0.15px;
+    line-height: 1.12;
   }
 
   .sub-title {
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: bold;
     text-decoration: underline;
-    margin: 0 0 6px;
+    margin: 0 0 5px;
+    line-height: 1.15;
   }
 
-  .app-no { font-size: 12.5px; font-weight: bold; margin: 0; }
+  .title-line { display: block; }
 
-  .qr-box { width: 103px; height: 103px; flex-shrink: 0; position: relative; top: 42px; right: 28px; }
-  #qrcode-img canvas, #qrcode-img img { width: 103px !important; height: 103px !important; }
+  .app-no {
+    font-size: 12.5px;
+    font-weight: bold;
+    margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .qr-box {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  #qrcode-img canvas, #qrcode-img img { width: 96px !important; height: 96px !important; display: block; }
 
   .permit-table {
     width: 100%;
@@ -1872,12 +1897,11 @@
       <div class="top-spacer"></div>
 
       <div class="header-block">
-        <div class="header-spacer"></div>
         <div class="header-center">
-          <p class="main-title">SUMMARY TO BE CARRIED ON THE VEHICLE</p>
-          <p class="sub-title">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN PUNJAB</p>
+          <p class="main-title"><span class="title-line">SUMMARY TO BE CARRIED ON THE</span><span class="title-line">VEHICLE</span></p>
+          <p class="sub-title"><span class="title-line">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN</span><span class="title-line">PUNJAB</span></p>
           <p class="part-label">PART ' A &amp; B '</p>
-          <p class="app-no">APPLICATION NO.<span id="d-appno">329915</span></p>
+          <p class="app-no"><span class="app-no-label">APPLICATION NO.</span><span id="d-appno">329915</span></p>
         </div>
         <div class="qr-box" onclick="if(currentEditId){openPrintTabById(currentEditId);}" title="Open permit popup" style="cursor:pointer;">
           <div id="qrcode-img"></div>
@@ -2241,7 +2265,7 @@
   function generateQR(text) {
     var items = docMode === 'noc'
       ? [{ id: 'qrcode-img-noc', size: 64 }]
-      : [{ id: 'qrcode-img', size: 103 }];
+      : [{ id: 'qrcode-img', size: 96 }];
     items.forEach(function(item) {
       var box = document.getElementById(item.id);
       if (!box) return;
@@ -2405,14 +2429,6 @@
   }
   .top-spacer { height: 40px; }
   .part-label { font-size:13px; font-weight:bold; margin-bottom:7px; letter-spacing:0.5px; }
-  .header-block { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; }
-  .header-spacer { width:100px; flex-shrink:0; }
-  .header-center { flex:1; text-align:center; margin-left:-150px; margin-top:30px; }
-  .main-title { font-size:16px; font-weight:bold; margin-bottom:3px; }
-  .sub-title { font-size:13px; font-weight:bold; text-decoration:underline; margin-bottom:8px; }
-  .app-no { font-size:12.5px; font-weight:bold; }
-  .qr-box { width:103px; height:103px; flex-shrink:0; position:relative; top:55px; right:35px; }
-  #qrcode-img canvas, #qrcode-img img { width:103px !important; height:103px !important; }
   .top-spacer { height: 28px; }
 
   .part-label {
@@ -2423,39 +2439,64 @@
   }
 
   .header-block {
+    position: relative;
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 10px;
+    min-height: 104px;
+    padding-right: 106px;
   }
 
-  .header-spacer { width: 90px; flex-shrink: 0; }
+  .header-spacer { display: none; }
 
   .header-center {
     flex: 1;
     text-align: center;
-    margin-left: -120px;
-    margin-top: 18px;
+    margin: 0;
   }
 
   .main-title {
-    font-size: 17px;
+    font-size: 19px;
     font-weight: bold;
-    margin: 0 0 4px;
-    letter-spacing: 0.2px;
+    margin: 0 0 5px;
+    letter-spacing: 0.15px;
+    line-height: 1.12;
   }
 
   .sub-title {
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: bold;
     text-decoration: underline;
-    margin: 0 0 6px;
+    margin: 0 0 5px;
+    line-height: 1.15;
   }
 
-  .app-no { font-size: 12.5px; font-weight: bold; margin: 0; }
+  .title-line { display: block; }
 
-  .qr-box { width: 103px; height: 103px; flex-shrink: 0; position: relative; top: 42px; right: 28px; }
-  #qrcode-img canvas, #qrcode-img img { width: 103px !important; height: 103px !important; }
+  .app-no {
+    font-size: 12.5px;
+    font-weight: bold;
+    margin: 0;
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .qr-box {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  #qrcode-img canvas, #qrcode-img img { width: 96px !important; height: 96px !important; display: block; }
 
   .permit-table {
     width: 100%;
@@ -2623,12 +2664,11 @@
 <div id="document">
   <div class="top-spacer"></div>
   <div class="header-block">
-    <div class="header-spacer"></div>
     <div class="header-center">
-      <p class="main-title">SUMMARY TO BE CARRIED ON THE VEHICLE</p>
-      <p class="sub-title">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN PUNJAB</p>
+      <p class="main-title"><span class="title-line">SUMMARY TO BE CARRIED ON THE</span><span class="title-line">VEHICLE</span></p>
+      <p class="sub-title"><span class="title-line">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN</span><span class="title-line">PUNJAB</span></p>
       <p class="part-label">PART ' A &amp; B '</p>
-      <p class="app-no">APPLICATION NO.` + data.appno + `</p>
+      <p class="app-no"><span class="app-no-label">APPLICATION NO.</span><span>` + data.appno + `</span></p>
     </div>
     <div class="qr-box"><div id="qrcode-img"></div></div>
   </div>
