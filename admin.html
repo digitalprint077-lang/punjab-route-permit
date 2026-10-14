@@ -3105,7 +3105,7 @@
 
   function saveFromCanvas(canvas, baseName, btn, oldText) {
     function finish() {
-      if (btn) { btn.disabled = false; setDlBtnLabel(btn, oldText || DL_BTN_LABEL); }
+      if (btn) { btn.disabled = false; btn.textContent = oldText || 'Download'; }
     }
     try {
       var imgData = canvas.toDataURL('image/jpeg', 0.95);
@@ -3133,12 +3133,12 @@
       alert('Document is still loading. Please wait a moment.');
       return;
     }
-    var oldText = DL_BTN_LABEL;
-    if (btn) { btn.disabled = true; setDlBtnLabel(btn, 'Preparing…'); }
+    var oldText = 'Download';
+    if (btn) { btn.disabled = true; btn.textContent = 'Preparing…'; }
     waitForLibs(function(ok) {
       if (!ok) {
         alert('Download is still loading. Please wait a moment and try again.');
-        if (btn) { btn.disabled = false; setDlBtnLabel(btn, oldText); }
+        if (btn) { btn.disabled = false; btn.textContent = oldText; }
         return;
       }
       var baseName = '` + (isNocPrint ? 'noc' : 'route-permit') + `';
@@ -3146,7 +3146,7 @@
       function tryCapture(i) {
         if (i >= scales.length) {
           alert('Download failed. Please try again.');
-          if (btn) { btn.disabled = false; setDlBtnLabel(btn, oldText); }
+          if (btn) { btn.disabled = false; btn.textContent = oldText; }
           return;
         }
         captureDocument(doc2, scales[i]).then(function(canvas) {
