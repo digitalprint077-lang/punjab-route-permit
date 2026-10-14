@@ -21,7 +21,7 @@
     background-color: white;
     width: 210mm;
     min-height: 297mm;
-    padding: 28mm 22mm 28mm 22mm;
+    padding: 34mm 26mm 16mm 26mm;
     position: relative;
     margin: 0 auto;
   }
@@ -36,20 +36,17 @@
 
   .header-block {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 12px 0 10px;
+    margin: 6px 0 10px;
     min-height: 104px;
-    padding-right: 106px;
+    padding: 0 102px;
   }
 
   .header-spacer { display: none; }
 
   .header-center {
-    flex: 1;
+    width: 100%;
     text-align: center;
-    margin: 0;
+    margin: 0 auto;
   }
 
   .main-title {
@@ -86,8 +83,7 @@
   .qr-box {
     position: absolute;
     right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0;
     width: 100px;
     height: 100px;
     padding: 2px;
@@ -298,7 +294,7 @@
     #document {
       width: 210mm !important;
       min-height: 297mm !important;
-      padding: 28mm 22mm 28mm 22mm !important;
+      padding: 34mm 26mm 16mm 26mm
       box-shadow: none !important;
     }
   }
@@ -688,7 +684,7 @@
       clonedDocEl.style.margin = '0 auto';
       clonedDocEl.style.width = '210mm';
       clonedDocEl.style.minHeight = '297mm';
-      clonedDocEl.style.padding = '28mm 22mm';
+      clonedDocEl.style.padding = '34mm 26mm 16mm 26mm';
       clonedDocEl.style.display = 'block';
       clonedDocEl.style.boxShadow = 'none';
       forceTimesNewRoman(clonedDocEl);
