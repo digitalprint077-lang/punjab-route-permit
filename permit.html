@@ -21,60 +21,63 @@
     background-color: white;
     width: 210mm;
     min-height: 297mm;
-    padding: 26mm 18mm 24mm 18mm;
+    padding: 28mm 22mm 28mm 22mm;
     position: relative;
     margin: 0 auto;
   }
-  .top-spacer { height: 40px; }
+  .top-spacer { height: 48px; }
 
   .part-label {
-    font-size: 10.5px;
+    font-size: 12.5px;
     font-weight: 400;
-    margin: 2px 0 1px;
-    letter-spacing: 0.2px;
+    margin: 4px 0 2px;
+    letter-spacing: 0.3px;
   }
 
   .header-block {
     position: relative;
-    margin: 6px 0 6px;
-    min-height: 84px;
-    padding: 0 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px 0 10px;
+    min-height: 104px;
+    padding-right: 106px;
   }
 
   .header-spacer { display: none; }
 
   .header-center {
-    width: 100%;
+    flex: 1;
     text-align: center;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .main-title {
-    font-size: 16px;
+    font-size: 19px;
     font-weight: bold;
-    margin: 0 0 3px;
-    letter-spacing: 0.1px;
-    line-height: 1.1;
+    margin: 0 0 5px;
+    letter-spacing: 0.15px;
+    line-height: 1.12;
   }
 
   .sub-title {
-    font-size: 11.5px;
+    font-size: 13.5px;
     font-weight: bold;
     text-decoration: underline;
-    margin: 0 0 3px;
-    line-height: 1.12;
+    margin: 0 0 5px;
+    line-height: 1.15;
   }
 
   .title-line { display: block; }
 
   .app-no {
-    font-size: 10.5px;
+    font-size: 12.5px;
     font-weight: 400;
     margin: 0;
     display: inline-flex;
     align-items: baseline;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
   }
   .app-no-label { font-weight: 400; }
   .app-no #d-appno,
@@ -83,22 +86,23 @@
   .qr-box {
     position: absolute;
     right: 0;
-    top: 0;
-    width: 88px;
-    height: 88px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 100px;
     padding: 2px;
     background: rgba(255, 255, 255, 0.92);
     border-radius: 4px;
     box-sizing: border-box;
   }
-  #qrcode-img canvas, #qrcode-img img { width: 84px !important; height: 84px !important; display: block; }
+  #qrcode-img canvas, #qrcode-img img { width: 96px !important; height: 96px !important; display: block; }
 
   .permit-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    margin: 5px 0 7px;
-    font-size: 10px;
+    margin: 8px 0 10px;
+    font-size: 11.5px;
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid rgba(70, 70, 70, 0.34);
@@ -107,20 +111,20 @@
 
   .permit-table td {
     border: 1px solid rgba(70, 70, 70, 0.26);
-    padding: 5px 6px;
+    padding: 7px 8px;
     text-align: center;
     width: 50%;
     line-height: 1.25;
     background: transparent;
   }
 
-  .permit-table .small-label { font-size: 9px; display: block; margin: 0; font-weight: 400; }
-  .permit-table .big-val { font-weight: 700; font-size: 11px; display: block; margin: 2px 0; }
-  .permit-table .route-label { font-size: 8.5px; display: block; margin: 0; font-weight: 400; }
+  .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: 400; }
+  .permit-table .big-val { font-weight: 700; font-size: 13px; display: block; margin: 2px 0; }
+  .permit-table .route-label { font-size: 10px; display: block; margin: 0; font-weight: 400; }
 
   .perm-section {
-    margin: 0 0 5px;
-    border-radius: 6px;
+    margin: 0 0 8px;
+    border-radius: 8px;
     overflow: hidden;
     border: 1px solid rgba(70, 70, 70, 0.34);
     background: transparent;
@@ -129,26 +133,26 @@
     background: rgba(210, 210, 210, 0.28);
     border: none;
     border-bottom: 1px solid rgba(70, 70, 70, 0.24);
-    padding: 3px 6px;
-    font-size: 10px;
+    padding: 4px 8px;
+    font-size: 11.5px;
     font-weight: bold;
-    letter-spacing: 0.15px;
+    letter-spacing: 0.2px;
     text-transform: uppercase;
   }
   .perm-section-body {
     border: none;
     background: transparent;
-    padding: 5px 6px 6px;
+    padding: 7px 8px 8px;
   }
   .perm-section-body-fit { padding: 0; }
   .perm-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4px 10px;
+    gap: 6px 14px;
   }
   .perm-field {
-    font-size: 10.5px;
-    line-height: 1.35;
+    font-size: 12px;
+    line-height: 1.45;
     display: flex;
     align-items: baseline;
     gap: 4px;
@@ -166,35 +170,35 @@
   .perm-fit-cell {
     border-right: 1px solid rgba(70, 70, 70, 0.24);
     text-align: center;
-    padding: 5px 4px 6px;
-    min-height: 38px;
+    padding: 7px 6px 8px;
+    min-height: 48px;
     background: transparent;
   }
   .perm-fit-cell:last-child { border-right: none; }
   .perm-fit-label {
     display: block;
-    font-size: 9.5px;
+    font-size: 11px;
     font-weight: 400;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
   .perm-fit-val {
     display: block;
-    font-size: 10.5px;
+    font-size: 12.5px;
     font-weight: 700;
   }
 
   .perm-route-block {
-    margin: 0 0 5px;
+    margin: 0 0 8px;
     border: none;
     border-radius: 0;
     background: transparent;
-    padding: 4px 0 5px;
+    padding: 6px 0 8px;
   }
 
   .districts-box {
-    padding: 2px 0 1px;
-    margin: 1px 0 0;
-    font-size: 9.5px;
+    padding: 4px 0 2px;
+    margin: 2px 0 0;
+    font-size: 11px;
     line-height: 1.2;
     font-weight: 400;
   }
@@ -212,15 +216,15 @@
 
   .note-block {
     text-align: center;
-    margin: 14px 0 10px;
-    font-size: 10px;
+    margin: 22px 0 14px;
+    font-size: 11.5px;
     line-height: 1.55;
     font-style: italic;
   }
 
   .doc-footer { text-align: center; margin-top: 6px; }
-  .doc-footer .authority-name { font-size: 12.5px; font-weight: bold; margin: 0 0 4px; }
-  .doc-footer .issue-date { font-size: 10.5px; margin: 0; font-weight: 400; }
+  .doc-footer .authority-name { font-size: 15px; font-weight: bold; margin: 0 0 4px; }
+  .doc-footer .issue-date { font-size: 12.5px; margin: 0; font-weight: 400; }
   .doc-footer .issue-date #d-idate { font-weight: 700; }
   @media print {
     body { background:white; }
@@ -626,7 +630,7 @@
     var qrUrl = getPermitQrUrl(id);
     document.getElementById('qrcode-img').innerHTML = '';
     new QRCode(document.getElementById('qrcode-img'), {
-      text: qrUrl, width:84, height:84,
+      text: qrUrl, width:96, height:96,
       colorDark:'#000000', colorLight:'#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
