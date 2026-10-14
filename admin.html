@@ -49,11 +49,11 @@
   }
 
   /* ── DOCUMENT STYLES ── */
-  .top-spacer { height: 28px; }
+  .top-spacer { height: 40px; }
 
   .part-label {
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 400;
     margin: 4px 0 2px;
     letter-spacing: 0.3px;
   }
@@ -63,7 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    margin: 8px 0 10px;
     min-height: 104px;
     padding-right: 106px;
   }
@@ -96,13 +96,16 @@
 
   .app-no {
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 400;
     margin: 0;
     display: inline-flex;
     align-items: baseline;
     justify-content: center;
     gap: 12px;
   }
+  .app-no-label { font-weight: 400; }
+  .app-no #d-appno,
+  .app-no > span:not(.app-no-label) { font-weight: 700; }
 
   .qr-box {
     position: absolute;
@@ -134,9 +137,9 @@
     background: rgba(255,255,255,0.55);
   }
 
-  .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: bold; }
-  .permit-table .big-val { font-weight: bold; font-size: 13px; display: block; margin: 2px 0; }
-  .permit-table .route-label { font-size: 10px; display: block; margin: 0; }
+  .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: 400; }
+  .permit-table .big-val { font-weight: 700; font-size: 13px; display: block; margin: 2px 0; }
+  .permit-table .route-label { font-size: 10px; display: block; margin: 0; font-weight: 400; }
 
   .perm-section { margin: 0 0 10px; }
   .perm-section-head {
@@ -170,8 +173,8 @@
   }
   .perm-field-full { grid-column: 1 / -1; }
   .perm-field .lbl,
-  .lbl { font-weight: bold; white-space: nowrap; }
-  .perm-field .val { font-weight: bold; }
+  .lbl { font-weight: 400; white-space: nowrap; }
+  .perm-field .val { font-weight: 700; }
 
   .perm-fitness-grid {
     display: grid;
@@ -187,13 +190,13 @@
   .perm-fit-label {
     display: block;
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 400;
     margin-bottom: 6px;
   }
   .perm-fit-val {
     display: block;
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 700;
   }
 
   .perm-route-block { margin: 8px 0 10px; }
@@ -207,7 +210,9 @@
     overflow-wrap: anywhere;
   }
 
-  .districts-box .dlbl { font-weight: bold; }
+  .districts-box .dlbl { font-weight: 400; }
+  .districts-box #districts-text,
+  .districts-box #d-districts { font-weight: 700; }
 
   .note-block {
     text-align: center;
@@ -219,7 +224,8 @@
 
   .doc-footer { text-align: center; margin-top: 6px; }
   .doc-footer .authority-name { font-size: 15px; font-weight: bold; margin: 0 0 4px; }
-  .doc-footer .issue-date { font-size: 12.5px; margin: 0; font-weight: bold; }
+  .doc-footer .issue-date { font-size: 12.5px; margin: 0; font-weight: 400; }
+  .doc-footer .issue-date #d-idate { font-weight: 700; }
   .doc-type-switch { display: flex; gap: 8px; flex-wrap: wrap; }
   .doc-type-btn {
     flex: 1; min-width: 120px; border: 1.5px solid #d5e3da; background: #f7fbf8;
@@ -2429,11 +2435,11 @@
   }
   .top-spacer { height: 40px; }
   .part-label { font-size:13px; font-weight:bold; margin-bottom:7px; letter-spacing:0.5px; }
-  .top-spacer { height: 28px; }
+  .top-spacer { height: 40px; }
 
   .part-label {
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 400;
     margin: 4px 0 2px;
     letter-spacing: 0.3px;
   }
@@ -2443,7 +2449,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    margin: 8px 0 10px;
     min-height: 104px;
     padding-right: 106px;
   }
@@ -2476,13 +2482,16 @@
 
   .app-no {
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 400;
     margin: 0;
     display: inline-flex;
     align-items: baseline;
     justify-content: center;
     gap: 12px;
   }
+  .app-no-label { font-weight: 400; }
+  .app-no #d-appno,
+  .app-no > span:not(.app-no-label) { font-weight: 700; }
 
   .qr-box {
     position: absolute;
@@ -2514,9 +2523,9 @@
     background: rgba(255,255,255,0.55);
   }
 
-  .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: bold; }
-  .permit-table .big-val { font-weight: bold; font-size: 13px; display: block; margin: 2px 0; }
-  .permit-table .route-label { font-size: 10px; display: block; margin: 0; }
+  .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: 400; }
+  .permit-table .big-val { font-weight: 700; font-size: 13px; display: block; margin: 2px 0; }
+  .permit-table .route-label { font-size: 10px; display: block; margin: 0; font-weight: 400; }
 
   .perm-section { margin: 0 0 10px; }
   .perm-section-head {
@@ -2550,8 +2559,8 @@
   }
   .perm-field-full { grid-column: 1 / -1; }
   .perm-field .lbl,
-  .lbl { font-weight: bold; white-space: nowrap; }
-  .perm-field .val { font-weight: bold; }
+  .lbl { font-weight: 400; white-space: nowrap; }
+  .perm-field .val { font-weight: 700; }
 
   .perm-fitness-grid {
     display: grid;
@@ -2567,13 +2576,13 @@
   .perm-fit-label {
     display: block;
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 400;
     margin-bottom: 6px;
   }
   .perm-fit-val {
     display: block;
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 700;
   }
 
   .perm-route-block { margin: 8px 0 10px; }
@@ -2587,7 +2596,9 @@
     overflow-wrap: anywhere;
   }
 
-  .districts-box .dlbl { font-weight: bold; }
+  .districts-box .dlbl { font-weight: 400; }
+  .districts-box #districts-text,
+  .districts-box #d-districts { font-weight: 700; }
 
   .note-block {
     text-align: center;
@@ -2599,7 +2610,8 @@
 
   .doc-footer { text-align: center; margin-top: 6px; }
   .doc-footer .authority-name { font-size: 15px; font-weight: bold; margin: 0 0 4px; }
-  .doc-footer .issue-date { font-size: 12.5px; margin: 0; font-weight: bold; }
+  .doc-footer .issue-date { font-size: 12.5px; margin: 0; font-weight: 400; }
+  .doc-footer .issue-date #d-idate { font-weight: 700; }
 
   .noc-wrap { position:relative; padding-top:78px; }
   .noc-header { position:relative; text-align:center; margin-bottom:0; padding:0 100px; min-height:0; }
@@ -2750,7 +2762,7 @@
 <script>
   new QRCode(document.getElementById('qrcode-img'), {
     text: '` + qrTextPrint + `',
-    width: ` + (isNocPrint ? 64 : 103) + `, height: ` + (isNocPrint ? 64 : 103) + `,
+    width: ` + (isNocPrint ? 64 : 96) + `, height: ` + (isNocPrint ? 64 : 96) + `,
     colorDark: '#000000', colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.H
   });

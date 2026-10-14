@@ -25,11 +25,11 @@
     position: relative;
     margin: 0 auto;
   }
-  .top-spacer { height: 28px; }
+  .top-spacer { height: 40px; }
 
   .part-label {
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 400;
     margin: 4px 0 2px;
     letter-spacing: 0.3px;
   }
@@ -39,7 +39,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    margin: 8px 0 10px;
     min-height: 104px;
     padding-right: 106px;
   }
@@ -72,13 +72,16 @@
 
   .app-no {
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 400;
     margin: 0;
     display: inline-flex;
     align-items: baseline;
     justify-content: center;
     gap: 12px;
   }
+  .app-no-label { font-weight: 400; }
+  .app-no #d-appno,
+  .app-no > span:not(.app-no-label) { font-weight: 700; }
 
   .qr-box {
     position: absolute;
@@ -110,9 +113,9 @@
     background: rgba(255,255,255,0.55);
   }
 
-  .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: bold; }
-  .permit-table .big-val { font-weight: bold; font-size: 13px; display: block; margin: 2px 0; }
-  .permit-table .route-label { font-size: 10px; display: block; margin: 0; }
+  .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: 400; }
+  .permit-table .big-val { font-weight: 700; font-size: 13px; display: block; margin: 2px 0; }
+  .permit-table .route-label { font-size: 10px; display: block; margin: 0; font-weight: 400; }
 
   .perm-section { margin: 0 0 10px; }
   .perm-section-head {
@@ -146,8 +149,8 @@
   }
   .perm-field-full { grid-column: 1 / -1; }
   .perm-field .lbl,
-  .lbl { font-weight: bold; white-space: nowrap; }
-  .perm-field .val { font-weight: bold; }
+  .lbl { font-weight: 400; white-space: nowrap; }
+  .perm-field .val { font-weight: 700; }
 
   .perm-fitness-grid {
     display: grid;
@@ -163,13 +166,13 @@
   .perm-fit-label {
     display: block;
     font-size: 11px;
-    font-weight: bold;
+    font-weight: 400;
     margin-bottom: 6px;
   }
   .perm-fit-val {
     display: block;
     font-size: 12.5px;
-    font-weight: bold;
+    font-weight: 700;
   }
 
   .perm-route-block { margin: 8px 0 10px; }
@@ -183,7 +186,9 @@
     overflow-wrap: anywhere;
   }
 
-  .districts-box .dlbl { font-weight: bold; }
+  .districts-box .dlbl { font-weight: 400; }
+  .districts-box #districts-text,
+  .districts-box #d-districts { font-weight: 700; }
 
   .note-block {
     text-align: center;
@@ -195,7 +200,8 @@
 
   .doc-footer { text-align: center; margin-top: 6px; }
   .doc-footer .authority-name { font-size: 15px; font-weight: bold; margin: 0 0 4px; }
-  .doc-footer .issue-date { font-size: 12.5px; margin: 0; font-weight: bold; }
+  .doc-footer .issue-date { font-size: 12.5px; margin: 0; font-weight: 400; }
+  .doc-footer .issue-date #d-idate { font-weight: 700; }
   @media print {
     body { background:white; }
     #document { box-shadow:none; margin:0; width:210mm; min-height:297mm; }
