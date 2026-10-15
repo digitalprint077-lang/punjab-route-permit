@@ -2051,6 +2051,7 @@
             <p id="vehicle-sub">Registration and mechanical IDs</p>
           </div>
           <div class="field-grid">
+            <div class="fg span-2"><label>Vehicle Make</label><input id="f-vmake" value="N/A"></div>
             <div class="fg"><label>Vehicle Type</label>
               <select id="f-vtype">
                 <option value="TRUCK" selected>TRUCK</option>
@@ -2221,7 +2222,7 @@
             <div class="perm-field"><span class="lbl">5. CHASSIS NO:</span> <span class="val" id="d-chassis">CJQ618417</span></div>
             <div class="perm-field"><span class="lbl">6. ENGINE NO:</span> <span class="val" id="d-eng">LS9308</span></div>
             <div class="perm-field"><span class="lbl">7. VEHICLE TYPE:</span> <span class="val" id="d-vtype">TRUCK</span></div>
-            <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val">N/A</span></div>
+            <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val" id="d-vmake">N/A</span></div>
           </div>
         </div>
       </div>
@@ -2378,7 +2379,7 @@
   var fieldMap = {
     'appno':'d-appno','rpno':'d-rpno','fcno':'d-fcno',
     'name':'d-name','cnic':'d-cnic','addr':'d-addr',
-    'vtype':'d-vtype','vreg':'d-vreg','eng':'d-eng','chassis':'d-chassis',
+    'vtype':'d-vtype','vmake':'d-vmake','vreg':'d-vreg','eng':'d-eng','chassis':'d-chassis',
     'iauth':'d-iauth','vfrom':'d-vfrom','vupto':'d-vupto',
     'fee':'d-fee','psid':'d-psid','csig':'d-csig',
     'gexp':'d-gexp','tpre':'d-tpre',
@@ -2388,7 +2389,7 @@
   var docMode = 'permit';
 
   var FORM_FIELD_IDS = [
-    'f-appno','f-rpno','f-fcno','f-name','f-cnic','f-addr','f-vtype','f-vreg',
+    'f-appno','f-rpno','f-fcno','f-name','f-cnic','f-addr','f-vtype','f-vmake','f-vreg',
     'f-eng','f-chassis','f-iauth','f-vfrom','f-vupto','f-fee','f-psid','f-csig',
     'f-gexp','f-tpre',
     'f-idistrict','f-idate','f-authority','f-qrlink','f-districts','f-idate-picker'
@@ -2473,6 +2474,7 @@
     s('f-idate', '24-MAY-2026');
     if (mode === 'permit') {
       s('f-vtype', 'TRUCK');
+      s('f-vmake', 'N/A');
       s('f-iauth', 'TDAS');
       s('f-vfrom', '30-01-2026');
       s('f-vupto', '30-07-2026');
@@ -2710,7 +2712,7 @@
     var fieldMap2 = {
       'appno':'f-appno','rpno':'f-rpno','fcno':'f-fcno',
       'name':'f-name','cnic':'f-cnic','addr':'f-addr',
-      'vtype':'f-vtype','vreg':'f-vreg','eng':'f-eng','chassis':'f-chassis',
+      'vtype':'f-vtype','vmake':'f-vmake','vreg':'f-vreg','eng':'f-eng','chassis':'f-chassis',
       'iauth':'f-iauth','vfrom':'f-vfrom','vupto':'f-vupto',
       'fee':'f-fee','psid':'f-psid','csig':'f-csig',
       'gexp':'f-gexp','tpre':'f-tpre',
@@ -3056,7 +3058,7 @@
         <div class="perm-field"><span class="lbl">5. CHASSIS NO:</span> <span class="val">` + data.chassis + `</span></div>
         <div class="perm-field"><span class="lbl">6. ENGINE NO:</span> <span class="val">` + data.eng + `</span></div>
         <div class="perm-field"><span class="lbl">7. VEHICLE TYPE:</span> <span class="val">` + data.vtype + `</span></div>
-        <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val">N/A</span></div>
+        <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val">` + data.vmake + `</span></div>
       </div>
     </div>
   </div>
@@ -3300,7 +3302,7 @@
       setDocMode(recMode, { skipSnapshot: true, skipRestore: true });
       var map = {
         'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
-        'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vreg':d.vehicle_reg_no,
+        'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vmake':d.vehicle_make,'f-vreg':d.vehicle_reg_no,
         'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
         'f-vupto':d.valid_upto,        'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
         'f-gexp':d.guarantee_expiry,'f-tpre':d.third_party_insurance_expiry,
@@ -3311,6 +3313,7 @@
       document.getElementById('f-districts').value = d.districts || '';
       if (document.getElementById('f-gexp') && !d.guarantee_expiry) document.getElementById('f-gexp').value = 'N/A';
       if (document.getElementById('f-tpre') && !d.third_party_insurance_expiry) document.getElementById('f-tpre').value = 'N/A';
+      if (document.getElementById('f-vmake') && !d.vehicle_make) document.getElementById('f-vmake').value = 'N/A';
       try { syncIssueDatePickerFromHidden(); } catch (ex) {}
       currentEditId = id;
       return openPrintTab(opts);
@@ -3563,6 +3566,7 @@
       cnic_no: document.getElementById('f-cnic').value,
       owner_address: document.getElementById('f-addr').value,
       vehicle_type: document.getElementById('f-vtype').value,
+      vehicle_make: document.getElementById('f-vmake').value,
       vehicle_reg_no: document.getElementById('f-vreg').value,
       engine_no: document.getElementById('f-eng').value,
       chassis_no: document.getElementById('f-chassis').value,
@@ -3661,11 +3665,12 @@
         result = await writeRow(payload);
         if (!result.error) break;
         var errMsg = String(result.error.message || '');
-        if (!/doc_type|schema cache|column|guarantee_expiry|third_party_insurance_expiry/i.test(errMsg)) break;
+        if (!/doc_type|schema cache|column|guarantee_expiry|third_party_insurance_expiry|vehicle_make/i.test(errMsg)) break;
         payload = Object.assign({}, payload);
         if (/doc_type/i.test(errMsg)) delete payload.doc_type;
         if (/guarantee_expiry/i.test(errMsg)) delete payload.guarantee_expiry;
         if (/third_party_insurance_expiry/i.test(errMsg)) delete payload.third_party_insurance_expiry;
+        if (/vehicle_make/i.test(errMsg)) delete payload.vehicle_make;
       }
       if (result.error) throw result.error;
       var saved = (result.data && result.data[0]) ? result.data[0] : null;
@@ -3807,7 +3812,7 @@
       setDocMode(recMode, { skipSnapshot: true, skipRestore: true });
       var map = {
         'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
-        'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vreg':d.vehicle_reg_no,
+        'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vmake':d.vehicle_make,'f-vreg':d.vehicle_reg_no,
         'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
         'f-vupto':d.valid_upto,        'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
         'f-gexp':d.guarantee_expiry,'f-tpre':d.third_party_insurance_expiry,
@@ -3820,6 +3825,7 @@
       document.getElementById('f-districts').value = d.districts||'';
       if (document.getElementById('f-gexp') && !d.guarantee_expiry) document.getElementById('f-gexp').value = 'N/A';
       if (document.getElementById('f-tpre') && !d.third_party_insurance_expiry) document.getElementById('f-tpre').value = 'N/A';
+      if (document.getElementById('f-vmake') && !d.vehicle_make) document.getElementById('f-vmake').value = 'N/A';
       currentEditId = id;
       editIdsByMode[recMode] = id;
       var docUrl = normalizeDocQrUrl(d.qr_link, id, recMode);

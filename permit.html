@@ -361,7 +361,7 @@
         <div class="perm-field"><span class="lbl">5. CHASSIS NO:</span> <span class="val" id="d-chassis"></span></div>
         <div class="perm-field"><span class="lbl">6. ENGINE NO:</span> <span class="val" id="d-eng"></span></div>
         <div class="perm-field"><span class="lbl">7. VEHICLE TYPE:</span> <span class="val" id="d-vtype"></span></div>
-        <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val">N/A</span></div>
+        <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val" id="d-vmake"></span></div>
       </div>
     </div>
   </div>
@@ -604,6 +604,7 @@
     set('d-cnic',      d.cnic_no);
     set('d-addr',      d.owner_address);
     set('d-vtype',     d.vehicle_type);
+    set('d-vmake',     d.vehicle_make || 'N/A');
     set('d-vreg',      d.vehicle_reg_no);
     set('d-eng',       d.engine_no);
     set('d-chassis',   d.chassis_no);
