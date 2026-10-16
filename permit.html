@@ -21,46 +21,205 @@
     background-color: white;
     width: 210mm;
     min-height: 297mm;
-    padding: 28mm 22mm 28mm 22mm;
+    padding: 34mm 26mm 16mm 26mm;
     position: relative;
     margin: 0 auto;
   }
-  .top-spacer { height: 40px; }
-  .part-label { font-size:13px; font-weight:bold; margin-bottom:7px; letter-spacing:0.5px; }
-  .header-block { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; }
-  .header-spacer { width:100px; flex-shrink:0; }
-  .header-center { flex:1; text-align:center; margin-left:-150px; margin-top:30px; }
-  .main-title { font-size:16px; font-weight:bold; margin-bottom:3px; }
-  .sub-title { font-size:13px; font-weight:bold; text-decoration:underline; margin-bottom:8px; }
-  .app-no { font-size:12.5px; font-weight:bold; }
-  .qr-box { width:103px; height:103px; flex-shrink:0; position:relative; top:55px; right:35px; }
-  #qrcode-img canvas, #qrcode-img img { width:103px !important; height:103px !important; }
-  .permit-table { width:75%; border-collapse:collapse; margin:12px 0 16px; font-size:11.5px; }
-  .permit-table td { border:3px solid #ddd; padding:10px 10px; text-align:center; width:50%; line-height:1.2; }
-  .permit-table .small-label { font-size:10.5px; display:block; margin:0; }
-  .permit-table .big-val { font-weight:bold; font-size:13px; display:block; margin:0; }
-  .permit-table .route-label { font-size:10px; display:block; margin:0; }
-  .doc-row { display:flex; align-items:baseline; margin:6px 0; font-size:12.5px; line-height:1.5; }
-  .doc-row.split { justify-content:space-between; }
-  .lbl { font-weight:bold; }
-  .doc-row .lbl { font-weight:bold; white-space:nowrap; margin-right:4px; flex-shrink:0; }
-  .doc-row .val { font-weight:normal; }
-  .doc-row .pair { display:flex; align-items:baseline; }
-  .indent { margin-left:20px; }
-  .two-col-row { display:flex; margin:6px 0 6px 20px; font-size:12.5px; }
-  .two-col-row .pair { display:flex; align-items:baseline; margin-right:70px; }
-  .fitness-title { font-size:12.5px; font-weight:bold; margin:6px 0 4px; }
-  .fitness-row { display:flex; align-items:center; margin-left:20px; font-size:12.5px; font-weight:bold; }
-  .fitness-row .seg { display:flex; align-items:center; }
-  .fitness-row .pipe { margin:0 12px; font-weight:bold; }
-  .fee-psid { display:flex; gap:55px; margin:6px 0; font-size:12.5px; font-weight:bold; }
-  .districts-box { padding:8px 0; margin:8px 0; font-size:11px; line-height:1.2; word-break:break-all; overflow-wrap:anywhere; }
-  .districts-box .dlbl { font-weight:bold; }
-  .note-block { text-align:center; margin:30px 0 12px; font-size:12px; line-height:1.65; }
-  .note-block .nlbl { font-weight:bold; }
-  .doc-footer { text-align:center; margin-top:8px; }
-  .doc-footer .authority-name { font-size:16px; font-weight:bold; }
-  .doc-footer .issue-date { font-size:12.5px; margin-top:3px; }
+  .top-spacer { height: 48px; }
+
+  .part-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    margin: 4px 0 2px;
+    letter-spacing: 0.3px;
+  }
+
+  .header-block {
+    position: relative;
+    margin: 6px 0 10px;
+    min-height: 104px;
+    padding: 0 102px;
+  }
+
+  .header-spacer { display: none; }
+
+  .header-center {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .main-title {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 0 0 5px;
+    letter-spacing: 0.15px;
+    line-height: 1.12;
+  }
+
+  .sub-title {
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0 0 5px;
+    line-height: 1.15;
+  }
+
+  .title-line { display: block; }
+
+  .app-no {
+    font-size: 11.5px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.95px;
+    text-align: center;
+  }
+  .app-no-label,
+  .app-no #d-appno,
+  .app-no > span:not(.app-no-label) { font-weight: 700; }
+
+  .qr-box {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px;
+    height: 100px;
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  #qrcode-img canvas, #qrcode-img img { width: 96px !important; height: 96px !important; display: block; }
+
+  .permit-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 8px 0 10px;
+    font-size: 11.5px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(70, 70, 70, 0.34);
+    background: transparent;
+  }
+
+  .permit-table td {
+    border: 1px solid rgba(70, 70, 70, 0.26);
+    padding: 7px 8px;
+    text-align: center;
+    width: 50%;
+    line-height: 1.25;
+    background: transparent;
+  }
+
+  .permit-table .small-label { font-size: 10.5px; display: block; margin: 0; font-weight: 400; }
+  .permit-table .big-val { font-weight: 700; font-size: 13px; display: block; margin: 2px 0; }
+  .permit-table .route-label { font-size: 10px; display: block; margin: 0; font-weight: 400; }
+
+  .perm-section {
+    margin: 0 0 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(70, 70, 70, 0.34);
+    background: transparent;
+  }
+  .perm-section-head {
+    background: rgba(210, 210, 210, 0.28);
+    border: none;
+    border-bottom: 1px solid rgba(70, 70, 70, 0.24);
+    padding: 4px 8px;
+    font-size: 11.5px;
+    font-weight: bold;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+  }
+  .perm-section-body {
+    border: none;
+    background: transparent;
+    padding: 7px 8px 8px;
+  }
+  .perm-section-body-fit { padding: 0; }
+  .perm-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 14px;
+  }
+  .perm-field {
+    font-size: 12px;
+    line-height: 1.45;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .perm-field-full { grid-column: 1 / -1; }
+  .perm-field .lbl,
+  .lbl { font-weight: 400; white-space: nowrap; }
+  .perm-field .val { font-weight: 700; }
+
+  .perm-fitness-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .perm-fit-cell {
+    border-right: 1px solid rgba(70, 70, 70, 0.24);
+    text-align: center;
+    padding: 7px 6px 8px;
+    min-height: 48px;
+    background: transparent;
+  }
+  .perm-fit-cell:last-child { border-right: none; }
+  .perm-fit-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+  .perm-fit-val {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+
+  .perm-route-block {
+    margin: 0 0 8px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    padding: 6px 0 8px;
+  }
+
+  .districts-box {
+    padding: 4px 0 2px;
+    margin: 2px 0 0;
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .districts-box .dlbl,
+  .districts-box .districts-total { font-weight: 700; }
+  .districts-line {
+    white-space: nowrap;
+    font-weight: 400;
+  }
+  .districts-line-last {
+    white-space: nowrap;
+    max-width: 58%;
+  }
+
+  .note-block {
+    text-align: center;
+    margin: 22px 0 14px;
+    font-size: 11.5px;
+    line-height: 1.55;
+    font-style: italic;
+  }
+
+  .doc-footer { text-align: center; margin-top: 6px; }
+  .doc-footer .authority-name { font-size: 15px; font-weight: bold; margin: 0 0 4px; }
+  .doc-footer .issue-date { font-size: 12.5px; margin: 0; font-weight: 400; }
+  .doc-footer .issue-date #d-idate { font-weight: 400; }
   @media print {
     body { background:white; }
     #document { box-shadow:none; margin:0; width:210mm; min-height:297mm; }
@@ -133,7 +292,7 @@
     #document {
       width: 210mm !important;
       min-height: 297mm !important;
-      padding: 28mm 22mm 28mm 22mm !important;
+      padding: 34mm 26mm 16mm 26mm;
       box-shadow: none !important;
     }
   }
@@ -162,12 +321,11 @@
 <div id="document" style="display:none;">
   <div class="top-spacer"></div>
   <div class="header-block">
-    <div class="header-spacer"></div>
     <div class="header-center">
+      <p class="main-title"><span class="title-line">SUMMARY TO BE CARRIED ON THE</span><span class="title-line">VEHICLE</span></p>
+      <p class="sub-title"><span class="title-line">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN</span><span class="title-line">PUNJAB</span></p>
       <p class="part-label">PART ' A &amp; B '</p>
-      <p class="main-title">SUMMARY TO BE CARRIED ON THE VEHICLE</p>
-      <p class="sub-title">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN PUNJAB</p>
-      <p class="app-no">APPLICATION NO.<span id="d-appno"></span></p>
+      <p class="app-no"><span class="app-no-label">APPLICATION NO.</span><span id="d-appno"></span></p>
     </div>
     <div class="qr-box"><div id="qrcode-img"></div></div>
   </div>
@@ -185,40 +343,57 @@
       </td>
     </tr>
   </table>
-  <div class="doc-row split">
-    <div class="pair"><span class="lbl">1. FULL NAME:</span><span class="val">&nbsp;<span id="d-name"></span></span></div>
-    <div class="pair" style="margin-right:90px;"><span class="lbl">2. CNIC/NTN NO:</span><span class="val">&nbsp;<span id="d-cnic"></span></span></div>
+  <div class="perm-section">
+    <div class="perm-section-head">Owner Details</div>
+    <div class="perm-section-body">
+      <div class="perm-grid-2">
+        <div class="perm-field"><span class="lbl">1. FULL NAME:</span> <span class="val" id="d-name"></span></div>
+        <div class="perm-field"><span class="lbl">2. CNIC/NTN NO:</span> <span class="val" id="d-cnic"></span></div>
+        <div class="perm-field perm-field-full"><span class="lbl">3. OWNER ADDRESS:</span> <span class="val" id="d-addr"></span></div>
+      </div>
+    </div>
   </div>
-  <div class="doc-row"><span class="lbl">3. OWNER ADDRESS:</span><span class="val">&nbsp;<span id="d-addr"></span></span></div>
-  <div class="doc-row indent"><span class="lbl">VEHICLE TYPE:</span><span class="val">&nbsp;<span id="d-vtype"></span></span></div>
-  <div class="doc-row indent"><span class="lbl">4. VEHICLE REGISTRATION NO :</span><span class="lbl">&nbsp;<span id="d-vreg"></span></span></div>
-  <div class="two-col-row">
-    <div class="pair"><span class="lbl">ENGINE NO:</span><span class="val">&nbsp;<span id="d-eng"></span></span></div>
-    <div class="pair"><span class="lbl">CHASIS NO:</span><span class="val">&nbsp;<span id="d-chassis"></span></span></div>
+  <div class="perm-section">
+    <div class="perm-section-head">Vehicle Details</div>
+    <div class="perm-section-body">
+      <div class="perm-grid-2">
+        <div class="perm-field"><span class="lbl">4. REGISTRATION NO:</span> <span class="val" id="d-vreg"></span></div>
+        <div class="perm-field"><span class="lbl">5. CHASSIS NO:</span> <span class="val" id="d-chassis"></span></div>
+        <div class="perm-field"><span class="lbl">6. ENGINE NO:</span> <span class="val" id="d-eng"></span></div>
+        <div class="perm-field"><span class="lbl">7. VEHICLE TYPE:</span> <span class="val" id="d-vtype"></span></div>
+        <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val" id="d-vmake"></span></div>
+      </div>
+    </div>
   </div>
-  <p class="fitness-title">5. FINTNESS STATUS AT THE TIME OF ROUTE PERMIT:</p>
-  <div class="fitness-row">
-    <div class="seg"><span class="lbl">ISSUE AUTHORITY:</span>&nbsp;<span id="d-iauth"></span></div>
-    <span class="pipe">|</span>
-    <div class="seg"><span class="lbl">VALID FROM:</span>&nbsp;<span id="d-vfrom"></span></div>
-    <span class="pipe">|</span>
-    <div class="seg"><span class="lbl">VALID UPTO:</span>&nbsp;<span id="d-vupto"></span></div>
+  <div class="perm-section">
+    <div class="perm-section-head">Fitness Status at the Time of Route Permit</div>
+    <div class="perm-section-body perm-section-body-fit">
+      <div class="perm-fitness-grid">
+        <div class="perm-fit-cell"><span class="perm-fit-label">ISSUE AUTHORITY</span><span class="perm-fit-val" id="d-iauth"></span></div>
+        <div class="perm-fit-cell"><span class="perm-fit-label">VALID FROM</span><span class="perm-fit-val" id="d-vfrom"></span></div>
+        <div class="perm-fit-cell"><span class="perm-fit-label">VALID UPTO</span><span class="perm-fit-val" id="d-vupto"></span></div>
+      </div>
+    </div>
   </div>
-  <div class="fee-psid" style="margin-top:8px;">
-    <div class="pair"><span class="lbl">6. FEE:</span>&nbsp;<span id="d-fee"></span></div>
-    <div class="pair"><span class="lbl">PSID NO:</span>&nbsp;<span id="d-psid"></span></div>
+  <div class="perm-section">
+    <div class="perm-section-head">Permit Details</div>
+    <div class="perm-section-body">
+      <div class="perm-grid-2">
+        <div class="perm-field"><span class="lbl">9. FEE:</span> <span class="val" id="d-fee"></span></div>
+        <div class="perm-field"><span class="lbl">10. PSID NO:</span> <span class="val" id="d-psid"></span></div>
+        <div class="perm-field"><span class="lbl">11. COUNTER SIGNATURE VALID UPTO:</span> <span class="val" id="d-csig"></span></div>
+        <div class="perm-field"><span class="lbl">12. ISSUING DISTRICT:</span> <span class="val" id="d-idistrict"></span></div>
+        <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val" id="d-gexp">N/A</span></div>
+        <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val" id="d-tpre">N/A</span></div>
+      </div>
+    </div>
   </div>
-  <div class="doc-row">
-    <span class="lbl">7. COUNTER SIGNATURE VALID UPTO:</span>&nbsp;<span class="lbl" id="d-csig"></span>&nbsp;&nbsp;
-    <span class="lbl">8. ISSUING DISTRICT:</span>&nbsp;<span class="lbl" id="d-idistrict"></span>
-  </div>
-  <div class="doc-row"><span class="lbl">9. ROUTE DETAIL :</span></div>
-  <div class="districts-box">
-    <span class="dlbl">OTHER DISTRICTS</span><span id="d-districts"></span> <strong>(TOTAL 41 DISTRICT)</strong>
+  <div class="perm-route-block">
+    <div class="perm-field perm-field-full"><span class="lbl">15. ROUTE DETAIL :</span></div>
+    <div class="districts-box" id="districts-box"></div>
   </div>
   <div class="note-block">
-    <span class="nlbl">NOTE:</span> THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED<br>
-    SIGNATURES. VERIFY THROUGH QR CODE.
+    <em>*NOTE: THIS IS A SYSTEM-GENERATED ROUTE PERMIT AND DOES NOT REQUIRE ANY AUTHORIZED SIGNATURES. VERIFY THROUGH QR CODE.*</em>
   </div>
   <div class="doc-footer">
     <p class="authority-name" id="d-authority"></p>
@@ -357,6 +532,56 @@
     if (el) el.textContent = val || '';
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  var DEFAULT_DISTRICTS = 'ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJRANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUDDIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,RAWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT ADDU,TAUNSA SHAREEF';
+  var ROUTE_DISTRICT_REFERENCE_LINES = [
+    'ATTOCK,BAHAWALNAGAR,BAHAWALPUR,BHAKHAR,CHAKWAL,CHINIOT,D G KHAN,FAISALABAD,GUJR',
+    'ANWALA,GUJRAT,HAFIZABAD,JHANG,JHELUM,KASUR,KHANEWAL,KHUSHAB,LAHORE,LAYYAH,LODHRAN,MANDI BAHAUD',
+    'DIN,MIANWALI,MULTAN,MUZAFFARGARH,NANKANA SAHIB,NAROWAL,OKARA,PAKPATTAN,RAHIM YAR KHAN,RAJANPUR,R',
+    'AWALPINDI,SAHIWAL,SARGODHA,SIALKOT,TOBA TEK SINGH,VEHARI,SHEIKHUPURA,WAZIRABAD,MUREE,TALAGANG,KOT',
+    'ADDU,TAUNSA SHAREEF'
+  ];
+
+  function normalizeDistrictList(val) {
+    return String(val || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean).join(',');
+  }
+
+  function isDefaultRouteDistricts(norm) {
+    return norm === normalizeDistrictList(DEFAULT_DISTRICTS);
+  }
+
+  function splitDistrictsToFiveLines(norm) {
+    var chunkSizes = [89, 95, 95, 95];
+    var lines = ['', '', '', '', ''];
+    var pos = 0;
+    for (var i = 0; i < chunkSizes.length && pos < norm.length; i++) {
+      var end = Math.min(pos + chunkSizes[i], norm.length);
+      lines[i] = norm.substring(pos, end);
+      pos = end;
+    }
+    if (pos < norm.length) lines[4] = norm.substring(pos);
+    return lines;
+  }
+
+  function buildRouteDistrictsHtml(districtVal) {
+    var norm = normalizeDistrictList(districtVal || DEFAULT_DISTRICTS);
+    var count = norm ? norm.split(',').length : 0;
+    var lines = isDefaultRouteDistricts(norm) ? ROUTE_DISTRICT_REFERENCE_LINES.slice() : splitDistrictsToFiveLines(norm);
+    var html = '<div class="districts-line"><strong class="dlbl">OTHER DISTRICTS</strong> ' + escapeHtml(lines[0]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[1]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[2]) + '</div>';
+    html += '<div class="districts-line">' + escapeHtml(lines[3]) + '</div>';
+    html += '<div class="districts-line districts-line-last">' + escapeHtml(lines[4]) + ' <strong class="districts-total">(TOTAL ' + count + ' DISTRICT)</strong></div>';
+    return html;
+  }
+
   async function loadPermit() {
     var params = new URLSearchParams(window.location.search);
     var id = params.get('id');
@@ -379,6 +604,7 @@
     set('d-cnic',      d.cnic_no);
     set('d-addr',      d.owner_address);
     set('d-vtype',     d.vehicle_type);
+    set('d-vmake',     d.vehicle_make || 'N/A');
     set('d-vreg',      d.vehicle_reg_no);
     set('d-eng',       d.engine_no);
     set('d-chassis',   d.chassis_no);
@@ -388,17 +614,20 @@
     set('d-fee',       d.fee);
     set('d-psid',      d.psid_no);
     set('d-csig',      d.counter_sig_upto);
+    set('d-gexp',      d.guarantee_expiry || 'N/A');
+    set('d-tpre',      d.third_party_insurance_expiry || 'N/A');
     set('d-idistrict', d.issuing_district);
     set('d-idate',     d.issuance_date);
     set('d-authority', d.authority_name);
-    set('d-districts', ' ' + (d.districts || ''));
+    var districtsBox = document.getElementById('districts-box');
+    if (districtsBox) districtsBox.innerHTML = buildRouteDistrictsHtml(d.districts);
 
     var popupView = params.get('view') === 'popup' || params.get('popup') === '1' ||
       !params.get('view') || (d.qr_link && d.qr_link.indexOf('view=popup') !== -1);
     var qrUrl = getPermitQrUrl(id);
     document.getElementById('qrcode-img').innerHTML = '';
     new QRCode(document.getElementById('qrcode-img'), {
-      text: qrUrl, width:103, height:103,
+      text: qrUrl, width:96, height:96,
       colorDark:'#000000', colorLight:'#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
@@ -456,7 +685,7 @@
       clonedDocEl.style.margin = '0 auto';
       clonedDocEl.style.width = '210mm';
       clonedDocEl.style.minHeight = '297mm';
-      clonedDocEl.style.padding = '28mm 22mm';
+      clonedDocEl.style.padding = '34mm 26mm 16mm 26mm';
       clonedDocEl.style.display = 'block';
       clonedDocEl.style.boxShadow = 'none';
       forceTimesNewRoman(clonedDocEl);
