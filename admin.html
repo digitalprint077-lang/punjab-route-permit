@@ -234,6 +234,7 @@
   .perm-field-full { grid-column: 1 / -1; }
   .perm-field .lbl,
   .lbl { font-weight: 700; white-space: nowrap; color: #4A5A52; }
+  .lbl-break { white-space: normal; }
   .perm-field .val { font-weight: 700; color: inherit; }
 
   .perm-fitness-grid {
@@ -2847,7 +2848,7 @@
             <div class="perm-field"><span class="lbl">11. PERMIT EXPIRY:</span> <span class="val" id="d-csig">04-02-2029</span></div>
             <div class="perm-field"><span class="lbl">12. ISSUING DISTRICT:</span> <span class="val" id="d-idistrict">LAHORE</span></div>
             <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val" id="d-gexp">N/A</span></div>
-            <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val" id="d-tpre">N/A</span></div>
+            <div class="perm-field"><span class="lbl lbl-break">14. THIRD PARTY RISK<br>INSURANCE EXPIRY:</span> <span class="val" id="d-tpre">N/A</span></div>
           </div>
         </div>
       </div>
@@ -3549,6 +3550,7 @@
   .perm-field-full { grid-column: 1 / -1; }
   .perm-field .lbl,
   .lbl { font-weight: 700; white-space: nowrap; color: #4A5A52; }
+  .lbl-break { white-space: normal; }
   .perm-field .val { font-weight: 700; color: inherit; }
 
   .perm-fitness-grid {
@@ -3742,7 +3744,7 @@
         <div class="perm-field"><span class="lbl">11. PERMIT EXPIRY:</span> <span class="val">` + data.csig + `</span></div>
         <div class="perm-field"><span class="lbl">12. ISSUING DISTRICT:</span> <span class="val">` + data.idistrict + `</span></div>
         <div class="perm-field"><span class="lbl">13. GUARANTEE EXPIRY:</span> <span class="val">` + (data.gexp || 'N/A') + `</span></div>
-        <div class="perm-field"><span class="lbl">14. THIRD PARTY RISK INSURANCE EXPIRY:</span> <span class="val">` + (data.tpre || 'N/A') + `</span></div>
+        <div class="perm-field"><span class="lbl lbl-break">14. THIRD PARTY RISK<br>INSURANCE EXPIRY:</span> <span class="val">` + (data.tpre || 'N/A') + `</span></div>
       </div>
     </div>
   </div>
