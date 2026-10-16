@@ -29,19 +29,20 @@
 
   .part-label {
     font-family: "Times New Roman", Times, serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: #5b21b6;
-    margin: 2px 0 4px;
-    letter-spacing: 0.2px;
+    margin: 4px 0 2px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
+    text-align: left;
   }
 
   .header-block {
     position: relative;
     margin: 6px 0 10px;
-    min-height: 128px;
-    padding: 0 110px 0 0;
+    min-height: 148px;
+    padding: 0 128px 0 0;
   }
 
   .header-spacer { display: none; }
@@ -54,28 +55,29 @@
 
   .main-title {
     font-family: "Times New Roman", Times, serif;
-    font-size: 17px;
+    font-size: 20px;
     font-weight: bold;
     color: #1b5e20;
-    margin: 0 -110px 4px 0;
-    letter-spacing: 0;
-    line-height: 1.2;
+    margin: 0 0 6px;
+    letter-spacing: 0.4px;
+    line-height: 1.15;
     text-transform: uppercase;
     white-space: nowrap;
-    text-align: center;
+    text-align: left;
   }
 
   .sub-title {
     font-family: "Times New Roman", Times, serif;
-    font-size: 13.5px;
+    font-size: 14.5px;
     font-weight: bold;
     color: #1b5e20;
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-underline-offset: 3px;
     margin: 0 0 4px;
     line-height: 1.2;
     text-transform: uppercase;
     white-space: nowrap;
+    text-align: left;
   }
 
   .header-meta-row {
@@ -84,7 +86,7 @@
     align-items: stretch;
     justify-content: flex-start;
     margin: 10px 0 0;
-    width: 100%;
+    width: 90%;
   }
 
   .header-meta-box {
@@ -128,15 +130,15 @@
   .qr-box {
     position: absolute;
     right: 0;
-    top: 0;
-    width: 100px;
-    height: 100px;
+    top: 22px;
+    width: 118px;
+    height: 118px;
     padding: 2px;
     background: rgba(255, 255, 255, 0.92);
     border-radius: 4px;
     box-sizing: border-box;
   }
-  #qrcode-img canvas, #qrcode-img img { width: 96px !important; height: 96px !important; display: block; }
+  #qrcode-img canvas, #qrcode-img img { width: 114px !important; height: 114px !important; display: block; }
 
   .permit-table {
     width: 100%;
@@ -678,7 +680,7 @@
     var qrUrl = getPermitQrUrl(id);
     document.getElementById('qrcode-img').innerHTML = '';
     new QRCode(document.getElementById('qrcode-img'), {
-      text: qrUrl, width:96, height:96,
+      text: qrUrl, width:114, height:114,
       colorDark:'#000000', colorLight:'#ffffff',
       correctLevel: QRCode.CorrectLevel.H
     });
