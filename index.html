@@ -3,176 +3,347 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0d6b66">
+  <meta name="theme-color" content="#0a5c57">
   <meta name="description" content="Verify Punjab route permit by vehicle registration number.">
   <title>Verify Route Permit — Punjab PTA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,650;9..144,750&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root {
-      --ink: #0f1f33;
+      --ink: #0c1828;
       --sea: #0d6b66;
-      --sea-light: #14a89f;
+      --sea-bright: #12b5aa;
       --sea-deep: #064842;
-      --line: rgba(15, 31, 51, 0.1);
-      --card: rgba(255, 255, 255, 0.92);
-      --muted: #5c6d78;
+      --line: rgba(12, 24, 40, 0.09);
+      --line-strong: rgba(12, 24, 40, 0.14);
+      --card: #ffffff;
+      --muted: #5a6775;
       --font: "Outfit", system-ui, sans-serif;
       --display: "Fraunces", Georgia, serif;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --shadow-soft: 0 28px 60px rgba(12, 24, 40, 0.07), 0 8px 20px rgba(12, 24, 40, 0.04);
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       min-height: 100vh;
       font-family: var(--font);
       color: var(--ink);
-      background:
-        radial-gradient(1200px 500px at 0% -20%, rgba(13, 107, 102, 0.22), transparent 55%),
-        radial-gradient(900px 400px at 100% 0%, rgba(15, 31, 51, 0.08), transparent 50%),
-        linear-gradient(165deg, #f0f9f7 0%, #eef4f8 45%, #f5f7fa 100%);
+      background-color: #eef5f3;
+      background-image:
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d6b66' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        radial-gradient(1100px 520px at 8% -15%, rgba(13, 107, 102, 0.28), transparent 58%),
+        radial-gradient(800px 420px at 95% 5%, rgba(12, 24, 40, 0.06), transparent 52%),
+        linear-gradient(168deg, #f3faf8 0%, #ebf2f8 48%, #f4f6f9 100%);
       -webkit-font-smoothing: antialiased;
     }
-    .page {
-      width: min(680px, calc(100% - 32px));
+    .shell {
+      width: min(720px, calc(100% - 40px));
       margin: 0 auto;
-      padding: max(28px, env(safe-area-inset-top)) 0 calc(56px + env(safe-area-inset-bottom));
+      padding: max(32px, env(safe-area-inset-top)) 0 calc(64px + env(safe-area-inset-bottom));
+    }
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, var(--sea) 0%, var(--sea-deep) 100%);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 24px rgba(13, 107, 102, 0.35);
+    }
+    .brand-mark svg { width: 26px; height: 26px; fill: currentColor; }
+    .brand-text {
+      text-align: left;
+    }
+    .brand-text .kicker {
+      margin: 0;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sea);
+    }
+    .brand-text .name {
+      margin: 2px 0 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
     .hero {
       text-align: center;
-      margin-bottom: 28px;
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(13, 107, 102, 0.1);
-      border: 1px solid rgba(13, 107, 102, 0.18);
-      color: var(--sea-deep);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-    }
-    .hero-badge svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
+      margin-bottom: 32px;
     }
     .hero h1 {
-      margin: 0 0 12px;
+      margin: 0 0 14px;
       font-family: var(--display);
-      font-size: clamp(1.85rem, 5.5vw, 2.55rem);
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      font-weight: 700;
+      font-size: clamp(2rem, 6vw, 2.75rem);
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      font-weight: 750;
+      background: linear-gradient(120deg, var(--ink) 0%, #1a3d4a 55%, var(--sea-deep) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-    .hero p {
+    .hero .lead {
       margin: 0 auto;
-      max-width: 42ch;
+      max-width: 38ch;
       color: var(--muted);
-      font-size: clamp(0.98rem, 2.4vw, 1.08rem);
-      line-height: 1.55;
+      font-size: clamp(1rem, 2.5vw, 1.12rem);
+      line-height: 1.6;
+      font-weight: 500;
     }
-    .hero p strong {
-      color: var(--ink);
+    .steps {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-top: 22px;
+      padding: 0;
+      list-style: none;
+    }
+    .steps li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
       font-weight: 600;
+      color: var(--muted);
+    }
+    .steps .num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(13, 107, 102, 0.12);
+      color: var(--sea-deep);
+      font-size: 11px;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
     }
     .verify-card {
       background: var(--card);
-      backdrop-filter: blur(12px);
       border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: clamp(20px, 4vw, 28px);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.8) inset,
-        0 24px 48px rgba(15, 31, 51, 0.08);
+      border-radius: var(--radius-lg);
+      padding: clamp(22px, 4vw, 32px);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
     }
-    .verify-card label {
+    .verify-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--sea-deep), var(--sea-bright), var(--sea));
+    }
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .card-head h2 {
+      margin: 0;
+      font-size: 1.12rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .card-head p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .secure-tag {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #edf7f5;
+      border: 1px solid rgba(13, 107, 102, 0.15);
+      color: var(--sea-deep);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .secure-tag svg { width: 14px; height: 14px; fill: currentColor; }
+    .field-label {
       display: block;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       color: var(--muted);
       margin-bottom: 10px;
     }
-    .search-row {
+    .search-wrap {
       display: flex;
       gap: 10px;
     }
-    .search-row input {
+    .input-shell {
       flex: 1;
       min-width: 0;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 15px 16px;
-      font-size: 16px;
-      font-family: inherit;
-      outline: none;
-      background: #f8fbfc;
-      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-md);
+      background: #f7fafb;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     }
-    .search-row input:focus {
+    .input-shell:focus-within {
       border-color: var(--sea);
       background: #fff;
-      box-shadow: 0 0 0 4px rgba(13, 107, 102, 0.12);
+      box-shadow: 0 0 0 4px rgba(13, 107, 102, 0.11);
     }
-    .search-row button {
+    .input-shell svg {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      fill: var(--muted);
+      opacity: 0.75;
+    }
+    .input-shell:focus-within svg { fill: var(--sea); opacity: 1; }
+    .input-shell input {
+      flex: 1;
+      min-width: 0;
       border: none;
-      border-radius: 14px;
-      min-height: 52px;
-      padding: 0 22px;
-      background: linear-gradient(145deg, var(--sea) 0%, var(--sea-deep) 100%);
+      background: transparent;
+      padding: 16px 0;
+      font-size: 16px;
+      font-family: inherit;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      outline: none;
+      color: var(--ink);
+    }
+    .input-shell input::placeholder {
+      color: #94a3b0;
+      font-weight: 500;
+    }
+    .btn-verify {
+      border: none;
+      border-radius: var(--radius-md);
+      min-height: 54px;
+      padding: 0 24px;
+      background: linear-gradient(160deg, var(--sea-bright) 0%, var(--sea) 45%, var(--sea-deep) 100%);
       color: #fff;
       font-weight: 700;
       font-size: 15px;
       font-family: inherit;
       cursor: pointer;
       white-space: nowrap;
-      box-shadow: 0 8px 20px rgba(13, 107, 102, 0.28);
-      transition: transform 0.12s, box-shadow 0.12s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 12px 28px rgba(13, 107, 102, 0.32);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s;
     }
-    .search-row button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(13, 107, 102, 0.32);
+    .btn-verify svg { width: 18px; height: 18px; fill: currentColor; }
+    .btn-verify:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(13, 107, 102, 0.38);
+      filter: brightness(1.03);
     }
-    .search-row button:active { transform: translateY(0); }
-    .search-row button:disabled {
-      opacity: 0.65;
+    .btn-verify:active { transform: translateY(0); }
+    .btn-verify:disabled {
+      opacity: 0.7;
       cursor: wait;
       transform: none;
+      filter: none;
     }
     .hint {
-      margin: 14px 0 0;
+      margin: 16px 0 0;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #f4f8f7;
+      border: 1px dashed var(--line-strong);
       font-size: 13px;
       color: var(--muted);
-      line-height: 1.45;
+      line-height: 1.5;
     }
-    #status {
-      margin-top: 18px;
+    .status-row {
+      margin-top: 20px;
+      min-height: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-size: 14px;
       font-weight: 600;
       color: var(--sea-deep);
-      min-height: 1.2em;
     }
+    .status-row.is-error { color: #b42318; }
+    .status-row.is-muted { color: var(--muted); font-weight: 500; }
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(13, 107, 102, 0.2);
+      border-top-color: var(--sea);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .results-stack { margin-top: 8px; }
     .result {
-      margin-top: 18px;
+      margin-top: 16px;
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: var(--radius-md);
       overflow: hidden;
-      background: #f8fafb;
+      background: #fafcfd;
+      animation: rise 0.45s ease backwards;
     }
+    .result:nth-child(2) { animation-delay: 0.06s; }
+    .result:nth-child(3) { animation-delay: 0.12s; }
     .result-head {
-      padding: 14px 16px;
-      background: linear-gradient(90deg, #e4f3f0, #eef6f4);
+      padding: 16px 18px;
+      background: linear-gradient(105deg, #e2f2ef 0%, #eef7f5 100%);
       border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .result-title {
       font-weight: 750;
-      font-size: 14px;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+    .result-pill {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(13, 107, 102, 0.14);
+      color: var(--sea-deep);
     }
     .result-grid {
       display: grid;
@@ -180,7 +351,7 @@
       gap: 0;
     }
     .field {
-      padding: 12px 16px;
+      padding: 13px 18px;
       border-bottom: 1px solid var(--line);
       border-right: 1px solid var(--line);
     }
@@ -189,95 +360,186 @@
       display: block;
       font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       color: var(--muted);
-      margin-bottom: 4px;
+      margin-bottom: 5px;
       font-weight: 700;
     }
     .field .val {
       font-size: 14px;
       font-weight: 650;
       word-break: break-word;
+      line-height: 1.35;
     }
     .result-actions {
-      padding: 14px 16px;
+      padding: 16px 18px;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      background: #fff;
     }
     .result-actions a {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 44px;
-      padding: 8px 16px;
+      gap: 6px;
+      min-height: 46px;
+      padding: 10px 18px;
       border-radius: 12px;
       background: var(--ink);
       color: #fff;
       text-decoration: none;
       font-size: 13px;
       font-weight: 650;
+      transition: background 0.15s, transform 0.12s;
+    }
+    .result-actions a:hover {
+      background: var(--sea-deep);
+      transform: translateY(-1px);
     }
     .result-actions a.secondary {
-      background: #e8f0ee;
+      background: #eef3f2;
       color: var(--ink);
-    }
-    .empty {
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 14px;
-      background: rgba(220, 38, 38, 0.07);
-      border: 1px solid rgba(220, 38, 38, 0.15);
-      color: #b91c1c;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .site-foot {
-      margin-top: 32px;
-      text-align: center;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .site-foot span {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.6);
       border: 1px solid var(--line);
     }
-    @media (max-width: 560px) {
-      .search-row { flex-direction: column; }
-      .search-row button { width: 100%; min-height: 48px; }
+    .result-actions a.secondary:hover { background: #e4ecea; }
+    .empty {
+      margin-top: 16px;
+      padding: 20px 18px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #fef5f5, #fff8f8);
+      border: 1px solid rgba(220, 38, 38, 0.18);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      animation: rise 0.4s ease;
+    }
+    .empty-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(220, 38, 38, 0.1);
+      color: #b42318;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .empty-icon svg { width: 22px; height: 22px; fill: currentColor; }
+    .empty strong {
+      display: block;
+      color: #991b1b;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .empty span {
+      font-size: 13px;
+      color: #7f1d1d;
+      line-height: 1.45;
+      font-weight: 500;
+    }
+    .site-foot {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .site-foot .domain {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      backdrop-filter: blur(8px);
+    }
+    .site-foot .domain svg { width: 16px; height: 16px; fill: var(--sea); opacity: 0.85; }
+    .site-foot .legal {
+      margin: 12px 0 0;
+      font-size: 11px;
+      color: #8b96a3;
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 580px) {
+      .search-wrap { flex-direction: column; }
+      .btn-verify { width: 100%; min-height: 50px; }
       .result-grid { grid-template-columns: 1fr; }
       .field { border-right: none; }
       .result-actions a { flex: 1 1 100%; }
+      .card-head { flex-direction: column; }
+      .steps { flex-direction: column; align-items: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .result, .empty, .spinner { animation: none; }
+      .btn-verify:hover, .result-actions a:hover { transform: none; }
+    }
+    .btn-verify:focus-visible,
+    .input-shell:focus-within,
+    .result-actions a:focus-visible {
+      outline: 2px solid var(--sea);
+      outline-offset: 2px;
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header class="hero">
-      <div class="hero-badge">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4Zm-1 16-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8Z"/></svg>
-        Official verification
+  <div class="shell">
+    <div class="brand-bar">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
       </div>
-      <h1>Verify Route Permit</h1>
-      <p>Check permit details for a vehicle registered with <strong>Punjab Provincial Transport Authority</strong>.</p>
+      <div class="brand-text">
+        <p class="kicker">Punjab PTA</p>
+        <p class="name">Route Permit Verification</p>
+      </div>
+    </div>
+
+    <header class="hero">
+      <h1>Verify your permit</h1>
+      <p class="lead">Instant lookup by registration number — owner details, validity, and official permit record.</p>
+      <ol class="steps" aria-label="How it works">
+        <li><span class="num">1</span> Enter registration</li>
+        <li><span class="num">2</span> Run verification</li>
+        <li><span class="num">3</span> View full permit</li>
+      </ol>
     </header>
 
     <section class="verify-card" aria-label="Permit verification">
-      <label for="reg-input">Vehicle registration number</label>
-      <div class="search-row">
-        <input id="reg-input" type="text" placeholder="e.g. LEB-1234 or TAK 325 PESHAWAR" autocomplete="off" inputmode="text">
-        <button id="verify-btn" type="button">Verify</button>
+      <div class="card-head">
+        <div>
+          <h2>Registration lookup</h2>
+          <p>Search the PTA permit database in seconds.</p>
+        </div>
+        <span class="secure-tag">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4Z"/></svg>
+          Secure
+        </span>
       </div>
-      <p class="hint">Try with or without spaces or dashes if the first search returns no results.</p>
-      <div id="status" role="status" aria-live="polite"></div>
-      <div id="results"></div>
+
+      <label class="field-label" for="reg-input">Vehicle registration number</label>
+      <div class="search-wrap">
+        <div class="input-shell">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          <input id="reg-input" type="text" placeholder="LEB-1234 or TAK 325 PESHAWAR" autocomplete="off" inputmode="text" spellcheck="false">
+        </div>
+        <button id="verify-btn" class="btn-verify" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          Verify
+        </button>
+      </div>
+      <p class="hint">Tip: If nothing is found, try the same number without spaces or dashes.</p>
+
+      <div id="status" class="status-row" role="status" aria-live="polite"></div>
+      <div id="results" class="results-stack"></div>
     </section>
 
     <footer class="site-foot">
-      <span>pdtg-transport-punjab.com</span>
+      <div class="domain">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        pdtg-transport-punjab.com
+      </div>
+      <p class="legal">Punjab Provincial Transport Authority — public verification portal</p>
     </footer>
   </div>
 
@@ -298,6 +560,16 @@
         .replace(/"/g, '&quot;');
     }
 
+    function setStatus(text, kind) {
+      var el = document.getElementById('status');
+      el.className = 'status-row' + (kind ? ' is-' + kind : '');
+      if (kind === 'loading') {
+        el.innerHTML = '<span class="spinner" aria-hidden="true"></span><span>' + escapeHtml(text) + '</span>';
+      } else {
+        el.textContent = text || '';
+      }
+    }
+
     function field(label, value) {
       return '<div class="field"><span class="lbl">' + label + '</span><span class="val">' + escapeHtml(value || '-') + '</span></div>';
     }
@@ -305,13 +577,19 @@
     function renderResults(rows) {
       var box = document.getElementById('results');
       if (!rows.length) {
-        box.innerHTML = '<div class="empty">No route permit found for this registration number.</div>';
+        box.innerHTML =
+          '<div class="empty" role="alert">' +
+          '<div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>' +
+          '<div><strong>No permit found</strong><span>We could not find a route permit for this registration. Check the number and try again.</span></div></div>';
         return;
       }
       box.innerHTML = rows.map(function(r) {
         var id = r.id;
-        var html = '<div class="result">';
-        html += '<div class="result-head">' + escapeHtml(r.full_name || 'Owner') + ' — ' + escapeHtml(r.vehicle_reg_no || '') + '</div>';
+        var html = '<article class="result">';
+        html += '<div class="result-head">';
+        html += '<span class="result-title">' + escapeHtml(r.full_name || 'Owner') + ' · ' + escapeHtml(r.vehicle_reg_no || '') + '</span>';
+        html += '<span class="result-pill">Verified</span>';
+        html += '</div>';
         html += '<div class="result-grid">';
         html += field('Owner Name', r.full_name);
         html += field('CNIC / NTN', r.cnic_no);
@@ -328,24 +606,24 @@
         html += '</div>';
         html += '<div class="result-actions">';
         html += '<a href="permit.html?id=' + encodeURIComponent(id) + '">View full permit</a>';
-        html += '<a class="secondary" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Check Excise MTMIS</a>';
-        html += '</div></div>';
+        html += '<a class="secondary" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Excise MTMIS</a>';
+        html += '</div></article>';
         return html;
       }).join('');
     }
 
     async function verifyVehicle() {
       var input = document.getElementById('reg-input');
-      var status = document.getElementById('status');
       var btn = document.getElementById('verify-btn');
       var raw = input.value.trim();
       document.getElementById('results').innerHTML = '';
       if (!raw) {
-        status.textContent = 'Enter a registration number first.';
+        setStatus('Enter a registration number first.', 'error');
+        input.focus();
         return;
       }
       var key = normalizeRegKey(raw);
-      status.textContent = 'Searching…';
+      setStatus('Searching permit database…', 'loading');
       btn.disabled = true;
       try {
         var result = await sb.from('permits').select('*').order('created_at', { ascending: false });
@@ -355,12 +633,14 @@
           if (!reg) return false;
           return reg === key || reg.indexOf(key) !== -1 || key.indexOf(reg) !== -1;
         });
-        status.textContent = matches.length
-          ? (matches.length + ' permit record' + (matches.length > 1 ? 's' : '') + ' found')
-          : 'No match in PTA permit database';
+        if (matches.length) {
+          setStatus(matches.length + ' record' + (matches.length > 1 ? 's' : '') + ' found', '');
+        } else {
+          setStatus('No matching permit in database', 'muted');
+        }
         renderResults(matches);
       } catch (err) {
-        status.textContent = (err && err.message) || 'Verification failed';
+        setStatus((err && err.message) || 'Verification failed. Please try again.', 'error');
       }
       btn.disabled = false;
     }
@@ -368,6 +648,9 @@
     document.getElementById('verify-btn').addEventListener('click', verifyVehicle);
     document.getElementById('reg-input').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') verifyVehicle();
+    });
+    document.getElementById('reg-input').addEventListener('input', function() {
+      if (document.getElementById('status').textContent) setStatus('', '');
     });
 
     var params = new URLSearchParams(window.location.search);
