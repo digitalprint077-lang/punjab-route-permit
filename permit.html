@@ -41,26 +41,27 @@
     position: relative;
     margin: 6px 0 10px;
     min-height: 128px;
-    padding: 0 102px;
+    padding: 0 110px 0 0;
   }
 
   .header-spacer { display: none; }
 
   .header-center {
     width: 100%;
-    text-align: center;
-    margin: 0 auto;
+    text-align: left;
+    margin: 0;
   }
 
   .main-title {
     font-family: "Times New Roman", Times, serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     color: #1b5e20;
     margin: 0 0 4px;
-    letter-spacing: 0.05px;
+    letter-spacing: 0;
     line-height: 1.2;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .sub-title {
@@ -73,6 +74,7 @@
     margin: 0 0 4px;
     line-height: 1.2;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .header-meta-row {
@@ -80,8 +82,8 @@
     gap: 10px;
     align-items: stretch;
     justify-content: flex-start;
-    margin: 10px 0 0 -90px;
-    width: calc(100% + 90px);
+    margin: 10px 0 0;
+    width: 100%;
   }
 
   .header-meta-box {
@@ -93,7 +95,7 @@
     justify-content: center;
     background: transparent;
     border: 1px solid #c4c4c4;
-    border-top: 2.5px solid #9e9e9e;
+    border-top: 5px solid #9e9e9e;
     border-radius: 8px;
     padding: 7px 10px 8px;
     text-align: center;
