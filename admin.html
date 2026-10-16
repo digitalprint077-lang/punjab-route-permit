@@ -403,154 +403,257 @@
     inset: 0;
     z-index: 99999;
     display: flex;
-    align-items: stretch;
-    justify-content: stretch;
-    background:
-      radial-gradient(1200px 600px at 10% -10%, rgba(15,110,106,.35), transparent 55%),
-      radial-gradient(900px 500px at 90% 110%, rgba(11,31,42,.55), transparent 50%),
-      linear-gradient(145deg, #0b1f2a 0%, #12363a 48%, #0f6e6a 140%);
+    align-items: center;
+    justify-content: center;
+    background: #071018;
     overflow: auto;
+    padding: 24px 16px;
   }
-  #login-overlay::before {
+  .login-ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      radial-gradient(900px 480px at 8% -5%, rgba(18, 181, 170, 0.35), transparent 55%),
+      radial-gradient(700px 400px at 92% 100%, rgba(15, 110, 106, 0.28), transparent 52%),
+      linear-gradient(155deg, #071018 0%, #0c2428 45%, #0a3d3a 100%);
+  }
+  .login-ambient::before {
     content: '';
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    animation: gridDrift 28s linear infinite;
+      linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+    background-size: 56px 56px;
+    animation: gridDrift 32s linear infinite;
   }
+  .login-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.5;
+  }
+  .login-orb-a { width: 320px; height: 320px; background: rgba(18, 196, 184, 0.35); top: 10%; left: -5%; }
+  .login-orb-b { width: 280px; height: 280px; background: rgba(11, 31, 42, 0.6); bottom: 5%; right: -3%; }
   @keyframes gridDrift {
     from { background-position: 0 0, 0 0; }
-    to { background-position: 48px 48px, 48px 48px; }
+    to { background-position: 56px 56px, 56px 56px; }
   }
   @keyframes riseIn {
-    from { opacity: 0; transform: translateY(18px); }
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
   #login-shell {
     position: relative;
     z-index: 1;
-    width: min(1040px, 100%);
-    margin: auto;
-    padding: 32px 20px;
+    width: min(980px, 100%);
     display: grid;
-    grid-template-columns: 1.15fr .85fr;
-    gap: 28px;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(24px, 4vw, 40px);
     align-items: center;
   }
   .login-hero {
     color: #fff;
-    animation: riseIn .7s ease both;
+    animation: riseIn .65s ease both;
   }
+  .login-emblem {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    background: linear-gradient(145deg, rgba(18, 196, 184, 0.95), rgba(15, 110, 106, 0.95));
+    display: grid;
+    place-items: center;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+  .login-emblem svg { width: 30px; height: 30px; fill: #fff; }
   .login-kicker {
     font-family: var(--font-ui);
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .18em;
+    font-weight: 700;
+    letter-spacing: .16em;
     text-transform: uppercase;
-    color: rgba(255,255,255,.7);
-    margin-bottom: 14px;
+    color: rgba(255,255,255,.65);
+    margin: 0 0 12px;
   }
   .login-brand {
     font-family: var(--font-display);
-    font-size: clamp(34px, 5vw, 52px);
+    font-size: clamp(32px, 4.5vw, 48px);
     font-weight: 600;
-    line-height: 1.08;
-    letter-spacing: -.02em;
-    margin-bottom: 14px;
-    max-width: 12ch;
+    line-height: 1.06;
+    letter-spacing: -.025em;
+    margin: 0 0 14px;
+    max-width: 14ch;
   }
   .login-lead {
     font-family: var(--font-ui);
     font-size: 15px;
-    line-height: 1.55;
-    color: rgba(255,255,255,.78);
-    max-width: 34ch;
+    line-height: 1.6;
+    color: rgba(255,255,255,.76);
+    max-width: 36ch;
+    margin: 0 0 24px;
+  }
+  .login-points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .login-points li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,.82);
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(8px);
+  }
+  .login-points li svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    fill: rgba(18, 196, 184, 0.95);
   }
 
   #login-box {
-    background: rgba(243,246,244,.96);
-    border: 1px solid rgba(255,255,255,.35);
-    border-radius: 18px;
-    padding: 28px 26px 24px;
-    box-shadow: 0 24px 60px rgba(0,0,0,.28);
+    position: relative;
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid rgba(255,255,255,.5);
+    border-radius: 22px;
+    padding: 28px 26px 22px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.9) inset,
+      0 32px 64px rgba(0,0,0,.35);
     text-align: left;
-    animation: riseIn .75s .08s ease both;
+    animation: riseIn .7s .1s ease both;
+    overflow: hidden;
+  }
+  #login-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--sea-deep), var(--sea), #12b5aa);
   }
   #login-box .login-title {
     font-family: var(--font-display);
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 600;
     color: var(--ink);
-    margin-bottom: 4px;
-    line-height: 1.15;
+    margin: 0 0 4px;
+    line-height: 1.12;
+    letter-spacing: -.02em;
   }
   #login-box .login-sub {
     font-family: var(--font-ui);
-    font-size: 12.5px;
+    font-size: 13px;
     color: var(--muted);
-    margin-bottom: 22px;
+    margin: 0 0 22px;
+    line-height: 1.45;
   }
   #login-box .login-field {
     display: flex;
     flex-direction: column;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   #login-box .login-field label {
     font-family: var(--font-ui);
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .04em;
+    font-weight: 700;
+    letter-spacing: .06em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
-  #login-box .login-field input {
+  .login-input-wrap {
+    display: flex;
+    align-items: center;
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 11px 13px;
-    font-size: 14px;
-    font-family: var(--font-ui);
+    border-radius: 12px;
+    background: #f8fafb;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+  }
+  .login-input-wrap:focus-within {
+    border-color: var(--sea);
     background: #fff;
+    box-shadow: 0 0 0 4px rgba(15,110,106,.12);
+  }
+  .login-input-wrap input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 14px;
+    font-size: 15px;
+    font-family: var(--font-ui);
+    background: transparent;
     color: var(--ink);
     outline: none;
-    transition: border-color .2s, box-shadow .2s;
   }
-  #login-box .login-field input:focus {
-    border-color: var(--sea);
-    box-shadow: 0 0 0 3px rgba(15,110,106,.15);
+  .login-eye {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: var(--muted);
+    display: grid;
+    place-items: center;
   }
+  .login-eye:hover { color: var(--ink); }
+  .login-eye svg { width: 20px; height: 20px; fill: currentColor; }
   #login-box .login-btn {
     width: 100%;
-    background: var(--ink);
+    background: linear-gradient(165deg, #12b5aa 0%, var(--sea) 45%, var(--sea-deep) 100%);
     color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 12px;
-    font-size: 14px;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
     font-family: var(--font-ui);
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    margin-top: 8px;
-    transition: background .2s, transform .15s;
+    margin-top: 6px;
+    transition: transform .15s, box-shadow .15s, filter .15s;
+    box-shadow: 0 12px 28px rgba(15, 110, 106, 0.35);
   }
-  #login-box .login-btn:hover { background: var(--sea-deep); }
-  #login-box .login-btn:active { transform: translateY(1px); }
+  #login-box .login-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+    box-shadow: 0 16px 32px rgba(15, 110, 106, 0.4);
+  }
+  #login-box .login-btn:active:not(:disabled) { transform: translateY(0); }
+  #login-box .login-btn:disabled {
+    opacity: 0.72;
+    cursor: wait;
+    transform: none;
+  }
   #login-error {
     font-family: var(--font-ui);
-    font-size: 12px;
-    color: var(--danger);
-    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #b42318;
+    margin: 14px 0 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(220, 38, 38, 0.08);
+    border: 1px solid rgba(220, 38, 38, 0.18);
     display: none;
   }
-  #login-box .lock-icon { display: none; }
   .login-public {
-    margin-top: 18px;
-    padding-top: 16px;
+    margin-top: 20px;
+    padding-top: 18px;
     border-top: 1px solid var(--line);
     text-align: center;
   }
@@ -566,25 +669,34 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
-    padding: 11px 14px;
-    border-radius: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
     border: 1px solid var(--line);
-    background: #fff;
+    background: #f7faf9;
     color: var(--ink);
     text-decoration: none;
     font-family: var(--font-ui);
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 650;
+    transition: border-color .15s, background .15s, color .15s;
   }
   .login-public a:hover {
     border-color: var(--sea);
     color: var(--sea-deep);
-    background: #f3faf8;
+    background: #eef7f4;
   }
+  .login-public a svg { width: 16px; height: 16px; fill: currentColor; }
 
   @media (max-width: 860px) {
-    #login-shell { grid-template-columns: 1fr; max-width: 440px; }
-    .login-brand { max-width: none; font-size: 36px; }
+    #login-shell { grid-template-columns: 1fr; max-width: 420px; margin: auto; }
+    .login-brand { max-width: none; }
+    .login-points { display: none; }
+    .login-lead { margin-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .login-ambient::before { animation: none; }
+    .login-hero, #login-box { animation: none; }
+    #login-box .login-btn:hover:not(:disabled) { transform: none; }
   }
 
 
@@ -1884,25 +1996,51 @@
 
 
 <div id="login-overlay">
+  <div class="login-ambient" aria-hidden="true">
+    <div class="login-orb login-orb-a"></div>
+    <div class="login-orb login-orb-b"></div>
+  </div>
   <div id="login-shell">
     <div class="login-hero">
-      <p class="login-kicker">Official Admin Access</p>
+      <div class="login-emblem" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4Zm-1 16-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8Z"/></svg>
+      </div>
+      <p class="login-kicker">Staff portal</p>
       <h1 class="login-brand">Punjab Provincial Transport Authority</h1>
-      <p class="login-lead">Staff sign in to issue permits. The public can verify a vehicle without login.</p>
+      <p class="login-lead">Secure access to create, edit, and print route permits for authorized PTA staff.</p>
+      <ul class="login-points" aria-label="Staff capabilities">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Issue and update route permits</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/></svg>Live preview and print-ready documents</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Role-protected admin workspace</li>
+      </ul>
     </div>
     <div id="login-box">
       <p class="login-title">Sign in</p>
-      <p class="login-sub">Staff / Admin — Route Permit Management</p>
+      <p class="login-sub">Use your staff email and password to continue.</p>
       <div class="login-field">
-        <label>Email</label>
-        <input type="email" id="login-user" placeholder="admin@example.com" autocomplete="email">
+        <label for="login-user">Email</label>
+        <div class="login-input-wrap">
+          <input type="email" id="login-user" placeholder="you@pta.gov.pk" autocomplete="email">
+        </div>
       </div>
       <div class="login-field">
-        <label>Password</label>
-        <input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+        <label for="login-pass">Password</label>
+        <div class="login-input-wrap">
+          <input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+          <button type="button" class="login-eye" id="login-toggle-pass" aria-label="Show password" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          </button>
+        </div>
       </div>
-      <button class="login-btn" type="button" id="login-submit-btn"><span>Continue</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4L16.2 13H4v-2h12.2l-4.6-4.6L13 5Z"/></svg></button>
-      <p id="login-error">Invalid email or password</p>
+      <button class="login-btn" type="button" id="login-submit-btn">
+        <span id="login-btn-label">Sign in</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4L16.2 13H4v-2h12.2l-4.6-4.6L13 5Z"/></svg>
+      </button>
+      <p id="login-error" role="alert">Invalid email or password</p>
+      <div class="login-public">
+        <p>Public verification does not require login.</p>
+        <a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4Zm-1 16-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8Z"/></svg>Verify a route permit</a>
+      </div>
     </div>
   </div>
 </div>
@@ -3621,18 +3759,20 @@
     var errEl = document.getElementById('login-error');
     errEl.style.display = 'none';
     if (!e || !p) {
-      errEl.textContent = '❌ Enter email and password';
+      errEl.textContent = 'Enter email and password.';
       errEl.style.display = 'block';
       return;
     }
     initSupabase();
     if (!supabaseClient) {
-      errEl.textContent = '❌ Database not configured';
+      errEl.textContent = 'Database not configured.';
       errEl.style.display = 'block';
       return;
     }
     var btn = document.getElementById('login-submit-btn');
-    btn.textContent = 'Signing in…'; btn.disabled = true;
+    var btnLabel = document.getElementById('login-btn-label');
+    if (btnLabel) btnLabel.textContent = 'Signing in…';
+    btn.disabled = true;
     try {
       var result = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
       if (result.error) throw result.error;
@@ -3641,11 +3781,12 @@
       try { loadDashboardStats(); } catch (ex) {}
       try { loadRecords(); } catch (ex2) {}
     } catch (err) {
-      errEl.textContent = '❌ ' + ((err && err.message) || 'Invalid email or password');
+      errEl.textContent = (err && err.message) || 'Invalid email or password.';
       errEl.style.display = 'block';
       document.getElementById('login-pass').value = '';
     }
-    btn.textContent = 'Login'; btn.disabled = false;
+    if (btnLabel) btnLabel.textContent = 'Sign in';
+    btn.disabled = false;
   }
 
   async function doLogout() {
@@ -4129,6 +4270,16 @@
     if (app) app.style.display = 'none';
     var loginBtn = document.getElementById('login-submit-btn');
     if (loginBtn) loginBtn.addEventListener('click', function(ev){ ev.preventDefault(); doLogin(); });
+    var togglePass = document.getElementById('login-toggle-pass');
+    var passInput = document.getElementById('login-pass');
+    if (togglePass && passInput) {
+      togglePass.addEventListener('click', function() {
+        var show = passInput.type === 'password';
+        passInput.type = show ? 'text' : 'password';
+        togglePass.setAttribute('aria-pressed', show ? 'true' : 'false');
+        togglePass.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      });
+    }
     try {
       initSupabase();
     } catch (ex) {}
