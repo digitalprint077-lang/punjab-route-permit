@@ -4,7 +4,7 @@ PUNJAB ROUTE PERMIT — LOGIN / PERMITS ONLY
 Domain: https://pdtg-transport-punjab.com/
 
 This repository is the staff permit system only:
-- index.html       (staff landing)
+- index.html       (public permit verification)
 - admin.html       (staff login)
 - permit.html      (QR permit view — keep URL stable)
 - verify.html      (permit lookup)

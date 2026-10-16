@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS permits (
   cnic_no TEXT,
   owner_address TEXT,
   vehicle_type TEXT,
+  vehicle_make TEXT,
   vehicle_reg_no TEXT,
   engine_no TEXT,
   chassis_no TEXT,
@@ -25,6 +26,8 @@ CREATE TABLE IF NOT EXISTS permits (
   fee TEXT,
   psid_no TEXT,
   counter_sig_upto TEXT,
+  guarantee_expiry TEXT,
+  third_party_insurance_expiry TEXT,
   issuing_district TEXT,
   issuance_date TEXT,
   authority_name TEXT,
@@ -41,3 +44,5 @@ CREATE TABLE IF NOT EXISTS permits (
 -- Default admin password: permit@2026
 -- Generate a fresh hash with: php -r "echo password_hash('permit@2026', PASSWORD_DEFAULT);"
 -- Or just use api/install.php which creates the admin automatically.
+
+-- Supabase: see sql/supabase-site-analytics.sql for site_events (website analytics).
