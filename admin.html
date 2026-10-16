@@ -2544,7 +2544,7 @@
         <section class="form-section records-toolbar">
           <div class="form-section-head">
             <h3 id="saved-title">Saved Permits</h3>
-            <p id="saved-sub">Search, then select permits to delete, download, or open</p>
+            <p id="saved-sub">Search, select rows, or export all listed permits to CSV</p>
           </div>
           <div class="search-box">
             <input id="f-search" placeholder="Search name, app no, reg no...">
@@ -2562,6 +2562,7 @@
               <button type="button" class="btn-bulk-action" onclick="applySavedRecordsAction('download')">Download</button>
               <button type="button" class="btn-bulk-action" onclick="applySavedRecordsAction('open')">Open</button>
               <button type="button" class="btn-bulk-action" onclick="applySavedRecordsAction('copy')">Copy links</button>
+              <button type="button" class="btn-bulk-action" onclick="exportSavedRecordsCsv()">Export CSV</button>
             </div>
             <div id="records-bulk-msg" class="records-bulk-msg" hidden></div>
           </div>
@@ -3799,6 +3800,118 @@
     onRecordSelectChange();
   }
 
+  var CSV_EXPORT_COLUMNS = [
+    { key: 'app_no', label: 'Application No' },
+    { key: 'route_permit_no', label: 'Route Permit No' },
+    { key: 'fc_no', label: 'FC No' },
+    { key: 'full_name', label: 'Full Name' },
+    { key: 'cnic_no', label: 'CNIC/NTN' },
+    { key: 'owner_address', label: 'Owner Address' },
+    { key: 'vehicle_type', label: 'Vehicle Type' },
+    { key: 'vehicle_make', label: 'Vehicle Make' },
+    { key: 'vehicle_reg_no', label: 'Registration No' },
+    { key: 'engine_no', label: 'Engine No' },
+    { key: 'chassis_no', label: 'Chassis No' },
+    { key: 'issue_authority', label: 'Issue Authority' },
+    { key: 'valid_from', label: 'Valid From' },
+    { key: 'valid_upto', label: 'Valid Upto' },
+    { key: 'fee', label: 'Fee' },
+    { key: 'psid_no', label: 'PSID No' },
+    { key: 'counter_sig_upto', label: 'Counter Sign Expiry' },
+    { key: 'guarantee_expiry', label: 'Guarantee Expiry' },
+    { key: 'third_party_insurance_expiry', label: 'Third Party Insurance Expiry' },
+    { key: 'issuing_district', label: 'Issuing District' },
+    { key: 'issuance_date', label: 'Issuance Date' },
+    { key: 'authority_name', label: 'Authority' },
+    { key: 'districts', label: 'Other Districts' },
+    { key: 'doc_type', label: 'Document Type' },
+    { key: 'qr_link', label: 'Public Link' },
+    { key: 'id', label: 'Record ID' },
+    { key: 'created_at', label: 'Created At' }
+  ];
+
+  function csvEscapeCell(value) {
+    var s = String(value == null ? '' : value);
+    if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+
+  function rowsToCsv(rows) {
+    var header = CSV_EXPORT_COLUMNS.map(function(c) { return csvEscapeCell(c.label); }).join(',');
+    var lines = [header];
+    rows.forEach(function(r) {
+      lines.push(CSV_EXPORT_COLUMNS.map(function(c) { return csvEscapeCell(r[c.key]); }).join(','));
+    });
+    return lines.join('\r\n');
+  }
+
+  function downloadCsvFile(filename, csvText) {
+    var blob = new Blob(['\ufeff' + csvText], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function filterRecordsForExport(data) {
+    var selected = getSelectedRecordIds();
+    var selectedSet = {};
+    selected.forEach(function(id) { selectedSet[id] = true; });
+    return (data || []).filter(function(r) {
+      if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return false;
+      if (docMode === 'noc' ? !isNocRecord(r) : isNocRecord(r)) return false;
+      if (selected.length) return !!selectedSet[r.id];
+      return true;
+    });
+  }
+
+  async function exportSavedRecordsCsv() {
+    showRecordsMsg('', true);
+    initSupabase();
+    if (!supabaseClient) {
+      showRecordsMsg('Not connected.', false);
+      return;
+    }
+    var search = document.getElementById('f-search').value.trim();
+    var selected = getSelectedRecordIds();
+    showRecordsMsg('Preparing CSV…', true);
+    try {
+      var query = supabaseClient.from('permits').select('*').order('created_at', { ascending: false });
+      if (selected.length === 1) {
+        query = supabaseClient.from('permits').select('*').eq('id', selected[0]);
+      } else if (selected.length > 1) {
+        query = supabaseClient.from('permits').select('*').in('id', selected);
+      } else if (search) {
+        var safe = search.replace(/,/g, ' ').replace(/'/g, "''");
+        query = query.or(
+          'full_name.ilike.%' + safe + '%,' +
+          'app_no.ilike.%' + safe + '%,' +
+          'vehicle_reg_no.ilike.%' + safe + '%,' +
+          'route_permit_no.ilike.%' + safe + '%,' +
+          'cnic_no.ilike.%' + safe + '%'
+        );
+      }
+      var result = await query;
+      if (result.error) throw result.error;
+      var rows = filterRecordsForExport(result.data);
+      if (!rows.length) {
+        showRecordsMsg(selected.length ? 'No matching selected records to export.' : 'No records to export. Load the list or adjust search.', false);
+        return;
+      }
+      var stamp = new Date().toISOString().substring(0, 10);
+      var kind = docMode === 'noc' ? 'nocs' : 'permits';
+      var name = 'punjab-' + kind + '-' + stamp + '.csv';
+      downloadCsvFile(name, rowsToCsv(rows));
+      showRecordsMsg('Downloaded ' + rows.length + ' row(s) as ' + name + '.', true);
+    } catch (err) {
+      showRecordsMsg((err && err.message) || 'CSV export failed.', false);
+    }
+  }
+
   function applySavedRecordsAction(action) {
     var ids = getSelectedRecordIds();
     showRecordsMsg('', true);
@@ -4666,6 +4779,7 @@
       initSupabase();
     } catch (ex) {}
     showApp(false);
+    try { loadSiteStatus(); } catch (exSite) {}
   });
 
 
