@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,650;9..144,750&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="site-gate.js"></script>
   <style>
     :root {
       --ink: #0a1628;
@@ -376,34 +377,6 @@
     .btn-verify:hover { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(13, 107, 102, 0.4); }
     .btn-verify:disabled { opacity: 0.65; cursor: wait; transform: none; }
     .btn-verify svg { width: 18px; height: 18px; fill: currentColor; }
-    .examples {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin-top: 14px;
-    }
-    .examples > span {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-    }
-    .chip {
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 12px;
-      font-weight: 650;
-      color: var(--sea-deep);
-      cursor: pointer;
-      font-family: inherit;
-      transition: background 0.15s, border-color 0.15s;
-    }
-    .chip:hover {
-      background: #e8f5f2;
-      border-color: rgba(13, 107, 102, 0.25);
-    }
     .status-row {
       margin-top: 18px;
       min-height: 26px;
@@ -646,7 +619,6 @@
       .feature-grid li:hover, .btn-verify:hover { transform: none; }
     }
     .btn-verify:focus-visible,
-    .chip:focus-visible,
     .btn-clear:focus-visible {
       outline: 2px solid var(--sea);
       outline-offset: 2px;
@@ -681,7 +653,7 @@
       <div class="panel-intro">
         <div class="hero">
           <h1>Verify any route permit <em>instantly</em></h1>
-          <p class="lead">Enter a vehicle registration number to confirm owner details, permit numbers, and validity before travel or inspection.</p>
+          <p class="lead">Enter a vehicle registration number to confirm owner details, permit numbers, and counter signature expiry.</p>
         </div>
         <ul class="feature-grid" aria-label="What you can verify">
           <li>
