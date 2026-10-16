@@ -40,7 +40,7 @@
   .header-block {
     position: relative;
     margin: 6px 0 10px;
-    min-height: 104px;
+    min-height: 128px;
     padding: 0 102px;
   }
 
@@ -75,16 +75,41 @@
     text-transform: uppercase;
   }
 
-  .app-no {
-    font-size: 11.5px;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: 0.95px;
-    text-align: center;
+  .header-meta-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    justify-content: center;
+    margin: 8px 0 0;
+    width: 100%;
   }
-  .app-no-label,
-  .app-no #d-appno,
-  .app-no > span:not(.app-no-label) { font-weight: 700; }
+
+  .header-meta-box {
+    flex: 1 1 0;
+    min-width: 0;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(70, 70, 70, 0.34);
+    border-radius: 8px;
+    padding: 6px 8px 8px;
+    text-align: center;
+    line-height: 1.25;
+  }
+
+  .header-meta-label {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.35px;
+    margin-bottom: 4px;
+  }
+
+  .header-meta-val {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15px;
+    word-break: break-word;
+  }
 
   .qr-box {
     position: absolute;
@@ -333,7 +358,20 @@
       <p class="main-title">SUMMARY TO BE CARRIED ON THE VEHICLE</p>
       <p class="sub-title">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN PUNJAB</p>
       <p class="part-label">PART ‘ A &amp; B ’</p>
-      <p class="app-no"><span class="app-no-label">APPLICATION NO.</span><span id="d-appno"></span></p>
+      <div class="header-meta-row">
+        <div class="header-meta-box">
+          <span class="header-meta-label">P.CO.P.NO</span>
+          <span class="header-meta-val" id="d-rpno"></span>
+        </div>
+        <div class="header-meta-box">
+          <span class="header-meta-label">APPLICATION NO</span>
+          <span class="header-meta-val" id="d-appno"></span>
+        </div>
+        <div class="header-meta-box">
+          <span class="header-meta-label">EXPIRY DATE</span>
+          <span class="header-meta-val" id="d-hdr-exp"></span>
+        </div>
+      </div>
     </div>
     <div class="qr-box"><div id="qrcode-img"></div></div>
   </div>
@@ -341,7 +379,7 @@
     <tr>
       <td>
         <span class="small-label">P.CO.P.NO</span>
-        <span class="big-val" id="d-rpno"></span>
+        <span class="big-val mirror-rpno"></span>
         <span class="route-label">(ROUTE PERMIT NUMBER)</span>
       </td>
       <td>
@@ -607,6 +645,10 @@
 
     set('d-appno',     d.app_no);
     set('d-rpno',      d.route_permit_no);
+    set('d-hdr-exp',   d.counter_sig_upto);
+    document.querySelectorAll('.mirror-rpno').forEach(function(el) {
+      el.textContent = d.route_permit_no || '';
+    });
     set('d-fcno',      d.fc_no);
     set('d-name',      d.full_name);
     set('d-cnic',      d.cnic_no);
