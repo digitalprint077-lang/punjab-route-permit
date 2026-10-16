@@ -79,9 +79,9 @@
     display: flex;
     gap: 8px;
     align-items: stretch;
-    justify-content: center;
-    margin: 8px 0 0;
-    width: 100%;
+    justify-content: flex-start;
+    margin: 8px 0 0 -44px;
+    width: calc(100% + 44px);
   }
 
   .header-meta-box {
@@ -376,20 +376,7 @@
     </div>
     <div class="qr-box"><div id="qrcode-img"></div></div>
   </div>
-  <table class="permit-table">
-    <tr>
-      <td>
-        <span class="small-label">P.CO.P.NO</span>
-        <span class="big-val mirror-rpno"></span>
-        <span class="route-label">(ROUTE PERMIT NUMBER)</span>
-      </td>
-      <td>
-        <span class="small-label">F.FC.NO</span>
-        <span class="big-val" id="d-fcno"></span>
-        <span class="route-label">(FITNESS CERTIFICATE NUMBER)</span>
-      </td>
-    </tr>
-  </table>
+  <span id="d-fcno" hidden></span>
   <div class="perm-section">
     <div class="perm-section-head">Owner Details</div>
     <div class="perm-section-body">
