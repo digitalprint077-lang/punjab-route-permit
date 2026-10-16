@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="site-gate.js"></script>
+<script src="site-analytics.js"></script>
 <style>
 
   @page { size: A4 portrait; margin: 0; }
@@ -597,6 +598,14 @@
     var d = result.data;
     document.getElementById('loading').style.display = 'none';
     document.getElementById('document').style.display = 'block';
+    if (window.PTASiteAnalytics) {
+      PTASiteAnalytics.track('permit_view', {
+        page: 'permit.html',
+        permit_id: id,
+        label: (d.full_name || 'Permit') + ' · ' + (d.vehicle_reg_no || ''),
+        vehicle_reg_no: d.vehicle_reg_no
+      }, sb);
+    }
 
     set('d-appno',     d.app_no);
     set('d-rpno',      d.route_permit_no);

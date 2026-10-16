@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,650;9..144,750&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="site-gate.js"></script>
+  <script src="site-analytics.js"></script>
   <style>
     :root {
       --ink: #0a1628;
@@ -904,6 +905,13 @@
           setStatus('No matching permit in database', 'muted');
         }
         renderResults(matches);
+        if (window.PTASiteAnalytics) {
+          PTASiteAnalytics.track('verify', {
+            page: 'index.html',
+            vehicle_reg_no: raw,
+            dedupeKey: normalizeRegKey(raw)
+          }, sb);
+        }
       } catch (err) {
         setSteps(1);
         setStatus((err && err.message) || 'Verification failed. Please try again.', 'error');
@@ -931,6 +939,9 @@
     });
     syncClearBtn();
     regInput.focus();
+    if (window.PTASiteAnalytics) {
+      PTASiteAnalytics.track('home_view', { page: 'index.html' }, sb);
+    }
 
     var params = new URLSearchParams(window.location.search);
     var preset = params.get('reg') || params.get('q') || '';

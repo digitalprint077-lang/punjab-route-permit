@@ -44,3 +44,5 @@ CREATE TABLE IF NOT EXISTS permits (
 -- Default admin password: permit@2026
 -- Generate a fresh hash with: php -r "echo password_hash('permit@2026', PASSWORD_DEFAULT);"
 -- Or just use api/install.php which creates the admin automatically.
+
+-- Supabase: see sql/supabase-site-analytics.sql for site_events (website analytics).
