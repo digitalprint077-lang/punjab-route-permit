@@ -111,12 +111,13 @@
   .header-meta-box {
     flex: 1 1 0;
     min-width: 0;
-    background: rgba(255, 255, 255, 0.92);
+    background: #ffffff;
     border: 1px solid rgba(70, 70, 70, 0.34);
     border-radius: 8px;
     padding: 6px 8px 8px;
     text-align: center;
     line-height: 1.25;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   }
 
   .header-meta-label {
@@ -436,154 +437,374 @@
     inset: 0;
     z-index: 99999;
     display: flex;
-    align-items: stretch;
-    justify-content: stretch;
-    background:
-      radial-gradient(1200px 600px at 10% -10%, rgba(15,110,106,.35), transparent 55%),
-      radial-gradient(900px 500px at 90% 110%, rgba(11,31,42,.55), transparent 50%),
-      linear-gradient(145deg, #0b1f2a 0%, #12363a 48%, #0f6e6a 140%);
+    align-items: center;
+    justify-content: center;
+    background: #071018;
     overflow: auto;
+    padding: 24px 16px;
   }
-  #login-overlay::before {
+  .login-ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+      radial-gradient(900px 480px at 8% -5%, rgba(18, 181, 170, 0.35), transparent 55%),
+      radial-gradient(700px 400px at 92% 100%, rgba(15, 110, 106, 0.28), transparent 52%),
+      linear-gradient(155deg, #071018 0%, #0c2428 45%, #0a3d3a 100%);
+  }
+  .login-ambient::before {
     content: '';
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    animation: gridDrift 28s linear infinite;
+      linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+    background-size: 56px 56px;
+    animation: gridDrift 32s linear infinite;
+  }
+  .login-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.5;
+  }
+  .login-orb-a { width: 320px; height: 320px; background: rgba(18, 196, 184, 0.35); top: 10%; left: -5%; animation: orbFloat 20s ease-in-out infinite; }
+  .login-orb-b { width: 280px; height: 280px; background: rgba(11, 31, 42, 0.6); bottom: 5%; right: -3%; animation: orbFloat 24s ease-in-out infinite reverse; }
+  .login-orb-c { width: 200px; height: 200px; background: rgba(201, 162, 39, 0.15); top: 55%; left: 42%; animation: orbFloat 18s ease-in-out -4s infinite; }
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(14px, -18px); }
+  }
+  .login-ambient::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(7, 16, 24, 0.45) 100%);
   }
   @keyframes gridDrift {
     from { background-position: 0 0, 0 0; }
-    to { background-position: 48px 48px, 48px 48px; }
+    to { background-position: 56px 56px, 56px 56px; }
   }
   @keyframes riseIn {
-    from { opacity: 0; transform: translateY(18px); }
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
   #login-shell {
     position: relative;
     z-index: 1;
-    width: min(1040px, 100%);
-    margin: auto;
-    padding: 32px 20px;
+    width: min(980px, 100%);
     display: grid;
-    grid-template-columns: 1.15fr .85fr;
-    gap: 28px;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(24px, 4vw, 40px);
     align-items: center;
   }
   .login-hero {
     color: #fff;
-    animation: riseIn .7s ease both;
+    animation: riseIn .65s ease both;
   }
+  .login-emblem {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    background: linear-gradient(145deg, rgba(18, 196, 184, 0.95), rgba(15, 110, 106, 0.95));
+    display: grid;
+    place-items: center;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  }
+  .login-emblem svg { width: 30px; height: 30px; fill: #fff; }
   .login-kicker {
     font-family: var(--font-ui);
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .18em;
+    font-weight: 700;
+    letter-spacing: .16em;
     text-transform: uppercase;
-    color: rgba(255,255,255,.7);
-    margin-bottom: 14px;
+    color: rgba(255,255,255,.65);
+    margin: 0 0 12px;
   }
   .login-brand {
     font-family: var(--font-display);
-    font-size: clamp(34px, 5vw, 52px);
+    font-size: clamp(32px, 4.5vw, 48px);
     font-weight: 600;
-    line-height: 1.08;
-    letter-spacing: -.02em;
-    margin-bottom: 14px;
-    max-width: 12ch;
+    line-height: 1.06;
+    letter-spacing: -.025em;
+    margin: 0 0 14px;
+    max-width: 14ch;
+  }
+  .login-brand em {
+    font-style: normal;
+    background: linear-gradient(120deg, #fff 0%, rgba(18, 196, 184, 0.95) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .login-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+  }
+  .login-trust li {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.15);
   }
   .login-lead {
     font-family: var(--font-ui);
     font-size: 15px;
-    line-height: 1.55;
-    color: rgba(255,255,255,.78);
-    max-width: 34ch;
+    line-height: 1.6;
+    color: rgba(255,255,255,.76);
+    max-width: 36ch;
+    margin: 0 0 24px;
+  }
+  .login-points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .login-points li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,.82);
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    animation: riseIn 0.55s ease forwards;
+  }
+  .login-points li:nth-child(1) { animation-delay: 0.2s; }
+  .login-points li:nth-child(2) { animation-delay: 0.32s; }
+  .login-points li:nth-child(3) { animation-delay: 0.44s; }
+  .login-points li svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    fill: rgba(18, 196, 184, 0.95);
   }
 
   #login-box {
-    background: rgba(243,246,244,.96);
-    border: 1px solid rgba(255,255,255,.35);
-    border-radius: 18px;
-    padding: 28px 26px 24px;
-    box-shadow: 0 24px 60px rgba(0,0,0,.28);
+    position: relative;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(255,255,255,.55);
+    border-radius: 24px;
+    padding: 26px 26px 22px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.95) inset,
+      0 0 0 1px rgba(15, 110, 106, 0.08),
+      0 40px 80px rgba(0,0,0,.38);
     text-align: left;
-    animation: riseIn .75s .08s ease both;
+    animation: riseIn .7s .1s ease both;
+    overflow: hidden;
+  }
+  #login-box.login-shake {
+    animation: loginShake 0.48s ease;
+  }
+  @keyframes loginShake {
+    0%, 100% { transform: translateX(0); }
+    18% { transform: translateX(-7px); }
+    36% { transform: translateX(7px); }
+    54% { transform: translateX(-5px); }
+    72% { transform: translateX(5px); }
+  }
+  .login-box-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .login-session-badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sea-deep);
+    background: #e8f5f2;
+    border: 1px solid rgba(15, 110, 106, 0.18);
+  }
+  .login-session-badge svg { width: 12px; height: 12px; fill: currentColor; }
+  #login-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--sea-deep), var(--sea), #12b5aa);
   }
   #login-box .login-title {
     font-family: var(--font-display);
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 600;
     color: var(--ink);
-    margin-bottom: 4px;
-    line-height: 1.15;
+    margin: 0 0 4px;
+    line-height: 1.12;
+    letter-spacing: -.02em;
   }
   #login-box .login-sub {
     font-family: var(--font-ui);
-    font-size: 12.5px;
+    font-size: 13px;
     color: var(--muted);
-    margin-bottom: 22px;
+    margin: 0;
+    line-height: 1.45;
   }
   #login-box .login-field {
     display: flex;
     flex-direction: column;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   #login-box .login-field label {
     font-family: var(--font-ui);
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .04em;
+    font-weight: 700;
+    letter-spacing: .06em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
-  #login-box .login-field input {
+  .login-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 11px 13px;
-    font-size: 14px;
-    font-family: var(--font-ui);
+    border-radius: 12px;
+    background: #f8fafb;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+  }
+  .login-input-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-left: 12px;
+    fill: #94a3b0;
+    transition: fill 0.2s;
+  }
+  .login-input-wrap:focus-within .login-input-icon { fill: var(--sea); }
+  .login-input-wrap:focus-within {
+    border-color: var(--sea);
     background: #fff;
+    box-shadow: 0 0 0 4px rgba(15,110,106,.12);
+  }
+  .login-input-wrap input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 14px;
+    font-size: 15px;
+    font-family: var(--font-ui);
+    background: transparent;
     color: var(--ink);
     outline: none;
-    transition: border-color .2s, box-shadow .2s;
   }
-  #login-box .login-field input:focus {
-    border-color: var(--sea);
-    box-shadow: 0 0 0 3px rgba(15,110,106,.15);
+  .login-eye {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: var(--muted);
+    display: grid;
+    place-items: center;
   }
+  .login-eye:hover { color: var(--ink); }
+  .login-eye svg { width: 20px; height: 20px; fill: currentColor; }
   #login-box .login-btn {
     width: 100%;
-    background: var(--ink);
+    background: linear-gradient(165deg, #12b5aa 0%, var(--sea) 45%, var(--sea-deep) 100%);
     color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 12px;
-    font-size: 14px;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
     font-family: var(--font-ui);
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     margin-top: 8px;
-    transition: background .2s, transform .15s;
+    transition: transform .15s, box-shadow .15s, filter .15s;
+    box-shadow: 0 12px 28px rgba(15, 110, 106, 0.35);
   }
-  #login-box .login-btn:hover { background: var(--sea-deep); }
-  #login-box .login-btn:active { transform: translateY(1px); }
+  #login-box .login-btn .login-btn-spin {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spinLogin 0.65s linear infinite;
+  }
+  @keyframes spinLogin { to { transform: rotate(360deg); } }
+  #login-box .login-btn.is-loading .login-btn-arrow { display: none; }
+  #login-box .login-btn.is-loading .login-btn-spin { display: block; }
+  .login-enter-hint {
+    margin: 10px 0 0;
+    text-align: center;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: #94a3b0;
+  }
+  .login-enter-hint kbd {
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 5px;
+    background: #eef2f4;
+    border: 1px solid var(--line);
+    color: var(--muted);
+  }
+  #login-box .login-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+    box-shadow: 0 16px 32px rgba(15, 110, 106, 0.4);
+  }
+  #login-box .login-btn:active:not(:disabled) { transform: translateY(0); }
+  #login-box .login-btn:disabled {
+    opacity: 0.72;
+    cursor: wait;
+    transform: none;
+  }
   #login-error {
     font-family: var(--font-ui);
-    font-size: 12px;
-    color: var(--danger);
-    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #b42318;
+    margin: 14px 0 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(220, 38, 38, 0.08);
+    border: 1px solid rgba(220, 38, 38, 0.18);
     display: none;
   }
-  #login-box .lock-icon { display: none; }
   .login-public {
-    margin-top: 18px;
-    padding-top: 16px;
+    margin-top: 20px;
+    padding-top: 18px;
     border-top: 1px solid var(--line);
     text-align: center;
   }
@@ -599,25 +820,51 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
-    padding: 11px 14px;
-    border-radius: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
     border: 1px solid var(--line);
-    background: #fff;
+    background: #f7faf9;
     color: var(--ink);
     text-decoration: none;
     font-family: var(--font-ui);
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 650;
+    transition: border-color .15s, background .15s, color .15s;
   }
   .login-public a:hover {
     border-color: var(--sea);
     color: var(--sea-deep);
-    background: #f3faf8;
+    background: #eef7f4;
+  }
+  .login-public a svg { width: 16px; height: 16px; fill: currentColor; }
+  .login-overlay-foot {
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 20px max(14px, env(safe-area-inset-bottom));
+    text-align: center;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.35);
+    pointer-events: none;
   }
 
   @media (max-width: 860px) {
-    #login-shell { grid-template-columns: 1fr; max-width: 440px; }
-    .login-brand { max-width: none; font-size: 36px; }
+    #login-shell { grid-template-columns: 1fr; max-width: 420px; margin: auto; }
+    .login-brand { max-width: none; }
+    .login-points { display: none; }
+    .login-lead { margin-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .login-ambient::before, .login-orb-a, .login-orb-b, .login-orb-c { animation: none; }
+    .login-hero, #login-box, .login-points li { animation: none; opacity: 1; }
+    #login-box .login-btn:hover:not(:disabled) { transform: none; }
+    #login-box .login-btn .login-btn-spin { animation: none; }
   }
 
 
@@ -1917,27 +2164,72 @@
 
 
 <div id="login-overlay">
+  <div class="login-ambient" aria-hidden="true">
+    <div class="login-orb login-orb-a"></div>
+    <div class="login-orb login-orb-b"></div>
+    <div class="login-orb login-orb-c"></div>
+  </div>
   <div id="login-shell">
     <div class="login-hero">
-      <p class="login-kicker">Official Admin Access</p>
-      <h1 class="login-brand">Punjab Provincial Transport Authority</h1>
-      <p class="login-lead">Staff sign in to issue permits. The public can verify a vehicle without login.</p>
+      <div class="login-emblem" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4Zm-1 16-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8Z"/></svg>
+      </div>
+      <p class="login-kicker">Staff portal</p>
+      <h1 class="login-brand"><em>Punjab</em> Provincial Transport Authority</h1>
+      <p class="login-lead">Secure access to create, edit, and print route permits for authorized PTA staff.</p>
+      <ul class="login-trust" aria-label="Security">
+        <li>Encrypted</li>
+        <li>Staff only</li>
+        <li>PTA authorized</li>
+      </ul>
+      <ul class="login-points" aria-label="Staff capabilities">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Issue and update route permits</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/></svg>Live preview and print-ready documents</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Role-protected admin workspace</li>
+      </ul>
     </div>
     <div id="login-box">
-      <p class="login-title">Sign in</p>
-      <p class="login-sub">Staff / Admin — Route Permit Management</p>
-      <div class="login-field">
-        <label>Email</label>
-        <input type="email" id="login-user" placeholder="admin@example.com" autocomplete="email">
+      <div class="login-box-head">
+        <div>
+          <p class="login-title">Sign in</p>
+          <p class="login-sub">Use your staff email and password to continue.</p>
+        </div>
+        <span class="login-session-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-9H9V6a3 3 0 0 1 6 0v2z"/></svg>
+          Secure
+        </span>
       </div>
       <div class="login-field">
-        <label>Password</label>
-        <input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+        <label for="login-user">Email</label>
+        <div class="login-input-wrap">
+          <svg class="login-input-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/></svg>
+          <input type="email" id="login-user" placeholder="you@pta.gov.pk" autocomplete="email">
+        </div>
       </div>
-      <button class="login-btn" type="button" id="login-submit-btn"><span>Continue</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4L16.2 13H4v-2h12.2l-4.6-4.6L13 5Z"/></svg></button>
-      <p id="login-error">Invalid email or password</p>
+      <div class="login-field">
+        <label for="login-pass">Password</label>
+        <div class="login-input-wrap">
+          <svg class="login-input-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-9H9V6a3 3 0 0 1 6 0v2z"/></svg>
+          <input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
+          <button type="button" class="login-eye" id="login-toggle-pass" aria-label="Show password" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          </button>
+        </div>
+      </div>
+      <button class="login-btn" type="button" id="login-submit-btn">
+        <span class="login-btn-spin" aria-hidden="true"></span>
+        <span id="login-btn-label">Sign in</span>
+        <svg class="login-btn-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4L16.2 13H4v-2h12.2l-4.6-4.6L13 5Z"/></svg>
+      </button>
+      <p class="login-enter-hint">Press <kbd>Enter</kbd> to sign in</p>
+      <p id="login-error" role="alert">Invalid email or password</p>
+      <div class="login-public">
+        <p>Public verification does not require login.</p>
+        <a href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4Zm-1 16-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8Z"/></svg>Verify a route permit</a>
+      </div>
     </div>
   </div>
+  <p class="login-overlay-foot">pdtg-transport-punjab.com · Staff access</p>
 </div>
 
 <div id="app" class="mode-light">
@@ -2885,12 +3177,13 @@
   .header-meta-box {
     flex: 1 1 0;
     min-width: 0;
-    background: rgba(255, 255, 255, 0.92);
+    background: #ffffff;
     border: 1px solid rgba(70, 70, 70, 0.34);
     border-radius: 8px;
     padding: 6px 8px 8px;
     text-align: center;
     line-height: 1.25;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   }
 
   .header-meta-label {
@@ -3721,18 +4014,21 @@
     var errEl = document.getElementById('login-error');
     errEl.style.display = 'none';
     if (!e || !p) {
-      errEl.textContent = '❌ Enter email and password';
+      errEl.textContent = 'Enter email and password.';
       errEl.style.display = 'block';
       return;
     }
     initSupabase();
     if (!supabaseClient) {
-      errEl.textContent = '❌ Database not configured';
+      errEl.textContent = 'Database not configured.';
       errEl.style.display = 'block';
       return;
     }
     var btn = document.getElementById('login-submit-btn');
-    btn.textContent = 'Signing in…'; btn.disabled = true;
+    var btnLabel = document.getElementById('login-btn-label');
+    if (btnLabel) btnLabel.textContent = 'Signing in…';
+    btn.classList.add('is-loading');
+    btn.disabled = true;
     try {
       var result = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
       if (result.error) throw result.error;
@@ -3741,11 +4037,19 @@
       try { loadDashboardStats(); } catch (ex) {}
       try { loadRecords(); } catch (ex2) {}
     } catch (err) {
-      errEl.textContent = '❌ ' + ((err && err.message) || 'Invalid email or password');
+      errEl.textContent = (err && err.message) || 'Invalid email or password.';
       errEl.style.display = 'block';
       document.getElementById('login-pass').value = '';
+      var loginBox = document.getElementById('login-box');
+      if (loginBox) {
+        loginBox.classList.remove('login-shake');
+        void loginBox.offsetWidth;
+        loginBox.classList.add('login-shake');
+      }
     }
-    btn.textContent = 'Login'; btn.disabled = false;
+    if (btnLabel) btnLabel.textContent = 'Sign in';
+    btn.classList.remove('is-loading');
+    btn.disabled = false;
   }
 
   async function doLogout() {
@@ -4229,6 +4533,20 @@
     if (app) app.style.display = 'none';
     var loginBtn = document.getElementById('login-submit-btn');
     if (loginBtn) loginBtn.addEventListener('click', function(ev){ ev.preventDefault(); doLogin(); });
+    var togglePass = document.getElementById('login-toggle-pass');
+    var passInput = document.getElementById('login-pass');
+    if (togglePass && passInput) {
+      togglePass.addEventListener('click', function() {
+        var show = passInput.type === 'password';
+        passInput.type = show ? 'text' : 'password';
+        togglePass.setAttribute('aria-pressed', show ? 'true' : 'false');
+        togglePass.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      });
+    }
+    var loginUserEl = document.getElementById('login-user');
+    if (loginUserEl) {
+      setTimeout(function() { try { loginUserEl.focus(); } catch (ex) {} }, 120);
+    }
     try {
       initSupabase();
     } catch (ex) {}
