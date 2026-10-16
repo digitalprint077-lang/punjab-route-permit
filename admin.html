@@ -11,6 +11,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="site-gate.js" data-enforce="false"></script>
+<script src="site-analytics.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -2099,6 +2101,205 @@
     color: #fff;
   }
   .dash-quick-btn:hover { filter: brightness(.98); }
+  .dash-site {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .dash-site-head {
+    margin-bottom: 12px;
+  }
+  .dash-site-head h3 {
+    margin: 0 0 4px;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .dash-site-head p {
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .site-switch-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 6px 16px rgba(11,31,42,.06);
+  }
+  .site-switch-label {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .site-switch-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--sea-deep);
+    line-height: 1.15;
+  }
+  .site-switch-card.is-off .site-switch-value { color: var(--danger); }
+  .site-switch-hint {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    max-width: 28ch;
+  }
+  .site-switch-card .pbtn { flex: 0 0 auto; min-width: 148px; }
+  .site-switch-card.is-off .pbtn.pbtn-glass {
+    background: var(--sea-deep);
+    color: #fff;
+    border-color: transparent;
+  }
+  .site-switch-msg {
+    margin-top: 8px;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+  #site-offline-banner {
+    display: none;
+    margin: 0 14px 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: #fff5f4;
+    border: 1px solid #efc4bf;
+    color: var(--danger);
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .pbtn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .mode-dark .dash-site { border-top-color: #2a4452; }
+  .mode-dark .dash-site-head h3 { color: #eef5f7; }
+  .mode-dark .site-switch-card {
+    background: #152833;
+    border-color: #2a4452;
+  }
+  .mode-dark .site-switch-value { color: #5eead4; }
+  .mode-dark .site-switch-card.is-off .site-switch-value { color: #ffb4aa; }
+  .mode-dark #site-offline-banner {
+    background: rgba(180,35,24,.15);
+    border-color: rgba(180,35,24,.3);
+    color: #ffb4aa;
+  }
+  .dash-analytics {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .dash-analytics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 14px;
+  }
+  @media (min-width: 520px) {
+    .dash-analytics-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .dash-card.analytics .dash-stat-value { font-size: 1.45rem; }
+  .analytics-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 88px;
+    padding: 12px 10px 8px;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    margin-bottom: 12px;
+  }
+  .analytics-bar-col {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .analytics-bar {
+    width: 100%;
+    max-width: 36px;
+    border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(180deg, var(--sea-bright), var(--sea-deep));
+    min-height: 4px;
+  }
+  .analytics-bar-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .analytics-top-list {
+    display: grid;
+    gap: 8px;
+    max-height: 220px;
+    overflow: auto;
+  }
+  .analytics-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+  }
+  .analytics-top-name {
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .analytics-top-meta {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .analytics-top-count {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--sea-deep);
+    white-space: nowrap;
+  }
+  .analytics-empty {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 8px 2px;
+  }
+  .analytics-note {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .mode-dark .analytics-bars,
+  .mode-dark .analytics-top-row {
+    background: #152833;
+    border-color: #2a4452;
+  }
+  .mode-dark .analytics-top-name { color: #eef5f7; }
+  .mode-dark .analytics-top-count { color: #5eead4; }
+  .mode-dark .dash-analytics { border-top-color: #2a4452; }
   .mode-dark .dash-hero {
     background: linear-gradient(135deg, rgba(15,110,106,.22) 0%, #152833 70%);
     border-color: #2a4452;
@@ -2297,6 +2498,7 @@
           <span>Verify</span>
         </button>
       </div>
+      <div id="site-offline-banner">Public website is OFF. Creating and saving permits is disabled.</div>
     </div>
 
     <div id="panel-body">
@@ -2339,6 +2541,33 @@
               <div class="dash-stat-hint">Created today: <strong id="dash-today-count">—</strong></div>
             </article>
           </div>
+          <div class="dash-analytics">
+            <div class="dash-site-head">
+              <h3>Website analytics</h3>
+              <p>Public traffic — home, verification searches, and document views (last 7 days)</p>
+            </div>
+            <div class="dash-grid dash-analytics-grid">
+              <article class="dash-card analytics">
+                <div class="dash-card-top"><span class="dash-card-label">Today</span></div>
+                <div class="dash-stat-value" id="an-today">—</div>
+              </article>
+              <article class="dash-card analytics">
+                <div class="dash-card-top"><span class="dash-card-label">7-day total</span></div>
+                <div class="dash-stat-value" id="an-week">—</div>
+              </article>
+              <article class="dash-card analytics">
+                <div class="dash-card-top"><span class="dash-card-label">Verifications</span></div>
+                <div class="dash-stat-value" id="an-verifies">—</div>
+              </article>
+              <article class="dash-card analytics">
+                <div class="dash-card-top"><span class="dash-card-label">Doc views</span></div>
+                <div class="dash-stat-value" id="an-doc-views">—</div>
+              </article>
+            </div>
+            <div class="analytics-bars" id="analytics-bars" aria-hidden="true"></div>
+            <div class="analytics-top-list" id="analytics-top-list"><p class="analytics-empty">Loading analytics…</p></div>
+            <p class="analytics-note" id="analytics-note"></p>
+          </div>
           <div class="dash-quick">
             <button type="button" class="dash-quick-btn primary" onclick="switchTab('tab-edit', document.querySelectorAll('.panel-tab')[1])">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg>
@@ -2348,6 +2577,21 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg>
               <span>Saved List</span>
             </button>
+          </div>
+          <div class="dash-site">
+            <div class="dash-site-head">
+              <h3>Public website</h3>
+              <p>Turn verification and permit pages on or off for all visitors</p>
+            </div>
+            <div class="site-switch-card" id="site-switch-card">
+              <div>
+                <div class="site-switch-label">Website status</div>
+                <div class="site-switch-value" id="site-switch-value">Checking…</div>
+                <div class="site-switch-hint" id="site-switch-hint">Home, verify, and permit links follow this switch</div>
+              </div>
+              <button type="button" class="pbtn pbtn-glass" id="site-switch-btn" onclick="togglePublicSite()">Disable website</button>
+            </div>
+            <p class="site-switch-msg" id="site-switch-msg" style="display:none"></p>
           </div>
         </div>
       </div>
@@ -2466,10 +2710,10 @@
         <div class="panel-actions">
           <div class="btn-row">
             <button class="pbtn pbtn-glass" onclick="openPrintTab()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17h10v4H7v-4Zm0-14h10v5H7V3Zm12 7H5a3 3 0 0 0-3 3v5h4v-2h12v2h4v-5a3 3 0 0 0-3-3Z"/></svg><span>Print</span></button>
-            <button class="pbtn pbtn-gold" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
+            <button class="pbtn pbtn-gold" id="btn-save-permit" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
           </div>
           <div class="btn-row">
-            <button class="pbtn pbtn-glass" onclick="clearForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg><span id="btn-new-label">New Permit</span></button>
+            <button class="pbtn pbtn-glass" id="btn-new-permit" onclick="clearForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg><span id="btn-new-label">New Permit</span></button>
           </div>
           <div id="db-message"></div>
         </div>
@@ -4072,7 +4316,162 @@
     document.getElementById('login-error').style.display = 'none';
   }
 
+  var publicSiteEnabled = true;
+
+  function renderSiteStatus(enabled, note) {
+    var card = document.getElementById('site-switch-card');
+    var valueEl = document.getElementById('site-switch-value');
+    var hintEl = document.getElementById('site-switch-hint');
+    var btn = document.getElementById('site-switch-btn');
+    var msg = document.getElementById('site-switch-msg');
+    var banner = document.getElementById('site-offline-banner');
+    if (card) card.classList.toggle('is-off', !enabled);
+    if (valueEl) valueEl.textContent = enabled ? 'ON' : 'OFF';
+    if (hintEl) {
+      hintEl.textContent = enabled
+        ? 'Visitors can verify and view permits'
+        : 'Public pages and permit saving are switched off';
+    }
+    if (btn) {
+      btn.textContent = enabled ? 'Disable website' : 'Enable website';
+      btn.disabled = false;
+    }
+    if (banner) banner.style.display = enabled ? 'none' : 'block';
+    if (msg) {
+      if (note) {
+        msg.textContent = note;
+        msg.style.display = 'block';
+      } else {
+        msg.style.display = 'none';
+      }
+    }
+    applyPermitLock(enabled);
+  }
+
+  function isPublicSiteOn() {
+    if (window.PTASiteGate && typeof PTASiteGate.cacheGet === 'function') {
+      var cached = PTASiteGate.cacheGet();
+      if (cached !== null) return cached;
+    }
+    return publicSiteEnabled;
+  }
+
+  function applyPermitLock(enabled) {
+    publicSiteEnabled = !!enabled;
+    ['btn-save-permit', 'btn-new-permit'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      if (btn) btn.disabled = !enabled;
+    });
+  }
+
+  function siteEditsBlockedMessage() {
+    return docMode === 'noc'
+      ? 'Website is OFF. Creating and saving NOCs is disabled.'
+      : 'Website is OFF. Creating and saving permits is disabled.';
+  }
+
+  async function loadSiteStatus() {
+    if (!window.PTASiteGate) return;
+    initSupabase();
+    var enabled = await PTASiteGate.fetchSiteEnabled(supabaseClient);
+    renderSiteStatus(enabled);
+  }
+
+  async function togglePublicSite() {
+    if (!window.PTASiteGate) return;
+    initSupabase();
+    var btn = document.getElementById('site-switch-btn');
+    var currentlyOn = true;
+    try {
+      currentlyOn = await PTASiteGate.fetchSiteEnabled(supabaseClient);
+    } catch (ex) {}
+    var nextOn = !currentlyOn;
+    if (!nextOn && !confirm('Turn OFF the public website?\n\nVisitors cannot view or verify permits, and staff cannot create or save permits until you turn it back on.')) {
+      return;
+    }
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = nextOn ? 'Enabling…' : 'Disabling…';
+    }
+    try {
+      var result = await PTASiteGate.setSiteEnabled(nextOn, supabaseClient);
+      var note = '';
+      if (result && result.localOnly) {
+        note = 'Saved on this device only. Sign in with staff email to turn the site off for every visitor.';
+      }
+      renderSiteStatus(nextOn, note);
+    } catch (err) {
+      renderSiteStatus(currentlyOn, (err && err.message) || 'Could not update website status');
+    }
+    if (btn) btn.disabled = false;
+  }
+
+  function renderWebsiteAnalytics(stats) {
+    function set(id, v) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = v;
+    }
+    var bars = document.getElementById('analytics-bars');
+    var list = document.getElementById('analytics-top-list');
+    var note = document.getElementById('analytics-note');
+    if (!stats || !stats.ok) {
+      set('an-today', '—');
+      set('an-week', '—');
+      set('an-verifies', '—');
+      set('an-doc-views', '—');
+      if (bars) bars.innerHTML = '';
+      if (list) {
+        list.innerHTML = '<p class="analytics-empty">' + escapeHtml((stats && stats.error) || 'Analytics unavailable. Run sql/supabase-site-analytics-safe.sql in Supabase.') + '</p>';
+      }
+      if (note) note.textContent = '';
+      return;
+    }
+    set('an-today', String(stats.today));
+    set('an-week', String(stats.weekTotal));
+    set('an-verifies', String(stats.verifies));
+    set('an-doc-views', String(stats.docViews));
+    if (bars) {
+      var keys = Object.keys(stats.byDay || {});
+      var max = 1;
+      keys.forEach(function(k) { max = Math.max(max, stats.byDay[k] || 0); });
+      bars.innerHTML = keys.map(function(k) {
+        var n = stats.byDay[k] || 0;
+        var h = Math.round((n / max) * 100);
+        var label = k.substring(5).replace('-', '/');
+        return '<div class="analytics-bar-col"><div class="analytics-bar" style="height:' + Math.max(4, h) + '%" title="' + n + ' events"></div><span class="analytics-bar-label">' + label + '</span></div>';
+      }).join('');
+    }
+    if (list) {
+      if (!stats.topDocs.length) {
+        list.innerHTML = '<p class="analytics-empty">No public document views yet in the last 7 days.</p>';
+      } else {
+        list.innerHTML = stats.topDocs.map(function(row) {
+          var kind = row.event_type === 'noc_view' ? 'NOC' : 'Permit';
+          return '<div class="analytics-top-row"><div><div class="analytics-top-name">' + escapeHtml(row.label || 'Document') + '</div><div class="analytics-top-meta">' + kind + '</div></div><div class="analytics-top-count">' + row.count + '</div></div>';
+        }).join('');
+      }
+    }
+    if (note) {
+      note.textContent = 'Home page views (7d): ' + stats.homeViews + '. Counts update when visitors use the public site while you are signed in here.';
+    }
+  }
+
+  async function loadWebsiteAnalytics() {
+    if (!window.PTASiteAnalytics) {
+      renderWebsiteAnalytics({ ok: false, error: 'Analytics script missing.' });
+      return;
+    }
+    initSupabase();
+    try {
+      var stats = await PTASiteAnalytics.fetchDashboardStats(supabaseClient, 7);
+      renderWebsiteAnalytics(stats);
+    } catch (ex) {
+      renderWebsiteAnalytics({ ok: false, error: (ex && ex.message) || 'Analytics failed' });
+    }
+  }
+
   async function savePermit() {
+    if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); return; }
     initSupabase();
     if (!supabaseClient) { showMsg('Not connected', false); return; }
     try {
@@ -4143,6 +4542,8 @@
     initSupabase();
     if (!supabaseClient) {
       setDash('—', '—', '—', '—');
+      try { loadSiteStatus(); } catch (exSiteOff) {}
+      try { loadWebsiteAnalytics(); } catch (exAnOff) {}
       return;
     }
     supabaseClient.from('permits').select('id,doc_type,qr_link,created_at').then(function(result) {
@@ -4158,6 +4559,7 @@
       var permits = 0, nocs = 0, today = 0;
       var todayStr = new Date().toISOString().substring(0, 10);
       (result.data || []).forEach(function(r) {
+        if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return;
         if (isNocRecord(r)) nocs++;
         else permits++;
         if ((r.created_at || '').substring(0, 10) === todayStr) today++;
@@ -4166,6 +4568,8 @@
     }).catch(function() {
       setDash('—', '—', '—', '—');
     });
+    try { loadSiteStatus(); } catch (exSite) {}
+    try { loadWebsiteAnalytics(); } catch (exAn) {}
   }
 
   function loadRecords() {
@@ -4194,6 +4598,7 @@
         return;
       }
       var rows = (result.data || []).filter(function(r) {
+        if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return false;
         return docMode === 'noc' ? isNocRecord(r) : !isNocRecord(r);
       });
       if (!rows.length) {
@@ -4291,6 +4696,7 @@
   }
 
   async function clearForm() {
+    if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); return; }
     currentEditId = null;
     editIdsByMode[docMode] = null;
     applyModeDefaults(docMode);
