@@ -855,24 +855,9 @@
         html += '</div>';
         html += '<div class="result-actions">';
         html += '<a class="primary" href="permit.html?id=' + encodeURIComponent(id) + '">View full permit</a>';
-        html += '<button type="button" class="secondary" data-copy="' + escapeHtml(r.vehicle_reg_no || '') + '">Copy reg no</button>';
-        html += '<a class="secondary" href="https://mtmis.excise.punjab.gov.pk" target="_blank" rel="noopener noreferrer">Excise MTMIS</a>';
         html += '</div></article>';
         return html;
       }).join('');
-
-      box.querySelectorAll('[data-copy]').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var t = btn.getAttribute('data-copy') || '';
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(t).then(function() {
-              var prev = btn.textContent;
-              btn.textContent = 'Copied!';
-              setTimeout(function() { btn.textContent = prev; }, 1600);
-            });
-          }
-        });
-      });
     }
 
     async function verifyVehicle() {
