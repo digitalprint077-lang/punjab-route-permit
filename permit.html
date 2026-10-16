@@ -28,10 +28,13 @@
   .top-spacer { height: 48px; }
 
   .part-label {
-    font-size: 11.5px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12px;
     font-weight: 700;
-    margin: 4px 0 2px;
-    letter-spacing: 0.3px;
+    color: #5b21b6;
+    margin: 2px 0 4px;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
   }
 
   .header-block {
@@ -50,22 +53,27 @@
   }
 
   .main-title {
-    font-size: 17px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 18px;
     font-weight: bold;
-    margin: 0 0 5px;
-    letter-spacing: 0.15px;
-    line-height: 1.12;
+    color: #1b5e20;
+    margin: 0 0 4px;
+    letter-spacing: 0.05px;
+    line-height: 1.2;
+    text-transform: uppercase;
   }
 
   .sub-title {
-    font-size: 12px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 13.5px;
     font-weight: bold;
+    color: #1b5e20;
     text-decoration: underline;
-    margin: 0 0 5px;
-    line-height: 1.15;
+    text-underline-offset: 2px;
+    margin: 0 0 4px;
+    line-height: 1.2;
+    text-transform: uppercase;
   }
-
-  .title-line { display: block; }
 
   .app-no {
     font-size: 11.5px;
@@ -322,9 +330,9 @@
   <div class="top-spacer"></div>
   <div class="header-block">
     <div class="header-center">
-      <p class="main-title"><span class="title-line">SUMMARY TO BE CARRIED ON THE</span><span class="title-line">VEHICLE</span></p>
-      <p class="sub-title"><span class="title-line">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN</span><span class="title-line">PUNJAB</span></p>
-      <p class="part-label">PART ' A &amp; B '</p>
+      <p class="main-title">SUMMARY TO BE CARRIED ON THE VEHICLE</p>
+      <p class="sub-title">COUNTER SIGNATURE OF ROUTE ALIGNMENT IN PUNJAB</p>
+      <p class="part-label">PART ‘ A &amp; B ’</p>
       <p class="app-no"><span class="app-no-label">APPLICATION NO.</span><span id="d-appno"></span></p>
     </div>
     <div class="qr-box"><div id="qrcode-img"></div></div>
