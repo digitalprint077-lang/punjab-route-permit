@@ -435,8 +435,19 @@
     filter: blur(70px);
     opacity: 0.5;
   }
-  .login-orb-a { width: 320px; height: 320px; background: rgba(18, 196, 184, 0.35); top: 10%; left: -5%; }
-  .login-orb-b { width: 280px; height: 280px; background: rgba(11, 31, 42, 0.6); bottom: 5%; right: -3%; }
+  .login-orb-a { width: 320px; height: 320px; background: rgba(18, 196, 184, 0.35); top: 10%; left: -5%; animation: orbFloat 20s ease-in-out infinite; }
+  .login-orb-b { width: 280px; height: 280px; background: rgba(11, 31, 42, 0.6); bottom: 5%; right: -3%; animation: orbFloat 24s ease-in-out infinite reverse; }
+  .login-orb-c { width: 200px; height: 200px; background: rgba(201, 162, 39, 0.15); top: 55%; left: 42%; animation: orbFloat 18s ease-in-out -4s infinite; }
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(14px, -18px); }
+  }
+  .login-ambient::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(7, 16, 24, 0.45) 100%);
+  }
   @keyframes gridDrift {
     from { background-position: 0 0, 0 0; }
     to { background-position: 56px 56px, 56px 56px; }
@@ -488,6 +499,33 @@
     margin: 0 0 14px;
     max-width: 14ch;
   }
+  .login-brand em {
+    font-style: normal;
+    background: linear-gradient(120deg, #fff 0%, rgba(18, 196, 184, 0.95) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .login-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+  }
+  .login-trust li {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.15);
+  }
   .login-lead {
     font-family: var(--font-ui);
     font-size: 15px;
@@ -516,7 +554,12 @@
     background: rgba(255,255,255,.06);
     border: 1px solid rgba(255,255,255,.08);
     backdrop-filter: blur(8px);
+    opacity: 0;
+    animation: riseIn 0.55s ease forwards;
   }
+  .login-points li:nth-child(1) { animation-delay: 0.2s; }
+  .login-points li:nth-child(2) { animation-delay: 0.32s; }
+  .login-points li:nth-child(3) { animation-delay: 0.44s; }
   .login-points li svg {
     flex-shrink: 0;
     width: 18px;
@@ -526,17 +569,52 @@
 
   #login-box {
     position: relative;
-    background: rgba(255, 255, 255, 0.97);
-    border: 1px solid rgba(255,255,255,.5);
-    border-radius: 22px;
-    padding: 28px 26px 22px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(255,255,255,.55);
+    border-radius: 24px;
+    padding: 26px 26px 22px;
     box-shadow:
-      0 1px 0 rgba(255,255,255,.9) inset,
-      0 32px 64px rgba(0,0,0,.35);
+      0 1px 0 rgba(255,255,255,.95) inset,
+      0 0 0 1px rgba(15, 110, 106, 0.08),
+      0 40px 80px rgba(0,0,0,.38);
     text-align: left;
     animation: riseIn .7s .1s ease both;
     overflow: hidden;
   }
+  #login-box.login-shake {
+    animation: loginShake 0.48s ease;
+  }
+  @keyframes loginShake {
+    0%, 100% { transform: translateX(0); }
+    18% { transform: translateX(-7px); }
+    36% { transform: translateX(7px); }
+    54% { transform: translateX(-5px); }
+    72% { transform: translateX(5px); }
+  }
+  .login-box-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .login-session-badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sea-deep);
+    background: #e8f5f2;
+    border: 1px solid rgba(15, 110, 106, 0.18);
+  }
+  .login-session-badge svg { width: 12px; height: 12px; fill: currentColor; }
   #login-box::before {
     content: '';
     position: absolute;
@@ -559,7 +637,7 @@
     font-family: var(--font-ui);
     font-size: 13px;
     color: var(--muted);
-    margin: 0 0 22px;
+    margin: 0;
     line-height: 1.45;
   }
   #login-box .login-field {
@@ -579,11 +657,21 @@
   .login-input-wrap {
     display: flex;
     align-items: center;
+    gap: 4px;
     border: 1px solid var(--line);
     border-radius: 12px;
     background: #f8fafb;
     transition: border-color .2s, box-shadow .2s, background .2s;
   }
+  .login-input-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-left: 12px;
+    fill: #94a3b0;
+    transition: fill 0.2s;
+  }
+  .login-input-wrap:focus-within .login-input-icon { fill: var(--sea); }
   .login-input-wrap:focus-within {
     border-color: var(--sea);
     background: #fff;
@@ -624,9 +712,38 @@
     font-family: var(--font-ui);
     font-weight: 700;
     cursor: pointer;
-    margin-top: 6px;
+    margin-top: 8px;
     transition: transform .15s, box-shadow .15s, filter .15s;
     box-shadow: 0 12px 28px rgba(15, 110, 106, 0.35);
+  }
+  #login-box .login-btn .login-btn-spin {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spinLogin 0.65s linear infinite;
+  }
+  @keyframes spinLogin { to { transform: rotate(360deg); } }
+  #login-box .login-btn.is-loading .login-btn-arrow { display: none; }
+  #login-box .login-btn.is-loading .login-btn-spin { display: block; }
+  .login-enter-hint {
+    margin: 10px 0 0;
+    text-align: center;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    color: #94a3b0;
+  }
+  .login-enter-hint kbd {
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 5px;
+    background: #eef2f4;
+    border: 1px solid var(--line);
+    color: var(--muted);
   }
   #login-box .login-btn:hover:not(:disabled) {
     transform: translateY(-1px);
@@ -686,6 +803,22 @@
     background: #eef7f4;
   }
   .login-public a svg { width: 16px; height: 16px; fill: currentColor; }
+  .login-overlay-foot {
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 20px max(14px, env(safe-area-inset-bottom));
+    text-align: center;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.35);
+    pointer-events: none;
+  }
 
   @media (max-width: 860px) {
     #login-shell { grid-template-columns: 1fr; max-width: 420px; margin: auto; }
@@ -694,9 +827,10 @@
     .login-lead { margin-bottom: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .login-ambient::before { animation: none; }
-    .login-hero, #login-box { animation: none; }
+    .login-ambient::before, .login-orb-a, .login-orb-b, .login-orb-c { animation: none; }
+    .login-hero, #login-box, .login-points li { animation: none; opacity: 1; }
     #login-box .login-btn:hover:not(:disabled) { transform: none; }
+    #login-box .login-btn .login-btn-spin { animation: none; }
   }
 
 
@@ -1999,6 +2133,7 @@
   <div class="login-ambient" aria-hidden="true">
     <div class="login-orb login-orb-a"></div>
     <div class="login-orb login-orb-b"></div>
+    <div class="login-orb login-orb-c"></div>
   </div>
   <div id="login-shell">
     <div class="login-hero">
@@ -2006,8 +2141,13 @@
         <svg viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4Zm-1 16-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8Z"/></svg>
       </div>
       <p class="login-kicker">Staff portal</p>
-      <h1 class="login-brand">Punjab Provincial Transport Authority</h1>
+      <h1 class="login-brand"><em>Punjab</em> Provincial Transport Authority</h1>
       <p class="login-lead">Secure access to create, edit, and print route permits for authorized PTA staff.</p>
+      <ul class="login-trust" aria-label="Security">
+        <li>Encrypted</li>
+        <li>Staff only</li>
+        <li>PTA authorized</li>
+      </ul>
       <ul class="login-points" aria-label="Staff capabilities">
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Issue and update route permits</li>
         <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/></svg>Live preview and print-ready documents</li>
@@ -2015,17 +2155,27 @@
       </ul>
     </div>
     <div id="login-box">
-      <p class="login-title">Sign in</p>
-      <p class="login-sub">Use your staff email and password to continue.</p>
+      <div class="login-box-head">
+        <div>
+          <p class="login-title">Sign in</p>
+          <p class="login-sub">Use your staff email and password to continue.</p>
+        </div>
+        <span class="login-session-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-9H9V6a3 3 0 0 1 6 0v2z"/></svg>
+          Secure
+        </span>
+      </div>
       <div class="login-field">
         <label for="login-user">Email</label>
         <div class="login-input-wrap">
+          <svg class="login-input-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/></svg>
           <input type="email" id="login-user" placeholder="you@pta.gov.pk" autocomplete="email">
         </div>
       </div>
       <div class="login-field">
         <label for="login-pass">Password</label>
         <div class="login-input-wrap">
+          <svg class="login-input-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-9H9V6a3 3 0 0 1 6 0v2z"/></svg>
           <input type="password" id="login-pass" placeholder="Enter password" autocomplete="current-password">
           <button type="button" class="login-eye" id="login-toggle-pass" aria-label="Show password" aria-pressed="false">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
@@ -2033,9 +2183,11 @@
         </div>
       </div>
       <button class="login-btn" type="button" id="login-submit-btn">
+        <span class="login-btn-spin" aria-hidden="true"></span>
         <span id="login-btn-label">Sign in</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4L16.2 13H4v-2h12.2l-4.6-4.6L13 5Z"/></svg>
+        <svg class="login-btn-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5l7 7-7 7-1.4-1.4L16.2 13H4v-2h12.2l-4.6-4.6L13 5Z"/></svg>
       </button>
+      <p class="login-enter-hint">Press <kbd>Enter</kbd> to sign in</p>
       <p id="login-error" role="alert">Invalid email or password</p>
       <div class="login-public">
         <p>Public verification does not require login.</p>
@@ -2043,6 +2195,7 @@
       </div>
     </div>
   </div>
+  <p class="login-overlay-foot">pdtg-transport-punjab.com · Staff access</p>
 </div>
 
 <div id="app" class="mode-light">
@@ -3772,6 +3925,7 @@
     var btn = document.getElementById('login-submit-btn');
     var btnLabel = document.getElementById('login-btn-label');
     if (btnLabel) btnLabel.textContent = 'Signing in…';
+    btn.classList.add('is-loading');
     btn.disabled = true;
     try {
       var result = await supabaseClient.auth.signInWithPassword({ email: e, password: p });
@@ -3784,8 +3938,15 @@
       errEl.textContent = (err && err.message) || 'Invalid email or password.';
       errEl.style.display = 'block';
       document.getElementById('login-pass').value = '';
+      var loginBox = document.getElementById('login-box');
+      if (loginBox) {
+        loginBox.classList.remove('login-shake');
+        void loginBox.offsetWidth;
+        loginBox.classList.add('login-shake');
+      }
     }
     if (btnLabel) btnLabel.textContent = 'Sign in';
+    btn.classList.remove('is-loading');
     btn.disabled = false;
   }
 
@@ -4279,6 +4440,10 @@
         togglePass.setAttribute('aria-pressed', show ? 'true' : 'false');
         togglePass.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
       });
+    }
+    var loginUserEl = document.getElementById('login-user');
+    if (loginUserEl) {
+      setTimeout(function() { try { loginUserEl.focus(); } catch (ex) {} }, 120);
     }
     try {
       initSupabase();
