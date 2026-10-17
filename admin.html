@@ -3179,7 +3179,7 @@
     var savedTitle = document.getElementById('saved-title');
     if (savedTitle) savedTitle.textContent = isNoc ? 'Saved NOCs' : 'Saved Permits';
     var savedSub = document.getElementById('saved-sub');
-    if (savedSub) savedSub.textContent = isNoc ? 'Search saved NOC records' : 'Search, then select permits to delete, download, or open';
+    if (savedSub) savedSub.textContent = isNoc ? 'Search, select rows, or export listed NOCs to CSV' : 'Search, select rows, or export listed permits to CSV';
 
     ['f-fcno','f-vtype','f-eng','f-chassis','f-iauth','f-vfrom','f-vupto','f-fee','f-csig','f-psid','f-authority','f-districts'].forEach(function(id) {
       var inp = document.getElementById(id);
