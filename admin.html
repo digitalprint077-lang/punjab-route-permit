@@ -222,6 +222,12 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px 14px;
+    align-items: start;
+  }
+  .perm-field-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
   .perm-field {
     font-size: 12px;
@@ -2826,9 +2832,11 @@
             <div class="perm-field"><span class="lbl">4. REGISTRATION NO:</span> <span class="val" id="d-vreg">TAK 325 PESHAWAR</span></div>
             <div class="perm-field"><span class="lbl">5. CHASSIS NO:</span> <span class="val" id="d-chassis">CJQ618417</span></div>
             <div class="perm-field"><span class="lbl">6. ENGINE NO:</span> <span class="val" id="d-eng">LS9308</span></div>
-            <div class="perm-field"><span class="lbl">7. VEHICLE TYPE:</span> <span class="val" id="d-vtype">TRUCK</span></div>
-            <div class="perm-field"><span class="lbl">8. SEATING CAPACITY:</span> <span class="val" id="d-seats">N/A</span></div>
-            <div class="perm-field perm-field-full"><span class="lbl">9. VEHICLE MAKE:</span> <span class="val" id="d-vmake">N/A</span></div>
+            <div class="perm-field-stack">
+              <div class="perm-field"><span class="lbl">7. VEHICLE TYPE:</span> <span class="val" id="d-vtype">TRUCK</span></div>
+              <div class="perm-field"><span class="lbl">9. SEATING CAPACITY:</span> <span class="val" id="d-seats">N/A</span></div>
+            </div>
+            <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val" id="d-vmake">N/A</span></div>
           </div>
         </div>
       </div>
@@ -3556,6 +3564,12 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px 14px;
+    align-items: start;
+  }
+  .perm-field-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
   .perm-field {
     font-size: 12px;
@@ -3738,9 +3752,11 @@
         <div class="perm-field"><span class="lbl">4. REGISTRATION NO:</span> <span class="val">` + data.vreg + `</span></div>
         <div class="perm-field"><span class="lbl">5. CHASSIS NO:</span> <span class="val">` + data.chassis + `</span></div>
         <div class="perm-field"><span class="lbl">6. ENGINE NO:</span> <span class="val">` + data.eng + `</span></div>
-        <div class="perm-field"><span class="lbl">7. VEHICLE TYPE:</span> <span class="val">` + data.vtype + `</span></div>
-        <div class="perm-field"><span class="lbl">8. SEATING CAPACITY:</span> <span class="val">` + data.seats + `</span></div>
-        <div class="perm-field perm-field-full"><span class="lbl">9. VEHICLE MAKE:</span> <span class="val">` + data.vmake + `</span></div>
+        <div class="perm-field-stack">
+          <div class="perm-field"><span class="lbl">7. VEHICLE TYPE:</span> <span class="val">` + data.vtype + `</span></div>
+          <div class="perm-field"><span class="lbl">9. SEATING CAPACITY:</span> <span class="val">` + data.seats + `</span></div>
+        </div>
+        <div class="perm-field perm-field-full"><span class="lbl">8. VEHICLE MAKE:</span> <span class="val">` + data.vmake + `</span></div>
       </div>
     </div>
   </div>
