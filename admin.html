@@ -1767,6 +1767,9 @@
                 <option value="MINI BUS">MINI BUS</option>
               </select>
             </div>
+            <div class="fg"><label>Seating Capacity</label>
+              <select id="f-seats"></select>
+            </div>
             <div class="fg span-2"><label>Registration No</label>
               <div class="verify-inline">
                 <input id="f-vreg" value="TAK 325 PESHAWAR">
@@ -1902,6 +1905,11 @@
       <div class="doc-row indent">
         <span class="lbl">VEHICLE TYPE:</span>
         <span class="val">&nbsp;<span id="d-vtype">TRUCK</span></span>
+      </div>
+
+      <div class="doc-row indent">
+        <span class="lbl">SEATING CAPACITY:</span>
+        <span class="val">&nbsp;<span id="d-seats">N/A</span></span>
       </div>
 
       <div class="doc-row indent">
@@ -2053,7 +2061,19 @@
     el.value = el.value.toUpperCase();
   }
 
+  function fillSeatingCapacityOptions() {
+    var sel = document.getElementById('f-seats');
+    if (!sel || sel.getAttribute('data-filled') === '1') return;
+    var html = '<option value="N/A" selected>N/A</option>';
+    for (var i = 1; i <= 100; i++) {
+      html += '<option value="' + i + '">' + i + '</option>';
+    }
+    sel.innerHTML = html;
+    sel.setAttribute('data-filled', '1');
+  }
+
   function initFormEnhancements() {
+    fillSeatingCapacityOptions();
     syncIssueDatePickerFromHidden();
     var picker = document.getElementById('f-idate-picker');
     if (picker) {
@@ -2072,7 +2092,7 @@
   var fieldMap = {
     'appno':'d-appno','rpno':'d-rpno','fcno':'d-fcno',
     'name':'d-name','cnic':'d-cnic','addr':'d-addr',
-    'vtype':'d-vtype','vreg':'d-vreg','eng':'d-eng','chassis':'d-chassis',
+    'vtype':'d-vtype','seats':'d-seats','vreg':'d-vreg','eng':'d-eng','chassis':'d-chassis',
     'iauth':'d-iauth','vfrom':'d-vfrom','vupto':'d-vupto',
     'fee':'d-fee','psid':'d-psid','csig':'d-csig',
     'idistrict':'d-idistrict','idate':'d-idate','authority':'d-authority'
@@ -2081,7 +2101,7 @@
   var docMode = 'permit';
 
   var FORM_FIELD_IDS = [
-    'f-appno','f-rpno','f-fcno','f-name','f-cnic','f-addr','f-vtype','f-vreg',
+    'f-appno','f-rpno','f-fcno','f-name','f-cnic','f-addr','f-vtype','f-seats','f-vreg',
     'f-eng','f-chassis','f-iauth','f-vfrom','f-vupto','f-fee','f-psid','f-csig',
     'f-idistrict','f-idate','f-authority','f-qrlink','f-districts','f-idate-picker'
   ];
@@ -2119,6 +2139,7 @@
     s('f-idate', '24-MAY-2026');
     if (mode === 'permit') {
       s('f-vtype', 'TRUCK');
+      s('f-seats', 'N/A');
       s('f-iauth', 'TDAS');
       s('f-vfrom', '30-01-2026');
       s('f-vupto', '30-07-2026');
@@ -2213,7 +2234,7 @@
     var savedSub = document.getElementById('saved-sub');
     if (savedSub) savedSub.textContent = isNoc ? 'Search saved NOC records' : 'Search by name, app no, or registration';
 
-    ['f-fcno','f-vtype','f-eng','f-chassis','f-iauth','f-vfrom','f-vupto','f-fee','f-csig','f-psid','f-authority','f-districts'].forEach(function(id) {
+    ['f-fcno','f-vtype','f-seats','f-eng','f-chassis','f-iauth','f-vfrom','f-vupto','f-fee','f-csig','f-psid','f-authority','f-districts'].forEach(function(id) {
       var inp = document.getElementById(id);
       if (!inp) return;
       var fg = inp.closest('.fg');
@@ -2352,7 +2373,7 @@
     var fieldMap2 = {
       'appno':'f-appno','rpno':'f-rpno','fcno':'f-fcno',
       'name':'f-name','cnic':'f-cnic','addr':'f-addr',
-      'vtype':'f-vtype','vreg':'f-vreg','eng':'f-eng','chassis':'f-chassis',
+      'vtype':'f-vtype','seats':'f-seats','vreg':'f-vreg','eng':'f-eng','chassis':'f-chassis',
       'iauth':'f-iauth','vfrom':'f-vfrom','vupto':'f-vupto',
       'fee':'f-fee','psid':'f-psid','csig':'f-csig',
       'idistrict':'f-idistrict','idate':'f-idate','authority':'f-authority'
@@ -2524,6 +2545,7 @@
   </div>
   <div class="doc-row"><span class="lbl">3. OWNER ADDRESS:</span><span class="val">&nbsp;` + data.addr + `</span></div>
   <div class="doc-row indent"><span class="lbl">VEHICLE TYPE:</span><span class="val">&nbsp;` + data.vtype + `</span></div>
+  <div class="doc-row indent"><span class="lbl">SEATING CAPACITY:</span><span class="val">&nbsp;` + data.seats + `</span></div>
   <div class="doc-row indent"><span class="lbl">4. VEHICLE REGISTRATION NO :</span><span class="lbl">&nbsp;` + data.vreg + `</span></div>
   <div class="two-col-row">
     <div class="pair"><span class="lbl">ENGINE NO:</span><span class="val">&nbsp;` + data.eng + `</span></div>
@@ -2762,7 +2784,7 @@
       setDocMode(recMode, { skipSnapshot: true, skipRestore: true });
       var map = {
         'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
-        'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vreg':d.vehicle_reg_no,
+        'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-seats':d.seating_capacity || 'N/A','f-vreg':d.vehicle_reg_no,
         'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
         'f-vupto':d.valid_upto,'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
         'f-idistrict':d.issuing_district,'f-idate':d.issuance_date,'f-authority':d.authority_name,
@@ -2853,6 +2875,7 @@
       cnic_no: document.getElementById('f-cnic').value,
       owner_address: document.getElementById('f-addr').value,
       vehicle_type: document.getElementById('f-vtype').value,
+      seating_capacity: document.getElementById('f-seats').value,
       vehicle_reg_no: document.getElementById('f-vreg').value,
       engine_no: document.getElementById('f-eng').value,
       chassis_no: document.getElementById('f-chassis').value,
@@ -2943,11 +2966,15 @@
         }
         return supabaseClient.from('permits').insert([payload]).select();
       }
-      result = await writeRow(data);
-      if (result.error && /doc_type|schema cache|column/i.test(String(result.error.message || ''))) {
-        var fallback = Object.assign({}, data);
-        delete fallback.doc_type;
-        result = await writeRow(fallback);
+      var payload = Object.assign({}, data);
+      for (var saveTry = 0; saveTry < 4; saveTry++) {
+        result = await writeRow(payload);
+        if (!result.error) break;
+        var errMsg = String(result.error.message || '');
+        if (!/doc_type|schema cache|column|seating_capacity/i.test(errMsg)) break;
+        payload = Object.assign({}, payload);
+        if (/doc_type/i.test(errMsg)) delete payload.doc_type;
+        if (/seating_capacity/i.test(errMsg)) delete payload.seating_capacity;
       }
       if (result.error) throw result.error;
       var saved = (result.data && result.data[0]) ? result.data[0] : null;
@@ -3088,7 +3115,7 @@
       setDocMode(recMode, { skipSnapshot: true, skipRestore: true });
       var map = {
         'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
-        'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-vreg':d.vehicle_reg_no,
+        'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-seats':d.seating_capacity || 'N/A','f-vreg':d.vehicle_reg_no,
         'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
         'f-vupto':d.valid_upto,'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
         'f-idistrict':d.issuing_district,'f-idate':d.issuance_date,'f-authority':d.authority_name,
@@ -3210,6 +3237,7 @@
       html += '<div class="verify-grid">';
       html += '<div>Reg: <span>' + escapeHtml(r.vehicle_reg_no || '-') + '</span></div>';
       html += '<div>Type: <span>' + escapeHtml(r.vehicle_type || '-') + '</span></div>';
+      html += '<div>Seats: <span>' + escapeHtml(r.seating_capacity || '-') + '</span></div>';
       html += '<div>Engine: <span>' + escapeHtml(r.engine_no || '-') + '</span></div>';
       html += '<div>Chassis: <span>' + escapeHtml(r.chassis_no || '-') + '</span></div>';
       html += '<div>CNIC: <span>' + escapeHtml(r.cnic_no || '-') + '</span></div>';

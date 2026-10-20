@@ -191,6 +191,7 @@
   </div>
   <div class="doc-row"><span class="lbl">3. OWNER ADDRESS:</span><span class="val">&nbsp;<span id="d-addr"></span></span></div>
   <div class="doc-row indent"><span class="lbl">VEHICLE TYPE:</span><span class="val">&nbsp;<span id="d-vtype"></span></span></div>
+  <div class="doc-row indent"><span class="lbl">SEATING CAPACITY:</span><span class="val">&nbsp;<span id="d-seats"></span></span></div>
   <div class="doc-row indent"><span class="lbl">4. VEHICLE REGISTRATION NO :</span><span class="lbl">&nbsp;<span id="d-vreg"></span></span></div>
   <div class="two-col-row">
     <div class="pair"><span class="lbl">ENGINE NO:</span><span class="val">&nbsp;<span id="d-eng"></span></span></div>
@@ -379,6 +380,7 @@
     set('d-cnic',      d.cnic_no);
     set('d-addr',      d.owner_address);
     set('d-vtype',     d.vehicle_type);
+    set('d-seats',     d.seating_capacity || 'N/A');
     set('d-vreg',      d.vehicle_reg_no);
     set('d-eng',       d.engine_no);
     set('d-chassis',   d.chassis_no);
