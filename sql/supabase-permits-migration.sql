@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS public.permits (
   cnic_no text,
   owner_address text,
   vehicle_type text,
+  seating_capacity text,
   vehicle_make text,
   vehicle_reg_no text,
   engine_no text,
@@ -38,6 +39,9 @@ CREATE TABLE IF NOT EXISTS public.permits (
 -- ── Existing table: add missing columns (fields 13 & 14 + doc type) ───────
 ALTER TABLE public.permits
   ADD COLUMN IF NOT EXISTS vehicle_make text;
+
+ALTER TABLE public.permits
+  ADD COLUMN IF NOT EXISTS seating_capacity text;
 
 ALTER TABLE public.permits
   ADD COLUMN IF NOT EXISTS guarantee_expiry text;

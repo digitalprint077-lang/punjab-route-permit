@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS permits (
   cnic_no TEXT,
   owner_address TEXT,
   vehicle_type TEXT,
+  seating_capacity TEXT,
   vehicle_make TEXT,
   vehicle_reg_no TEXT,
   engine_no TEXT,
