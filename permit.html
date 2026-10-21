@@ -670,7 +670,7 @@
     document.querySelectorAll('.mirror-rpno').forEach(function(el) {
       el.textContent = d.route_permit_no || '';
     });
-    set('d-fcno',      d.fc_no);
+    set('d-fcno',      d.fc_no || 'N/A');
     set('d-name',      d.full_name);
     set('d-cnic',      d.cnic_no);
     set('d-addr',      d.owner_address);
@@ -680,9 +680,9 @@
     set('d-vreg',      d.vehicle_reg_no);
     set('d-eng',       d.engine_no);
     set('d-chassis',   d.chassis_no);
-    set('d-iauth',     d.issue_authority);
-    set('d-vfrom',     d.valid_from);
-    set('d-vupto',     d.valid_upto);
+    set('d-iauth',     d.issue_authority || 'N/A');
+    set('d-vfrom',     d.valid_from || 'N/A');
+    set('d-vupto',     d.valid_upto || 'N/A');
     set('d-fee',       d.fee);
     set('d-psid',      d.psid_no);
     set('d-csig',      d.counter_sig_upto);

@@ -2619,7 +2619,7 @@
           </div>
           <div class="field-grid">
             <div class="fg"><label>Application No</label><input id="f-appno" value="334692"></div>
-            <div class="fg"><label>Fitness Cert No</label><input id="f-fcno" value="325"></div>
+            <div class="fg"><label>Fitness Cert No</label><input id="f-fcno" value="N/A"></div>
             <div class="fg span-2"><label id="lbl-rpno">Route Permit No (P.CO.P.NO)</label><input id="f-rpno" value="3221150/12026/PTA/LHR"></div>
           </div>
         </section>
@@ -2695,10 +2695,10 @@
             <p id="fitness-sub">Validity, fee and route coverage</p>
           </div>
           <div class="field-grid">
-            <div class="fg"><label>Issue Authority</label><input id="f-iauth" value="TDAS"></div>
+            <div class="fg"><label>Issue Authority</label><input id="f-iauth" value="N/A"></div>
             <div class="fg"><label>Issuing District</label><input id="f-idistrict" value="LAHORE"></div>
-            <div class="fg"><label>Valid From</label><input id="f-vfrom" value="30-01-2026"></div>
-            <div class="fg"><label>Valid Upto</label><input id="f-vupto" value="30-07-2026"></div>
+            <div class="fg"><label>Valid From</label><input id="f-vfrom" value="N/A"></div>
+            <div class="fg"><label>Valid Upto</label><input id="f-vupto" value="N/A"></div>
             <div class="fg"><label>Fee</label><input id="f-fee" value="10,550"></div>
             <div class="fg"><label>Counter Sig. Upto</label><input id="f-csig" value="04-02-2029"></div>
             <div class="fg permit-only"><label>13. Guarantee Expiry</label><input id="f-gexp" value="N/A"></div>
@@ -2836,10 +2836,10 @@
         <div class="perm-section-head">Fitness Status at the Time of Route Permit</div>
         <div class="perm-section-body perm-section-body-fit">
           <div class="perm-fitness-grid">
-            <div class="perm-fit-cell"><span class="perm-fit-label">CERTIFICATE NO</span><span class="perm-fit-val" id="d-fcno">325</span></div>
-            <div class="perm-fit-cell"><span class="perm-fit-label">ISSUE AUTHORITY</span><span class="perm-fit-val" id="d-iauth">TDAS</span></div>
-            <div class="perm-fit-cell"><span class="perm-fit-label">VALID FROM</span><span class="perm-fit-val" id="d-vfrom">30-01-2026</span></div>
-            <div class="perm-fit-cell"><span class="perm-fit-label">VALID UPTO</span><span class="perm-fit-val" id="d-vupto">30-07-2026</span></div>
+            <div class="perm-fit-cell"><span class="perm-fit-label">CERTIFICATE NO</span><span class="perm-fit-val" id="d-fcno">N/A</span></div>
+            <div class="perm-fit-cell"><span class="perm-fit-label">ISSUE AUTHORITY</span><span class="perm-fit-val" id="d-iauth">N/A</span></div>
+            <div class="perm-fit-cell"><span class="perm-fit-label">VALID FROM</span><span class="perm-fit-val" id="d-vfrom">N/A</span></div>
+            <div class="perm-fit-cell"><span class="perm-fit-label">VALID UPTO</span><span class="perm-fit-val" id="d-vupto">N/A</span></div>
           </div>
         </div>
       </div>
@@ -3094,9 +3094,10 @@
       s('f-vtype', 'TRUCK');
       s('f-seats', 'N/A');
       s('f-vmake', 'N/A');
-      s('f-iauth', 'TDAS');
-      s('f-vfrom', '30-01-2026');
-      s('f-vupto', '30-07-2026');
+      s('f-fcno', 'N/A');
+      s('f-iauth', 'N/A');
+      s('f-vfrom', 'N/A');
+      s('f-vupto', 'N/A');
       s('f-fee', '10,550');
       s('f-csig', '04-02-2029');
       s('f-gexp', 'N/A');
@@ -3114,6 +3115,10 @@
         var inp = document.getElementById('f-' + k);
         var el  = document.getElementById(fieldMap[k]);
         if (inp && el) el.textContent = inp.value;
+      });
+      ['d-fcno','d-iauth','d-vfrom','d-vupto'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && !String(el.textContent || '').trim()) el.textContent = 'N/A';
       });
       var rpnoEl = document.getElementById('d-rpno');
       if (rpnoEl) {
@@ -3749,10 +3754,10 @@
     <div class="perm-section-head">Fitness Status at the Time of Route Permit</div>
     <div class="perm-section-body perm-section-body-fit">
       <div class="perm-fitness-grid">
-        <div class="perm-fit-cell"><span class="perm-fit-label">CERTIFICATE NO</span><span class="perm-fit-val">` + data.fcno + `</span></div>
-        <div class="perm-fit-cell"><span class="perm-fit-label">ISSUE AUTHORITY</span><span class="perm-fit-val">` + data.iauth + `</span></div>
-        <div class="perm-fit-cell"><span class="perm-fit-label">VALID FROM</span><span class="perm-fit-val">` + data.vfrom + `</span></div>
-        <div class="perm-fit-cell"><span class="perm-fit-label">VALID UPTO</span><span class="perm-fit-val">` + data.vupto + `</span></div>
+        <div class="perm-fit-cell"><span class="perm-fit-label">CERTIFICATE NO</span><span class="perm-fit-val">` + (data.fcno || 'N/A') + `</span></div>
+        <div class="perm-fit-cell"><span class="perm-fit-label">ISSUE AUTHORITY</span><span class="perm-fit-val">` + (data.iauth || 'N/A') + `</span></div>
+        <div class="perm-fit-cell"><span class="perm-fit-label">VALID FROM</span><span class="perm-fit-val">` + (data.vfrom || 'N/A') + `</span></div>
+        <div class="perm-fit-cell"><span class="perm-fit-label">VALID UPTO</span><span class="perm-fit-val">` + (data.vupto || 'N/A') + `</span></div>
       </div>
     </div>
   </div>
@@ -3985,10 +3990,10 @@
       var recMode = isNocRecord(d) ? 'noc' : 'permit';
       setDocMode(recMode, { skipSnapshot: true, skipRestore: true });
       var map = {
-        'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
+        'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no || 'N/A','f-name':d.full_name,
         'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-seats':d.seating_capacity || 'N/A','f-vmake':d.vehicle_make,'f-vreg':d.vehicle_reg_no,
-        'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
-        'f-vupto':d.valid_upto,        'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
+        'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority || 'N/A','f-vfrom':d.valid_from || 'N/A',
+        'f-vupto':d.valid_upto || 'N/A',        'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
         'f-gexp':d.guarantee_expiry,'f-tpre':d.third_party_insurance_expiry,
         'f-idistrict':d.issuing_district,'f-idate':d.issuance_date,'f-authority':d.authority_name,
         'f-qrlink': normalizeDocQrUrl(d.qr_link, id, recMode)
@@ -3999,6 +4004,10 @@
       if (document.getElementById('f-tpre') && !d.third_party_insurance_expiry) document.getElementById('f-tpre').value = 'N/A';
       if (document.getElementById('f-vmake') && !d.vehicle_make) document.getElementById('f-vmake').value = 'N/A';
       if (document.getElementById('f-seats') && !d.seating_capacity) document.getElementById('f-seats').value = 'N/A';
+      if (document.getElementById('f-fcno') && !d.fc_no) document.getElementById('f-fcno').value = 'N/A';
+      if (document.getElementById('f-iauth') && !d.issue_authority) document.getElementById('f-iauth').value = 'N/A';
+      if (document.getElementById('f-vfrom') && !d.valid_from) document.getElementById('f-vfrom').value = 'N/A';
+      if (document.getElementById('f-vupto') && !d.valid_upto) document.getElementById('f-vupto').value = 'N/A';
       try { syncIssueDatePickerFromHidden(); } catch (ex) {}
       currentEditId = id;
       return openPrintTab(opts);
@@ -4783,10 +4792,10 @@
       editIdsByMode[docMode] = currentEditId;
       setDocMode(recMode, { skipSnapshot: true, skipRestore: true });
       var map = {
-        'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no,'f-name':d.full_name,
+        'f-appno':d.app_no,'f-rpno':d.route_permit_no,'f-fcno':d.fc_no || 'N/A','f-name':d.full_name,
         'f-cnic':d.cnic_no,'f-addr':d.owner_address,'f-vtype':d.vehicle_type,'f-seats':d.seating_capacity || 'N/A','f-vmake':d.vehicle_make,'f-vreg':d.vehicle_reg_no,
-        'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority,'f-vfrom':d.valid_from,
-        'f-vupto':d.valid_upto,        'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
+        'f-eng':d.engine_no,'f-chassis':d.chassis_no,'f-iauth':d.issue_authority || 'N/A','f-vfrom':d.valid_from || 'N/A',
+        'f-vupto':d.valid_upto || 'N/A',        'f-fee':d.fee,'f-psid':d.psid_no,'f-csig':d.counter_sig_upto,
         'f-gexp':d.guarantee_expiry,'f-tpre':d.third_party_insurance_expiry,
         'f-idistrict':d.issuing_district,'f-idate':d.issuance_date,'f-authority':d.authority_name,
         'f-qrlink':d.qr_link||''
@@ -4799,6 +4808,10 @@
       if (document.getElementById('f-tpre') && !d.third_party_insurance_expiry) document.getElementById('f-tpre').value = 'N/A';
       if (document.getElementById('f-vmake') && !d.vehicle_make) document.getElementById('f-vmake').value = 'N/A';
       if (document.getElementById('f-seats') && !d.seating_capacity) document.getElementById('f-seats').value = 'N/A';
+      if (document.getElementById('f-fcno') && !d.fc_no) document.getElementById('f-fcno').value = 'N/A';
+      if (document.getElementById('f-iauth') && !d.issue_authority) document.getElementById('f-iauth').value = 'N/A';
+      if (document.getElementById('f-vfrom') && !d.valid_from) document.getElementById('f-vfrom').value = 'N/A';
+      if (document.getElementById('f-vupto') && !d.valid_upto) document.getElementById('f-vupto').value = 'N/A';
       currentEditId = id;
       editIdsByMode[recMode] = id;
       var docUrl = normalizeDocQrUrl(d.qr_link, id, recMode);
