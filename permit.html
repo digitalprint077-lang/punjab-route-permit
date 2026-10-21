@@ -216,7 +216,7 @@
 
   .perm-fitness-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
   .perm-fit-cell {
     border-right: 1px solid #9DBCA9;
@@ -400,7 +400,6 @@
     </div>
     <div class="qr-box"><div id="qrcode-img"></div></div>
   </div>
-  <span id="d-fcno" hidden></span>
   <div class="perm-section">
     <div class="perm-section-head">Owner Details</div>
     <div class="perm-section-body">
@@ -428,6 +427,7 @@
     <div class="perm-section-head">Fitness Status at the Time of Route Permit</div>
     <div class="perm-section-body perm-section-body-fit">
       <div class="perm-fitness-grid">
+        <div class="perm-fit-cell"><span class="perm-fit-label">CERTIFICATE NO</span><span class="perm-fit-val" id="d-fcno"></span></div>
         <div class="perm-fit-cell"><span class="perm-fit-label">ISSUE AUTHORITY</span><span class="perm-fit-val" id="d-iauth"></span></div>
         <div class="perm-fit-cell"><span class="perm-fit-label">VALID FROM</span><span class="perm-fit-val" id="d-vfrom"></span></div>
         <div class="perm-fit-cell"><span class="perm-fit-label">VALID UPTO</span><span class="perm-fit-val" id="d-vupto"></span></div>
