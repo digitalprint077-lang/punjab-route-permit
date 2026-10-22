@@ -9,6 +9,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="site-gate.js"></script>
+<script src="site-analytics.js"></script>
 <style>
 
   @page { size: A4 portrait; margin: 0; }
@@ -381,6 +383,14 @@
     var d = result.data;
     document.getElementById('loading').style.display = 'none';
     document.getElementById('document').style.display = 'block';
+    if (window.PTASiteAnalytics) {
+      PTASiteAnalytics.track('noc_view', {
+        page: 'noc.html',
+        permit_id: id,
+        label: (d.vehicle_reg_no || 'NOC') + ' · ' + (d.issuing_district || ''),
+        vehicle_reg_no: d.vehicle_reg_no
+      }, sb);
+    }
 
     set('d-noc-appno', d.app_no);
     set('d-noc-pstno', d.route_permit_no);
