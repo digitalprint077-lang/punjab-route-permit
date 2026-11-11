@@ -3280,6 +3280,140 @@
     #app .dash-analytics-grid { grid-template-columns: 1fr; }
   }
 
+  #app #tab-dashboard.tab-panel { max-width: 1120px; }
+  #app .dash-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  #app .dash-card.today { border-top-color: #8a5a12; }
+  #app .dash-lookup,
+  #app .dash-panel {
+    background: #fffdf8;
+    border: 1px solid #e6dccb;
+    border-radius: 16px;
+    padding: 14px;
+  }
+  #app .dash-lookup label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #6e655a;
+  }
+  #app .dash-lookup-row { display: flex; gap: 8px; }
+  #app .dash-lookup-row input {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    border: 1px solid #e0d4c0;
+    border-radius: 10px;
+    padding: 0 12px;
+    background: #fff;
+    font: 600 14px 'Manrope', system-ui, sans-serif;
+    color: #1c1915;
+  }
+  #app .dash-lookup-row .pbtn { flex: 0 0 auto; min-width: 108px; }
+  #app .dash-lookup-note { min-height: 18px; margin: 8px 0 0; color: #9f2c22; font-size: 12px; font-weight: 700; }
+  #app .dash-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, .9fr);
+    gap: 14px;
+    align-items: start;
+  }
+  #app .dash-panel-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  #app .dash-panel-head h3,
+  #app .dash-site-head h3 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    color: #123528;
+  }
+  #app .dash-panel-head p,
+  #app .dash-site-head p { margin: 3px 0 0; color: #6e655a; font-size: 12.5px; }
+  #app .dash-text-btn {
+    border: none;
+    background: transparent;
+    color: #106040;
+    font: 800 13px 'Manrope', system-ui, sans-serif;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  #app .dash-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  #app .dash-actions .dash-quick-btn { width: 100%; min-width: 0; flex: none; }
+  #app .dash-recent-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    text-align: left;
+    border: 1px solid #efe6d6;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-family: 'Manrope', system-ui, sans-serif;
+  }
+  #app .dash-recent-row:hover { border-color: #106040; }
+  #app .dash-recent-kind {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #106040;
+  }
+  #app .dash-recent-main { min-width: 0; display: flex; flex-direction: column; }
+  #app .dash-recent-main strong { color: #123528; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #app .dash-recent-main em { color: #6e655a; font-style: normal; font-size: 12px; font-weight: 700; }
+  #app .dash-recent-date { color: #8a5a12; font-size: 12px; font-weight: 800; }
+  #app .dash-side { display: flex; flex-direction: column; gap: 14px; }
+  #app .dash-side .dash-analytics { margin: 0; }
+  #app .dash-side .site-switch-card { flex-direction: column; align-items: stretch; }
+  #app .dash-side .site-switch-card .pbtn { width: 100%; }
+  #app.mode-dark .dash-lookup,
+  #app.mode-dark .dash-panel,
+  #app.mode-dark .dash-recent-row {
+    background: #1c1a17;
+    border-color: #3a342c;
+    color: #f7f3ea;
+  }
+  #app.mode-dark .dash-lookup label,
+  #app.mode-dark .dash-panel-head p,
+  #app.mode-dark .dash-recent-main em { color: #cbbfaa; }
+  #app.mode-dark .dash-panel-head h3,
+  #app.mode-dark .dash-recent-main strong { color: #f7f3ea; }
+  #app.mode-dark .dash-lookup-row input {
+    background: #141210;
+    border-color: #4a4338;
+    color: #f7f3ea;
+  }
+  #app.mode-dark .dash-text-btn,
+  #app.mode-dark .dash-recent-kind,
+  #app.mode-dark .dash-recent-date { color: #e7d3a1; }
+  #app.mode-dark .dash-card.today { border-top-color: #e7d3a1; }
+  @media screen and (max-width: 980px) {
+    #app .dash-layout { grid-template-columns: 1fr; }
+    #app .dash-metrics { grid-template-columns: 1fr 1fr; }
+  }
+  @media screen and (max-width: 560px) {
+    #app .dash-metrics,
+    #app .dash-actions { grid-template-columns: 1fr; }
+    #app .dash-lookup-row { flex-direction: column; }
+    #app .dash-recent-row { grid-template-columns: 64px minmax(0, 1fr); }
+    #app .dash-recent-date { grid-column: 2; }
+    #app .dash-hero { flex-direction: column; }
+  }
+
 </style>
 </head>
 <body>
@@ -3435,16 +3569,16 @@
         <div class="dash-shell">
           <div class="dash-hero">
             <div>
-              <p class="dash-kicker">Overview</p>
-              <h2 class="dash-title">Control Center</h2>
-              <p class="dash-sub">Live snapshot of permits and NOCs in your workspace.</p>
+              <p class="dash-kicker">Staff desk</p>
+              <h2 class="dash-title">Today’s work</h2>
+              <p class="dash-sub">Check a registration, open a recent record, or start a new permit.</p>
             </div>
             <button type="button" class="dash-refresh" onclick="loadDashboardStats()">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg>
               <span>Refresh</span>
             </button>
           </div>
-          <div class="dash-grid">
+          <div class="dash-metrics">
             <article class="dash-card permits">
               <div class="dash-card-top">
                 <span class="dash-card-label">Route Permits</span>
@@ -3461,66 +3595,112 @@
               <div class="dash-stat-value" id="dash-noc-count">—</div>
               <div class="dash-stat-hint">Saved NOC records</div>
             </article>
-            <article class="dash-card total dash-card-wide">
+            <article class="dash-card total">
               <div class="dash-card-top">
                 <span class="dash-card-label">Total Documents</span>
                 <span class="dash-card-icon" aria-hidden="true">Σ</span>
               </div>
               <div class="dash-stat-value" id="dash-total-count">—</div>
-              <div class="dash-stat-hint">Created today: <strong id="dash-today-count">—</strong></div>
+              <div class="dash-stat-hint">Permits and NOCs</div>
+            </article>
+            <article class="dash-card today">
+              <div class="dash-card-top">
+                <span class="dash-card-label">Created today</span>
+                <span class="dash-card-icon" aria-hidden="true">TD</span>
+              </div>
+              <div class="dash-stat-value" id="dash-today-count">—</div>
+              <div class="dash-stat-hint">New records since midnight</div>
             </article>
           </div>
-          <div class="dash-analytics">
-            <div class="dash-site-head">
-              <h3>Website analytics</h3>
-              <p>Public traffic — home, verification searches, and document views (last 7 days)</p>
+          <form class="dash-lookup" onsubmit="return dashLookupReg(event)">
+            <label for="dash-reg-lookup">Check a registration</label>
+            <div class="dash-lookup-row">
+              <input id="dash-reg-lookup" placeholder="e.g. TAK 325 PESHAWAR" autocomplete="off">
+              <button type="submit" class="pbtn pbtn-gold">Check</button>
             </div>
-            <div class="dash-grid dash-analytics-grid">
-              <article class="dash-card analytics">
-                <div class="dash-card-top"><span class="dash-card-label">Today</span></div>
-                <div class="dash-stat-value" id="an-today">—</div>
-              </article>
-              <article class="dash-card analytics">
-                <div class="dash-card-top"><span class="dash-card-label">7-day total</span></div>
-                <div class="dash-stat-value" id="an-week">—</div>
-              </article>
-              <article class="dash-card analytics">
-                <div class="dash-card-top"><span class="dash-card-label">Verifications</span></div>
-                <div class="dash-stat-value" id="an-verifies">—</div>
-              </article>
-              <article class="dash-card analytics">
-                <div class="dash-card-top"><span class="dash-card-label">Doc views</span></div>
-                <div class="dash-stat-value" id="an-doc-views">—</div>
-              </article>
-            </div>
-            <div class="analytics-bars" id="analytics-bars" aria-hidden="true"></div>
-            <div class="analytics-top-list" id="analytics-top-list"><p class="analytics-empty">Loading analytics…</p></div>
-            <p class="analytics-note" id="analytics-note"></p>
-          </div>
-          <div class="dash-quick">
-            <button type="button" class="dash-quick-btn primary" onclick="switchTab('tab-edit', document.querySelectorAll('.panel-tab')[1])">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg>
-              <span>New Document</span>
-            </button>
-            <button type="button" class="dash-quick-btn" onclick="switchTab('tab-records', document.querySelectorAll('.panel-tab')[2])">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg>
-              <span>Saved List</span>
-            </button>
-          </div>
-          <div class="dash-site">
-            <div class="dash-site-head">
-              <h3>Public website</h3>
-              <p>Turn verification and permit pages on or off for all visitors</p>
-            </div>
-            <div class="site-switch-card" id="site-switch-card">
-              <div>
-                <div class="site-switch-label">Website status</div>
-                <div class="site-switch-value" id="site-switch-value">Checking…</div>
-                <div class="site-switch-hint" id="site-switch-hint">Home, verify, and permit links follow this switch</div>
+            <p class="dash-lookup-note" id="dash-lookup-note"></p>
+          </form>
+          <div class="dash-layout">
+            <section class="dash-panel dash-recent-panel">
+              <div class="dash-panel-head">
+                <div>
+                  <h3>Recent records</h3>
+                  <p>Open a saved permit or NOC</p>
+                </div>
+                <button type="button" class="dash-text-btn" onclick="switchTab('tab-records', document.querySelectorAll('.panel-tab')[2])">View all</button>
               </div>
-              <button type="button" class="pbtn pbtn-glass" id="site-switch-btn" onclick="togglePublicSite()">Disable website</button>
+              <div id="dash-recent"><p class="analytics-empty">Loading recent records…</p></div>
+            </section>
+            <div class="dash-side">
+              <section class="dash-panel">
+                <div class="dash-panel-head">
+                  <div>
+                    <h3>Quick actions</h3>
+                    <p>Start the next task</p>
+                  </div>
+                </div>
+                <div class="dash-actions">
+                  <button type="button" class="dash-quick-btn primary" onclick="switchTab('tab-edit', document.querySelectorAll('.panel-tab')[1]); clearForm();">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg>
+                    <span>New permit</span>
+                  </button>
+                  <button type="button" class="dash-quick-btn" onclick="switchTab('tab-records', document.querySelectorAll('.panel-tab')[2])">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg>
+                    <span>Saved list</span>
+                  </button>
+                  <button type="button" class="dash-quick-btn" onclick="switchTab('tab-verify', document.querySelectorAll('.panel-tab')[3])">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1 14.2-3.7-3.7 1.4-1.4L11 13.4l4.8-4.8 1.4 1.4L11 16.2Z"/></svg>
+                    <span>Verify vehicle</span>
+                  </button>
+                  <button type="button" class="dash-quick-btn" onclick="openLivePreview()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c-5 0-9.3 3.1-11 7 1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 .01 6A3 3 0 0 0 12 9z"/></svg>
+                    <span>Preview</span>
+                  </button>
+                </div>
+              </section>
+              <section class="dash-panel dash-site">
+                <div class="dash-site-head">
+                  <h3>Public website</h3>
+                  <p>Turn verification and permit pages on or off for all visitors</p>
+                </div>
+                <div class="site-switch-card" id="site-switch-card">
+                  <div>
+                    <div class="site-switch-label">Website status</div>
+                    <div class="site-switch-value" id="site-switch-value">Checking…</div>
+                    <div class="site-switch-hint" id="site-switch-hint">Home, verify, and permit links follow this switch</div>
+                  </div>
+                  <button type="button" class="pbtn pbtn-glass" id="site-switch-btn" onclick="togglePublicSite()">Disable website</button>
+                </div>
+                <p class="site-switch-msg" id="site-switch-msg" style="display:none"></p>
+              </section>
+              <section class="dash-analytics">
+                <div class="dash-site-head">
+                  <h3>Website analytics</h3>
+                  <p>Public traffic for the last 7 days</p>
+                </div>
+                <div class="dash-grid dash-analytics-grid">
+                  <article class="dash-card analytics">
+                    <div class="dash-card-top"><span class="dash-card-label">Today</span></div>
+                    <div class="dash-stat-value" id="an-today">—</div>
+                  </article>
+                  <article class="dash-card analytics">
+                    <div class="dash-card-top"><span class="dash-card-label">7-day total</span></div>
+                    <div class="dash-stat-value" id="an-week">—</div>
+                  </article>
+                  <article class="dash-card analytics">
+                    <div class="dash-card-top"><span class="dash-card-label">Verifications</span></div>
+                    <div class="dash-stat-value" id="an-verifies">—</div>
+                  </article>
+                  <article class="dash-card analytics">
+                    <div class="dash-card-top"><span class="dash-card-label">Doc views</span></div>
+                    <div class="dash-stat-value" id="an-doc-views">—</div>
+                  </article>
+                </div>
+                <div class="analytics-bars" id="analytics-bars" aria-hidden="true"></div>
+                <div class="analytics-top-list" id="analytics-top-list"><p class="analytics-empty">Loading analytics…</p></div>
+                <p class="analytics-note" id="analytics-note"></p>
+              </section>
             </div>
-            <p class="site-switch-msg" id="site-switch-msg" style="display:none"></p>
           </div>
         </div>
       </div>
@@ -5800,6 +5980,7 @@
       setDash('—', '—', '—', '—');
       try { loadSiteStatus(); } catch (exSiteOff) {}
       try { loadWebsiteAnalytics(); } catch (exAnOff) {}
+      try { loadRecentPermits(); } catch (exRecentOff) {}
       return;
     }
     supabaseClient.from('permits').select('id,doc_type,qr_link,created_at').then(function(result) {
@@ -5826,6 +6007,70 @@
     });
     try { loadSiteStatus(); } catch (exSite) {}
     try { loadWebsiteAnalytics(); } catch (exAn) {}
+    try { loadRecentPermits(); } catch (exRecent) {}
+  }
+
+  function renderRecentPermits(rows) {
+    var el = document.getElementById('dash-recent');
+    if (!el) return;
+    if (!rows || !rows.length) {
+      el.innerHTML = '<p class="analytics-empty">No saved records yet.</p>';
+      return;
+    }
+    el.innerHTML = rows.map(function(r) {
+      var kind = isNocRecord(r) ? 'NOC' : 'Permit';
+      return '<button type="button" class="dash-recent-row" data-recent-id="' + escapeHtml(r.id) + '">' +
+        '<span class="dash-recent-kind">' + kind + '</span>' +
+        '<span class="dash-recent-main"><strong>' + escapeHtml(r.full_name || 'Untitled') + '</strong><em>' + escapeHtml(r.vehicle_reg_no || 'No registration') + '</em></span>' +
+        '<span class="dash-recent-date">' + escapeHtml((r.created_at || '').substring(0, 10) || '—') + '</span>' +
+      '</button>';
+    }).join('');
+  }
+
+  function loadRecentPermits() {
+    var el = document.getElementById('dash-recent');
+    if (!el) return;
+    initSupabase();
+    if (!supabaseClient) {
+      el.innerHTML = '<p class="analytics-empty">Sign in to see recent records.</p>';
+      return;
+    }
+    el.innerHTML = '<p class="analytics-empty">Loading recent records…</p>';
+    supabaseClient.from('permits').select('id,full_name,vehicle_reg_no,app_no,doc_type,qr_link,created_at').order('created_at', { ascending: false }).limit(6).then(function(result) {
+      if (result.error && /doc_type|schema cache|column/i.test(String(result.error.message || ''))) {
+        return supabaseClient.from('permits').select('id,full_name,vehicle_reg_no,app_no,qr_link,created_at').order('created_at', { ascending: false }).limit(6);
+      }
+      return result;
+    }).then(function(result) {
+      if (!result || result.error) {
+        el.innerHTML = '<p class="analytics-empty">Recent records are unavailable.</p>';
+        return;
+      }
+      var rows = (result.data || []).filter(function(r) {
+        return !(window.PTASiteGate && PTASiteGate.isStatusRecord && PTASiteGate.isStatusRecord(r));
+      }).slice(0, 5);
+      renderRecentPermits(rows);
+    }).catch(function() {
+      el.innerHTML = '<p class="analytics-empty">Recent records are unavailable.</p>';
+    });
+  }
+
+  function dashLookupReg(event) {
+    if (event && event.preventDefault) event.preventDefault();
+    var input = document.getElementById('dash-reg-lookup');
+    var note = document.getElementById('dash-lookup-note');
+    var value = input ? String(input.value || '').trim() : '';
+    if (!value) {
+      if (note) note.textContent = 'Enter a registration number.';
+      return false;
+    }
+    if (note) note.textContent = '';
+    var dest = document.getElementById('f-verify-reg');
+    if (dest) dest.value = value;
+    var tab = document.querySelectorAll('.panel-tab')[3];
+    if (tab) switchTab('tab-verify', tab);
+    runVehicleVerify();
+    return false;
   }
 
   function loadRecords() {
@@ -5931,7 +6176,7 @@
         } catch (ex) {}
       }
       showMsg('Record loaded!', true);
-      var t = document.querySelector('.panel-tab');
+      var t = document.querySelectorAll('.panel-tab')[1];
       if (t) switchTab('tab-edit', t);
     } catch (err) {
       showMsg((err && err.message) || 'Load failed', false);
@@ -6213,6 +6458,11 @@
     var openBtn = e.target && e.target.closest ? e.target.closest('[data-exist-id]') : null;
     if (openBtn) {
       openExistingPermit(openBtn.getAttribute('data-exist-id'));
+      return;
+    }
+    var recentBtn = e.target && e.target.closest ? e.target.closest('[data-recent-id]') : null;
+    if (recentBtn) {
+      loadRecord(recentBtn.getAttribute('data-recent-id'));
       return;
     }
     var m = document.getElementById('pwd-modal');
