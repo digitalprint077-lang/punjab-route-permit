@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#038b45">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,680&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Route Permit - Punjab Provincial Transport Authority</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
 </script>
@@ -2177,7 +2177,7 @@
   }
   #site-offline-banner {
     display: none;
-    margin: 0 14px 10px;
+    margin: 0 28px 12px;
     padding: 9px 12px;
     border-radius: 10px;
     background: #fff5f4;
@@ -2382,6 +2382,618 @@
     }
   }
 
+
+  /* ══ STAFF UI REFRESH — chrome only; permit document untouched ══ */
+  :root {
+    --ink: #1c1915;
+    --sea: #106040;
+    --sea-deep: #0b3d28;
+    --line: #e4d8c4;
+    --muted: #6e655a;
+    --mist: #f3eee4;
+    --paper: #f7f3ea;
+    --gold: #b0893e;
+    --font-ui: 'Manrope', system-ui, sans-serif;
+    --font-display: 'Fraunces', Georgia, serif;
+  }
+  #login-overlay { background: #10281c; }
+  .login-ambient {
+    background:
+      radial-gradient(700px 320px at 0% 0%, rgba(176,137,62,.22), transparent 55%),
+      linear-gradient(165deg, #10281c 0%, #1a3d2c 100%);
+  }
+  .login-ambient::before,
+  .login-orb { display: none; }
+  #login-shell { width: min(940px, 100%); gap: 36px; }
+  .login-emblem {
+    border-radius: 8px;
+    background: #b0893e;
+    box-shadow: none;
+  }
+  .login-kicker { color: #e7d3a1; letter-spacing: .18em; }
+  .login-brand em { color: #f3e2b8; }
+  #login-box {
+    background: #fffdf8;
+    border: 1px solid #efe4d0;
+    border-top: 6px solid #b0893e;
+    border-radius: 8px;
+    box-shadow: 0 28px 60px rgba(0,0,0,.28);
+  }
+  #login-box::before { display: none; }
+  .login-session-badge { background: #f3eee4; color: #0b3d28; border-radius: 6px; }
+  #login-box .login-title { font-family: 'Fraunces', Georgia, serif; color: #123528; }
+  .login-input-wrap { border-radius: 8px; background: #fff; border-color: #e4d8c4; }
+  .login-input-wrap:focus-within { border-color: #106040; box-shadow: 0 0 0 3px rgba(16,96,64,.14); }
+  #login-box .login-btn {
+    background: #106040;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+  #login-box .login-btn:hover { background: #0b3d28; }
+  .login-overlay-foot { color: rgba(246,241,231,.62); }
+
+  #app { background: #e8e0d2; }
+  #panel { width: 470px; min-width: 470px; max-width: 470px; }
+  #panel-header {
+    background: #123528;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 14px 30px rgba(18,53,40,.22);
+  }
+  .panel-brand-icon {
+    background: #b0893e;
+    border-radius: 8px;
+    box-shadow: none;
+    color: #1c1915;
+  }
+  .panel-brand-title { color: #f7f3ea; }
+  .panel-brand-sub { color: rgba(247,243,234,.7); }
+  .live-badge {
+    color: #f3e2b8;
+    background: rgba(255,255,255,.1);
+    border-color: transparent;
+  }
+  .icon-btn {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.14);
+    color: #f7f3ea;
+    border-radius: 8px;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,.16); color: #fff; }
+  .icon-btn-danger {
+    background: rgba(180,35,24,.22);
+    border-color: rgba(255,180,170,.25);
+    color: #ffd0c8;
+  }
+  .panel-tab {
+    background: rgba(255,255,255,.08);
+    color: rgba(247,243,234,.78);
+    border-radius: 8px;
+  }
+  .panel-tab.active {
+    background: #f7f3ea;
+    color: #123528;
+    border-color: #f7f3ea;
+    box-shadow: none;
+  }
+  .panel-tab:hover:not(.active) {
+    background: rgba(255,255,255,.16);
+    color: #fff;
+    border-color: transparent;
+  }
+  #panel-body::-webkit-scrollbar-thumb { background: rgba(18,53,40,.35); }
+
+  .form-section {
+    background: #fffdf8;
+    border: 1px solid #e6dcc8;
+    border-top: 3px solid #106040;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  .form-section-head { border-bottom-color: #efe6d6; }
+  .form-section-head h3 { color: #123528; }
+  .fg label { color: #6e655a; letter-spacing: .06em; }
+  .fg input, .fg textarea, .fg select, .search-box input {
+    background: #fff;
+    border: 1px solid #e0d4c0;
+    border-radius: 8px;
+    color: #1c1915;
+  }
+  .fg input:focus, .fg textarea:focus, .fg select:focus, .search-box input:focus {
+    background: #fff;
+    border-color: #106040;
+    box-shadow: 0 0 0 3px rgba(16,96,64,.14);
+  }
+  .doc-type-btn { border-radius: 8px; border-color: #e0d4c0; }
+  .doc-type-btn.active { background: #106040; border-color: #106040; }
+  .pbtn, .search-box button, .btn-load-all, .card-btn-load, .btn-bulk-action { border-radius: 8px; }
+  .pbtn-gold, .search-box button, .btn-load-all, .card-btn-load {
+    background: #106040;
+    box-shadow: none;
+  }
+  .pbtn-gold:hover, .search-box button:hover, .btn-load-all:hover, .card-btn-load:hover {
+    background: #0b3d28;
+    box-shadow: none;
+  }
+  .pbtn-glass { border-radius: 8px; background: #fff; }
+  .panel-actions {
+    background: #fffdf8;
+    border: 1px solid #e6dcc8;
+    border-radius: 12px;
+    box-shadow: 0 -10px 24px rgba(28,25,21,.06);
+  }
+  .permit-card {
+    background: #fffdf8;
+    border: 1px solid #e6dcc8;
+    border-left: 4px solid #106040;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  .permit-card-num { color: #106040; }
+  .dash-card, .site-switch-card, .analytics-bars, .analytics-top-row {
+    background: #fffdf8;
+    border-color: #e6dcc8;
+    box-shadow: none;
+  }
+  .dash-card.permits, .dash-card.nocs, .dash-card.total {
+    background: #fffdf8;
+  }
+  .dash-card .dash-stat-value, .dash-stat-value { color: #123528; }
+  .dash-refresh, .verify-official { border-radius: 8px; }
+  #preview-area {
+    background:
+      linear-gradient(180deg, #ddd4c4 0%, #d2c8b6 100%);
+  }
+
+  .mode-dark #app { background: #12110f; }
+  .mode-dark #panel-header { background: #0d241b; }
+  .mode-dark .form-section,
+  .mode-dark .panel-actions,
+  .mode-dark .permit-card,
+  .mode-dark .dash-card,
+  .mode-dark .site-switch-card {
+    background: #1c1a17;
+    border-color: #3a342c;
+  }
+  .mode-dark .form-section { border-top-color: #b0893e; }
+  .mode-dark .panel-brand-title,
+  .mode-dark .form-section-head h3,
+  .mode-dark .permit-card-name,
+  .mode-dark .dash-stat-value { color: #f7f3ea; }
+  .mode-dark .fg label,
+  .mode-dark .form-section-head p,
+  .mode-dark .panel-brand-sub { color: #b7ab9a; }
+  .mode-dark .fg input,
+  .mode-dark .fg textarea,
+  .mode-dark .fg select,
+  .mode-dark .search-box input {
+    background: #141210;
+    border-color: #3a342c;
+    color: #f7f3ea;
+  }
+  .mode-dark .panel-tab { background: rgba(255,255,255,.06); color: #d9d0c2; }
+  .mode-dark .panel-tab.active { background: #f7f3ea; color: #123528; }
+  .mode-dark .pbtn-glass, .mode-dark .hbtn, .mode-dark .icon-btn {
+    background: #241f1a;
+    color: #f7f3ea;
+    border-color: #3a342c;
+  }
+  .mode-dark #preview-area { background: #1a1814; }
+
+  .login-emblem svg { fill: #123528; }
+  .login-brand em {
+    background: none;
+    -webkit-text-fill-color: #f6e7c3;
+    color: #f6e7c3;
+  }
+  .login-trust { gap: 6px; margin-bottom: 18px; }
+  .login-trust li {
+    background: transparent;
+    border-color: rgba(231, 211, 161, .4);
+    color: rgba(247, 243, 234, .82);
+    letter-spacing: .08em;
+    font-size: 10px;
+    padding: 5px 9px;
+  }
+  .login-points { gap: 2px; }
+  .login-points li {
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    backdrop-filter: none;
+    border-radius: 0;
+  }
+  .login-points li svg { fill: #e7d3a1; }
+  #login-box {
+    border-radius: 18px;
+    border-top-width: 4px;
+    box-shadow: 0 24px 50px rgba(0, 0, 0, .32);
+  }
+  .login-enter-hint { color: #8a8174; }
+  .login-enter-hint kbd {
+    background: #f7f3ea;
+    border-color: #e4d8c4;
+    color: #123528;
+  }
+  .dash-hero {
+    background: #123528;
+    border: none;
+    box-shadow: none;
+  }
+  .dash-kicker { color: #e7d3a1; }
+  .dash-title { color: #f7f3ea; font-size: 24px; }
+  .dash-sub { color: rgba(247, 243, 234, .74); }
+  .dash-refresh {
+    background: rgba(255, 255, 255, .1);
+    color: #f7f3ea;
+    border-color: transparent;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+  .dash-refresh:hover { color: #fff; border-color: transparent; background: rgba(255, 255, 255, .16); }
+  .dash-card {
+    box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 8px 18px rgba(28, 25, 21, .045);
+  }
+  .dash-card.permits { background: linear-gradient(165deg, #fffdf8 0%, #e7f3ec 100%); }
+  .dash-card.nocs { background: linear-gradient(165deg, #fffdf8 0%, #f8f1e3 100%); }
+  .dash-card.total { background: linear-gradient(165deg, #fffdf8 0%, #f3eee4 100%); }
+  .dash-card.permits .dash-card-icon { background: rgba(16, 96, 64, .14); color: #106040; }
+  .dash-card.nocs .dash-card-icon { background: rgba(176, 137, 62, .2); color: #8a5a12; }
+  .dash-card.total .dash-card-icon { background: rgba(18, 53, 40, .1); color: #123528; }
+  .dash-card.permits .dash-stat-value { color: #106040; }
+  .dash-card.nocs .dash-stat-value { color: #8a5a12; }
+  .dash-card.total .dash-stat-value { color: #123528; }
+  .dash-quick-btn { border-radius: 10px; background: #fffdf8; }
+  .dash-quick-btn.primary { background: #106040; box-shadow: none; }
+  .form-section { box-shadow: 0 10px 24px rgba(28, 25, 21, .045); }
+  .panel-tab { font-weight: 700; }
+  #preview-area { padding: 32px 28px 40px; }
+
+  .mode-dark .dash-hero { background: #0d241b; }
+  .mode-dark .dash-title { color: #f7f3ea; }
+  .mode-dark .dash-sub { color: rgba(247, 243, 234, .7); }
+  .mode-dark .dash-card.permits,
+  .mode-dark .dash-card.nocs,
+  .mode-dark .dash-card.total { background: #1c1a17; }
+  .mode-dark .dash-quick-btn.primary { background: #106040; color: #fff; }
+
+  @media screen and (max-width: 900px) {
+    #panel { width: 100%; min-width: 0; max-width: none; }
+    #preview-area { padding: 16px 8px; }
+  }
+
+  #app { justify-content: center; }
+  #panel {
+    width: min(920px, 100%);
+    min-width: 0;
+    max-width: 920px;
+  }
+  #preview-area { display: none !important; }
+  #app.preview-open #preview-area {
+    display: flex !important;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 22px 16px 32px;
+    overflow: auto;
+    background: rgba(16, 24, 20, .62);
+  }
+  .preview-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    gap: 8px;
+    width: min(420px, 100%);
+  }
+  .preview-toolbar .pbtn { min-width: 120px; }
+  .custom-value { margin-top: 6px; }
+  .btn-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .btn-row-main { grid-template-columns: 1fr; }
+  .pbtn, .dash-quick-btn, .btn-load-all, .search-box button, .btn-bulk-action, .card-btn-load, .card-btn-del, #login-box .login-btn {
+    min-height: 44px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: .01em;
+    box-shadow: none;
+  }
+  .pbtn-gold, .dash-quick-btn.primary, .btn-load-all, .search-box button, .card-btn-load {
+    background: #106040;
+    color: #fff;
+    border: 1px solid #0b3d28;
+  }
+  .pbtn-gold:hover, .dash-quick-btn.primary:hover, .btn-load-all:hover, .search-box button:hover, .card-btn-load:hover {
+    background: #0b3d28;
+    color: #fff;
+  }
+  .pbtn-glass, .dash-quick-btn, .card-btn-del, .btn-bulk-action {
+    background: #fffdf8;
+    color: #123528;
+    border: 1px solid #d9ccb6;
+  }
+  .pbtn-glass:hover, .dash-quick-btn:hover, .btn-bulk-action:hover {
+    background: #f4efe4;
+    color: #0b3d28;
+    border-color: #106040;
+  }
+  .card-btn-del { color: #9f2c22; border-color: #e7c4be; }
+  .card-btn-del:hover { background: #fff1ef; color: #9f2c22; }
+
+  #app { justify-content: flex-start; background: #efe8dc; }
+  #app-sidebar {
+    width: 252px;
+    min-width: 252px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #10281c;
+    color: #f7f3ea;
+    padding: 18px 14px 14px;
+    gap: 6px;
+  }
+  .side-brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 14px; }
+  .side-logo svg { width: 44px; height: 44px; display: block; }
+  .side-kicker { margin: 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #e7d3a1; font-weight: 800; }
+  .side-name { margin: 2px 0 0; font-family: 'Fraunces', Georgia, serif; font-size: 18px; font-weight: 650; }
+  .side-label { margin: 10px 8px 4px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(247,243,234,.5); font-weight: 700; }
+  .side-nav, .side-tools { display: flex; flex-direction: column; gap: 4px; }
+  #app-sidebar .panel-tab, .side-tool, .side-logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    border: none;
+    background: transparent;
+    color: rgba(247,243,234,.82);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  #app-sidebar .panel-tab svg { width: 16px; height: 16px; fill: currentColor; }
+  #app-sidebar .panel-tab.active {
+    background: #f7f3ea;
+    color: #123528;
+    box-shadow: none;
+  }
+  #app-sidebar .panel-tab:hover:not(.active), .side-tool:hover, .side-logout:hover { background: rgba(255,255,255,.08); color: #fff; }
+  .side-tools { margin-top: 4px; }
+  .side-logout { margin-top: auto; color: #ffd0c8; }
+  #panel { width: auto; min-width: 0; max-width: none; flex: 1; background: transparent; }
+  #panel-header { background: transparent; box-shadow: none; border-radius: 0; padding: 0; }
+  #pwd-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(16, 24, 20, .62);
+  }
+  .pwd-card {
+    width: min(420px, 100%);
+    background: #fffdf8;
+    border-radius: 18px;
+    border-top: 4px solid #b0893e;
+    padding: 26px 24px 22px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.28);
+  }
+  .pwd-kicker { margin: 0 0 6px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #8a5a12; font-weight: 800; }
+  .pwd-card h2 { margin: 0 0 8px; font-family: 'Fraunces', Georgia, serif; color: #123528; font-size: 28px; }
+  .pwd-lead { margin: 0 0 16px; color: #6e655a; font-size: 13.5px; line-height: 1.5; }
+  .pwd-card label { display: block; margin: 12px 0 6px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: #6e655a; font-weight: 800; }
+  .pwd-card input {
+    width: 100%;
+    border: 1px solid #e0d4c0;
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px 12px;
+    font: 600 15px 'Manrope', system-ui, sans-serif;
+    color: #1c1915;
+  }
+  .pwd-card input:focus { outline: none; border-color: #106040; box-shadow: 0 0 0 3px rgba(16,96,64,.14); }
+  #pwd-msg { display: none; margin-top: 12px; padding: 8px 10px; border-radius: 8px; text-align: center; font-size: 13px; font-weight: 700; }
+  .pwd-actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 8px; margin-top: 16px; }
+  @media screen and (max-width: 900px) {
+    #app { flex-direction: column; height: auto; overflow: auto; }
+    #app-sidebar { width: 100%; min-width: 0; height: auto; }
+    .side-nav { display: grid; grid-template-columns: 1fr 1fr; }
+    .side-foot { margin-top: 8px; }
+    #panel { width: 100%; max-width: none; height: auto; }
+  }
+
+  #app { background: #e8e0d2; }
+  #app #app-sidebar {
+    background: linear-gradient(180deg, #143528 0%, #0c2219 100%);
+    border-right: 1px solid rgba(0,0,0,.18);
+    padding: 20px 12px 14px;
+    gap: 2px;
+  }
+  #app .side-brand {
+    margin: 0 6px 8px;
+    padding: 2px 4px 16px;
+    border-bottom: 1px solid rgba(247,243,234,.12);
+  }
+  #app .side-logo svg { width: 42px; height: 42px; filter: drop-shadow(0 6px 10px rgba(0,0,0,.18)); }
+  #app .side-label { margin: 14px 10px 6px; }
+  #app-sidebar .panel-tab,
+  #app .side-tool,
+  #app .side-logout {
+    min-height: 42px;
+    border-radius: 12px;
+    padding: 9px 12px;
+  }
+  #app-sidebar .panel-tab svg,
+  #app .side-tool svg,
+  #app .side-logout svg { width: 16px; height: 16px; fill: currentColor; }
+  #app-sidebar .panel-tab.active {
+    background: #f7f3ea;
+    color: #123528;
+    box-shadow: inset 3px 0 0 #b0893e;
+  }
+  #app .side-foot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(247,243,234,.12);
+  }
+  #app .side-pill {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.12);
+    color: #e7d3a1;
+  }
+  #theme-btn.is-dark .side-pill { background: #123528; color: #f7f3ea; }
+  #app .side-logout { color: #f7f3ea; }
+  #app .side-logout:hover { background: rgba(159,44,34,.42); color: #fff; }
+  #app #panel { padding: 0; gap: 0; background: transparent; }
+  #app #panel-header {
+    background: rgba(255,253,248,.92);
+    border: none;
+    border-bottom: 1px solid #e4d8c6;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .workspace-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 72px;
+    padding: 14px 28px;
+  }
+  .workspace-kicker {
+    margin: 0 0 2px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #8a5a12;
+  }
+  .workspace-bar h2 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    font-weight: 650;
+    color: #123528;
+    line-height: 1.1;
+  }
+  .workspace-bar .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #e7f3ec;
+    color: #106040;
+    border: 1px solid #c9e4d4;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .workspace-bar .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #106040;
+    box-shadow: 0 0 0 4px rgba(16,96,64,.16);
+  }
+  #app #panel-body { padding: 20px 28px 32px; }
+  #app .tab-panel { max-width: 1080px; margin: 0 auto; }
+  #app .dash-shell { gap: 16px; }
+  #app .dash-hero { border-radius: 18px; padding: 18px 18px 16px; }
+  #app .dash-card, #app .site-switch-card, #app .form-section, #app .panel-actions {
+    border-radius: 16px;
+    border-color: #e6dccb;
+  }
+  #app .form-section { background: #fffdf8; padding: 16px 16px 6px; }
+  #app .panel-actions {
+    background: rgba(255,253,248,.96);
+    border: 1px solid #e6dccb;
+    padding: 12px;
+  }
+  #app .doc-type-switch {
+    background: #f4efe4;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+  }
+  #app .doc-type-btn {
+    border: none;
+    background: transparent;
+    color: #3d4a42;
+    border-radius: 9px;
+    min-height: 40px;
+  }
+  #app .doc-type-btn.active { background: #106040; color: #fff; }
+  #app .search-box input { min-height: 44px; background: #fff; border-radius: 10px; }
+  #app .records-bulk-bar { background: #f7f3ea; border-color: #e6dccb; }
+  .pwd-input { position: relative; }
+  .pwd-input input { padding-right: 64px; }
+  .pwd-eye {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    border: none;
+    background: #f4efe4;
+    color: #123528;
+    border-radius: 8px;
+    min-height: 28px;
+    padding: 4px 8px;
+    font: 800 11px 'Manrope', system-ui, sans-serif;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .pwd-eye:hover { background: #e7dcc6; }
+  #app.mode-dark #panel-header { background: #161410; border-bottom-color: #2e2a24; }
+  #app.mode-dark .workspace-kicker { color: #e7d3a1; }
+  #app.mode-dark .workspace-bar h2 { color: #f7f3ea; }
+  #app.mode-dark .workspace-bar .live-badge { background: rgba(16,96,64,.28); color: #d7f5e6; border-color: transparent; }
+  #app.mode-dark .doc-type-switch { background: #141210; }
+  #app.mode-dark .doc-type-btn { color: #d9d0c2; }
+  #app.mode-dark .doc-type-btn.active { background: #106040; color: #fff; }
+  @media screen and (max-width: 900px) {
+    .workspace-bar, #app #panel-body { padding-left: 16px; padding-right: 16px; }
+    .workspace-bar h2 { font-size: 20px; }
+    #app-sidebar { max-height: none; }
+    #app .side-nav { grid-template-columns: 1fr 1fr; }
+  }
+  #app .panel-actions { position: static; margin-top: 8px; box-shadow: none; }
+  #app.mode-dark { background: #141210; }
+  #app.mode-dark .analytics-empty,
+  #app.mode-dark .analytics-note,
+  #app.mode-dark .dash-site-head p { color: #b7ab9a; }
+  #app.mode-dark .dash-card::after { display: none; }
+  #app.mode-dark .dash-quick-btn:not(.primary) {
+    background: #241f1a;
+    color: #f7f3ea;
+    border-color: #3a342c;
+  }
+  #app.mode-dark .analytics-bars,
+  #app.mode-dark .analytics-top-row {
+    background: #1c1a17;
+    border-color: #3a342c;
+  }
+
 </style>
 </head>
 <body>
@@ -2458,50 +3070,75 @@
 
 <div id="app" class="mode-light">
 
-  <!-- ══ LEFT: INPUT PANEL ══ -->
+  <aside id="app-sidebar">
+    <div class="side-brand">
+      <div class="side-logo" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><rect width="48" height="48" rx="14" fill="#b0893e"/><path fill="#123528" d="M9 31v-7l3.2-7.2h23.6L39 24v7h-2.2a3.6 3.6 0 0 1-7.2 0h-9.2a3.6 3.6 0 0 1-7.2 0H9zm5.2-4.2h19.6l-1.8-4H16l-1.8 4zM15.4 33.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4zm17.2 0a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4z"/></svg>
+      </div>
+      <div>
+        <p class="side-kicker">PTA Punjab</p>
+        <p class="side-name">Route Permits</p>
+      </div>
+    </div>
+    <p class="side-label">Workspace</p>
+    <nav class="side-nav" aria-label="Staff sections">
+      <button class="panel-tab active" onclick="switchTab('tab-dashboard',this)" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3Zm10 0h8v5h-8V3ZM3 13h8v8H3v-8Zm10 7V10h8v10h-8Z"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="panel-tab" onclick="switchTab('tab-edit',this)" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4.6L19.4 9.2l-4.6-4.6L4 15.4V20Zm2-3.2L14.8 6l2.1 2.1L8.1 17H6v-.2ZM20.7 7.1c.4-.4.4-1 0-1.4l-2.4-2.4a1 1 0 0 0-1.4 0l-1.2 1.2 3.8 3.8 1.2-1.2Z"/></svg>
+        <span>Edit permit</span>
+      </button>
+      <button class="panel-tab" onclick="switchTab('tab-records',this)" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg>
+        <span>Saved permits</span>
+      </button>
+      <button class="panel-tab" onclick="switchTab('tab-verify',this)" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1 14.2-3.7-3.7 1.4-1.4L11 13.4l4.8-4.8 1.4 1.4L11 16.2Z"/></svg>
+        <span>Verify vehicle</span>
+      </button>
+    </nav>
+    <p class="side-label">Tools</p>
+    <div class="side-tools">
+      <button type="button" class="side-tool" onclick="openLivePreview()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c-5 0-9.3 3.1-11 7 1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 .01 6A3 3 0 0 0 12 9z"/></svg>
+        <span>Preview permit</span>
+      </button>
+      <button type="button" class="side-tool" onclick="openPrintTab()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17h10v4H7v-4Zm0-14h10v5H7V3Zm12 7H5a3 3 0 0 0-3 3v5h4v-2h12v2h4v-5a3 3 0 0 0-3-3Z"/></svg>
+        <span>Print permit</span>
+      </button>
+      <a class="side-tool" href="index.html" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3ZM5 5h6v2H7v10h10v-4h2v6H5V5Z"/></svg>
+        <span>Public verify page</span>
+      </a>
+      <button type="button" class="side-tool" onclick="openChangePassword()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4a5.5 5.5 0 0 0-4.9 8l-6.1 6.1V22h3.9v-2.1h2.1v-2.1h2.1l2.2-2.2A5.5 5.5 0 1 0 14.5 4Zm0 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/></svg>
+        <span>Change password</span>
+      </button>
+    </div>
+    <div class="side-foot">
+      <button type="button" class="side-tool" id="theme-btn" onclick="toggleMode()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-6h1.5v3H12V1Zm0 19h1.5v3H12v-3ZM1 11.2h3v1.6H1v-1.6Zm19 0h3v1.6h-3v-1.6ZM4.2 4.9l1.1-1.1 2.1 2.1-1.1 1.1L4.2 4.9Zm12.4 12.4 1.1-1.1 2.1 2.1-1.1 1.1-2.1-2.1ZM4.2 19.1l2.1-2.1 1.1 1.1-2.1 2.1-1.1-1.1Zm12.4-12.4 2.1-2.1 1.1 1.1-2.1 2.1-1.1-1.1Z"/></svg>
+        <span>Theme</span>
+        <span id="mode-label" class="side-pill">Light</span>
+      </button>
+      <button type="button" class="side-logout" onclick="doLogout()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17v-2h5.6l-2.3-2.3L15 11l5 5-5 5-1.7-1.7 2.3-2.3H10ZM4 5h8V3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8v-2H4V5Z"/></svg>
+        <span>Log out</span>
+      </button>
+    </div>
+  </aside>
+
   <div id="panel">
     <div id="panel-header">
-      <div class="panel-header-top">
-        <div class="panel-brand">
-          <div class="panel-brand-icon">P</div>
-          <div class="panel-brand-text">
-            <div class="panel-brand-row">
-              <h1 class="panel-brand-title">Route Permit</h1>
-              <span class="live-badge"><span class="live-dot"></span>Live</span>
-            </div>
-            <p class="panel-brand-sub">Punjab Provincial Transport Authority</p>
-          </div>
+      <div class="workspace-bar">
+        <div>
+          <p class="workspace-kicker" id="workspace-kicker">Overview</p>
+          <h2 id="workspace-title">Dashboard</h2>
         </div>
-        <div class="panel-header-btns">
-          <button type="button" class="icon-btn" onclick="toggleMode()" title="Toggle theme" id="theme-btn">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 1h2v3h-2V1Zm0 19h2v3h-2v-3ZM3.5 4.9l2.1 2.1-1.4 1.4L2.1 6.3l1.4-1.4Zm14.9 14.9 2.1 2.1-1.4 1.4-2.1-2.1 1.4-1.4ZM1 11h3v2H1v-2Zm19 0h3v2h-3v-2ZM4.9 20.5l1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1Zm14.9-14.9 1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1ZM12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7Z"/></svg>
-            <span id="mode-label">Light</span>
-          </button>
-          <button type="button" class="icon-btn" onclick="openChangePassword()" title="Change password">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4a5.5 5.5 0 0 0-4.9 8l-6.1 6.1V22h3.9v-2.1h2.1v-2.1h2.1l2.2-2.2A5.5 5.5 0 1 0 14.5 4Zm0 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/></svg>
-          </button>
-          <button type="button" class="icon-btn icon-btn-danger" onclick="doLogout()" title="Logout">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17v-2h5.6l-2.3-2.3L15 11l5 5-5 5-1.7-1.7 2.3-2.3H10ZM4 5h8V3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8v-2H4V5Z"/></svg>
-          </button>
-        </div>
-      </div>
-      <div class="panel-tabs" role="tablist">
-        <button class="panel-tab active" onclick="switchTab('tab-dashboard',this)" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3Zm10 0h8v5h-8V3ZM3 13h8v8H3v-8Zm10 7V10h8v10h-8Z"/></svg>
-          <span>Dashboard</span>
-        </button>
-        <button class="panel-tab" onclick="switchTab('tab-edit',this)" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4.6L19.4 9.2l-4.6-4.6L4 15.4V20Zm2-3.2L14.8 6l2.1 2.1L8.1 17H6v-0.2ZM20.7 7.1c.4-.4.4-1 0-1.4l-2.4-2.4a1 1 0 0 0-1.4 0l-1.2 1.2 3.8 3.8 1.2-1.2Z"/></svg>
-          <span>Edit</span>
-        </button>
-        <button class="panel-tab" onclick="switchTab('tab-records',this)" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg>
-          <span>Saved</span>
-        </button>
-        <button class="panel-tab" onclick="switchTab('tab-verify',this)" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1 14.2-3.7-3.7 1.4-1.4L11 13.4l4.8-4.8 1.4 1.4L11 16.2Z"/></svg>
-          <span>Verify</span>
-        </button>
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
       </div>
       <div id="site-offline-banner">Public website is OFF. Creating and saving permits is disabled.</div>
     </div>
@@ -2643,7 +3280,7 @@
             <p id="vehicle-sub">Registration and mechanical IDs</p>
           </div>
           <div class="field-grid">
-            <div class="fg span-2"><label>Vehicle Make</label>
+            <div class="fg"><label>Vehicle Make</label>
               <select id="f-vmake">
                 <option value="N/A" selected>N/A</option>
                 <option value="HINO">HINO</option>
@@ -2654,6 +3291,7 @@
                 <option value="FUSO">FUSO</option>
                 <option value="DONGFENG">DONGFENG</option>
               </select>
+              <input id="f-vmake-custom" class="custom-value" placeholder="Custom make" autocomplete="off">
             </div>
             <div class="fg"><label>Vehicle Type</label>
               <select id="f-vtype">
@@ -2674,6 +3312,7 @@
                 <option value="MINI BUS">MINI BUS</option>
                 <option value="CANTER TRUCK">CANTER TRUCK</option>
               </select>
+              <input id="f-vtype-custom" class="custom-value" placeholder="Custom vehicle type" autocomplete="off">
             </div>
             <div class="fg"><label>Seating Capacity</label>
               <select id="f-seats"></select>
@@ -2716,12 +3355,13 @@
         <input type="hidden" id="f-qrlink" value="">
 
         <div class="panel-actions">
-          <div class="btn-row">
-            <button class="pbtn pbtn-glass" onclick="openPrintTab()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17h10v4H7v-4Zm0-14h10v5H7V3Zm12 7H5a3 3 0 0 0-3 3v5h4v-2h12v2h4v-5a3 3 0 0 0-3-3Z"/></svg><span>Print</span></button>
+          <div class="btn-row btn-row-main">
             <button class="pbtn pbtn-gold" id="btn-save-permit" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
           </div>
           <div class="btn-row">
-            <button class="pbtn pbtn-glass" id="btn-new-permit" onclick="clearForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg><span id="btn-new-label">New Permit</span></button>
+            <button type="button" class="pbtn pbtn-glass" onclick="openLivePreview()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c-5 0-9.3 3.1-11 7 1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg><span>Preview</span></button>
+            <button type="button" class="pbtn pbtn-glass" onclick="openPrintTab()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17h10v4H7v-4Zm0-14h10v5H7V3Zm12 7H5a3 3 0 0 0-3 3v5h4v-2h12v2h4v-5a3 3 0 0 0-3-3Z"/></svg><span>Print</span></button>
+            <button type="button" class="pbtn pbtn-glass" id="btn-new-permit" onclick="clearForm()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg><span id="btn-new-label">New Permit</span></button>
           </div>
           <div id="db-message"></div>
         </div>
@@ -2778,6 +3418,10 @@
 
   <!-- ══ RIGHT: PREVIEW ══ -->
   <div id="preview-area">
+    <div class="preview-toolbar">
+      <button type="button" class="pbtn pbtn-glass" onclick="closeLivePreview()">Close</button>
+      <button type="button" class="pbtn pbtn-gold" onclick="openPrintTab()">Print</button>
+    </div>
     <div id="document" class="doc-mode-permit">
 
       <div id="doc-permit">
@@ -3073,12 +3717,68 @@
     return snap;
   }
 
+  function applyListedOrCustom(selectId, inputId, value, keepInput) {
+    var sel = document.getElementById(selectId);
+    var input = document.getElementById(inputId);
+    if (!sel) return;
+    var v = String(value == null ? '' : value).trim();
+    var known = false;
+    Array.prototype.forEach.call(sel.options, function(o) {
+      if (o.getAttribute('data-custom') === '1') return;
+      if (o.value === v) known = true;
+    });
+    var custom = sel.querySelector('option[data-custom="1"]');
+    if (!v || known) {
+      if (custom) custom.remove();
+      if (!keepInput && input) input.value = '';
+      if (v) sel.value = v;
+      else if (!sel.querySelector('option[value="' + String(sel.value).replace(/"/g, '\\"') + '"]') && sel.options.length) sel.selectedIndex = 0;
+      return;
+    }
+    if (!custom) {
+      custom = document.createElement('option');
+      custom.setAttribute('data-custom', '1');
+      sel.appendChild(custom);
+    }
+    custom.value = v;
+    custom.textContent = v;
+    sel.value = v;
+    if (!keepInput && input) input.value = v;
+  }
+
+  function flushCustomVehicleFields() {
+    var makeCustom = document.getElementById('f-vmake-custom');
+    var typeCustom = document.getElementById('f-vtype-custom');
+    if (makeCustom && makeCustom.value.trim()) applyListedOrCustom('f-vmake', 'f-vmake-custom', makeCustom.value);
+    if (typeCustom && typeCustom.value.trim()) applyListedOrCustom('f-vtype', 'f-vtype-custom', typeCustom.value);
+  }
+
+  function syncCustomVehicleFields(makeValue, typeValue) {
+    var makeSel = document.getElementById('f-vmake');
+    var typeSel = document.getElementById('f-vtype');
+    applyListedOrCustom('f-vmake', 'f-vmake-custom', makeValue != null ? makeValue : (makeSel ? makeSel.value : ''));
+    applyListedOrCustom('f-vtype', 'f-vtype-custom', typeValue != null ? typeValue : (typeSel ? typeSel.value : ''));
+  }
+
+  function openLivePreview() {
+    flushCustomVehicleFields();
+    try { updateDoc(); } catch (ex) {}
+    var app = document.getElementById('app');
+    if (app) app.classList.add('preview-open');
+  }
+
+  function closeLivePreview() {
+    var app = document.getElementById('app');
+    if (app) app.classList.remove('preview-open');
+  }
+
   function restoreForm(snap) {
     if (!snap) return;
     FORM_FIELD_IDS.forEach(function(id) {
       var el = document.getElementById(id);
       if (el) el.value = snap[id] != null ? snap[id] : '';
     });
+    try { syncCustomVehicleFields(snap['f-vmake'], snap['f-vtype']); } catch (exCustom) {}
     try { formatCnicField(document.getElementById('f-cnic')); } catch (ex) {}
     try { syncIssueDatePickerFromHidden(); } catch (ex2) {}
   }
@@ -3107,6 +3807,7 @@
       s('f-authority', 'SECRETARY PUNJAB PROVINCIAL TRANSPORT AUTHORITY,LAHORE');
       s('f-districts', DEFAULT_DISTRICTS);
     }
+    try { syncCustomVehicleFields(); } catch (exCustom) {}
     try { syncIssueDatePickerFromHidden(); } catch (ex) {}
   }
 
@@ -3319,11 +4020,13 @@
   // Live update on every keystroke
   document.querySelectorAll('#panel input, #panel select').forEach(function(inp) {
     inp.addEventListener('input', function(e) {
+      if (inp.id === 'f-vmake-custom' || inp.id === 'f-vtype-custom') return;
       if (inp.id === 'f-cnic') formatCnicField(inp);
       else if (isPermitEditorField(inp) && inp.type !== 'date' && inp.type !== 'hidden' && inp.tagName !== 'SELECT') uppercaseField(inp);
       updateDoc();
     });
     inp.addEventListener('change', function(e) {
+      if (inp.id === 'f-vmake-custom' || inp.id === 'f-vtype-custom') return;
       if (inp.id === 'f-cnic') formatCnicField(inp);
       else if (isPermitEditorField(inp) && inp.type !== 'date' && inp.type !== 'hidden' && inp.tagName !== 'SELECT') uppercaseField(inp);
       updateDoc();
@@ -3333,6 +4036,28 @@
     uppercaseField(this);
     updateDistricts();
   });
+  [['f-vmake', 'f-vmake-custom'], ['f-vtype', 'f-vtype-custom']].forEach(function(pair) {
+    var sel = document.getElementById(pair[0]);
+    var input = document.getElementById(pair[1]);
+    if (!sel || !input) return;
+    input.addEventListener('input', function() {
+      var start = input.selectionStart;
+      var end = input.selectionEnd;
+      var v = input.value.toUpperCase();
+      if (input.value !== v) {
+        input.value = v;
+        if (start != null) input.setSelectionRange(start, end);
+      }
+      applyListedOrCustom(pair[0], pair[1], input.value, true);
+      updateDoc();
+    });
+    sel.addEventListener('change', function() {
+      var custom = sel.querySelector('option[data-custom="1"]');
+      if (!custom || sel.value !== custom.value) input.value = '';
+      if (custom && sel.value !== custom.value) custom.remove();
+      updateDoc();
+    });
+  });
 
   initFormEnhancements();
   refreshQrCode();
@@ -3340,6 +4065,7 @@
 
   function openPrintTab(opts) {
     opts = opts || {};
+    try { flushCustomVehicleFields(); } catch (exCustom) {}
     // Gather all current field values
     var data = {};
     var fieldMap2 = {
@@ -4010,6 +4736,7 @@
       if (document.getElementById('f-iauth') && !d.issue_authority) document.getElementById('f-iauth').value = 'N/A';
       if (document.getElementById('f-vfrom') && !d.valid_from) document.getElementById('f-vfrom').value = 'N/A';
       if (document.getElementById('f-vupto') && !d.valid_upto) document.getElementById('f-vupto').value = 'N/A';
+      try { syncCustomVehicleFields(d.vehicle_make || 'N/A', d.vehicle_type || ''); } catch (exCustom) {}
       try { syncIssueDatePickerFromHidden(); } catch (ex) {}
       currentEditId = id;
       return openPrintTab(opts);
@@ -4624,6 +5351,7 @@
   }
 
   async function savePermit() {
+    try { flushCustomVehicleFields(); } catch (exCustom) {}
     if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); return; }
     initSupabase();
     if (!supabaseClient) { showMsg('Not connected', false); return; }
@@ -4814,6 +5542,7 @@
       if (document.getElementById('f-iauth') && !d.issue_authority) document.getElementById('f-iauth').value = 'N/A';
       if (document.getElementById('f-vfrom') && !d.valid_from) document.getElementById('f-vfrom').value = 'N/A';
       if (document.getElementById('f-vupto') && !d.valid_upto) document.getElementById('f-vupto').value = 'N/A';
+      try { syncCustomVehicleFields(d.vehicle_make || 'N/A', d.vehicle_type || ''); } catch (exCustom) {}
       currentEditId = id;
       editIdsByMode[recMode] = id;
       var docUrl = normalizeDocQrUrl(d.qr_link, id, recMode);
@@ -5001,6 +5730,17 @@
     document.querySelectorAll('.panel-tab').forEach(function(b){ b.classList.remove('active'); });
     document.getElementById(tabId).classList.add('active');
     if (btn) btn.classList.add('active');
+    var titles = {
+      'tab-dashboard': ['Overview', 'Dashboard'],
+      'tab-edit': ['Document', 'Edit permit'],
+      'tab-records': ['Library', 'Saved permits'],
+      'tab-verify': ['Check', 'Verify vehicle']
+    };
+    var pair = titles[tabId];
+    var kicker = document.getElementById('workspace-kicker');
+    var title = document.getElementById('workspace-title');
+    if (pair && kicker) kicker.textContent = pair[0];
+    if (pair && title) title.textContent = pair[1];
     if (tabId === 'tab-dashboard') loadDashboardStats();
     if (tabId === 'tab-records') loadRecords();
     if (tabId === 'tab-verify') {
@@ -5027,11 +5767,26 @@
     }
   }
 
+  function togglePwdField(id, btn) {
+    var input = document.getElementById(id);
+    if (!input || !btn) return;
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.textContent = show ? 'Hide' : 'Show';
+    btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  }
+
   function openChangePassword() {
     var m = document.getElementById('pwd-modal');
     if (!m) return;
     document.getElementById('pwd-new').value = '';
     document.getElementById('pwd-confirm').value = '';
+    document.getElementById('pwd-new').type = 'password';
+    document.getElementById('pwd-confirm').type = 'password';
+    document.querySelectorAll('.pwd-eye').forEach(function(btn) {
+      btn.textContent = 'Show';
+      btn.setAttribute('aria-label', 'Show password');
+    });
     document.getElementById('pwd-msg').style.display = 'none';
     m.style.display = 'flex';
   }
@@ -5067,6 +5822,7 @@
   });
 
   document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeChangePassword();
     var overlay = document.getElementById('login-overlay');
     if (e.key === 'Enter' && overlay && overlay.style.display !== 'none') doLogin();
   });
@@ -5130,16 +5886,25 @@
 
 
 </script>
-<div id="pwd-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.6);z-index:99998;align-items:center;justify-content:center;">
-  <div style="background:white;border-radius:12px;padding:32px 28px;width:340px;box-shadow:0 24px 64px rgba(0,0,0,0.4);">
-    <div style="text-align:center;margin-bottom:18px;"><div style="font-size:28px;margin-bottom:6px;">🔑</div><p style="font-family:Arial;font-size:14px;font-weight:bold;color:#0f2035;">Change Password</p></div>
-    
-    <div style="margin-bottom:10px;"><label style="font-family:Arial;font-size:9px;text-transform:uppercase;color:#6b7280;font-weight:700;display:block;margin-bottom:4px;">New Password</label><input type="password" id="pwd-new" style="width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:13px;font-family:Arial;outline:none;background:#f9fafb;"></div>
-    <div style="margin-bottom:16px;"><label style="font-family:Arial;font-size:9px;text-transform:uppercase;color:#6b7280;font-weight:700;display:block;margin-bottom:4px;">Confirm Password</label><input type="password" id="pwd-confirm" style="width:100%;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 12px;font-size:13px;font-family:Arial;outline:none;background:#f9fafb;"></div>
-    <div id="pwd-msg" style="display:none;font-family:Arial;font-size:11px;padding:6px 10px;border-radius:6px;margin-bottom:10px;text-align:center;"></div>
-    <div style="display:flex;gap:8px;">
-      <button onclick="closeChangePassword()" style="flex:1;background:#f3f4f6;color:#555;border:none;border-radius:8px;padding:10px;font-size:12px;font-family:Arial;font-weight:700;cursor:pointer;">Cancel</button>
-      <button onclick="doChangePassword()" style="flex:1;background:linear-gradient(135deg,#1a3a5c,#0f2540);color:white;border:none;border-radius:8px;padding:10px;font-size:12px;font-family:Arial;font-weight:700;cursor:pointer;">Update</button>
+<div id="pwd-modal">
+  <div class="pwd-card" role="dialog" aria-labelledby="pwd-title">
+    <p class="pwd-kicker">Staff account</p>
+    <h2 id="pwd-title">Change password</h2>
+    <p class="pwd-lead">Use at least 6 characters. This updates the password for the signed-in staff account.</p>
+    <label for="pwd-new">New password</label>
+    <div class="pwd-input">
+      <input type="password" id="pwd-new" autocomplete="new-password" placeholder="New password">
+      <button type="button" class="pwd-eye" onclick="togglePwdField('pwd-new', this)" aria-label="Show password">Show</button>
+    </div>
+    <label for="pwd-confirm">Confirm password</label>
+    <div class="pwd-input">
+      <input type="password" id="pwd-confirm" autocomplete="new-password" placeholder="Repeat password">
+      <button type="button" class="pwd-eye" onclick="togglePwdField('pwd-confirm', this)" aria-label="Show password">Show</button>
+    </div>
+    <div id="pwd-msg"></div>
+    <div class="pwd-actions">
+      <button type="button" class="pbtn pbtn-glass" onclick="closeChangePassword()">Cancel</button>
+      <button type="button" class="pbtn pbtn-gold" onclick="doChangePassword()">Update password</button>
     </div>
   </div>
 </div>
