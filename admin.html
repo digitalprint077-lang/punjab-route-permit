@@ -3028,6 +3028,112 @@
     border-color: #3a342c;
   }
 
+  #app .side-nav { position: relative; }
+  #side-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+    width: 0;
+    height: 0;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #fffdf8 0%, #f3ead8 100%);
+    box-shadow: inset 3px 0 0 #b0893e, 0 10px 18px rgba(0,0,0,.16);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .38s cubic-bezier(.22,.9,.28,1), width .38s cubic-bezier(.22,.9,.28,1), height .38s cubic-bezier(.22,.9,.28,1), opacity .2s ease;
+  }
+  #side-indicator.is-ready { opacity: 1; }
+  #app-sidebar .panel-tab,
+  #app .side-tool,
+  #app .side-logout {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border: 1px solid transparent;
+    background: transparent;
+    transition: background .22s ease, color .22s ease, border-color .22s ease, transform .18s ease;
+  }
+  #app-sidebar .panel-tab { color: rgba(247,243,234,.78); }
+  #app-sidebar .panel-tab.active {
+    background: transparent;
+    color: #123528;
+    box-shadow: none;
+  }
+  #app-sidebar .panel-tab:hover:not(.active),
+  #app .side-tool:hover {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(231,211,161,.22);
+    color: #fff;
+  }
+  #app-sidebar .panel-tab:active,
+  #app .side-tool:active,
+  #app .side-logout:active { transform: scale(.975); }
+  #app-sidebar .panel-tab svg,
+  #app .side-tool svg,
+  #app .side-logout svg {
+    width: 16px;
+    height: 16px;
+    padding: 6px;
+    box-sizing: content-box;
+    border-radius: 9px;
+    background: rgba(255,255,255,.07);
+    transition: transform .32s cubic-bezier(.22,.9,.28,1), background .22s ease, color .22s ease;
+  }
+  #app-sidebar .panel-tab:hover svg,
+  #app .side-tool:hover svg,
+  #app .side-logout:hover svg { transform: translateX(3px); background: rgba(255,255,255,.16); }
+  #app-sidebar .panel-tab.active svg {
+    background: rgba(176,137,62,.24);
+    color: #8a5a12;
+    transform: none;
+  }
+  #app .side-tool::after,
+  #app .side-logout::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    border-radius: 2px;
+    background: #e7d3a1;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform .24s cubic-bezier(.22,.9,.28,1);
+  }
+  #app .side-tool:hover::after,
+  #app .side-logout:hover::after { transform: scaleY(1); }
+  #app .side-logout:hover {
+    background: rgba(159,44,34,.4);
+    border-color: rgba(255,196,188,.28);
+    color: #fff;
+  }
+  #app .side-logout:hover::after { background: #ffd0c8; }
+  #app .side-pill { transition: background .22s ease, color .22s ease, transform .22s ease; }
+  #theme-btn:hover .side-pill { transform: translateX(-2px); }
+  #app-sidebar .panel-tab:focus-visible,
+  #app .side-tool:focus-visible,
+  #app .side-logout:focus-visible {
+    outline: 2px solid #e7d3a1;
+    outline-offset: 2px;
+  }
+  #app.mode-dark #app-sidebar .panel-tab { color: rgba(247,243,234,.78) !important; background: transparent !important; }
+  #app.mode-dark #app-sidebar .panel-tab.active { color: #123528 !important; background: transparent !important; }
+  #app.mode-dark #app-sidebar .panel-tab:hover:not(.active) { color: #fff !important; }
+  @media (prefers-reduced-motion: reduce) {
+    #side-indicator,
+    #app-sidebar .panel-tab,
+    #app-sidebar .panel-tab svg,
+    #app .side-tool,
+    #app .side-tool svg,
+    #app .side-tool::after,
+    #app .side-logout,
+    #app .side-logout svg,
+    #app .side-logout::after,
+    #app .side-pill { transition: none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -3116,6 +3222,7 @@
     </div>
     <p class="side-label">Workspace</p>
     <nav class="side-nav" aria-label="Staff sections">
+      <span id="side-indicator" aria-hidden="true"></span>
       <button class="panel-tab active" onclick="switchTab('tab-dashboard',this)" type="button">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3Zm10 0h8v5h-8V3ZM3 13h8v8H3v-8Zm10 7V10h8v10h-8Z"/></svg>
         <span>Dashboard</span>
@@ -5173,6 +5280,7 @@
     document.getElementById('login-overlay').style.display = loggedIn ? 'none' : 'flex';
     var app = document.getElementById('app');
     if (app) app.style.display = loggedIn ? 'flex' : 'none';
+    if (loggedIn) requestAnimationFrame(function(){ placeSideIndicator(); });
   }
 
   async function doLogin() {
@@ -5854,6 +5962,7 @@
     document.querySelectorAll('.panel-tab').forEach(function(b){ b.classList.remove('active'); });
     document.getElementById(tabId).classList.add('active');
     if (btn) btn.classList.add('active');
+    placeSideIndicator();
     var titles = {
       'tab-dashboard': ['Overview', 'Dashboard'],
       'tab-edit': ['Document', 'Edit permit'],
@@ -5873,6 +5982,24 @@
       if (src && dest && !dest.value && src.value) dest.value = src.value;
     }
   }
+
+  function placeSideIndicator() {
+    var nav = document.querySelector('.side-nav');
+    var active = document.querySelector('#app-sidebar .panel-tab.active');
+    var bar = document.getElementById('side-indicator');
+    if (!nav || !active || !bar) return;
+    var jump = !bar.classList.contains('is-ready');
+    if (jump) bar.style.transition = 'none';
+    bar.style.width = active.offsetWidth + 'px';
+    bar.style.height = active.offsetHeight + 'px';
+    bar.style.transform = 'translate(' + active.offsetLeft + 'px,' + active.offsetTop + 'px)';
+    if (jump) {
+      bar.classList.add('is-ready');
+      void bar.offsetWidth;
+      bar.style.transition = '';
+    }
+  }
+  window.addEventListener('resize', placeSideIndicator);
 
   var isDarkMode = false;
   function toggleMode() {
