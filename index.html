@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#064842">
+  <meta name="theme-color" content="#123528">
   <meta name="description" content="Verify Punjab route permit by vehicle registration number.">
   <title>Verify Route Permit — Punjab PTA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,650;9..144,750&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,680&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="site-gate.js"></script>
   <script src="site-analytics.js"></script>
@@ -624,7 +624,64 @@
       outline: 2px solid var(--sea);
       outline-offset: 2px;
     }
-  </style>
+  
+    /* Public verify page — visual refresh only */
+    :root {
+      --ink: #1c1915;
+      --sea: #106040;
+      --sea-bright: #1a8a58;
+      --sea-deep: #0b3d28;
+      --gold: #b0893e;
+      --line: rgba(28, 25, 21, 0.1);
+      --line-strong: rgba(28, 25, 21, 0.16);
+      --card: #fffdf8;
+      --muted: #6e655a;
+      --font: "Manrope", system-ui, sans-serif;
+      --display: "Fraunces", Georgia, serif;
+      --radius-xl: 16px;
+      --radius-lg: 12px;
+      --radius-md: 8px;
+    }
+    body { background: #e8e0d2; }
+    .ambient {
+      background:
+        linear-gradient(165deg, #f7f3ea 0%, #e7decc 48%, #efe6d4 100%);
+    }
+    .orb { display: none; }
+    .brand-mark {
+      border-radius: 8px;
+      background: #123528;
+      box-shadow: none;
+    }
+    .brand-kicker { color: #106040; }
+    .hero h1 em {
+      background: none;
+      color: #106040;
+      -webkit-text-fill-color: #106040;
+    }
+    .feature-grid li {
+      background: #fffdf8;
+      border: 1px solid #e6dcc8;
+      border-radius: 12px;
+    }
+    .feature-grid li:hover { border-color: #106040; transform: none; }
+    .feature-icon { background: #f3eee4; color: #106040; border-radius: 8px; }
+    .verify-card {
+      background: #fffdf8;
+      border: 1px solid #e6dcc8;
+      border-top: 5px solid #b0893e;
+      border-radius: 12px;
+      box-shadow: 0 18px 40px rgba(28, 25, 21, 0.08);
+    }
+    .live-pill { background: #fffdf8; border-radius: 8px; color: #123528; }
+    .step-track span.on { background: #106040; }
+    .btn-verify { background: #106040; border-radius: 8px; box-shadow: none; }
+    .btn-verify:hover { background: #0b3d28; }
+    .input-shell { border-radius: 8px; border-color: #e0d4c0; background: #fff; }
+    .site-foot .domain { background: #fffdf8; border-radius: 8px; }
+    .result { background: #fffdf8; border: 1px solid #e6dcc8; border-radius: 12px; }
+
+</style>
 </head>
 <body>
   <div class="ambient" aria-hidden="true">

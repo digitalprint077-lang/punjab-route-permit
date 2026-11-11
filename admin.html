@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#038b45">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,680&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Route Permit - Punjab Provincial Transport Authority</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
 </script>
@@ -2380,6 +2380,207 @@
       margin: 0 auto !important;
       box-shadow: 0 6px 32px rgba(0,0,0,0.25);
     }
+  }
+
+
+  /* ══ STAFF UI REFRESH — chrome only; permit document untouched ══ */
+  :root {
+    --ink: #1c1915;
+    --sea: #106040;
+    --sea-deep: #0b3d28;
+    --line: #e4d8c4;
+    --muted: #6e655a;
+    --mist: #f3eee4;
+    --paper: #f7f3ea;
+    --gold: #b0893e;
+    --font-ui: 'Manrope', system-ui, sans-serif;
+    --font-display: 'Fraunces', Georgia, serif;
+  }
+  #login-overlay { background: #10281c; }
+  .login-ambient {
+    background:
+      radial-gradient(700px 320px at 0% 0%, rgba(176,137,62,.22), transparent 55%),
+      linear-gradient(165deg, #10281c 0%, #1a3d2c 100%);
+  }
+  .login-ambient::before,
+  .login-orb { display: none; }
+  #login-shell { width: min(940px, 100%); gap: 36px; }
+  .login-emblem {
+    border-radius: 8px;
+    background: #b0893e;
+    box-shadow: none;
+  }
+  .login-kicker { color: #e7d3a1; letter-spacing: .18em; }
+  .login-brand em { color: #f3e2b8; }
+  #login-box {
+    background: #fffdf8;
+    border: 1px solid #efe4d0;
+    border-top: 6px solid #b0893e;
+    border-radius: 8px;
+    box-shadow: 0 28px 60px rgba(0,0,0,.28);
+  }
+  #login-box::before { display: none; }
+  .login-session-badge { background: #f3eee4; color: #0b3d28; border-radius: 6px; }
+  #login-box .login-title { font-family: 'Fraunces', Georgia, serif; color: #123528; }
+  .login-input-wrap { border-radius: 8px; background: #fff; border-color: #e4d8c4; }
+  .login-input-wrap:focus-within { border-color: #106040; box-shadow: 0 0 0 3px rgba(16,96,64,.14); }
+  #login-box .login-btn {
+    background: #106040;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+  #login-box .login-btn:hover { background: #0b3d28; }
+  .login-overlay-foot { color: rgba(246,241,231,.62); }
+
+  #app { background: #e8e0d2; }
+  #panel { width: 470px; min-width: 470px; max-width: 470px; }
+  #panel-header {
+    background: #123528;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 14px 30px rgba(18,53,40,.22);
+  }
+  .panel-brand-icon {
+    background: #b0893e;
+    border-radius: 8px;
+    box-shadow: none;
+    color: #1c1915;
+  }
+  .panel-brand-title { color: #f7f3ea; }
+  .panel-brand-sub { color: rgba(247,243,234,.7); }
+  .live-badge {
+    color: #f3e2b8;
+    background: rgba(255,255,255,.1);
+    border-color: transparent;
+  }
+  .icon-btn {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.14);
+    color: #f7f3ea;
+    border-radius: 8px;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,.16); color: #fff; }
+  .icon-btn-danger {
+    background: rgba(180,35,24,.22);
+    border-color: rgba(255,180,170,.25);
+    color: #ffd0c8;
+  }
+  .panel-tab {
+    background: rgba(255,255,255,.08);
+    color: rgba(247,243,234,.78);
+    border-radius: 8px;
+  }
+  .panel-tab.active {
+    background: #f7f3ea;
+    color: #123528;
+    border-color: #f7f3ea;
+    box-shadow: none;
+  }
+  .panel-tab:hover:not(.active) {
+    background: rgba(255,255,255,.16);
+    color: #fff;
+    border-color: transparent;
+  }
+  #panel-body::-webkit-scrollbar-thumb { background: rgba(18,53,40,.35); }
+
+  .form-section {
+    background: #fffdf8;
+    border: 1px solid #e6dcc8;
+    border-top: 3px solid #106040;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  .form-section-head { border-bottom-color: #efe6d6; }
+  .form-section-head h3 { color: #123528; }
+  .fg label { color: #6e655a; letter-spacing: .06em; }
+  .fg input, .fg textarea, .fg select, .search-box input {
+    background: #fff;
+    border: 1px solid #e0d4c0;
+    border-radius: 8px;
+    color: #1c1915;
+  }
+  .fg input:focus, .fg textarea:focus, .fg select:focus, .search-box input:focus {
+    background: #fff;
+    border-color: #106040;
+    box-shadow: 0 0 0 3px rgba(16,96,64,.14);
+  }
+  .doc-type-btn { border-radius: 8px; border-color: #e0d4c0; }
+  .doc-type-btn.active { background: #106040; border-color: #106040; }
+  .pbtn, .search-box button, .btn-load-all, .card-btn-load, .btn-bulk-action { border-radius: 8px; }
+  .pbtn-gold, .search-box button, .btn-load-all, .card-btn-load {
+    background: #106040;
+    box-shadow: none;
+  }
+  .pbtn-gold:hover, .search-box button:hover, .btn-load-all:hover, .card-btn-load:hover {
+    background: #0b3d28;
+    box-shadow: none;
+  }
+  .pbtn-glass { border-radius: 8px; background: #fff; }
+  .panel-actions {
+    background: #fffdf8;
+    border: 1px solid #e6dcc8;
+    border-radius: 12px;
+    box-shadow: 0 -10px 24px rgba(28,25,21,.06);
+  }
+  .permit-card {
+    background: #fffdf8;
+    border: 1px solid #e6dcc8;
+    border-left: 4px solid #106040;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+  .permit-card-num { color: #106040; }
+  .dash-card, .site-switch-card, .analytics-bars, .analytics-top-row {
+    background: #fffdf8;
+    border-color: #e6dcc8;
+    box-shadow: none;
+  }
+  .dash-card.permits, .dash-card.nocs, .dash-card.total {
+    background: #fffdf8;
+  }
+  .dash-card .dash-stat-value, .dash-stat-value { color: #123528; }
+  .dash-refresh, .verify-official { border-radius: 8px; }
+  #preview-area {
+    background:
+      linear-gradient(180deg, #ddd4c4 0%, #d2c8b6 100%);
+  }
+
+  .mode-dark #app { background: #12110f; }
+  .mode-dark #panel-header { background: #0d241b; }
+  .mode-dark .form-section,
+  .mode-dark .panel-actions,
+  .mode-dark .permit-card,
+  .mode-dark .dash-card,
+  .mode-dark .site-switch-card {
+    background: #1c1a17;
+    border-color: #3a342c;
+  }
+  .mode-dark .form-section { border-top-color: #b0893e; }
+  .mode-dark .panel-brand-title,
+  .mode-dark .form-section-head h3,
+  .mode-dark .permit-card-name,
+  .mode-dark .dash-stat-value { color: #f7f3ea; }
+  .mode-dark .fg label,
+  .mode-dark .form-section-head p,
+  .mode-dark .panel-brand-sub { color: #b7ab9a; }
+  .mode-dark .fg input,
+  .mode-dark .fg textarea,
+  .mode-dark .fg select,
+  .mode-dark .search-box input {
+    background: #141210;
+    border-color: #3a342c;
+    color: #f7f3ea;
+  }
+  .mode-dark .panel-tab { background: rgba(255,255,255,.06); color: #d9d0c2; }
+  .mode-dark .panel-tab.active { background: #f7f3ea; color: #123528; }
+  .mode-dark .pbtn-glass, .mode-dark .hbtn, .mode-dark .icon-btn {
+    background: #241f1a;
+    color: #f7f3ea;
+    border-color: #3a342c;
+  }
+  .mode-dark #preview-area { background: #1a1814; }
+  @media screen and (max-width: 900px) {
+    #panel { width: 100%; min-width: 0; max-width: none; }
   }
 
 </style>
