@@ -5647,22 +5647,18 @@
   async function findExistingPermits(data) {
     initSupabase();
     if (!supabaseClient || !data) return [];
+    var regKey = normalizeRegKey(meaningfulPermitKey(data.vehicle_reg_no));
+    if (!regKey) return [];
     var result = await supabaseClient.from('permits').select('*').order('created_at', { ascending: false });
     if (result.error) throw result.error;
-    var regKey = normalizeRegKey(meaningfulPermitKey(data.vehicle_reg_no));
-    var appKey = meaningfulPermitKey(data.app_no).toUpperCase();
-    var permitKey = meaningfulPermitKey(data.route_permit_no).toUpperCase();
     var wantNoc = data.doc_type === 'noc';
     return (result.data || []).filter(function(r) {
       if (window.PTASiteGate && PTASiteGate.isStatusRecord && PTASiteGate.isStatusRecord(r)) return false;
       if (currentEditId && String(r.id) === String(currentEditId)) return false;
       if (isNocRecord(r) !== wantNoc) return false;
-      var reasons = [];
-      if (regKey && normalizeRegKey(r.vehicle_reg_no) === regKey) reasons.push('registration number');
-      if (appKey && String(r.app_no || '').trim().toUpperCase() === appKey) reasons.push('application number');
-      if (permitKey && String(r.route_permit_no || '').trim().toUpperCase() === permitKey) reasons.push('permit number');
-      r._matchReasons = reasons;
-      return reasons.length > 0;
+      if (normalizeRegKey(r.vehicle_reg_no) !== regKey) return false;
+      r._matchReasons = ['registration number'];
+      return true;
     }).slice(0, 8);
   }
 
@@ -5682,8 +5678,8 @@
     if (title) title.textContent = 'This ' + noun + ' already exists';
     if (lead) {
       lead.textContent = matches.length === 1
-        ? 'A saved ' + noun + ' matches what you are saving. Open it, or continue and keep a separate copy.'
-        : matches.length + ' saved ' + noun + 's match what you are saving. Open one, or continue and keep a separate copy.';
+        ? 'A saved ' + noun + ' already uses this registration number. Open it, or continue and keep a separate copy.'
+        : matches.length + ' saved ' + noun + 's already use this registration number. Open one, or continue and keep a separate copy.';
     }
     if (saveBtn) saveBtn.textContent = currentEditId ? 'Save anyway' : 'Save as new';
     list.innerHTML = matches.map(function(r) {
