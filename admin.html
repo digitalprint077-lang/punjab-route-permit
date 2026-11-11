@@ -2177,7 +2177,7 @@
   }
   #site-offline-banner {
     display: none;
-    margin: 0 14px 10px;
+    margin: 0 28px 12px;
     padding: 9px 12px;
     border-radius: 10px;
     background: #fff5f4;
@@ -2807,8 +2807,191 @@
     #app { flex-direction: column; height: auto; overflow: auto; }
     #app-sidebar { width: 100%; min-width: 0; height: auto; }
     .side-nav { display: grid; grid-template-columns: 1fr 1fr; }
-    .side-logout { margin-top: 8px; }
+    .side-foot { margin-top: 8px; }
     #panel { width: 100%; max-width: none; height: auto; }
+  }
+
+  #app { background: #e8e0d2; }
+  #app #app-sidebar {
+    background: linear-gradient(180deg, #143528 0%, #0c2219 100%);
+    border-right: 1px solid rgba(0,0,0,.18);
+    padding: 20px 12px 14px;
+    gap: 2px;
+  }
+  #app .side-brand {
+    margin: 0 6px 8px;
+    padding: 2px 4px 16px;
+    border-bottom: 1px solid rgba(247,243,234,.12);
+  }
+  #app .side-logo svg { width: 42px; height: 42px; filter: drop-shadow(0 6px 10px rgba(0,0,0,.18)); }
+  #app .side-label { margin: 14px 10px 6px; }
+  #app-sidebar .panel-tab,
+  #app .side-tool,
+  #app .side-logout {
+    min-height: 42px;
+    border-radius: 12px;
+    padding: 9px 12px;
+  }
+  #app-sidebar .panel-tab svg,
+  #app .side-tool svg,
+  #app .side-logout svg { width: 16px; height: 16px; fill: currentColor; }
+  #app-sidebar .panel-tab.active {
+    background: #f7f3ea;
+    color: #123528;
+    box-shadow: inset 3px 0 0 #b0893e;
+  }
+  #app .side-foot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(247,243,234,.12);
+  }
+  #app .side-pill {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.12);
+    color: #e7d3a1;
+  }
+  #theme-btn.is-dark .side-pill { background: #123528; color: #f7f3ea; }
+  #app .side-logout { color: #f7f3ea; }
+  #app .side-logout:hover { background: rgba(159,44,34,.42); color: #fff; }
+  #app #panel { padding: 0; gap: 0; background: transparent; }
+  #app #panel-header {
+    background: rgba(255,253,248,.92);
+    border: none;
+    border-bottom: 1px solid #e4d8c6;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .workspace-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 72px;
+    padding: 14px 28px;
+  }
+  .workspace-kicker {
+    margin: 0 0 2px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #8a5a12;
+  }
+  .workspace-bar h2 {
+    margin: 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    font-weight: 650;
+    color: #123528;
+    line-height: 1.1;
+  }
+  .workspace-bar .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #e7f3ec;
+    color: #106040;
+    border: 1px solid #c9e4d4;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .workspace-bar .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #106040;
+    box-shadow: 0 0 0 4px rgba(16,96,64,.16);
+  }
+  #app #panel-body { padding: 20px 28px 32px; }
+  #app .tab-panel { max-width: 1080px; margin: 0 auto; }
+  #app .dash-shell { gap: 16px; }
+  #app .dash-hero { border-radius: 18px; padding: 18px 18px 16px; }
+  #app .dash-card, #app .site-switch-card, #app .form-section, #app .panel-actions {
+    border-radius: 16px;
+    border-color: #e6dccb;
+  }
+  #app .form-section { background: #fffdf8; padding: 16px 16px 6px; }
+  #app .panel-actions {
+    background: rgba(255,253,248,.96);
+    border: 1px solid #e6dccb;
+    padding: 12px;
+  }
+  #app .doc-type-switch {
+    background: #f4efe4;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+  }
+  #app .doc-type-btn {
+    border: none;
+    background: transparent;
+    color: #3d4a42;
+    border-radius: 9px;
+    min-height: 40px;
+  }
+  #app .doc-type-btn.active { background: #106040; color: #fff; }
+  #app .search-box input { min-height: 44px; background: #fff; border-radius: 10px; }
+  #app .records-bulk-bar { background: #f7f3ea; border-color: #e6dccb; }
+  .pwd-input { position: relative; }
+  .pwd-input input { padding-right: 64px; }
+  .pwd-eye {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    border: none;
+    background: #f4efe4;
+    color: #123528;
+    border-radius: 8px;
+    min-height: 28px;
+    padding: 4px 8px;
+    font: 800 11px 'Manrope', system-ui, sans-serif;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .pwd-eye:hover { background: #e7dcc6; }
+  #app.mode-dark #panel-header { background: #161410; border-bottom-color: #2e2a24; }
+  #app.mode-dark .workspace-kicker { color: #e7d3a1; }
+  #app.mode-dark .workspace-bar h2 { color: #f7f3ea; }
+  #app.mode-dark .workspace-bar .live-badge { background: rgba(16,96,64,.28); color: #d7f5e6; border-color: transparent; }
+  #app.mode-dark .doc-type-switch { background: #141210; }
+  #app.mode-dark .doc-type-btn { color: #d9d0c2; }
+  #app.mode-dark .doc-type-btn.active { background: #106040; color: #fff; }
+  @media screen and (max-width: 900px) {
+    .workspace-bar, #app #panel-body { padding-left: 16px; padding-right: 16px; }
+    .workspace-bar h2 { font-size: 20px; }
+    #app-sidebar { max-height: none; }
+    #app .side-nav { grid-template-columns: 1fr 1fr; }
+  }
+  #app .panel-actions { position: static; margin-top: 8px; box-shadow: none; }
+  #app.mode-dark { background: #141210; }
+  #app.mode-dark .analytics-empty,
+  #app.mode-dark .analytics-note,
+  #app.mode-dark .dash-site-head p { color: #b7ab9a; }
+  #app.mode-dark .dash-card::after { display: none; }
+  #app.mode-dark .dash-quick-btn:not(.primary) {
+    background: #241f1a;
+    color: #f7f3ea;
+    border-color: #3a342c;
+  }
+  #app.mode-dark .analytics-bars,
+  #app.mode-dark .analytics-top-row {
+    background: #1c1a17;
+    border-color: #3a342c;
   }
 
 </style>
@@ -2890,7 +3073,7 @@
   <aside id="app-sidebar">
     <div class="side-brand">
       <div class="side-logo" aria-hidden="true">
-        <svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#b0893e"/><path fill="#123528" d="M10 30v-6l3-7h22l3 7v6h-2a4 4 0 0 1-8 0H20a4 4 0 0 1-8 0H10zm5-4h18l-2-4H17l-2 4zm1 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm16 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+        <svg viewBox="0 0 48 48"><rect width="48" height="48" rx="14" fill="#b0893e"/><path fill="#123528" d="M9 31v-7l3.2-7.2h23.6L39 24v7h-2.2a3.6 3.6 0 0 1-7.2 0h-9.2a3.6 3.6 0 0 1-7.2 0H9zm5.2-4.2h19.6l-1.8-4H16l-1.8 4zM15.4 33.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4zm17.2 0a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4z"/></svg>
       </div>
       <div>
         <p class="side-kicker">PTA Punjab</p>
@@ -2918,17 +3101,45 @@
     </nav>
     <p class="side-label">Tools</p>
     <div class="side-tools">
-      <button type="button" class="side-tool" onclick="openLivePreview()">Preview permit</button>
-      <button type="button" class="side-tool" onclick="openPrintTab()">Print permit</button>
-      <a class="side-tool" href="index.html" target="_blank" rel="noopener noreferrer">Public verify page</a>
-      <button type="button" class="side-tool" onclick="openChangePassword()">Change password</button>
-      <button type="button" class="side-tool" id="theme-btn" onclick="toggleMode()">Theme: <span id="mode-label">Light</span></button>
+      <button type="button" class="side-tool" onclick="openLivePreview()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c-5 0-9.3 3.1-11 7 1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 .01 6A3 3 0 0 0 12 9z"/></svg>
+        <span>Preview permit</span>
+      </button>
+      <button type="button" class="side-tool" onclick="openPrintTab()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17h10v4H7v-4Zm0-14h10v5H7V3Zm12 7H5a3 3 0 0 0-3 3v5h4v-2h12v2h4v-5a3 3 0 0 0-3-3Z"/></svg>
+        <span>Print permit</span>
+      </button>
+      <a class="side-tool" href="index.html" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3ZM5 5h6v2H7v10h10v-4h2v6H5V5Z"/></svg>
+        <span>Public verify page</span>
+      </a>
+      <button type="button" class="side-tool" onclick="openChangePassword()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4a5.5 5.5 0 0 0-4.9 8l-6.1 6.1V22h3.9v-2.1h2.1v-2.1h2.1l2.2-2.2A5.5 5.5 0 1 0 14.5 4Zm0 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/></svg>
+        <span>Change password</span>
+      </button>
     </div>
-    <button type="button" class="side-logout" onclick="doLogout()">Log out</button>
+    <div class="side-foot">
+      <button type="button" class="side-tool" id="theme-btn" onclick="toggleMode()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-6h1.5v3H12V1Zm0 19h1.5v3H12v-3ZM1 11.2h3v1.6H1v-1.6Zm19 0h3v1.6h-3v-1.6ZM4.2 4.9l1.1-1.1 2.1 2.1-1.1 1.1L4.2 4.9Zm12.4 12.4 1.1-1.1 2.1 2.1-1.1 1.1-2.1-2.1ZM4.2 19.1l2.1-2.1 1.1 1.1-2.1 2.1-1.1-1.1Zm12.4-12.4 2.1-2.1 1.1 1.1-2.1 2.1-1.1-1.1Z"/></svg>
+        <span>Theme</span>
+        <span id="mode-label" class="side-pill">Light</span>
+      </button>
+      <button type="button" class="side-logout" onclick="doLogout()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17v-2h5.6l-2.3-2.3L15 11l5 5-5 5-1.7-1.7 2.3-2.3H10ZM4 5h8V3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8v-2H4V5Z"/></svg>
+        <span>Log out</span>
+      </button>
+    </div>
   </aside>
 
   <div id="panel">
     <div id="panel-header">
+      <div class="workspace-bar">
+        <div>
+          <p class="workspace-kicker" id="workspace-kicker">Overview</p>
+          <h2 id="workspace-title">Dashboard</h2>
+        </div>
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
+      </div>
       <div id="site-offline-banner">Public website is OFF. Creating and saving permits is disabled.</div>
     </div>
 
@@ -5519,6 +5730,17 @@
     document.querySelectorAll('.panel-tab').forEach(function(b){ b.classList.remove('active'); });
     document.getElementById(tabId).classList.add('active');
     if (btn) btn.classList.add('active');
+    var titles = {
+      'tab-dashboard': ['Overview', 'Dashboard'],
+      'tab-edit': ['Document', 'Edit permit'],
+      'tab-records': ['Library', 'Saved permits'],
+      'tab-verify': ['Check', 'Verify vehicle']
+    };
+    var pair = titles[tabId];
+    var kicker = document.getElementById('workspace-kicker');
+    var title = document.getElementById('workspace-title');
+    if (pair && kicker) kicker.textContent = pair[0];
+    if (pair && title) title.textContent = pair[1];
     if (tabId === 'tab-dashboard') loadDashboardStats();
     if (tabId === 'tab-records') loadRecords();
     if (tabId === 'tab-verify') {
@@ -5545,11 +5767,26 @@
     }
   }
 
+  function togglePwdField(id, btn) {
+    var input = document.getElementById(id);
+    if (!input || !btn) return;
+    var show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.textContent = show ? 'Hide' : 'Show';
+    btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  }
+
   function openChangePassword() {
     var m = document.getElementById('pwd-modal');
     if (!m) return;
     document.getElementById('pwd-new').value = '';
     document.getElementById('pwd-confirm').value = '';
+    document.getElementById('pwd-new').type = 'password';
+    document.getElementById('pwd-confirm').type = 'password';
+    document.querySelectorAll('.pwd-eye').forEach(function(btn) {
+      btn.textContent = 'Show';
+      btn.setAttribute('aria-label', 'Show password');
+    });
     document.getElementById('pwd-msg').style.display = 'none';
     m.style.display = 'flex';
   }
@@ -5585,6 +5822,7 @@
   });
 
   document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeChangePassword();
     var overlay = document.getElementById('login-overlay');
     if (e.key === 'Enter' && overlay && overlay.style.display !== 'none') doLogin();
   });
@@ -5654,9 +5892,15 @@
     <h2 id="pwd-title">Change password</h2>
     <p class="pwd-lead">Use at least 6 characters. This updates the password for the signed-in staff account.</p>
     <label for="pwd-new">New password</label>
-    <input type="password" id="pwd-new" autocomplete="new-password" placeholder="New password">
+    <div class="pwd-input">
+      <input type="password" id="pwd-new" autocomplete="new-password" placeholder="New password">
+      <button type="button" class="pwd-eye" onclick="togglePwdField('pwd-new', this)" aria-label="Show password">Show</button>
+    </div>
     <label for="pwd-confirm">Confirm password</label>
-    <input type="password" id="pwd-confirm" autocomplete="new-password" placeholder="Repeat password">
+    <div class="pwd-input">
+      <input type="password" id="pwd-confirm" autocomplete="new-password" placeholder="Repeat password">
+      <button type="button" class="pwd-eye" onclick="togglePwdField('pwd-confirm', this)" aria-label="Show password">Show</button>
+    </div>
     <div id="pwd-msg"></div>
     <div class="pwd-actions">
       <button type="button" class="pbtn pbtn-glass" onclick="closeChangePassword()">Cancel</button>
