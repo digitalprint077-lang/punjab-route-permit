@@ -2579,8 +2579,87 @@
     border-color: #3a342c;
   }
   .mode-dark #preview-area { background: #1a1814; }
+
+  .login-emblem svg { fill: #123528; }
+  .login-brand em {
+    background: none;
+    -webkit-text-fill-color: #f6e7c3;
+    color: #f6e7c3;
+  }
+  .login-trust { gap: 6px; margin-bottom: 18px; }
+  .login-trust li {
+    background: transparent;
+    border-color: rgba(231, 211, 161, .4);
+    color: rgba(247, 243, 234, .82);
+    letter-spacing: .08em;
+    font-size: 10px;
+    padding: 5px 9px;
+  }
+  .login-points { gap: 2px; }
+  .login-points li {
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    backdrop-filter: none;
+    border-radius: 0;
+  }
+  .login-points li svg { fill: #e7d3a1; }
+  #login-box {
+    border-radius: 18px;
+    border-top-width: 4px;
+    box-shadow: 0 24px 50px rgba(0, 0, 0, .32);
+  }
+  .login-enter-hint { color: #8a8174; }
+  .login-enter-hint kbd {
+    background: #f7f3ea;
+    border-color: #e4d8c4;
+    color: #123528;
+  }
+  .dash-hero {
+    background: #123528;
+    border: none;
+    box-shadow: none;
+  }
+  .dash-kicker { color: #e7d3a1; }
+  .dash-title { color: #f7f3ea; font-size: 24px; }
+  .dash-sub { color: rgba(247, 243, 234, .74); }
+  .dash-refresh {
+    background: rgba(255, 255, 255, .1);
+    color: #f7f3ea;
+    border-color: transparent;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+  .dash-refresh:hover { color: #fff; border-color: transparent; background: rgba(255, 255, 255, .16); }
+  .dash-card {
+    box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 8px 18px rgba(28, 25, 21, .045);
+  }
+  .dash-card.permits { background: linear-gradient(165deg, #fffdf8 0%, #e7f3ec 100%); }
+  .dash-card.nocs { background: linear-gradient(165deg, #fffdf8 0%, #f8f1e3 100%); }
+  .dash-card.total { background: linear-gradient(165deg, #fffdf8 0%, #f3eee4 100%); }
+  .dash-card.permits .dash-card-icon { background: rgba(16, 96, 64, .14); color: #106040; }
+  .dash-card.nocs .dash-card-icon { background: rgba(176, 137, 62, .2); color: #8a5a12; }
+  .dash-card.total .dash-card-icon { background: rgba(18, 53, 40, .1); color: #123528; }
+  .dash-card.permits .dash-stat-value { color: #106040; }
+  .dash-card.nocs .dash-stat-value { color: #8a5a12; }
+  .dash-card.total .dash-stat-value { color: #123528; }
+  .dash-quick-btn { border-radius: 10px; background: #fffdf8; }
+  .dash-quick-btn.primary { background: #106040; box-shadow: none; }
+  .form-section { box-shadow: 0 10px 24px rgba(28, 25, 21, .045); }
+  .panel-tab { font-weight: 700; }
+  #preview-area { padding: 32px 28px 40px; }
+
+  .mode-dark .dash-hero { background: #0d241b; }
+  .mode-dark .dash-title { color: #f7f3ea; }
+  .mode-dark .dash-sub { color: rgba(247, 243, 234, .7); }
+  .mode-dark .dash-card.permits,
+  .mode-dark .dash-card.nocs,
+  .mode-dark .dash-card.total { background: #1c1a17; }
+  .mode-dark .dash-quick-btn.primary { background: #106040; color: #fff; }
+
   @media screen and (max-width: 900px) {
     #panel { width: 100%; min-width: 0; max-width: none; }
+    #preview-area { padding: 16px 8px; }
   }
 
 </style>
