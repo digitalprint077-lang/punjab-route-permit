@@ -3884,6 +3884,29 @@
     #app #tab-edit #btn-save-permit { width: 100%; min-width: 0; }
   }
 
+  #app-sidebar .side-tool.active {
+    background: rgba(231,211,161,.16);
+    color: #fff;
+    border-color: rgba(231,211,161,.45);
+  }
+  #app-sidebar .side-tool.active svg {
+    background: rgba(176,137,62,.38);
+    color: #f6e7c3;
+    transform: none;
+  }
+  #app-sidebar .side-tool.active::after {
+    transform: scaleY(1);
+    background: #e7d3a1;
+  }
+  #app .side-note {
+    margin: 2px 12px 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #e7d3a1;
+  }
+  #app .side-note:empty { display: none; }
+
 </style>
 </head>
 <body>
@@ -3979,31 +4002,40 @@
       </button>
       <button class="panel-tab" onclick="switchTab('tab-edit',this)" type="button">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4.6L19.4 9.2l-4.6-4.6L4 15.4V20Zm2-3.2L14.8 6l2.1 2.1L8.1 17H6v-.2ZM20.7 7.1c.4-.4.4-1 0-1.4l-2.4-2.4a1 1 0 0 0-1.4 0l-1.2 1.2 3.8 3.8 1.2-1.2Z"/></svg>
-        <span>Edit permit</span>
+        <span id="side-edit-label">Edit permit</span>
       </button>
       <button class="panel-tab" onclick="switchTab('tab-records',this)" type="button">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2v2H4V6Zm4 0h12v2H8V6ZM4 11h2v2H4v-2Zm4 0h12v2H8v-2ZM4 16h2v2H4v-2Zm4 0h12v2H8v-2Z"/></svg>
-        <span>Saved permits</span>
+        <span id="side-saved-label">Saved permits</span>
       </button>
       <button class="panel-tab" onclick="switchTab('tab-verify',this)" type="button">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1 14.2-3.7-3.7 1.4-1.4L11 13.4l4.8-4.8 1.4 1.4L11 16.2Z"/></svg>
         <span>Verify vehicle</span>
       </button>
     </nav>
-    <p class="side-label">Tools</p>
+    <p class="side-label">Document</p>
     <div class="side-tools">
-      <button type="button" class="side-tool" onclick="openLivePreview()">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c-5 0-9.3 3.1-11 7 1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 .01 6A3 3 0 0 0 12 9z"/></svg>
-        <span>Preview permit</span>
+      <button type="button" class="side-tool active" id="btn-mode-permit" onclick="setDocMode('permit'); switchTab('tab-edit', document.querySelectorAll('.panel-tab')[1])">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8 12h8v2H8v-2Zm0 4h8v2H8v-2Z"/></svg>
+        <span>Route Permit</span>
       </button>
-      <button type="button" class="side-tool" onclick="openPrintTab()">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17h10v4H7v-4Zm0-14h10v5H7V3Zm12 7H5a3 3 0 0 0-3 3v5h4v-2h12v2h4v-5a3 3 0 0 0-3-3Z"/></svg>
-        <span>Print permit</span>
+      <button type="button" class="side-tool" id="btn-mode-noc" onclick="setDocMode('noc'); switchTab('tab-edit', document.querySelectorAll('.panel-tab')[1])">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.5-4.5 1.4 1.4-5.9 5.9Z"/></svg>
+        <span>NOC</span>
       </button>
-      <a class="side-tool" href="index.html" target="_blank" rel="noopener noreferrer">
+      <button type="button" class="side-tool" onclick="switchTab('tab-edit', document.querySelectorAll('.panel-tab')[1]); clearForm();">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/></svg>
+        <span id="side-new-label">New permit</span>
+      </button>
+      <button type="button" class="side-tool" onclick="copyCurrentDocLink()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3Zm0 2H5v10h10v-2H8V9Zm2-4v10h9V5h-9Z"/></svg>
+        <span>Copy link</span>
+      </button>
+      <button type="button" class="side-tool" onclick="openCurrentDocLink()">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14V3ZM5 5h6v2H7v10h10v-4h2v6H5V5Z"/></svg>
-        <span>Public verify page</span>
-      </a>
+        <span>Open public link</span>
+      </button>
+      <p class="side-note" id="side-note"></p>
       <button type="button" class="side-tool" onclick="openChangePassword()">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 4a5.5 5.5 0 0 0-4.9 8l-6.1 6.1V22h3.9v-2.1h2.1v-2.1h2.1l2.2-2.2A5.5 5.5 0 1 0 14.5 4Zm0 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z"/></svg>
         <span>Change password</span>
@@ -4186,17 +4218,6 @@
           <button class="pbtn pbtn-gold" id="btn-save-permit" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
           <div id="db-message"></div>
         </div>
-        <section class="form-section">
-          <div class="form-section-head">
-            <h3>Document Type</h3>
-            <p>Same background — switch text between Route Permit and NOC</p>
-          </div>
-          <div class="doc-type-switch">
-            <button type="button" class="doc-type-btn active" id="btn-mode-permit" onclick="setDocMode('permit')">Route Permit</button>
-            <button type="button" class="doc-type-btn" id="btn-mode-noc" onclick="setDocMode('noc')">NOC</button>
-          </div>
-        </section>
-
         <section class="form-section">
           <div class="form-section-head">
             <h3>Document Info</h3>
@@ -4695,6 +4716,42 @@
     applyListedOrCustom('f-vtype', 'f-vtype-custom', typeValue != null ? typeValue : (typeSel ? typeSel.value : ''));
   }
 
+  function setSideNote(text) {
+    var note = document.getElementById('side-note');
+    if (note) note.textContent = text || '';
+  }
+
+  function currentDocUrl() {
+    if (!currentEditId) return '';
+    return getDocQrUrl(currentEditId, docMode);
+  }
+
+  function copyCurrentDocLink() {
+    var url = currentDocUrl();
+    if (!url) {
+      setSideNote('Open a saved record first');
+      return;
+    }
+    var finish = function(ok) {
+      setSideNote(ok ? 'Link copied' : 'Could not copy the link');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function() { finish(true); }).catch(function() { finish(false); });
+      return;
+    }
+    finish(false);
+  }
+
+  function openCurrentDocLink() {
+    var url = currentDocUrl();
+    if (!url) {
+      setSideNote('Open a saved record first');
+      return;
+    }
+    setSideNote('');
+    window.open(url, '_blank', 'noopener');
+  }
+
   function openLivePreview() {
     flushCustomVehicleFields();
     try { updateDoc(); } catch (ex) {}
@@ -4835,6 +4892,16 @@
     if (saveLbl) saveLbl.textContent = isNoc ? 'Save NOC' : 'Save Permit';
     var newLbl = document.getElementById('btn-new-label');
     if (newLbl) newLbl.textContent = isNoc ? 'New NOC' : 'New Permit';
+    var sideNew = document.getElementById('side-new-label');
+    if (sideNew) sideNew.textContent = isNoc ? 'New NOC' : 'New permit';
+    var sideEdit = document.getElementById('side-edit-label');
+    if (sideEdit) sideEdit.textContent = isNoc ? 'Edit NOC' : 'Edit permit';
+    var sideSaved = document.getElementById('side-saved-label');
+    if (sideSaved) sideSaved.textContent = isNoc ? 'Saved NOCs' : 'Saved permits';
+    var activePanel = document.querySelector('.tab-panel.active');
+    var workspaceTitle = document.getElementById('workspace-title');
+    if (workspaceTitle && activePanel && activePanel.id === 'tab-edit') workspaceTitle.textContent = isNoc ? 'Edit NOC' : 'Edit permit';
+    if (workspaceTitle && activePanel && activePanel.id === 'tab-records') workspaceTitle.textContent = isNoc ? 'Saved NOCs' : 'Saved permits';
     var savedTitle = document.getElementById('saved-title');
     if (savedTitle) savedTitle.textContent = isNoc ? 'Saved NOCs' : 'Saved Permits';
     var savedSub = document.getElementById('saved-sub');
@@ -6818,10 +6885,11 @@
     document.getElementById(tabId).classList.add('active');
     if (btn) btn.classList.add('active');
     placeSideIndicator();
+    var noc = docMode === 'noc';
     var titles = {
       'tab-dashboard': ['Overview', 'Dashboard'],
-      'tab-edit': ['Document', 'Edit permit'],
-      'tab-records': ['Library', 'Saved permits'],
+      'tab-edit': ['Document', noc ? 'Edit NOC' : 'Edit permit'],
+      'tab-records': ['Library', noc ? 'Saved NOCs' : 'Saved permits'],
       'tab-verify': ['Check', 'Verify vehicle']
     };
     var pair = titles[tabId];
