@@ -3134,6 +3134,87 @@
     #app .side-pill { transition: none !important; }
   }
 
+  #app .tab-panel { max-width: 860px; }
+  #app #tab-dashboard.tab-panel { max-width: 980px; }
+  #app .dash-grid:not(.dash-analytics-grid) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  #app .dash-card-wide { grid-column: auto; }
+  #app .dash-card {
+    min-height: 128px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 16px 16px 14px;
+    border-radius: 16px;
+    border: 1px solid #e6dccb;
+    border-top: 3px solid #106040;
+    background: #fffdf8;
+    box-shadow: 0 10px 24px rgba(28, 25, 21, .05);
+  }
+  #app .dash-card::after { display: none; }
+  #app .dash-card.nocs { border-top-color: #b0893e; }
+  #app .dash-card.total { border-top-color: #123528; }
+  #app .dash-stat-value { font-size: 32px; letter-spacing: -.03em; }
+  #app .dash-stat-hint { margin-top: auto; padding-top: 10px; }
+  #app .dash-analytics {
+    margin-top: 4px;
+    padding: 16px;
+    border: 1px solid #e6dccb;
+    border-radius: 16px;
+    background: #fffdf8;
+  }
+  #app .dash-analytics-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  #app .dash-card.analytics {
+    min-height: 92px;
+    padding: 12px 14px;
+    border-top-width: 1px;
+    border-top-color: #e6dccb;
+    background: #fff;
+    box-shadow: none;
+  }
+  #app .dash-card.analytics .dash-stat-value { font-size: 26px; }
+  #analytics-bars:empty { display: none; }
+  #app .analytics-bars { height: 120px; align-items: flex-end; }
+  #app .analytics-bar { max-width: 28px; }
+  #app .dash-quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  #app .dash-quick-btn {
+    flex: 0 1 200px;
+    width: auto;
+    min-width: 160px;
+  }
+  #app .site-switch-card { align-items: center; }
+  #app .permit-card-info { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  #app .permit-card-actions { justify-content: flex-start; }
+  #app .card-btn-load,
+  #app .card-btn-del { flex: 0 0 auto; min-width: 108px; }
+  #app.mode-dark .dash-card,
+  #app.mode-dark .dash-analytics,
+  #app.mode-dark .dash-card.analytics {
+    background: #1c1a17;
+    border-color: #3a342c;
+  }
+  #app.mode-dark .dash-card.permits { border-top-color: #3d9a72; }
+  #app.mode-dark .dash-card.nocs { border-top-color: #b0893e; }
+  #app.mode-dark .dash-card.total { border-top-color: #e7d3a1; }
+  #app.mode-dark .dash-card.analytics { border-top-color: #3a342c; }
+  @media screen and (max-width: 800px) {
+    #app .dash-grid:not(.dash-analytics-grid),
+    #app .dash-analytics-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media screen and (max-width: 560px) {
+    #app .dash-grid:not(.dash-analytics-grid),
+    #app .dash-analytics-grid { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body>
