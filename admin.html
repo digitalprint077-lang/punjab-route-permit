@@ -3954,6 +3954,112 @@
     #app .status-controls .pbtn { width: 100%; }
   }
 
+  #app .dash-hero-side { display: flex; align-items: center; gap: 12px; }
+  #app .desk-clock {
+    min-width: 228px;
+    padding: 10px 14px 11px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(231,211,161,.32);
+    color: #f7f3ea;
+    text-align: right;
+  }
+  #app .desk-clock-kicker {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: #e7d3a1;
+  }
+  #app #desk-clock-time {
+    display: block;
+    margin-top: 2px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 26px;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .02em;
+    white-space: nowrap;
+    line-height: 1.05;
+  }
+  #app #desk-clock-date {
+    display: block;
+    margin-top: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(247,243,234,.78);
+  }
+  #app .dash-metrics .dash-card {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    min-height: 118px;
+    padding: 16px 16px 16px 18px;
+    border-radius: 18px;
+    border: 1px solid #eadfce;
+    border-top: 1px solid #eadfce;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,0) 42%),
+      #fffdf8;
+    box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 16px 30px rgba(28,25,21,.06);
+  }
+  #app .dash-metrics .dash-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 4px;
+    border-radius: 4px;
+  }
+  #app .dash-card.permits::before { background: #106040; }
+  #app .dash-card.nocs::before { background: #b0893e; }
+  #app .dash-card.total::before { background: #123528; }
+  #app .dash-card.today::before { background: #8a5a12; }
+  #app .dash-card-mark {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+  }
+  #app .dash-card-mark svg { width: 22px; height: 22px; fill: currentColor; }
+  #app .dash-card.permits .dash-card-mark { background: #e7f3ec; color: #106040; }
+  #app .dash-card.nocs .dash-card-mark { background: #f8f1e3; color: #8a5a12; }
+  #app .dash-card.total .dash-card-mark { background: #e7eee9; color: #123528; }
+  #app .dash-card.today .dash-card-mark { background: #f6efe2; color: #8a5a12; }
+  #app .dash-card-copy { min-width: 0; }
+  #app .dash-metrics .dash-card-label { letter-spacing: .08em; }
+  #app .dash-metrics .dash-stat-value {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 34px;
+    letter-spacing: -.04em;
+    line-height: 1;
+    margin-top: 4px;
+  }
+  #app .dash-metrics .dash-stat-hint { margin-top: 6px; padding-top: 0; }
+  #app .dash-card.analytics {
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: none;
+  }
+  #app.mode-dark .dash-metrics .dash-card {
+    background: #1c1a17;
+    border-color: #3a342c;
+    box-shadow: none;
+  }
+  #app.mode-dark .dash-card.permits .dash-card-mark { background: #163528; color: #8fd6b5; }
+  #app.mode-dark .dash-card.nocs .dash-card-mark,
+  #app.mode-dark .dash-card.today .dash-card-mark { background: #2a2418; color: #e7d3a1; }
+  #app.mode-dark .dash-card.total .dash-card-mark { background: #241f1a; color: #f7f3ea; }
+  #app.mode-dark .dash-card.analytics { background: #26221c; }
+  @media screen and (max-width: 720px) {
+    #app .dash-hero-side { width: 100%; justify-content: space-between; }
+    #app .desk-clock { flex: 1; text-align: left; min-width: 0; }
+  }
+
 </style>
 </head>
 <body>
@@ -4122,43 +4228,50 @@
               <h2 class="dash-title">Today’s work</h2>
               <p class="dash-sub">Check a registration, open a recent record, or start a new permit.</p>
             </div>
-            <button type="button" class="dash-refresh" onclick="loadDashboardStats()">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg>
-              <span>Refresh</span>
-            </button>
+            <div class="dash-hero-side">
+              <div class="desk-clock" aria-live="polite">
+                <span class="desk-clock-kicker">Pakistan time</span>
+                <time id="desk-clock-time">--:--:-- --</time>
+                <span id="desk-clock-date">—</span>
+              </div>
+              <button type="button" class="dash-refresh" onclick="loadDashboardStats()">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg>
+                <span>Refresh</span>
+              </button>
+            </div>
           </div>
           <div class="dash-metrics">
             <article class="dash-card permits">
-              <div class="dash-card-top">
+              <span class="dash-card-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8 12h8v2H8v-2Zm0 4h6v2H8v-2Z"/></svg></span>
+              <div class="dash-card-copy">
                 <span class="dash-card-label">Route Permits</span>
-                <span class="dash-card-icon" aria-hidden="true">RP</span>
+                <div class="dash-stat-value" id="dash-permit-count">—</div>
+                <div class="dash-stat-hint">Saved permit records</div>
               </div>
-              <div class="dash-stat-value" id="dash-permit-count">—</div>
-              <div class="dash-stat-hint">Saved permit records</div>
             </article>
             <article class="dash-card nocs">
-              <div class="dash-card-top">
+              <span class="dash-card-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.5-4.5 1.4 1.4-5.9 5.9Z"/></svg></span>
+              <div class="dash-card-copy">
                 <span class="dash-card-label">NOCs</span>
-                <span class="dash-card-icon" aria-hidden="true">NC</span>
+                <div class="dash-stat-value" id="dash-noc-count">—</div>
+                <div class="dash-stat-hint">Saved NOC records</div>
               </div>
-              <div class="dash-stat-value" id="dash-noc-count">—</div>
-              <div class="dash-stat-hint">Saved NOC records</div>
             </article>
             <article class="dash-card total">
-              <div class="dash-card-top">
+              <span class="dash-card-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16v4H4V6Zm0 6h16v8H4v-8Zm2 2v4h12v-4H6Z"/></svg></span>
+              <div class="dash-card-copy">
                 <span class="dash-card-label">Total Documents</span>
-                <span class="dash-card-icon" aria-hidden="true">Σ</span>
+                <div class="dash-stat-value" id="dash-total-count">—</div>
+                <div class="dash-stat-hint">Permits and NOCs</div>
               </div>
-              <div class="dash-stat-value" id="dash-total-count">—</div>
-              <div class="dash-stat-hint">Permits and NOCs</div>
             </article>
             <article class="dash-card today">
-              <div class="dash-card-top">
+              <span class="dash-card-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2Zm11 8H6v10h12V10Z"/></svg></span>
+              <div class="dash-card-copy">
                 <span class="dash-card-label">Created today</span>
-                <span class="dash-card-icon" aria-hidden="true">TD</span>
+                <div class="dash-stat-value" id="dash-today-count">—</div>
+                <div class="dash-stat-hint">New records since midnight</div>
               </div>
-              <div class="dash-stat-value" id="dash-today-count">—</div>
-              <div class="dash-stat-hint">New records since midnight</div>
             </article>
           </div>
           <form class="dash-lookup" onsubmit="return dashLookupReg(event)">
@@ -6340,7 +6453,36 @@
     document.getElementById('login-overlay').style.display = loggedIn ? 'none' : 'flex';
     var app = document.getElementById('app');
     if (app) app.style.display = loggedIn ? 'flex' : 'none';
-    if (loggedIn) requestAnimationFrame(function(){ placeSideIndicator(); });
+    if (loggedIn) requestAnimationFrame(function(){ placeSideIndicator(); startDeskClock(); });
+  }
+
+  function startDeskClock() {
+    if (startDeskClock._on) return;
+    var timeEl = document.getElementById('desk-clock-time');
+    var dateEl = document.getElementById('desk-clock-date');
+    if (!timeEl || !dateEl) return;
+    startDeskClock._on = true;
+    var timeFmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Karachi',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+    var dateFmt = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Karachi',
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+    function tick() {
+      var now = new Date();
+      timeEl.textContent = timeFmt.format(now);
+      dateEl.textContent = dateFmt.format(now);
+    }
+    tick();
+    setInterval(tick, 1000);
   }
 
   async function doLogin() {
