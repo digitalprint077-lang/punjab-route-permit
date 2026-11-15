@@ -2982,6 +2982,40 @@
   #app.mode-dark .analytics-empty,
   #app.mode-dark .analytics-note,
   #app.mode-dark .dash-site-head p { color: #b7ab9a; }
+  #exist-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 85;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(16, 24, 20, .62);
+  }
+  .exist-card {
+    width: min(560px, 100%);
+    max-height: min(86vh, 720px);
+    overflow: auto;
+    background: #fffdf8;
+    border-radius: 18px;
+    border-top: 4px solid #b0893e;
+    padding: 26px 24px 22px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.28);
+  }
+  .exist-card h2 { margin: 0 0 8px; font-family: 'Fraunces', Georgia, serif; color: #123528; font-size: 28px; }
+  #exist-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .exist-hit {
+    border: 1px solid #e6dccb;
+    border-radius: 14px;
+    background: #fff;
+    padding: 12px 12px 10px;
+  }
+  .exist-hit h3 { margin: 0 0 4px; font-size: 16px; color: #123528; }
+  .exist-why { margin: 0 0 8px; color: #8a5a12; font-size: 12px; font-weight: 800; }
+  .exist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 13px; color: #6e655a; }
+  .exist-grid b { color: #1c1915; font-weight: 700; }
+  .exist-open { margin-top: 10px; width: 100%; }
+  .exist-actions { display: grid; grid-template-columns: 1fr 1.2fr; gap: 8px; margin-top: 16px; }
   #app.mode-dark .dash-card::after { display: none; }
   #app.mode-dark .dash-quick-btn:not(.primary) {
     background: #241f1a;
@@ -5350,13 +5384,102 @@
     }
   }
 
-  async function savePermit() {
-    try { flushCustomVehicleFields(); } catch (exCustom) {}
-    if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); return; }
+  function meaningfulPermitKey(value) {
+    var v = String(value == null ? '' : value).trim();
+    if (!v || v === '-' || v === '—' || v.toUpperCase() === 'N/A') return '';
+    return v;
+  }
+
+  async function findExistingPermits(data) {
     initSupabase();
-    if (!supabaseClient) { showMsg('Not connected', false); return; }
+    if (!supabaseClient || !data) return [];
+    var result = await supabaseClient.from('permits').select('*').order('created_at', { ascending: false });
+    if (result.error) throw result.error;
+    var regKey = normalizeRegKey(meaningfulPermitKey(data.vehicle_reg_no));
+    var appKey = meaningfulPermitKey(data.app_no).toUpperCase();
+    var permitKey = meaningfulPermitKey(data.route_permit_no).toUpperCase();
+    var wantNoc = data.doc_type === 'noc';
+    return (result.data || []).filter(function(r) {
+      if (window.PTASiteGate && PTASiteGate.isStatusRecord && PTASiteGate.isStatusRecord(r)) return false;
+      if (currentEditId && String(r.id) === String(currentEditId)) return false;
+      if (isNocRecord(r) !== wantNoc) return false;
+      var reasons = [];
+      if (regKey && normalizeRegKey(r.vehicle_reg_no) === regKey) reasons.push('registration number');
+      if (appKey && String(r.app_no || '').trim().toUpperCase() === appKey) reasons.push('application number');
+      if (permitKey && String(r.route_permit_no || '').trim().toUpperCase() === permitKey) reasons.push('permit number');
+      r._matchReasons = reasons;
+      return reasons.length > 0;
+    }).slice(0, 8);
+  }
+
+  function closeExistingPermit() {
+    var m = document.getElementById('exist-modal');
+    if (m) m.style.display = 'none';
+  }
+
+  function showExistingPermit(matches) {
+    var m = document.getElementById('exist-modal');
+    var list = document.getElementById('exist-list');
+    var title = document.getElementById('exist-title');
+    var lead = document.getElementById('exist-lead');
+    var saveBtn = document.getElementById('exist-save-anyway');
+    if (!m || !list) return;
+    var noun = docMode === 'noc' ? 'NOC' : 'permit';
+    if (title) title.textContent = 'This ' + noun + ' already exists';
+    if (lead) {
+      lead.textContent = matches.length === 1
+        ? 'A saved ' + noun + ' matches what you are saving. Open it, or continue and keep a separate copy.'
+        : matches.length + ' saved ' + noun + 's match what you are saving. Open one, or continue and keep a separate copy.';
+    }
+    if (saveBtn) saveBtn.textContent = currentEditId ? 'Save anyway' : 'Save as new';
+    list.innerHTML = matches.map(function(r) {
+      var why = (r._matchReasons || []).join(', ');
+      return '<article class="exist-hit">' +
+        '<h3>' + escapeHtml(r.full_name || (docMode === 'noc' ? 'Saved NOC' : 'Saved permit')) + '</h3>' +
+        '<p class="exist-why">Matches ' + escapeHtml(why) + '</p>' +
+        '<div class="exist-grid">' +
+          '<div>Reg <b>' + escapeHtml(r.vehicle_reg_no || '—') + '</b></div>' +
+          '<div>App <b>' + escapeHtml(r.app_no || '—') + '</b></div>' +
+          '<div>Permit <b>' + escapeHtml(r.route_permit_no || '—') + '</b></div>' +
+          '<div>Valid <b>' + escapeHtml(r.valid_upto || r.counter_sig_upto || '—') + '</b></div>' +
+        '</div>' +
+        '<button type="button" class="pbtn pbtn-gold exist-open" data-exist-id="' + escapeHtml(r.id) + '">Open this ' + noun + '</button>' +
+      '</article>';
+    }).join('');
+    m.style.display = 'flex';
+  }
+
+  async function openExistingPermit(id) {
+    closeExistingPermit();
+    await loadRecord(id);
+    var editBtn = document.querySelectorAll('.panel-tab')[1];
+    if (editBtn) switchTab('tab-edit', editBtn);
+  }
+
+  function confirmSaveDespiteExisting() {
+    closeExistingPermit();
+    savePermit(true);
+  }
+
+  async function savePermit(skipExistingCheck) {
+    if (savePermit._busy) return;
+    savePermit._busy = true;
+    try { flushCustomVehicleFields(); } catch (exCustom) {}
+    if (!isPublicSiteOn()) { showMsg(siteEditsBlockedMessage(), false); savePermit._busy = false; return; }
+    initSupabase();
+    if (!supabaseClient) { showMsg('Not connected', false); savePermit._busy = false; return; }
     try {
       var data = getFormData();
+      if (skipExistingCheck !== true) {
+        try {
+          var existing = await findExistingPermits(data);
+          if (existing.length) {
+            showExistingPermit(existing);
+            savePermit._busy = false;
+            return;
+          }
+        } catch (exLook) {}
+      }
       var result;
       async function writeRow(payload) {
         if (currentEditId) {
@@ -5407,6 +5530,7 @@
     } catch (err) {
       showMsg((err && err.message) || 'Save failed', false);
     }
+    savePermit._busy = false;
   }
 
   function loadDashboardStats() {
@@ -5817,12 +5941,22 @@
     }
   }
   document.addEventListener('click', function(e) {
+    var openBtn = e.target && e.target.closest ? e.target.closest('[data-exist-id]') : null;
+    if (openBtn) {
+      openExistingPermit(openBtn.getAttribute('data-exist-id'));
+      return;
+    }
     var m = document.getElementById('pwd-modal');
     if (m && e.target === m) closeChangePassword();
+    var exist = document.getElementById('exist-modal');
+    if (exist && e.target === exist) closeExistingPermit();
   });
 
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeChangePassword();
+    if (e.key === 'Escape') {
+      closeExistingPermit();
+      closeChangePassword();
+    }
     var overlay = document.getElementById('login-overlay');
     if (e.key === 'Enter' && overlay && overlay.style.display !== 'none') doLogin();
   });
@@ -5886,6 +6020,18 @@
 
 
 </script>
+<div id="exist-modal">
+  <div class="exist-card" role="dialog" aria-labelledby="exist-title">
+    <p class="pwd-kicker">Already saved</p>
+    <h2 id="exist-title">This permit already exists</h2>
+    <p class="pwd-lead" id="exist-lead">A saved permit matches what you are saving.</p>
+    <div id="exist-list"></div>
+    <div class="exist-actions">
+      <button type="button" class="pbtn pbtn-glass" onclick="closeExistingPermit()">Cancel</button>
+      <button type="button" class="pbtn pbtn-glass" id="exist-save-anyway" onclick="confirmSaveDespiteExisting()">Save as new</button>
+    </div>
+  </div>
+</div>
 <div id="pwd-modal">
   <div class="pwd-card" role="dialog" aria-labelledby="pwd-title">
     <p class="pwd-kicker">Staff account</p>
