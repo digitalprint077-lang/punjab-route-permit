@@ -14,12 +14,45 @@
   var SUPABASE_URL = 'https://meqkwnujbuovzzeyjywo.supabase.co';
   var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lcWt3bnVqYnVvdnp6ZXlqeXdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDIxMTcsImV4cCI6MjA5NjU3ODExN30.1FkeN3NZnT1vmE5QRul0sgF4HMw2wx9Y2wMSdQVgJSc';
 
+  var PERMIT_STATUS_APP = '__PERMIT_STATUS__';
+
   function isStatusRecord(r) {
     if (!r) return false;
-    if (r.doc_type === 'site_status') return true;
+    if (r.doc_type === 'site_status' || r.doc_type === 'permit_status') return true;
     if (r.id && LEGACY_STATUS_IDS[r.id]) return true;
-    if (r.app_no && LEGACY_STATUS_APPS[r.app_no]) return true;
+    if (r.app_no && (LEGACY_STATUS_APPS[r.app_no] || r.app_no === PERMIT_STATUS_APP)) return true;
     return false;
+  }
+
+  async function loadRecordFlag(existingClient, permitId) {
+    var sb = getClient(existingClient);
+    if (!sb || !permitId) return null;
+    try {
+      var result = await sb.from('permits').select('full_name,owner_address,app_no,doc_type,route_permit_no').eq('app_no', PERMIT_STATUS_APP).eq('route_permit_no', String(permitId)).limit(1);
+      var row = result && result.data && result.data[0];
+      if (!row) return null;
+      var status = String(row.full_name || '').trim();
+      if (!status || status.toLowerCase() === 'active') return null;
+      return { status: status, note: String(row.owner_address || '').trim() };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function mountRecordFlag(flag) {
+    var old = document.getElementById('record-status-banner');
+    if (old) old.remove();
+    if (!flag || !flag.status) return;
+    var el = document.createElement('div');
+    el.id = 'record-status-banner';
+    el.className = 'no-print';
+    el.setAttribute('role', 'status');
+    var tone = /want/i.test(flag.status) ? '#8a5a12' : (/block|cancel|suspend/i.test(flag.status) ? '#7f1d1d' : '#123528');
+    el.style.cssText = 'position:sticky;top:8px;z-index:30;margin:8px auto 12px;width:min(210mm,calc(100% - 24px));padding:12px 16px;border-radius:14px;background:' + tone + ';color:#fff;font-family:Manrope,system-ui,sans-serif;font-weight:800;text-align:center;';
+    el.textContent = 'Record status: ' + flag.status + (flag.note ? ' — ' + flag.note : '');
+    var doc = document.getElementById('document');
+    if (doc && doc.parentNode) doc.parentNode.insertBefore(el, doc);
+    else document.body.appendChild(el);
   }
 
   function cacheSet(enabled) {
@@ -176,6 +209,9 @@
   root.PTASiteGate = {
     SITE_STATUS_ID: SITE_STATUS_ID,
     isStatusRecord: isStatusRecord,
+    PERMIT_STATUS_APP: PERMIT_STATUS_APP,
+    loadRecordFlag: loadRecordFlag,
+    mountRecordFlag: mountRecordFlag,
     fetchSiteEnabled: fetchSiteEnabled,
     setSiteEnabled: setSiteEnabled,
     showOfflineOverlay: showOfflineOverlay,

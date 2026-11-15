@@ -480,6 +480,7 @@
       border-radius: 999px;
     }
     .badge-verified { background: rgba(13, 107, 102, 0.15); color: var(--sea-deep); }
+    .badge-flag { background: #7f1d1d; color: #fff; }
     .badge-active { background: rgba(34, 197, 94, 0.15); color: #15803d; }
     .badge-expired { background: rgba(239, 68, 68, 0.12); color: #b91c1c; }
     .badge-neutral { background: #eef2f4; color: #64748b; }
@@ -903,7 +904,11 @@
         html += '<div class="result-head-top">';
         html += '<span class="result-title">' + escapeHtml(r.full_name || 'Owner') + '<br><span style="font-weight:600;color:#5c6878;font-size:13px">' + escapeHtml(r.vehicle_reg_no || '') + '</span></span>';
         html += '<div class="result-badges">';
-        html += '<span class="badge badge-verified">Verified</span>';
+        if (r._flag && r._flag !== 'Active') {
+          html += '<span class="badge badge-flag">' + escapeHtml(r._flag) + '</span>';
+        } else {
+          html += '<span class="badge badge-verified">Verified</span>';
+        }
         html += '<span class="badge badge-' + v.cls + '">' + escapeHtml(v.label) + '</span>';
         html += '</div></div>';
         html += '<div class="validity-bar" aria-hidden="true"><span style="--pct:' + v.pct + '%;width:' + v.pct + '%"></span></div>';
@@ -948,10 +953,20 @@
         var result = await sb.from('permits').select('*').order('created_at', { ascending: false });
         if (result.error) throw result.error;
         var key = normalizeRegKey(raw);
+        var flags = {};
+        (result.data || []).forEach(function(r) {
+          if (r && (r.doc_type === 'permit_status' || r.app_no === '__PERMIT_STATUS__')) {
+            flags[String(r.route_permit_no || '')] = String(r.full_name || '').trim();
+          }
+        });
         var matches = (result.data || []).filter(function(r) {
+          if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return false;
           var reg = normalizeRegKey(r.vehicle_reg_no);
           if (!reg) return false;
           return reg === key || reg.indexOf(key) !== -1 || key.indexOf(reg) !== -1;
+        }).map(function(r) {
+          r._flag = flags[String(r.id)] || '';
+          return r;
         });
         setSteps(matches.length ? 3 : 2);
         if (matches.length) {

@@ -3907,6 +3907,53 @@
   }
   #app .side-note:empty { display: none; }
 
+  #app .status-controls {
+    display: grid;
+    grid-template-columns: minmax(140px, .7fr) minmax(160px, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  #app .status-controls select,
+  #app .status-controls input {
+    min-height: 44px;
+    border-radius: 12px;
+    border: 1px solid #e3d6c4;
+    background: #fffcf8;
+    color: #1c1915;
+    font: 700 14px 'Manrope', system-ui, sans-serif;
+    padding: 0 12px;
+  }
+  #app #f-permit-status-custom { display: none; }
+  #app #permit-status-card[data-status="other"] #f-permit-status-custom { display: block; grid-column: 1 / -1; }
+  #app #permit-status-card[data-status="blocked"] .form-section-head p,
+  #app #permit-status-card[data-status="cancelled"] .form-section-head p,
+  #app #permit-status-card[data-status="suspended"] .form-section-head p { color: #9f2c22; }
+  #app #permit-status-card[data-status="wanted"] .form-section-head p { color: #8a5a12; }
+  #app .permit-status-pill {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #7f1d1d;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  #app.mode-dark .status-controls select,
+  #app.mode-dark .status-controls input {
+    background: #141210;
+    border-color: #4a4338;
+    color: #f7f3ea;
+  }
+  @media screen and (max-width: 720px) {
+    #app .status-controls { grid-template-columns: 1fr; }
+    #app .status-controls .pbtn { width: 100%; }
+  }
+
 </style>
 </head>
 <body>
@@ -4218,6 +4265,25 @@
           <button class="pbtn pbtn-gold" id="btn-save-permit" onclick="savePermit()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4Zm-2 16H9v-4h6v4Zm1-10H5V5h11v4Z"/></svg><span id="btn-save-label">Save Permit</span></button>
           <div id="db-message"></div>
         </div>
+        <section class="form-section" id="permit-status-card" data-status="active">
+          <div class="form-section-head">
+            <h3>Record status</h3>
+            <p id="permit-status-current">Active</p>
+          </div>
+          <div class="status-controls">
+            <select id="f-permit-status" onchange="syncPermitStatusFields()">
+              <option value="Active">Active</option>
+              <option value="Blocked">Blocked</option>
+              <option value="Wanted">Wanted</option>
+              <option value="Suspended">Suspended</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Other">Other</option>
+            </select>
+            <input id="f-permit-status-custom" placeholder="Type another status" autocomplete="off">
+            <input id="f-permit-status-note" placeholder="Note, optional" autocomplete="off">
+            <button type="button" class="pbtn pbtn-gold" onclick="setPermitStatus()">Update status</button>
+          </div>
+        </section>
         <section class="form-section">
           <div class="form-section-head">
             <h3>Document Info</h3>
@@ -4801,6 +4867,7 @@
     }
     try { syncCustomVehicleFields(); } catch (exCustom) {}
     try { syncIssueDatePickerFromHidden(); } catch (ex) {}
+    try { paintPermitStatus({ status: 'Active', note: '' }); } catch (exStatus) {}
   }
 
   function updateDoc() {
@@ -4923,6 +4990,7 @@
       var activeTab = document.querySelector('.tab-panel.active');
       if (activeTab && activeTab.id === 'tab-records') loadRecords();
     } catch (ex) {}
+    try { loadPermitStatus(currentEditId); } catch (exStatus) {}
   }
 
   function generateQR(text) {
@@ -5990,6 +6058,7 @@
     try {
       var result = await supabaseClient.from('permits').delete().in('id', ids);
       if (result.error) throw result.error;
+      try { await removePermitStatusRows(ids); } catch (exStatus) {}
       ids.forEach(function(id) {
         if (editIdsByMode.permit == id) editIdsByMode.permit = null;
         if (editIdsByMode.noc == id) editIdsByMode.noc = null;
@@ -6124,6 +6193,136 @@
       qr_link: document.getElementById('f-qrlink').value,
       doc_type: 'permit'
     };
+  }
+
+  var PERMIT_STATUS_APP = '__PERMIT_STATUS__';
+  var PERMIT_STATUS_CHOICES = ['Active', 'Blocked', 'Wanted', 'Suspended', 'Cancelled'];
+
+  function collectPermitFlags(rows) {
+    var map = {};
+    (rows || []).forEach(function(r) {
+      if (!r || (r.doc_type !== 'permit_status' && r.app_no !== PERMIT_STATUS_APP)) return;
+      var target = String(r.route_permit_no || '');
+      if (!target) return;
+      map[target] = {
+        status: String(r.full_name || '').trim() || 'Active',
+        note: String(r.owner_address || '').trim(),
+        id: r.id
+      };
+    });
+    return map;
+  }
+
+  function chosenPermitStatus() {
+    var select = document.getElementById('f-permit-status');
+    var custom = document.getElementById('f-permit-status-custom');
+    var choice = select ? select.value : 'Active';
+    if (choice === 'Other') return custom ? String(custom.value || '').trim() : '';
+    return choice;
+  }
+
+  function syncPermitStatusFields() {
+    var card = document.getElementById('permit-status-card');
+    var select = document.getElementById('f-permit-status');
+    if (!card || !select) return;
+    card.setAttribute('data-status', select.value === 'Other' ? 'other' : select.value.toLowerCase());
+  }
+
+  function paintPermitStatus(info) {
+    var status = (info && info.status) ? String(info.status) : 'Active';
+    var note = (info && info.note) ? String(info.note) : '';
+    var select = document.getElementById('f-permit-status');
+    var custom = document.getElementById('f-permit-status-custom');
+    var noteEl = document.getElementById('f-permit-status-note');
+    var current = document.getElementById('permit-status-current');
+    var known = PERMIT_STATUS_CHOICES.indexOf(status) !== -1;
+    if (select) select.value = known ? status : 'Other';
+    if (custom) custom.value = known ? '' : status;
+    if (noteEl) noteEl.value = note;
+    if (current) current.textContent = status + (note ? ' — ' + note : '');
+    syncPermitStatusFields();
+  }
+
+  async function loadPermitStatus(permitId) {
+    paintPermitStatus({ status: 'Active', note: '' });
+    if (!permitId) return;
+    initSupabase();
+    if (!supabaseClient) return;
+    try {
+      var result = await supabaseClient.from('permits').select('full_name,owner_address,app_no,doc_type,route_permit_no').eq('app_no', PERMIT_STATUS_APP).eq('route_permit_no', String(permitId)).limit(1);
+      var row = result && result.data && result.data[0];
+      if (!row) return;
+      paintPermitStatus({ status: row.full_name || 'Active', note: row.owner_address || '' });
+    } catch (ex) {}
+  }
+
+  async function removePermitStatusRows(ids) {
+    if (!ids || !ids.length) return;
+    initSupabase();
+    if (!supabaseClient) return;
+    var keys = ids.map(function(id) { return String(id); });
+    try {
+      await supabaseClient.from('permits').delete().eq('app_no', PERMIT_STATUS_APP).in('route_permit_no', keys);
+    } catch (ex) {}
+  }
+
+  async function setPermitStatus() {
+    if (!currentEditId) {
+      showMsg('Save the record before changing its status', false);
+      return;
+    }
+    var status = chosenPermitStatus();
+    var noteEl = document.getElementById('f-permit-status-note');
+    var note = noteEl ? String(noteEl.value || '').trim() : '';
+    if (!status) {
+      showMsg('Enter a status', false);
+      return;
+    }
+    initSupabase();
+    if (!supabaseClient) { showMsg('Not connected', false); return; }
+    try {
+      var existing = await supabaseClient.from('permits').select('id').eq('app_no', PERMIT_STATUS_APP).eq('route_permit_no', String(currentEditId));
+      if (existing.error) throw existing.error;
+      var rows = existing.data || [];
+      if (status === 'Active') {
+        if (rows.length) {
+          var cleared = await supabaseClient.from('permits').delete().in('id', rows.map(function(r) { return r.id; }));
+          if (cleared.error) throw cleared.error;
+        }
+        paintPermitStatus({ status: 'Active', note: '' });
+        showMsg('Status set to Active', true);
+        return;
+      }
+      var regEl = document.getElementById('f-vreg');
+      var payload = {
+        app_no: PERMIT_STATUS_APP,
+        doc_type: 'permit_status',
+        full_name: status,
+        route_permit_no: String(currentEditId),
+        vehicle_reg_no: regEl ? regEl.value : '',
+        owner_address: note,
+        qr_link: ''
+      };
+      var result;
+      if (rows[0]) {
+        result = await supabaseClient.from('permits').update(payload).eq('id', rows[0].id).select();
+        if (result.error && /doc_type|schema cache|column/i.test(String(result.error.message || ''))) {
+          delete payload.doc_type;
+          result = await supabaseClient.from('permits').update(payload).eq('id', rows[0].id).select();
+        }
+      } else {
+        result = await supabaseClient.from('permits').insert([payload]).select();
+        if (result.error && /doc_type|schema cache|column/i.test(String(result.error.message || ''))) {
+          delete payload.doc_type;
+          result = await supabaseClient.from('permits').insert([payload]).select();
+        }
+      }
+      if (result.error) throw result.error;
+      paintPermitStatus({ status: status, note: note });
+      showMsg('Status set to ' + status, true);
+    } catch (err) {
+      showMsg((err && err.message) || 'Could not update status', false);
+    }
   }
 
   function showMsg(msg, ok) {
@@ -6633,6 +6832,7 @@
         list.innerHTML = '<p style="color:red;font-family:Arial;font-size:11px;padding:8px;">' + result.error.message + '</p>';
         return;
       }
+      var flags = collectPermitFlags(result.data || []);
       var rows = (result.data || []).filter(function(r) {
         if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return false;
         return docMode === 'noc' ? isNocRecord(r) : !isNocRecord(r);
@@ -6649,7 +6849,9 @@
         var cnic = r.cnic_no||'-', vtype = r.vehicle_type||'-', eng = r.engine_no||'-';
         var date = (r.created_at||'').substring(0,10), id = r.id;
         var c = '<div class="permit-card">';
-        c += '<div class="permit-card-header"><label class="permit-card-check"><input type="checkbox" class="record-select" value="'+id+'" onchange="onRecordSelectChange()"></label><div class="permit-card-num">'+(i+1)+'</div><div class="permit-card-name">'+name+'</div><div class="permit-card-date">'+date+'</div></div>';
+        var flag = flags[String(id)];
+        var flagHtml = (flag && flag.status && flag.status !== 'Active') ? '<span class="permit-status-pill">' + escapeHtml(flag.status) + '</span>' : '';
+        c += '<div class="permit-card-header"><label class="permit-card-check"><input type="checkbox" class="record-select" value="'+id+'" onchange="onRecordSelectChange()"></label><div class="permit-card-num">'+(i+1)+'</div><div class="permit-card-name">'+name+flagHtml+'</div><div class="permit-card-date">'+date+'</div></div>';
         c += '<div class="permit-card-info"><div>App: <span>'+appno+'</span></div><div>Reg: <span>'+regno+'</span></div><div>CNIC: <span style="color:#64748b;">'+cnic+'</span></div><div>Type: <span style="color:#64748b;">'+vtype+'</span></div><div style="grid-column:1/-1;">Engine: <span style="color:#64748b;">'+eng+'</span></div></div>';
         c += '<div class="permit-card-actions">';
                 c += '<button class="card-btn-load" onclick="loadRecord(\'' + id + '\')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/></svg><span>Load</span></button>';
@@ -6711,6 +6913,7 @@
         } catch (ex) {}
       }
       showMsg('Record loaded!', true);
+      try { await loadPermitStatus(id); } catch (exStatus) {}
       var t = document.querySelectorAll('.panel-tab')[1];
       if (t) switchTab('tab-edit', t);
     } catch (err) {
@@ -6726,6 +6929,7 @@
     try {
       var result = await supabaseClient.from('permits').delete().eq('id', id);
       if (result.error) throw result.error;
+      try { await removePermitStatusRows([id]); } catch (exStatus) {}
       if (editIdsByMode.permit == id) editIdsByMode.permit = null;
       if (editIdsByMode.noc == id) editIdsByMode.noc = null;
       if (currentEditId == id) { currentEditId = null; clearForm(); }
@@ -6806,6 +7010,9 @@
       var id = r.id;
       var html = '<div class="verify-result-card">';
       html += '<h4>' + escapeHtml(r.full_name || 'Unknown owner') + '</h4>';
+      if (r._flag && r._flag.status && r._flag.status !== 'Active') {
+        html += '<div class="permit-status-pill">' + escapeHtml(r._flag.status) + (r._flag.note ? ' — ' + escapeHtml(r._flag.note) : '') + '</div>';
+      }
       html += buildMatchBadge(r);
       html += '<div class="verify-grid">';
       html += '<div>Reg: <span>' + escapeHtml(r.vehicle_reg_no || '-') + '</span></div>';
@@ -6836,10 +7043,15 @@
     var result = await supabaseClient.from('permits').select('*').order('created_at', { ascending: false });
     if (result.error) throw result.error;
     var rows = result.data || [];
+    var flags = collectPermitFlags(rows);
     return rows.filter(function(r) {
+      if (window.PTASiteGate && PTASiteGate.isStatusRecord(r)) return false;
       var reg = normalizeRegKey(r.vehicle_reg_no);
       if (!reg) return false;
       return reg === key || reg.indexOf(key) !== -1 || key.indexOf(reg) !== -1;
+    }).map(function(r) {
+      r._flag = flags[String(r.id)] || null;
+      return r;
     });
   }
 
