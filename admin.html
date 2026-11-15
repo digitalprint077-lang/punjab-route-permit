@@ -3956,7 +3956,7 @@
 
   #app .dash-hero-side { display: flex; align-items: center; gap: 12px; }
   #app .desk-clock {
-    min-width: 214px;
+    min-width: 228px;
     padding: 10px 14px 11px;
     border-radius: 16px;
     background: rgba(255,255,255,.08);
@@ -3976,10 +3976,11 @@
     display: block;
     margin-top: 2px;
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 650;
     font-variant-numeric: tabular-nums;
-    letter-spacing: .03em;
+    letter-spacing: .02em;
+    white-space: nowrap;
     line-height: 1.05;
   }
   #app #desk-clock-date {
@@ -4230,7 +4231,7 @@
             <div class="dash-hero-side">
               <div class="desk-clock" aria-live="polite">
                 <span class="desk-clock-kicker">Pakistan time</span>
-                <time id="desk-clock-time">--:--:--</time>
+                <time id="desk-clock-time">--:--:-- --</time>
                 <span id="desk-clock-date">—</span>
               </div>
               <button type="button" class="dash-refresh" onclick="loadDashboardStats()">
@@ -6461,12 +6462,12 @@
     var dateEl = document.getElementById('desk-clock-date');
     if (!timeEl || !dateEl) return;
     startDeskClock._on = true;
-    var timeFmt = new Intl.DateTimeFormat('en-GB', {
+    var timeFmt = new Intl.DateTimeFormat('en-US', {
       timeZone: 'Asia/Karachi',
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      hour12: false
+      hour12: true
     });
     var dateFmt = new Intl.DateTimeFormat('en-GB', {
       timeZone: 'Asia/Karachi',
