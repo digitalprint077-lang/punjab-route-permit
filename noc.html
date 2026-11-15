@@ -397,6 +397,11 @@
     set('d-noc-vreg', d.vehicle_reg_no);
     set('d-noc-district', d.issuing_district);
     set('d-noc-idate', d.issuance_date);
+    if (window.PTASiteGate && PTASiteGate.loadRecordFlag) {
+      PTASiteGate.loadRecordFlag(sb, id).then(function(flag) {
+        if (PTASiteGate.mountRecordFlag) PTASiteGate.mountRecordFlag(flag);
+      });
+    }
 
     var popupView = params.get('view') === 'popup' || params.get('popup') === '1' ||
       !params.get('view') || (d.qr_link && d.qr_link.indexOf('view=popup') !== -1);

@@ -692,6 +692,11 @@
     set('d-idistrict', d.issuing_district);
     set('d-idate',     d.issuance_date);
     set('d-authority', d.authority_name);
+    if (window.PTASiteGate && PTASiteGate.loadRecordFlag) {
+      PTASiteGate.loadRecordFlag(sb, id).then(function(flag) {
+        if (PTASiteGate.mountRecordFlag) PTASiteGate.mountRecordFlag(flag);
+      });
+    }
     var districtsBox = document.getElementById('districts-box');
     if (districtsBox) districtsBox.innerHTML = buildRouteDistrictsHtml(d.districts);
 
