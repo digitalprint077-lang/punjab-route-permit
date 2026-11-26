@@ -6453,7 +6453,12 @@
     document.getElementById('login-overlay').style.display = loggedIn ? 'none' : 'flex';
     var app = document.getElementById('app');
     if (app) app.style.display = loggedIn ? 'flex' : 'none';
-    if (loggedIn) requestAnimationFrame(function(){ placeSideIndicator(); startDeskClock(); });
+    if (loggedIn) {
+      requestAnimationFrame(function(){ placeSideIndicator(); startDeskClock(); });
+      startIdleWatch();
+    } else {
+      stopIdleWatch();
+    }
   }
 
   function startDeskClock() {
@@ -6538,6 +6543,59 @@
     document.getElementById('login-user').value = '';
     document.getElementById('login-pass').value = '';
     document.getElementById('login-error').style.display = 'none';
+  }
+
+  var IDLE_LOGOUT_MS = 5 * 60 * 1000;
+  var idleLast = 0;
+  var idleWatch = null;
+  var idleMoveStamp = 0;
+
+  function deskIsOpen() {
+    var app = document.getElementById('app');
+    return !!(app && app.style.display !== 'none');
+  }
+
+  function noteDeskActivity(e) {
+    if (!deskIsOpen()) return;
+    if (e && e.type === 'pointermove') {
+      var now = Date.now();
+      if (now - idleMoveStamp < 2000) return;
+      idleMoveStamp = now;
+    }
+    idleLast = Date.now();
+  }
+
+  function startIdleWatch() {
+    idleLast = Date.now();
+    if (idleWatch) return;
+    idleWatch = setInterval(checkIdleLogout, 1000);
+  }
+
+  function stopIdleWatch() {
+    if (idleWatch) clearInterval(idleWatch);
+    idleWatch = null;
+  }
+
+  async function checkIdleLogout() {
+    if (!deskIsOpen()) {
+      stopIdleWatch();
+      return;
+    }
+    if (Date.now() - idleLast < IDLE_LOGOUT_MS) return;
+    if (typeof savePermit === 'function' && savePermit._busy) return;
+    if (checkIdleLogout._busy) return;
+    checkIdleLogout._busy = true;
+    stopIdleWatch();
+    try {
+      await doLogout();
+      var errEl = document.getElementById('login-error');
+      if (errEl) {
+        errEl.textContent = 'Signed out after 5 minutes of inactivity. Sign in again to continue.';
+        errEl.style.display = 'block';
+      }
+    } finally {
+      checkIdleLogout._busy = false;
+    }
   }
 
   var publicSiteEnabled = true;
@@ -7359,6 +7417,14 @@
     if (m && e.target === m) closeChangePassword();
     var exist = document.getElementById('exist-modal');
     if (exist && e.target === exist) closeExistingPermit();
+  });
+
+  ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'].forEach(function(type) {
+    document.addEventListener(type, noteDeskActivity, true);
+  });
+  document.addEventListener('scroll', noteDeskActivity, true);
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') checkIdleLogout();
   });
 
   document.addEventListener('keydown', function(e) {
